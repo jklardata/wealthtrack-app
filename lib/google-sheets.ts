@@ -67,7 +67,7 @@ function parseNumber(value: string | undefined): number {
   return isNaN(num) ? 0 : num;
 }
 
-export async function getSheetMetadata(sheetId: string) {
+export async function getSheetMetadata(sheetId: string): Promise<{ title: string | null; valid: boolean; error?: string }> {
   const sheets = getGoogleSheetsClient();
 
   try {
@@ -80,10 +80,13 @@ export async function getSheetMetadata(sheetId: string) {
       title: response.data.properties?.title || 'Unknown',
       valid: true,
     };
-  } catch {
+  } catch (error: unknown) {
+    const err = error as { message?: string; code?: number };
+    console.error('Google Sheets API error:', err);
     return {
       title: null,
       valid: false,
+      error: err.message || 'Unknown error',
     };
   }
 }

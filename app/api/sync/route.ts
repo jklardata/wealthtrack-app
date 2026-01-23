@@ -32,8 +32,16 @@ export async function POST() {
     // Verify the sheet is accessible
     const metadata = await getSheetMetadata(sheetId);
     if (!metadata.valid) {
+      const errorMsg = metadata.error || 'Unknown error';
+      // Check for common errors
+      if (errorMsg.includes('API has not been used') || errorMsg.includes('sheets.googleapis.com')) {
+        return NextResponse.json(
+          { error: 'Google Sheets API is not enabled. Please enable it at console.cloud.google.com/apis/library/sheets.googleapis.com' },
+          { status: 400 }
+        );
+      }
       return NextResponse.json(
-        { error: 'Cannot access the Google Sheet. Make sure you\'ve shared it with the service account.' },
+        { error: `Cannot access the Google Sheet: ${errorMsg}` },
         { status: 400 }
       );
     }
