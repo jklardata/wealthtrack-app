@@ -34,7 +34,10 @@ import {
   Pencil,
   Trash2,
   ArrowUpDown,
+  RefreshCw,
+  Settings,
 } from "lucide-react";
+import Link from "next/link";
 import type { NetWorthEntry, NetWorthFormData } from "@/lib/types";
 
 function formatCurrency(value: number): string {
@@ -261,6 +264,8 @@ export default function NetWorthPage() {
   const [editingEntry, setEditingEntry] = useState<NetWorthEntry | undefined>();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+  const [syncing, setSyncing] = useState(false);
+  const [syncMessage, setSyncMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
   const fetchEntries = useCallback(async () => {
     try {
@@ -375,6 +380,33 @@ export default function NetWorthPage() {
     URL.revokeObjectURL(url);
   };
 
+  const handleSync = async () => {
+    setSyncing(true);
+    setSyncMessage(null);
+
+    try {
+      const response = await fetch("/api/sync", { method: "POST" });
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to sync");
+      }
+
+      await fetchEntries();
+      setSyncMessage({
+        type: "success",
+        text: `Synced ${result.synced} entries from "${result.sheetTitle}"`,
+      });
+    } catch (err) {
+      setSyncMessage({
+        type: "error",
+        text: err instanceof Error ? err.message : "Failed to sync",
+      });
+    } finally {
+      setSyncing(false);
+    }
+  };
+
   const toggleSortOrder = () => {
     setSortOrder((prev) => (prev === "desc" ? "asc" : "desc"));
   };
@@ -422,7 +454,15 @@ export default function NetWorthPage() {
             Track your net worth over time
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
+          <Button
+            variant="outline"
+            onClick={handleSync}
+            disabled={syncing}
+          >
+            <RefreshCw className={`h-4 w-4 mr-2 ${syncing ? "animate-spin" : ""}`} />
+            {syncing ? "Syncing..." : "Sync from Sheet"}
+          </Button>
           <Button variant="outline" onClick={handleExportCSV} disabled={entries.length === 0}>
             <Download className="h-4 w-4 mr-2" />
             Export CSV
@@ -459,6 +499,27 @@ export default function NetWorthPage() {
           </Dialog>
         </div>
       </div>
+
+      {/* Sync Message */}
+      {syncMessage && (
+        <div
+          className={`flex items-center justify-between p-3 rounded-lg ${
+            syncMessage.type === "success"
+              ? "bg-green-500/10 text-green-500"
+              : "bg-red-500/10 text-red-500"
+          }`}
+        >
+          <span>{syncMessage.text}</span>
+          {syncMessage.type === "error" && syncMessage.text.includes("No Google Sheet") && (
+            <Link href="/settings">
+              <Button variant="ghost" size="sm">
+                <Settings className="h-4 w-4 mr-1" />
+                Configure
+              </Button>
+            </Link>
+          )}
+        </div>
+      )}
 
       <Card>
         <CardHeader>

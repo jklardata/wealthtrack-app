@@ -65,3 +65,24 @@ export interface NetWorthFormData {
   total_debts: number;
   notes?: string;
 }
+
+export interface UserSettings {
+  id: string;
+  user_id: string;
+  google_sheet_id: string | null;
+  last_sync_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface SheetRow {
+  date: string;
+  stocks: number;
+  bonds: number;
+  cash: number;
+  real_estate: number;
+  points_value: number;
+  other_assets: number;
+  total_debts: number;
+  notes?: string;
+}
