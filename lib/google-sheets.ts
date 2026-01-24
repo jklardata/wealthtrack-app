@@ -1,7 +1,9 @@
 import { google } from 'googleapis';
 import type { SheetRow } from './types';
 
-// Initialize Google Sheets API with service account
+const SERVICE_ACCOUNT_EMAIL = 'wealthtrack-sheets@wealth-tracker-485215.iam.gserviceaccount.com';
+
+// Initialize Google Sheets API with service account (read-only)
 function getGoogleSheetsClient() {
   const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY || '{}');
 
@@ -11,6 +13,24 @@ function getGoogleSheetsClient() {
   });
 
   return google.sheets({ version: 'v4', auth });
+}
+
+// Initialize Google Sheets API with full access for creating sheets
+function getGoogleSheetsClientFull() {
+  const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY || '{}');
+
+  const auth = new google.auth.GoogleAuth({
+    credentials,
+    scopes: [
+      'https://www.googleapis.com/auth/spreadsheets',
+      'https://www.googleapis.com/auth/drive',
+    ],
+  });
+
+  return {
+    sheets: google.sheets({ version: 'v4', auth }),
+    drive: google.drive({ version: 'v3', auth }),
+  };
 }
 
 export async function fetchSheetData(sheetId: string): Promise<SheetRow[]> {
@@ -87,6 +107,156 @@ export async function getSheetMetadata(sheetId: string): Promise<{ title: string
       title: null,
       valid: false,
       error: err.message || 'Unknown error',
+    };
+  }
+}
+
+export async function createTemplateSpreadsheet(userEmail: string): Promise<{
+  spreadsheetId: string;
+  spreadsheetUrl: string;
+  error?: string
+}> {
+  const { sheets, drive } = getGoogleSheetsClientFull();
+
+  try {
+    // Create the spreadsheet with template
+    const createResponse = await sheets.spreadsheets.create({
+      requestBody: {
+        properties: {
+          title: 'WealthTrack - Net Worth Tracker',
+        },
+        sheets: [
+          {
+            properties: {
+              title: 'Net Worth',
+              gridProperties: {
+                frozenRowCount: 1,
+              },
+            },
+            data: [
+              {
+                startRow: 0,
+                startColumn: 0,
+                rowData: [
+                  {
+                    values: [
+                      { userEnteredValue: { stringValue: 'Date' }, userEnteredFormat: { textFormat: { bold: true }, backgroundColor: { red: 0.2, green: 0.2, blue: 0.2 } } },
+                      { userEnteredValue: { stringValue: 'Stocks' }, userEnteredFormat: { textFormat: { bold: true }, backgroundColor: { red: 0.2, green: 0.2, blue: 0.2 } } },
+                      { userEnteredValue: { stringValue: 'Bonds' }, userEnteredFormat: { textFormat: { bold: true }, backgroundColor: { red: 0.2, green: 0.2, blue: 0.2 } } },
+                      { userEnteredValue: { stringValue: 'Cash' }, userEnteredFormat: { textFormat: { bold: true }, backgroundColor: { red: 0.2, green: 0.2, blue: 0.2 } } },
+                      { userEnteredValue: { stringValue: 'Real Estate' }, userEnteredFormat: { textFormat: { bold: true }, backgroundColor: { red: 0.2, green: 0.2, blue: 0.2 } } },
+                      { userEnteredValue: { stringValue: 'Points Value' }, userEnteredFormat: { textFormat: { bold: true }, backgroundColor: { red: 0.2, green: 0.2, blue: 0.2 } } },
+                      { userEnteredValue: { stringValue: 'Other Assets' }, userEnteredFormat: { textFormat: { bold: true }, backgroundColor: { red: 0.2, green: 0.2, blue: 0.2 } } },
+                      { userEnteredValue: { stringValue: 'Total Debts' }, userEnteredFormat: { textFormat: { bold: true }, backgroundColor: { red: 0.2, green: 0.2, blue: 0.2 } } },
+                      { userEnteredValue: { stringValue: 'Notes' }, userEnteredFormat: { textFormat: { bold: true }, backgroundColor: { red: 0.2, green: 0.2, blue: 0.2 } } },
+                    ],
+                  },
+                  // Sample row with example data
+                  {
+                    values: [
+                      { userEnteredValue: { stringValue: new Date().toISOString().split('T')[0] } },
+                      { userEnteredValue: { numberValue: 50000 }, userEnteredFormat: { numberFormat: { type: 'CURRENCY' } } },
+                      { userEnteredValue: { numberValue: 10000 }, userEnteredFormat: { numberFormat: { type: 'CURRENCY' } } },
+                      { userEnteredValue: { numberValue: 15000 }, userEnteredFormat: { numberFormat: { type: 'CURRENCY' } } },
+                      { userEnteredValue: { numberValue: 0 }, userEnteredFormat: { numberFormat: { type: 'CURRENCY' } } },
+                      { userEnteredValue: { numberValue: 5000 }, userEnteredFormat: { numberFormat: { type: 'CURRENCY' } } },
+                      { userEnteredValue: { numberValue: 0 }, userEnteredFormat: { numberFormat: { type: 'CURRENCY' } } },
+                      { userEnteredValue: { numberValue: 0 }, userEnteredFormat: { numberFormat: { type: 'CURRENCY' } } },
+                      { userEnteredValue: { stringValue: 'Sample entry - update with your data' } },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    });
+
+    const spreadsheetId = createResponse.data.spreadsheetId;
+    if (!spreadsheetId) {
+      throw new Error('Failed to create spreadsheet');
+    }
+
+    // Auto-resize columns
+    await sheets.spreadsheets.batchUpdate({
+      spreadsheetId,
+      requestBody: {
+        requests: [
+          {
+            autoResizeDimensions: {
+              dimensions: {
+                sheetId: 0,
+                dimension: 'COLUMNS',
+                startIndex: 0,
+                endIndex: 9,
+              },
+            },
+          },
+        ],
+      },
+    });
+
+    // Share with service account (so it can read later)
+    await drive.permissions.create({
+      fileId: spreadsheetId,
+      requestBody: {
+        type: 'user',
+        role: 'reader',
+        emailAddress: SERVICE_ACCOUNT_EMAIL,
+      },
+      sendNotificationEmail: false,
+    });
+
+    // Share with user as owner/editor
+    await drive.permissions.create({
+      fileId: spreadsheetId,
+      requestBody: {
+        type: 'user',
+        role: 'writer',
+        emailAddress: userEmail,
+      },
+      sendNotificationEmail: true,
+    });
+
+    // Transfer ownership to user (so they own it)
+    // Note: This may fail if the user is not in the same domain, so we wrap in try-catch
+    try {
+      const permissionsResponse = await drive.permissions.list({
+        fileId: spreadsheetId,
+        fields: 'permissions(id,emailAddress)',
+      });
+
+      const userPermission = permissionsResponse.data.permissions?.find(
+        p => p.emailAddress?.toLowerCase() === userEmail.toLowerCase()
+      );
+
+      if (userPermission?.id) {
+        await drive.permissions.update({
+          fileId: spreadsheetId,
+          permissionId: userPermission.id,
+          transferOwnership: true,
+          requestBody: {
+            role: 'owner',
+          },
+        });
+      }
+    } catch {
+      // Ownership transfer failed, user is still an editor which is fine
+      console.log('Could not transfer ownership, user remains as editor');
+    }
+
+    return {
+      spreadsheetId,
+      spreadsheetUrl: `https://docs.google.com/spreadsheets/d/${spreadsheetId}`,
+    };
+  } catch (error: unknown) {
+    const err = error as { message?: string };
+    console.error('Error creating template spreadsheet:', err);
+    return {
+      spreadsheetId: '',
+      spreadsheetUrl: '',
+      error: err.message || 'Failed to create spreadsheet',
     };
   }
 }

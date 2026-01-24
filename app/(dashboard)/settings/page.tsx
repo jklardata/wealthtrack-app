@@ -6,17 +6,27 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Sheet, ExternalLink, Check, AlertCircle } from "lucide-react";
+import {
+  Sheet,
+  ExternalLink,
+  Check,
+  AlertCircle,
+  Plus,
+  Loader2,
+  FileSpreadsheet,
+} from "lucide-react";
 import type { UserSettings } from "@/lib/types";
 
-const SERVICE_ACCOUNT_EMAIL = process.env.NEXT_PUBLIC_GOOGLE_SERVICE_ACCOUNT_EMAIL || "wealthtrack@your-project.iam.gserviceaccount.com";
+const SERVICE_ACCOUNT_EMAIL = "wealthtrack-sheets@wealth-tracker-485215.iam.gserviceaccount.com";
 
 export default function SettingsPage() {
   const [settings, setSettings] = useState<UserSettings | null>(null);
   const [sheetId, setSheetId] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [creating, setCreating] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [createdSheetUrl, setCreatedSheetUrl] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchSettings() {
@@ -58,6 +68,45 @@ export default function SettingsPage() {
       setMessage({ type: "error", text: error instanceof Error ? error.message : "Failed to save" });
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleCreateTemplate = async () => {
+    setCreating(true);
+    setMessage(null);
+    setCreatedSheetUrl(null);
+
+    try {
+      const response = await fetch("/api/create-sheet", {
+        method: "POST",
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to create spreadsheet");
+      }
+
+      setSheetId(result.spreadsheetId);
+      setCreatedSheetUrl(result.spreadsheetUrl);
+      setMessage({
+        type: "success",
+        text: "Template created and connected! Check your email for access."
+      });
+
+      // Refresh settings
+      const settingsResponse = await fetch("/api/settings");
+      if (settingsResponse.ok) {
+        const settingsResult = await settingsResponse.json();
+        setSettings(settingsResult.data);
+      }
+    } catch (error) {
+      setMessage({
+        type: "error",
+        text: error instanceof Error ? error.message : "Failed to create spreadsheet"
+      });
+    } finally {
+      setCreating(false);
     }
   };
 
@@ -110,9 +159,73 @@ export default function SettingsPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Setup Instructions */}
+          {/* Create Template Button - Prominent CTA */}
+          <div className="bg-gradient-to-r from-orange-500/10 to-yellow-500/10 border border-orange-500/20 rounded-lg p-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-start gap-4">
+                <div className="p-3 rounded-lg bg-orange-500/20">
+                  <FileSpreadsheet className="h-6 w-6 text-orange-500" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg">Quick Start</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Create a pre-configured Google Sheet template with all the right columns.
+                    It will be automatically shared and connected.
+                  </p>
+                </div>
+              </div>
+              <Button
+                onClick={handleCreateTemplate}
+                disabled={creating}
+                className="bg-orange-500 hover:bg-orange-600 whitespace-nowrap"
+                size="lg"
+              >
+                {creating ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Creating...
+                  </>
+                ) : (
+                  <>
+                    <Plus className="h-4 w-4 mr-2" />
+                    Create Template Sheet
+                  </>
+                )}
+              </Button>
+            </div>
+            {createdSheetUrl && (
+              <div className="mt-4 p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
+                <p className="text-sm text-green-500 flex items-center gap-2">
+                  <Check className="h-4 w-4" />
+                  Sheet created successfully!
+                </p>
+                <a
+                  href={createdSheetUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-orange-500 hover:text-orange-600 flex items-center gap-1 mt-2"
+                >
+                  <ExternalLink className="h-4 w-4" />
+                  Open your new spreadsheet
+                </a>
+              </div>
+            )}
+          </div>
+
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-card px-2 text-muted-foreground">
+                Or connect existing sheet
+              </span>
+            </div>
+          </div>
+
+          {/* Manual Setup Instructions */}
           <div className="bg-muted/50 rounded-lg p-4 space-y-3">
-            <h4 className="font-medium">Setup Instructions:</h4>
+            <h4 className="font-medium">Manual Setup:</h4>
             <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
               <li>
                 Create a Google Sheet with these columns in row 1:
@@ -125,25 +238,12 @@ export default function SettingsPage() {
               <li>
                 Share the sheet with this email (Viewer access):
                 <br />
-                <code className="text-xs bg-muted px-1 py-0.5 rounded break-all">
+                <code className="text-xs bg-muted px-1 py-0.5 rounded break-all select-all">
                   {SERVICE_ACCOUNT_EMAIL}
                 </code>
               </li>
               <li>Copy the Sheet ID from the URL and paste it below</li>
             </ol>
-          </div>
-
-          {/* Template Link */}
-          <div className="flex items-center gap-2">
-            <a
-              href="https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/copy"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-orange-500 hover:text-orange-600 flex items-center gap-1"
-            >
-              <ExternalLink className="h-4 w-4" />
-              Use our template spreadsheet
-            </a>
           </div>
 
           {/* Sheet ID Input */}
@@ -159,6 +259,23 @@ export default function SettingsPage() {
               You can paste the full URL or just the Sheet ID
             </p>
           </div>
+
+          {/* Connected Sheet Info */}
+          {sheetId && (
+            <div className="flex items-center gap-2 text-sm">
+              <Check className="h-4 w-4 text-green-500" />
+              <span className="text-muted-foreground">Connected to sheet:</span>
+              <a
+                href={`https://docs.google.com/spreadsheets/d/${sheetId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-orange-500 hover:text-orange-600 flex items-center gap-1"
+              >
+                Open Sheet
+                <ExternalLink className="h-3 w-3" />
+              </a>
+            </div>
+          )}
 
           {/* Last Sync Info */}
           {settings?.last_sync_at && (
@@ -189,7 +306,7 @@ export default function SettingsPage() {
           <Button
             onClick={handleSave}
             disabled={saving}
-            className="bg-orange-500 hover:bg-orange-600"
+            variant="outline"
           >
             {saving ? "Saving..." : "Save Settings"}
           </Button>
