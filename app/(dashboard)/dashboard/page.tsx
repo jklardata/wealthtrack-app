@@ -303,6 +303,86 @@ export default function DashboardPage() {
     ? ((monthlyChange / previousEntry.net_worth) * 100).toFixed(1)
     : "0";
 
+  // Calculate growth metrics
+  const growthMetrics = useMemo(() => {
+    if (entries.length === 0) {
+      return {
+        thisMonth: { amount: 0, percent: 0 },
+        ytd: { amount: 0, percent: 0 },
+        allTime: { amount: 0, percent: 0 },
+        avgMonthlyGrowth: 0,
+        projectedYear: 0,
+      };
+    }
+
+    const now = new Date();
+    const currentMonthStart = startOfMonth(now);
+    const yearStart = startOfYear(now);
+
+    // Sort entries chronologically (oldest first) for calculations
+    const sortedEntries = [...entries].sort(
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+    );
+
+    const oldestEntry = sortedEntries[0];
+    const newestEntry = sortedEntries[sortedEntries.length - 1];
+
+    // This month growth
+    const thisMonthEntries = sortedEntries.filter(
+      (e) => new Date(e.date) >= currentMonthStart
+    );
+    const lastMonthEnd = sortedEntries
+      .filter((e) => new Date(e.date) < currentMonthStart)
+      .pop();
+    const thisMonthStart = thisMonthEntries[0] || lastMonthEnd;
+    const thisMonthAmount = thisMonthStart
+      ? newestEntry.net_worth - thisMonthStart.net_worth
+      : 0;
+    const thisMonthPercent =
+      thisMonthStart && thisMonthStart.net_worth !== 0
+        ? (thisMonthAmount / thisMonthStart.net_worth) * 100
+        : 0;
+
+    // YTD growth
+    const ytdStartEntry = sortedEntries.find((e) => new Date(e.date) >= yearStart);
+    const beforeYtdEntry = sortedEntries
+      .filter((e) => new Date(e.date) < yearStart)
+      .pop();
+    const ytdBaseEntry = beforeYtdEntry || ytdStartEntry || oldestEntry;
+    const ytdAmount = newestEntry.net_worth - ytdBaseEntry.net_worth;
+    const ytdPercent =
+      ytdBaseEntry.net_worth !== 0
+        ? (ytdAmount / ytdBaseEntry.net_worth) * 100
+        : 0;
+
+    // All time growth
+    const allTimeAmount = newestEntry.net_worth - oldestEntry.net_worth;
+    const allTimePercent =
+      oldestEntry.net_worth !== 0
+        ? (allTimeAmount / oldestEntry.net_worth) * 100
+        : 0;
+
+    // Average monthly growth
+    const monthsDiff = Math.max(
+      1,
+      (new Date(newestEntry.date).getTime() - new Date(oldestEntry.date).getTime()) /
+        (1000 * 60 * 60 * 24 * 30)
+    );
+    const avgMonthlyGrowth = allTimeAmount / monthsDiff;
+
+    // Projected year-end value (assuming avg monthly growth continues)
+    const monthsRemaining = 12 - now.getMonth();
+    const projectedYear = newestEntry.net_worth + avgMonthlyGrowth * monthsRemaining;
+
+    return {
+      thisMonth: { amount: thisMonthAmount, percent: thisMonthPercent },
+      ytd: { amount: ytdAmount, percent: ytdPercent },
+      allTime: { amount: allTimeAmount, percent: allTimePercent },
+      avgMonthlyGrowth,
+      projectedYear,
+    };
+  }, [entries]);
+
   // Apply chart-specific date range filter
   const chartFilteredEntries = useMemo(() => {
     if (chartRange === "all") return filteredEntries;
@@ -588,6 +668,101 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Growth Metrics Section */}
+      {entries.length > 1 && (
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="flex items-center gap-2">
+              <TrendingUp className="h-5 w-5 text-green-500" />
+              Growth Trends
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+              {/* This Month */}
+              <div className="p-4 rounded-lg bg-muted/50 border">
+                <p className="text-sm text-muted-foreground mb-1">This Month</p>
+                <p
+                  className={`text-xl font-bold ${
+                    growthMetrics.thisMonth.amount >= 0 ? "text-green-500" : "text-red-500"
+                  }`}
+                >
+                  {growthMetrics.thisMonth.amount >= 0 ? "+" : ""}
+                  {formatCurrency(growthMetrics.thisMonth.amount)}
+                </p>
+                <p
+                  className={`text-sm ${
+                    growthMetrics.thisMonth.percent >= 0 ? "text-green-500" : "text-red-500"
+                  }`}
+                >
+                  {growthMetrics.thisMonth.percent >= 0 ? "+" : ""}
+                  {growthMetrics.thisMonth.percent.toFixed(1)}%
+                </p>
+              </div>
+
+              {/* YTD */}
+              <div className="p-4 rounded-lg bg-muted/50 border">
+                <p className="text-sm text-muted-foreground mb-1">Year to Date</p>
+                <p
+                  className={`text-xl font-bold ${
+                    growthMetrics.ytd.amount >= 0 ? "text-green-500" : "text-red-500"
+                  }`}
+                >
+                  {growthMetrics.ytd.amount >= 0 ? "+" : ""}
+                  {formatCurrency(growthMetrics.ytd.amount)}
+                </p>
+                <p
+                  className={`text-sm ${
+                    growthMetrics.ytd.percent >= 0 ? "text-green-500" : "text-red-500"
+                  }`}
+                >
+                  {growthMetrics.ytd.percent >= 0 ? "+" : ""}
+                  {growthMetrics.ytd.percent.toFixed(1)}%
+                </p>
+              </div>
+
+              {/* All Time */}
+              <div className="p-4 rounded-lg bg-muted/50 border">
+                <p className="text-sm text-muted-foreground mb-1">All Time</p>
+                <p
+                  className={`text-xl font-bold ${
+                    growthMetrics.allTime.amount >= 0 ? "text-green-500" : "text-red-500"
+                  }`}
+                >
+                  {growthMetrics.allTime.amount >= 0 ? "+" : ""}
+                  {formatCurrency(growthMetrics.allTime.amount)}
+                </p>
+                <p
+                  className={`text-sm ${
+                    growthMetrics.allTime.percent >= 0 ? "text-green-500" : "text-red-500"
+                  }`}
+                >
+                  {growthMetrics.allTime.percent >= 0 ? "+" : ""}
+                  {growthMetrics.allTime.percent.toFixed(1)}%
+                </p>
+              </div>
+            </div>
+
+            {/* Projection footer */}
+            <div className="pt-4 border-t flex flex-col sm:flex-row justify-between gap-2 text-sm">
+              <div className="text-muted-foreground">
+                <span className="font-medium text-foreground">Avg Monthly Growth:</span>{" "}
+                <span className={growthMetrics.avgMonthlyGrowth >= 0 ? "text-green-500" : "text-red-500"}>
+                  {growthMetrics.avgMonthlyGrowth >= 0 ? "+" : ""}
+                  {formatCurrency(growthMetrics.avgMonthlyGrowth)}
+                </span>
+              </div>
+              <div className="text-muted-foreground">
+                <span className="font-medium text-foreground">At this rate:</span>{" "}
+                <span className="text-orange-500 font-medium">
+                  {formatCurrency(growthMetrics.projectedYear)} by Dec {new Date().getFullYear()}
+                </span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Net Worth Chart */}
       <Card>
