@@ -86,3 +86,41 @@ export interface SheetRow {
   total_debts: number;
   notes?: string;
 }
+
+export type CreditCardStatus = 'active' | 'pending' | 'closed';
+
+export interface CreditCard {
+  id: string;
+  user_id: string;
+  card_name: string;
+  last_four: string | null;
+  status: CreditCardStatus;
+  signup_bonus: string | null;
+  sub_requirement: number | null;
+  current_spend: number;
+  sub_deadline: string | null;
+  got_bonus: boolean;
+  annual_fee: number;
+  signup_date: string | null;
+  annual_fee_date: string | null;
+  close_date: string | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CreditCardFormData {
+  card_name: string;
+  last_four?: string;
+  status: CreditCardStatus;
+  signup_bonus?: string;
+  sub_requirement?: number;
+  current_spend?: number;
+  sub_deadline?: string;
+  got_bonus?: boolean;
+  annual_fee?: number;
+  signup_date?: string;
+  annual_fee_date?: string;
+  close_date?: string;
+  notes?: string;
+}

@@ -22,7 +22,7 @@ import {
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/net-worth", label: "Net Worth", icon: TrendingUp },
-  { href: "/credit-cards", label: "Credit Cards", icon: CreditCard, disabled: true },
+  { href: "/credit-cards", label: "Credit Cards", icon: CreditCard },
   { href: "/award-programs", label: "Award Programs", icon: Award, disabled: true },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
