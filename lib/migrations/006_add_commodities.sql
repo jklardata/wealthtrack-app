@@ -5,19 +5,26 @@
 ALTER TABLE net_worth_entries
 ADD COLUMN IF NOT EXISTS commodities DECIMAL(15,2) DEFAULT 0;
 
--- Update total_assets to be a generated column that includes commodities
--- First drop the column if it exists as a generated column
--- Then recreate it
+-- Note: total_assets is a generated column, so it will need to be recreated
+-- to include commodities. Run these commands:
 
--- Note: If total_assets is a regular column, you'll need to update it manually
--- or set up a trigger. For now, we'll update existing rows:
+-- Step 1: Drop the generated column
+ALTER TABLE net_worth_entries DROP COLUMN IF EXISTS total_assets;
 
-UPDATE net_worth_entries
-SET total_assets = COALESCE(stocks, 0) + COALESCE(bonds, 0) + COALESCE(cash, 0) +
-                   COALESCE(real_estate, 0) + COALESCE(points_value, 0) +
-                   COALESCE(other_assets, 0) + COALESCE(commodities, 0)
-WHERE commodities IS NULL OR commodities = 0;
-
--- Set default for commodities
+-- Step 2: Recreate it with commodities included
 ALTER TABLE net_worth_entries
-ALTER COLUMN commodities SET DEFAULT 0;
+ADD COLUMN total_assets DECIMAL(15,2) GENERATED ALWAYS AS (
+  COALESCE(stocks, 0) + COALESCE(bonds, 0) + COALESCE(cash, 0) +
+  COALESCE(real_estate, 0) + COALESCE(points_value, 0) +
+  COALESCE(commodities, 0) + COALESCE(other_assets, 0)
+) STORED;
+
+-- Step 3: Recreate net_worth generated column if it also needs updating
+ALTER TABLE net_worth_entries DROP COLUMN IF EXISTS net_worth;
+
+ALTER TABLE net_worth_entries
+ADD COLUMN net_worth DECIMAL(15,2) GENERATED ALWAYS AS (
+  COALESCE(stocks, 0) + COALESCE(bonds, 0) + COALESCE(cash, 0) +
+  COALESCE(real_estate, 0) + COALESCE(points_value, 0) +
+  COALESCE(commodities, 0) + COALESCE(other_assets, 0) - COALESCE(total_debts, 0)
+) STORED;
