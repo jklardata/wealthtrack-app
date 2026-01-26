@@ -90,6 +90,8 @@ export async function POST(request: NextRequest) {
         commodities: body.commodities || 0,
         other_assets: body.other_assets || 0,
         total_debts: body.total_debts || 0,
+        pre_tax_income: body.pre_tax_income || 0,
+        monthly_expenses: body.monthly_expenses || 0,
         notes: body.notes || null,
       })
       .select()

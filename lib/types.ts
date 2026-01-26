@@ -50,6 +50,8 @@ export interface NetWorthEntry {
   total_assets: number;
   total_debts: number;
   net_worth: number;
+  pre_tax_income: number;
+  monthly_expenses: number;
   notes: string | null;
   created_at: string;
   updated_at: string;
@@ -65,6 +67,8 @@ export interface NetWorthFormData {
   commodities: number;
   other_assets: number;
   total_debts: number;
+  pre_tax_income: number;
+  monthly_expenses: number;
   notes?: string;
 }
 
@@ -90,6 +94,18 @@ export interface SheetRow {
   other_assets: number;
   total_debts: number;
   notes?: string;
+  pre_tax_income: number;
+  monthly_expenses: number;
+}
+
+// Calculated metrics for net worth entries (computed in UI, not stored)
+export interface NetWorthMetrics {
+  monthlyNetProfit: number;        // pre_tax_income - monthly_expenses
+  monthlySavingsRate: number;      // (monthlyNetProfit / pre_tax_income) * 100
+  netWorthGrowth: number;          // $ change from previous entry
+  netWorthGrowthPercent: number;   // % change from previous entry
+  rolling1YearGrowth: number;      // $ change from ~1 year ago
+  rolling1YearGrowthPercent: number; // % change from ~1 year ago
 }
 
 export interface CreditCardSheetRow {

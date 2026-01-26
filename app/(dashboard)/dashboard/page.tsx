@@ -1116,6 +1116,8 @@ function EditEntryForm({ entry, onSubmit, onClose, isSubmitting }: EditEntryForm
     commodities: entry.commodities || 0,
     other_assets: entry.other_assets,
     total_debts: entry.total_debts,
+    pre_tax_income: entry.pre_tax_income || 0,
+    monthly_expenses: entry.monthly_expenses || 0,
     notes: entry.notes || "",
   });
 
@@ -1146,6 +1148,8 @@ function EditEntryForm({ entry, onSubmit, onClose, isSubmitting }: EditEntryForm
       commodities: Number(formData.commodities),
       other_assets: Number(formData.other_assets),
       total_debts: Number(formData.total_debts),
+      pre_tax_income: Number(formData.pre_tax_income),
+      monthly_expenses: Number(formData.monthly_expenses),
     });
   };
 
@@ -1236,6 +1240,29 @@ function EditEntryForm({ entry, onSubmit, onClose, isSubmitting }: EditEntryForm
         />
       </div>
 
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="pre_tax_income">Pre-tax Monthly Income</Label>
+          <Input
+            id="pre_tax_income"
+            type="number"
+            step="0.01"
+            value={formData.pre_tax_income}
+            onChange={(e) => handleChange("pre_tax_income", e.target.value)}
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="monthly_expenses">Monthly Expenses</Label>
+          <Input
+            id="monthly_expenses"
+            type="number"
+            step="0.01"
+            value={formData.monthly_expenses}
+            onChange={(e) => handleChange("monthly_expenses", e.target.value)}
+          />
+        </div>
+      </div>
+
       <div className="space-y-2">
         <Label htmlFor="notes">Notes (optional)</Label>
         <Input
@@ -1264,6 +1291,24 @@ function EditEntryForm({ entry, onSubmit, onClose, isSubmitting }: EditEntryForm
             {formatCurrency(netWorth)}
           </span>
         </div>
+        {(Number(formData.pre_tax_income) > 0 || Number(formData.monthly_expenses) > 0) && (
+          <>
+            <div className="flex justify-between text-sm pt-2 border-t">
+              <span className="text-muted-foreground">Monthly Net Profit</span>
+              <span className={Number(formData.pre_tax_income) - Number(formData.monthly_expenses) >= 0 ? "text-green-500" : "text-red-500"}>
+                {formatCurrency(Number(formData.pre_tax_income) - Number(formData.monthly_expenses))}
+              </span>
+            </div>
+            {Number(formData.pre_tax_income) > 0 && (
+              <div className="flex justify-between text-sm">
+                <span className="text-muted-foreground">Savings Rate</span>
+                <span className="font-medium">
+                  {(((Number(formData.pre_tax_income) - Number(formData.monthly_expenses)) / Number(formData.pre_tax_income)) * 100).toFixed(1)}%
+                </span>
+              </div>
+            )}
+          </>
+        )}
       </div>
 
       <div className="flex gap-3 pt-4">

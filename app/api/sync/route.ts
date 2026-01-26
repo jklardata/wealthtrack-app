@@ -73,6 +73,8 @@ export async function POST() {
           commodities: row.commodities,
           other_assets: row.other_assets,
           total_debts: row.total_debts,
+          pre_tax_income: row.pre_tax_income,
+          monthly_expenses: row.monthly_expenses,
           notes: row.notes || null,
           updated_at: new Date().toISOString(),
         },

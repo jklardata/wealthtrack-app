@@ -83,6 +83,8 @@ function EntryForm({ entry, onSubmit, onClose, isSubmitting }: EntryFormProps) {
     commodities: entry?.commodities || 0,
     other_assets: entry?.other_assets || 0,
     total_debts: entry?.total_debts || 0,
+    pre_tax_income: entry?.pre_tax_income || 0,
+    monthly_expenses: entry?.monthly_expenses || 0,
     notes: entry?.notes || "",
   });
 
@@ -113,6 +115,8 @@ function EntryForm({ entry, onSubmit, onClose, isSubmitting }: EntryFormProps) {
       commodities: Number(formData.commodities),
       other_assets: Number(formData.other_assets),
       total_debts: Number(formData.total_debts),
+      pre_tax_income: Number(formData.pre_tax_income),
+      monthly_expenses: Number(formData.monthly_expenses),
     });
   };
 
@@ -221,6 +225,31 @@ function EntryForm({ entry, onSubmit, onClose, isSubmitting }: EntryFormProps) {
         />
       </div>
 
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="pre_tax_income">Pre-tax Monthly Income</Label>
+          <Input
+            id="pre_tax_income"
+            type="number"
+            step="0.01"
+            value={formData.pre_tax_income}
+            onChange={(e) => handleChange("pre_tax_income", e.target.value)}
+            placeholder="0"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="monthly_expenses">Monthly Expenses</Label>
+          <Input
+            id="monthly_expenses"
+            type="number"
+            step="0.01"
+            value={formData.monthly_expenses}
+            onChange={(e) => handleChange("monthly_expenses", e.target.value)}
+            placeholder="0"
+          />
+        </div>
+      </div>
+
       <div className="space-y-2">
         <Label htmlFor="notes">Notes (optional)</Label>
         <Input
@@ -249,6 +278,24 @@ function EntryForm({ entry, onSubmit, onClose, isSubmitting }: EntryFormProps) {
             {formatCurrency(netWorth)}
           </span>
         </div>
+        {(Number(formData.pre_tax_income) > 0 || Number(formData.monthly_expenses) > 0) && (
+          <>
+            <div className="flex justify-between text-sm pt-2 border-t">
+              <span className="text-muted-foreground">Monthly Net Profit</span>
+              <span className={Number(formData.pre_tax_income) - Number(formData.monthly_expenses) >= 0 ? "text-green-500" : "text-red-500"}>
+                {formatCurrency(Number(formData.pre_tax_income) - Number(formData.monthly_expenses))}
+              </span>
+            </div>
+            {Number(formData.pre_tax_income) > 0 && (
+              <div className="flex justify-between text-sm">
+                <span className="text-muted-foreground">Savings Rate</span>
+                <span className="font-medium">
+                  {(((Number(formData.pre_tax_income) - Number(formData.monthly_expenses)) / Number(formData.pre_tax_income)) * 100).toFixed(1)}%
+                </span>
+              </div>
+            )}
+          </>
+        )}
       </div>
 
       <div className="flex gap-3 pt-4">
@@ -359,6 +406,53 @@ export default function NetWorthPage() {
     setIsDialogOpen(true);
   };
 
+  // Calculate metrics for each entry
+  const getMetricsForEntry = (entry: NetWorthEntry, index: number, allEntries: NetWorthEntry[]) => {
+    const sortedByDate = [...allEntries].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    const entryIndex = sortedByDate.findIndex(e => e.id === entry.id);
+    const previousEntry = entryIndex > 0 ? sortedByDate[entryIndex - 1] : null;
+
+    // Find entry from ~1 year ago
+    const entryDate = new Date(entry.date);
+    const oneYearAgo = new Date(entryDate);
+    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
+    const yearAgoEntry = sortedByDate.reduce((closest, e) => {
+      const eDate = new Date(e.date);
+      if (eDate > entryDate) return closest;
+      if (!closest) return e;
+      const closestDiff = Math.abs(new Date(closest.date).getTime() - oneYearAgo.getTime());
+      const eDiff = Math.abs(eDate.getTime() - oneYearAgo.getTime());
+      return eDiff < closestDiff ? e : closest;
+    }, null as NetWorthEntry | null);
+
+    const monthlyNetProfit = (entry.pre_tax_income || 0) - (entry.monthly_expenses || 0);
+    const savingsRate = (entry.pre_tax_income || 0) > 0
+      ? (monthlyNetProfit / (entry.pre_tax_income || 1)) * 100
+      : 0;
+
+    const netWorthGrowth = previousEntry ? entry.net_worth - previousEntry.net_worth : 0;
+    const netWorthGrowthPercent = previousEntry && previousEntry.net_worth !== 0
+      ? ((entry.net_worth - previousEntry.net_worth) / previousEntry.net_worth) * 100
+      : 0;
+
+    const rolling1YearGrowth = yearAgoEntry && yearAgoEntry.id !== entry.id
+      ? entry.net_worth - yearAgoEntry.net_worth
+      : 0;
+    const rolling1YearGrowthPercent = yearAgoEntry && yearAgoEntry.id !== entry.id && yearAgoEntry.net_worth !== 0
+      ? ((entry.net_worth - yearAgoEntry.net_worth) / yearAgoEntry.net_worth) * 100
+      : 0;
+
+    return {
+      monthlyNetProfit,
+      savingsRate,
+      netWorthGrowth,
+      netWorthGrowthPercent,
+      rolling1YearGrowth,
+      rolling1YearGrowthPercent,
+    };
+  };
+
   const handleExportCSV = () => {
     const headers = [
       "Date",
@@ -372,23 +466,42 @@ export default function NetWorthPage() {
       "Total Assets",
       "Total Debts",
       "Net Worth",
+      "Pre-tax Income",
+      "Monthly Expenses",
+      "Monthly Net Profit",
+      "Savings Rate %",
+      "NW Growth $",
+      "NW Growth %",
+      "1Y Rolling Growth $",
+      "1Y Rolling Growth %",
       "Notes",
     ];
 
-    const rows = entries.map((entry) => [
-      entry.date,
-      entry.stocks,
-      entry.bonds,
-      entry.cash,
-      entry.real_estate,
-      entry.points_value,
-      entry.commodities || 0,
-      entry.other_assets,
-      entry.total_assets,
-      entry.total_debts,
-      entry.net_worth,
-      entry.notes || "",
-    ]);
+    const rows = entries.map((entry, index) => {
+      const metrics = getMetricsForEntry(entry, index, entries);
+      return [
+        entry.date,
+        entry.stocks,
+        entry.bonds,
+        entry.cash,
+        entry.real_estate,
+        entry.points_value,
+        entry.commodities || 0,
+        entry.other_assets,
+        entry.total_assets,
+        entry.total_debts,
+        entry.net_worth,
+        entry.pre_tax_income || 0,
+        entry.monthly_expenses || 0,
+        metrics.monthlyNetProfit,
+        metrics.savingsRate.toFixed(1),
+        metrics.netWorthGrowth,
+        metrics.netWorthGrowthPercent.toFixed(1),
+        metrics.rolling1YearGrowth,
+        metrics.rolling1YearGrowthPercent.toFixed(1),
+        entry.notes || "",
+      ];
+    });
 
     const csvContent = [headers, ...rows]
       .map((row) => row.map((cell) => `"${cell}"`).join(","))
@@ -792,11 +905,17 @@ export default function NetWorthPage() {
                     <TableHead className="text-right">Total Assets</TableHead>
                     <TableHead className="text-right">Debts</TableHead>
                     <TableHead className="text-right font-bold">Net Worth</TableHead>
+                    <TableHead className="text-right">NW Growth</TableHead>
+                    <TableHead className="text-right">NW Growth %</TableHead>
+                    <TableHead className="text-right">1Y Growth</TableHead>
+                    <TableHead className="text-right">1Y Growth %</TableHead>
                     <TableHead className="w-10"></TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {sortedEntries.map((entry) => (
+                  {sortedEntries.map((entry, index) => {
+                    const metrics = getMetricsForEntry(entry, index, entries);
+                    return (
                     <TableRow key={entry.id} className={selectedIds.has(entry.id) ? "bg-orange-500/5" : ""}>
                       <TableCell>
                         <Checkbox
@@ -842,6 +961,18 @@ export default function NetWorthPage() {
                       >
                         {formatCurrency(entry.net_worth)}
                       </TableCell>
+                      <TableCell className={`text-right ${metrics.netWorthGrowth >= 0 ? "text-green-500" : "text-red-500"}`}>
+                        {metrics.netWorthGrowth !== 0 ? (metrics.netWorthGrowth >= 0 ? "+" : "") + formatCurrency(metrics.netWorthGrowth) : "-"}
+                      </TableCell>
+                      <TableCell className={`text-right ${metrics.netWorthGrowthPercent >= 0 ? "text-green-500" : "text-red-500"}`}>
+                        {metrics.netWorthGrowthPercent !== 0 ? (metrics.netWorthGrowthPercent >= 0 ? "+" : "") + metrics.netWorthGrowthPercent.toFixed(1) + "%" : "-"}
+                      </TableCell>
+                      <TableCell className={`text-right ${metrics.rolling1YearGrowth >= 0 ? "text-green-500" : "text-red-500"}`}>
+                        {metrics.rolling1YearGrowth !== 0 ? (metrics.rolling1YearGrowth >= 0 ? "+" : "") + formatCurrency(metrics.rolling1YearGrowth) : "-"}
+                      </TableCell>
+                      <TableCell className={`text-right ${metrics.rolling1YearGrowthPercent >= 0 ? "text-green-500" : "text-red-500"}`}>
+                        {metrics.rolling1YearGrowthPercent !== 0 ? (metrics.rolling1YearGrowthPercent >= 0 ? "+" : "") + metrics.rolling1YearGrowthPercent.toFixed(1) + "%" : "-"}
+                      </TableCell>
                       <TableCell>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
@@ -865,7 +996,8 @@ export default function NetWorthPage() {
                         </DropdownMenu>
                       </TableCell>
                     </TableRow>
-                  ))}
+                    );
+                  })}
                 </TableBody>
               </Table>
             </div>
