@@ -428,11 +428,26 @@ export async function createCreditCardsTemplateSpreadsheet(userEmail: string): P
 export async function fetchCreditCardsSheetData(sheetId: string): Promise<CreditCardSheetRow[]> {
   const sheets = getGoogleSheetsClient();
 
-  // Fetch data from the Credit Cards sheet
+  // First, get the sheet metadata to find the correct sheet name
+  const metadata = await sheets.spreadsheets.get({
+    spreadsheetId: sheetId,
+    fields: 'sheets.properties.title',
+  });
+
+  const sheetNames = metadata.data.sheets?.map(s => s.properties?.title) || [];
+
+  // Try to find 'Credit Cards' sheet, otherwise use the first sheet
+  let sheetName = sheetNames.find(name =>
+    name?.toLowerCase() === 'credit cards' ||
+    name?.toLowerCase() === 'creditcards' ||
+    name?.toLowerCase() === 'cards'
+  ) || sheetNames[0] || 'Sheet1';
+
+  // Fetch data from the sheet
   // Expected columns: Card Name, Last 4, Status, Signup Bonus, SUB Requirement, Current Spend, SUB Deadline, Got Bonus, Annual Fee, Signup Date, Annual Fee Date, Close Date, Notes
   const response = await sheets.spreadsheets.values.get({
     spreadsheetId: sheetId,
-    range: 'Credit Cards!A2:M1000', // Skip header row
+    range: `'${sheetName}'!A2:M1000`, // Skip header row, quote sheet name to handle spaces
   });
 
   const rows = response.data.values || [];
