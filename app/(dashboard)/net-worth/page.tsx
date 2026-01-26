@@ -905,6 +905,10 @@ export default function NetWorthPage() {
                     <TableHead className="text-right">Total Assets</TableHead>
                     <TableHead className="text-right">Debts</TableHead>
                     <TableHead className="text-right font-bold">Net Worth</TableHead>
+                    <TableHead className="text-right">Income</TableHead>
+                    <TableHead className="text-right">Expenses</TableHead>
+                    <TableHead className="text-right">Net Profit</TableHead>
+                    <TableHead className="text-right">Savings %</TableHead>
                     <TableHead className="text-right">NW Growth</TableHead>
                     <TableHead className="text-right">NW Growth %</TableHead>
                     <TableHead className="text-right">1Y Growth</TableHead>
@@ -960,6 +964,18 @@ export default function NetWorthPage() {
                         }`}
                       >
                         {formatCurrency(entry.net_worth)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {(entry.pre_tax_income || 0) > 0 ? formatCurrency(entry.pre_tax_income || 0) : "-"}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {(entry.monthly_expenses || 0) > 0 ? formatCurrency(entry.monthly_expenses || 0) : "-"}
+                      </TableCell>
+                      <TableCell className={`text-right ${metrics.monthlyNetProfit >= 0 ? "text-green-500" : "text-red-500"}`}>
+                        {(entry.pre_tax_income || 0) > 0 || (entry.monthly_expenses || 0) > 0 ? formatCurrency(metrics.monthlyNetProfit) : "-"}
+                      </TableCell>
+                      <TableCell className={`text-right ${metrics.savingsRate >= 0 ? "text-green-500" : "text-red-500"}`}>
+                        {(entry.pre_tax_income || 0) > 0 ? metrics.savingsRate.toFixed(1) + "%" : "-"}
                       </TableCell>
                       <TableCell className={`text-right ${metrics.netWorthGrowth >= 0 ? "text-green-500" : "text-red-500"}`}>
                         {metrics.netWorthGrowth !== 0 ? (metrics.netWorthGrowth >= 0 ? "+" : "") + formatCurrency(metrics.netWorthGrowth) : "-"}
