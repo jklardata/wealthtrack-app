@@ -70,7 +70,9 @@ export interface UserSettings {
   id: string;
   user_id: string;
   google_sheet_id: string | null;
+  credit_cards_sheet_id: string | null;
   last_sync_at: string | null;
+  credit_cards_last_sync_at: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -85,6 +87,22 @@ export interface SheetRow {
   other_assets: number;
   total_debts: number;
   notes?: string;
+}
+
+export interface CreditCardSheetRow {
+  card_name: string;
+  last_four: string;
+  status: CreditCardStatus;
+  signup_bonus: string;
+  sub_requirement: number;
+  current_spend: number;
+  sub_deadline: string;
+  got_bonus: boolean;
+  annual_fee: number;
+  signup_date: string;
+  annual_fee_date: string;
+  close_date: string;
+  notes: string;
 }
 
 export type CreditCardStatus = 'active' | 'pending' | 'closed';

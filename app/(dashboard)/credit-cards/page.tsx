@@ -38,6 +38,8 @@ import {
   CheckCircle2,
   Clock,
   Sparkles,
+  RefreshCw,
+  Sheet,
 } from "lucide-react";
 import type { CreditCard, CreditCardFormData, CreditCardStatus } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -507,6 +509,9 @@ export default function CreditCardsPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingCard, setEditingCard] = useState<CreditCard | undefined>();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [syncMessage, setSyncMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [hasSheetConnected, setHasSheetConnected] = useState(false);
 
   const fetchCards = useCallback(async () => {
     try {
@@ -523,9 +528,52 @@ export default function CreditCardsPage() {
     }
   }, []);
 
+  const checkSheetConnection = useCallback(async () => {
+    try {
+      const response = await fetch("/api/settings");
+      if (response.ok) {
+        const result = await response.json();
+        setHasSheetConnected(!!result.data?.credit_cards_sheet_id);
+      }
+    } catch {
+      // Ignore errors
+    }
+  }, []);
+
   useEffect(() => {
     fetchCards();
-  }, [fetchCards]);
+    checkSheetConnection();
+  }, [fetchCards, checkSheetConnection]);
+
+  const handleSync = async () => {
+    setIsSyncing(true);
+    setSyncMessage(null);
+
+    try {
+      const response = await fetch("/api/credit-cards/sync", {
+        method: "POST",
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to sync");
+      }
+
+      setCards(result.data || []);
+      setSyncMessage({
+        type: "success",
+        text: `Synced ${result.syncedCount} cards from Google Sheets`
+      });
+    } catch (err) {
+      setSyncMessage({
+        type: "error",
+        text: err instanceof Error ? err.message : "Failed to sync"
+      });
+    } finally {
+      setIsSyncing(false);
+    }
+  };
 
   const handleSubmit = async (data: CreditCardFormData) => {
     setIsSubmitting(true);
@@ -619,6 +667,31 @@ export default function CreditCardsPage() {
 
   return (
     <div className="space-y-6">
+      {/* Sync Message */}
+      {syncMessage && (
+        <div
+          className={cn(
+            "flex items-center gap-2 p-3 rounded-lg",
+            syncMessage.type === "success"
+              ? "bg-green-500/10 text-green-500 border border-green-500/20"
+              : "bg-red-500/10 text-red-500 border border-red-500/20"
+          )}
+        >
+          {syncMessage.type === "success" ? (
+            <CheckCircle2 className="h-4 w-4" />
+          ) : (
+            <AlertCircle className="h-4 w-4" />
+          )}
+          {syncMessage.text}
+          <button
+            onClick={() => setSyncMessage(null)}
+            className="ml-auto text-current hover:opacity-70"
+          >
+            ×
+          </button>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
@@ -627,7 +700,28 @@ export default function CreditCardsPage() {
             Track your cards and sign-up bonus progress
           </p>
         </div>
-        <Dialog
+        <div className="flex gap-2">
+          {hasSheetConnected && (
+            <Button
+              variant="outline"
+              onClick={handleSync}
+              disabled={isSyncing}
+              className="border-purple-500/30 hover:bg-purple-500/10"
+            >
+              {isSyncing ? (
+                <>
+                  <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                  Syncing...
+                </>
+              ) : (
+                <>
+                  <Sheet className="h-4 w-4 mr-2" />
+                  Sync from Sheets
+                </>
+              )}
+            </Button>
+          )}
+          <Dialog
           open={isDialogOpen}
           onOpenChange={(open) => {
             setIsDialogOpen(open);
@@ -657,6 +751,7 @@ export default function CreditCardsPage() {
             />
           </DialogContent>
         </Dialog>
+        </div>
       </div>
 
       {/* Stats Cards */}

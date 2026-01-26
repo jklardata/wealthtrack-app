@@ -42,19 +42,26 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const supabase = createServerSupabaseClient();
 
+    // Build the update object dynamically to only include provided fields
+    const updateData: Record<string, unknown> = {
+      user_id: userId,
+      updated_at: new Date().toISOString(),
+    };
+
+    // Only update fields that are explicitly provided in the request
+    if ('google_sheet_id' in body) {
+      updateData.google_sheet_id = body.google_sheet_id || null;
+    }
+    if ('credit_cards_sheet_id' in body) {
+      updateData.credit_cards_sheet_id = body.credit_cards_sheet_id || null;
+    }
+
     // Upsert settings
     const { data, error } = await supabase
       .from('user_settings')
-      .upsert(
-        {
-          user_id: userId,
-          google_sheet_id: body.google_sheet_id || null,
-          updated_at: new Date().toISOString(),
-        },
-        {
-          onConflict: 'user_id',
-        }
-      )
+      .upsert(updateData, {
+        onConflict: 'user_id',
+      })
       .select()
       .single();
 
