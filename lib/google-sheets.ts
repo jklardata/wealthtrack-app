@@ -407,12 +407,20 @@ export async function createCreditCardsTemplateSpreadsheet(userEmail: string): P
       spreadsheetUrl: `https://docs.google.com/spreadsheets/d/${spreadsheetId}`,
     };
   } catch (error: unknown) {
-    const err = error as { message?: string };
-    console.error('Error creating credit cards template spreadsheet:', err);
+    const err = error as { message?: string; code?: number; errors?: Array<{ reason?: string; domain?: string }> };
+    console.error('Error creating credit cards template spreadsheet:', JSON.stringify(err, null, 2));
+
+    // Provide more helpful error message
+    let errorMessage = err.message || 'Failed to create spreadsheet';
+    if (err.errors && err.errors.length > 0) {
+      const reasons = err.errors.map(e => e.reason).join(', ');
+      errorMessage = `${errorMessage} (${reasons})`;
+    }
+
     return {
       spreadsheetId: '',
       spreadsheetUrl: '',
-      error: err.message || 'Failed to create spreadsheet',
+      error: errorMessage,
     };
   }
 }
