@@ -30,6 +30,11 @@ import {
   ChevronRight,
   ChevronLeft,
   Info,
+  TrendingDown,
+  Gauge,
+  Layers,
+  Check,
+  Minus,
 } from "lucide-react";
 import type {
   RiskTolerance,
@@ -37,6 +42,8 @@ import type {
   OptimizationResult,
   PortfolioOptimization,
   RebalancingTrade,
+  MarketValuation,
+  StockBreakdown,
 } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -330,6 +337,255 @@ function RebalancingTrades({
   );
 }
 
+// Market Valuation Card Component
+function MarketValuationCard({ valuation }: { valuation: MarketValuation }) {
+  const getValuationColor = () => {
+    switch (valuation.valuation) {
+      case "cheap":
+        return "text-green-500 bg-green-500/10";
+      case "fair":
+        return "text-blue-500 bg-blue-500/10";
+      case "expensive":
+        return "text-yellow-500 bg-yellow-500/10";
+      case "very_expensive":
+        return "text-red-500 bg-red-500/10";
+    }
+  };
+
+  const getValuationLabel = () => {
+    switch (valuation.valuation) {
+      case "cheap":
+        return "Undervalued";
+      case "fair":
+        return "Fair Value";
+      case "expensive":
+        return "Expensive";
+      case "very_expensive":
+        return "Very Expensive";
+    }
+  };
+
+  const percentFromAvg = ((valuation.cape - valuation.historicalAvg) / valuation.historicalAvg) * 100;
+
+  return (
+    <Card>
+      <CardHeader className="pb-2">
+        <CardTitle className="text-base flex items-center gap-2">
+          <Gauge className="h-4 w-4" />
+          Market Valuation
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="text-3xl font-bold">{valuation.cape.toFixed(1)}</div>
+            <div className="text-sm text-muted-foreground">CAPE Ratio</div>
+          </div>
+          <div className={cn("px-3 py-1 rounded-full text-sm font-medium", getValuationColor())}>
+            {getValuationLabel()}
+          </div>
+        </div>
+        <div className="mt-4 pt-4 border-t space-y-2">
+          <div className="flex justify-between text-sm">
+            <span className="text-muted-foreground">Historical Average</span>
+            <span>{valuation.historicalAvg}</span>
+          </div>
+          <div className="flex justify-between text-sm">
+            <span className="text-muted-foreground">Deviation</span>
+            <span className={percentFromAvg > 0 ? "text-red-500" : "text-green-500"}>
+              {percentFromAvg > 0 ? "+" : ""}{percentFromAvg.toFixed(0)}%
+            </span>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+// Allocation Breakdown Card Component
+function AllocationBreakdownCard({
+  baseAllocation,
+  marketAdjustment,
+  finalAllocation,
+  riskTolerance,
+}: {
+  baseAllocation: Allocation;
+  marketAdjustment: { stocks: number; bonds: number; cash: number; reason: string } | null;
+  finalAllocation: Allocation;
+  riskTolerance: RiskTolerance;
+}) {
+  const formatPct = (val: number) => `${(val * 100).toFixed(0)}%`;
+  const formatAdj = (val: number) => {
+    if (val === 0) return "0%";
+    return val > 0 ? `+${val}%` : `${val}%`;
+  };
+
+  return (
+    <Card>
+      <CardHeader className="pb-2">
+        <CardTitle className="text-base flex items-center gap-2">
+          <Layers className="h-4 w-4" />
+          Allocation Breakdown
+        </CardTitle>
+        <CardDescription>How your allocation was calculated</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          {/* Header Row */}
+          <div className="grid grid-cols-4 text-sm font-medium text-muted-foreground">
+            <div></div>
+            <div className="text-right">Stocks</div>
+            <div className="text-right">Bonds</div>
+            <div className="text-right">Cash</div>
+          </div>
+
+          {/* Base Allocation */}
+          <div className="grid grid-cols-4 text-sm">
+            <div className="font-medium">Base ({riskTolerance})</div>
+            <div className="text-right">{formatPct(baseAllocation.stocks)}</div>
+            <div className="text-right">{formatPct(baseAllocation.bonds)}</div>
+            <div className="text-right">{formatPct(baseAllocation.cash)}</div>
+          </div>
+
+          {/* Market Adjustment */}
+          {marketAdjustment && (
+            <div className="grid grid-cols-4 text-sm">
+              <div className="text-muted-foreground">Market Adj (CAPE)</div>
+              <div className={cn("text-right", marketAdjustment.stocks < 0 ? "text-red-500" : marketAdjustment.stocks > 0 ? "text-green-500" : "")}>
+                {formatAdj(marketAdjustment.stocks)}
+              </div>
+              <div className={cn("text-right", marketAdjustment.bonds < 0 ? "text-red-500" : marketAdjustment.bonds > 0 ? "text-green-500" : "")}>
+                {formatAdj(marketAdjustment.bonds)}
+              </div>
+              <div className={cn("text-right", marketAdjustment.cash < 0 ? "text-red-500" : marketAdjustment.cash > 0 ? "text-green-500" : "")}>
+                {formatAdj(marketAdjustment.cash)}
+              </div>
+            </div>
+          )}
+
+          {/* Divider */}
+          <div className="border-t border-dashed" />
+
+          {/* Final Recommendation */}
+          <div className="grid grid-cols-4 text-sm font-bold">
+            <div>Final</div>
+            <div className="text-right text-orange-500">{formatPct(finalAllocation.stocks)}</div>
+            <div className="text-right text-blue-500">{formatPct(finalAllocation.bonds)}</div>
+            <div className="text-right text-green-500">{formatPct(finalAllocation.cash)}</div>
+          </div>
+        </div>
+
+        {/* Rationale */}
+        {marketAdjustment && (
+          <div className="mt-4 p-3 bg-muted/50 rounded-lg text-sm text-muted-foreground">
+            <p><strong>Rationale:</strong> {marketAdjustment.reason}</p>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+// Stock Breakdown Card Component
+function StockBreakdownCard({
+  breakdown,
+  totalPortfolioValue,
+  stockAllocation,
+}: {
+  breakdown: StockBreakdown;
+  totalPortfolioValue: number;
+  stockAllocation: number;
+}) {
+  const stockValue = stockAllocation * totalPortfolioValue;
+  const coreValue = stockValue * breakdown.corePercentage;
+
+  return (
+    <Card>
+      <CardHeader className="pb-2">
+        <CardTitle className="text-base flex items-center gap-2">
+          <TrendingUp className="h-4 w-4 text-orange-500" />
+          Stock Allocation Breakdown
+        </CardTitle>
+        <CardDescription>
+          {formatCurrency(stockValue)} ({(stockAllocation * 100).toFixed(0)}% of portfolio)
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        {/* Core Holdings */}
+        <div>
+          <h4 className="text-sm font-medium mb-3 flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-blue-500" />
+            Core Holdings ({(breakdown.corePercentage * 100).toFixed(0)}% of stocks = {(stockAllocation * breakdown.corePercentage * 100).toFixed(0)}% of portfolio)
+          </h4>
+          <div className="space-y-2 pl-4">
+            <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+              <div>
+                <div className="font-medium">Total US Stock Market</div>
+                <div className="text-xs text-muted-foreground">VTI</div>
+              </div>
+              <div className="text-right">
+                <div className="font-medium">{(breakdown.coreHoldings.usTotalMarket.allocation * 100).toFixed(0)}%</div>
+                <div className="text-xs text-muted-foreground">{formatCurrency(breakdown.coreHoldings.usTotalMarket.amount)}</div>
+              </div>
+            </div>
+            <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+              <div>
+                <div className="font-medium">Total Intl Stock Market</div>
+                <div className="text-xs text-muted-foreground">VXUS</div>
+              </div>
+              <div className="text-right">
+                <div className="font-medium">{(breakdown.coreHoldings.intlTotalMarket.allocation * 100).toFixed(0)}%</div>
+                <div className="text-xs text-muted-foreground">{formatCurrency(breakdown.coreHoldings.intlTotalMarket.amount)}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Factor Tilts */}
+        <div>
+          <h4 className="text-sm font-medium mb-3 flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-purple-500" />
+            Factor Tilts ({(breakdown.tiltPercentage * 100).toFixed(0)}% of stocks = {(stockAllocation * breakdown.tiltPercentage * 100).toFixed(0)}% of portfolio)
+          </h4>
+          <div className="space-y-2 pl-4">
+            {breakdown.factorTilts.map((tilt) => (
+              <div key={tilt.ticker} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                <div className="flex items-start gap-3">
+                  <div className={cn(
+                    "mt-1 flex-shrink-0",
+                    tilt.status === "recommended" ? "text-green-500" : tilt.status === "reduced" ? "text-yellow-500" : "text-muted-foreground"
+                  )}>
+                    {tilt.status === "recommended" ? <Check className="h-4 w-4" /> : tilt.status === "reduced" ? <Minus className="h-4 w-4" /> : <div className="h-4 w-4" />}
+                  </div>
+                  <div>
+                    <div className="font-medium">{tilt.name}</div>
+                    <div className="text-xs text-muted-foreground">{tilt.ticker}</div>
+                    <div className="text-xs text-muted-foreground mt-1">{tilt.reason}</div>
+                  </div>
+                </div>
+                <div className="text-right flex-shrink-0">
+                  <div className="font-medium">{(tilt.allocation * 100).toFixed(0)}%</div>
+                  <div className="text-xs text-muted-foreground">{formatCurrency(tilt.dollarAmount)}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Comparison Note */}
+        <div className="p-3 bg-blue-500/10 rounded-lg text-sm">
+          <div className="font-medium text-blue-500 mb-1">Compared to 100% VTI:</div>
+          <ul className="text-muted-foreground space-y-1">
+            <li>• Expected return: Similar (factor premiums offset expensive market)</li>
+            <li>• Expected volatility: Lower due to value tilt</li>
+            <li>• Downside protection: Better in market corrections</li>
+          </ul>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 // Main Page Component
 export default function PortfolioOptimizerPage() {
   const [loading, setLoading] = useState(true);
@@ -609,6 +865,21 @@ export default function PortfolioOptimizerPage() {
 
       {optimization && (
         <>
+          {/* Market Valuation & Allocation Breakdown */}
+          <div className="grid gap-6 md:grid-cols-2">
+            {optimization.market_valuation && (
+              <MarketValuationCard valuation={optimization.market_valuation} />
+            )}
+            {optimization.base_allocation && riskProfile && (
+              <AllocationBreakdownCard
+                baseAllocation={optimization.base_allocation}
+                marketAdjustment={optimization.market_adjustment || null}
+                finalAllocation={optimization.recommended_allocation}
+                riskTolerance={riskProfile.tolerance}
+              />
+            )}
+          </div>
+
           {/* Allocation Comparison */}
           <div className="grid gap-6 md:grid-cols-2">
             <Card>
@@ -706,6 +977,15 @@ export default function PortfolioOptimizerPage() {
               )}
             </CardContent>
           </Card>
+
+          {/* Stock Breakdown */}
+          {optimization.stock_breakdown && optimization.total_portfolio_value > 0 && (
+            <StockBreakdownCard
+              breakdown={optimization.stock_breakdown}
+              totalPortfolioValue={optimization.total_portfolio_value}
+              stockAllocation={optimization.recommended_allocation.stocks}
+            />
+          )}
 
           {/* Allocation Difference Chart */}
           <Card>

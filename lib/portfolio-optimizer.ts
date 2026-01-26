@@ -3,6 +3,10 @@ import type {
   RiskTolerance,
   OptimizationResult,
   RebalancingTrade,
+  MarketValuation,
+  AllocationAdjustment,
+  StockBreakdown,
+  FactorTilt,
 } from './types';
 
 // Historical return assumptions (annualized)
@@ -33,6 +37,253 @@ const CORRELATIONS = {
   bonds_real_estate: 0.3,
   cash_real_estate: 0.0,
 };
+
+// Market valuation thresholds (CAPE)
+const CAPE_THRESHOLDS = {
+  historicalAvg: 17.1,
+  cheap: 15,
+  fair: 20,
+  expensive: 28,
+  veryExpensive: 32,
+};
+
+// Current market valuation (in production, this would be fetched from an API)
+// Using a default value; can be overridden in the optimization call
+const DEFAULT_CAPE = 32.4; // Current approximate S&P 500 CAPE as of late 2024
+
+// Get market valuation status
+export function getMarketValuation(cape: number = DEFAULT_CAPE): MarketValuation {
+  let valuation: MarketValuation['valuation'];
+
+  if (cape < CAPE_THRESHOLDS.cheap) {
+    valuation = 'cheap';
+  } else if (cape < CAPE_THRESHOLDS.fair) {
+    valuation = 'fair';
+  } else if (cape < CAPE_THRESHOLDS.expensive) {
+    valuation = 'expensive';
+  } else {
+    valuation = 'very_expensive';
+  }
+
+  return {
+    cape,
+    historicalAvg: CAPE_THRESHOLDS.historicalAvg,
+    valuation,
+    fetchedAt: new Date().toISOString(),
+  };
+}
+
+// Adjust allocation based on market valuation
+function adjustForMarketValuation(
+  baseAllocation: Allocation,
+  marketValuation: MarketValuation,
+  riskTolerance: RiskTolerance
+): { allocation: Allocation; adjustment: AllocationAdjustment | null } {
+  const { cape, historicalAvg } = marketValuation;
+  const constraints = RISK_CONSTRAINTS[riskTolerance];
+
+  let stocksAdjustment = 0;
+  let bondsAdjustment = 0;
+  let cashAdjustment = 0;
+  let reason = '';
+
+  if (cape > CAPE_THRESHOLDS.veryExpensive) {
+    // Very expensive - reduce stocks significantly
+    stocksAdjustment = -0.10;
+    bondsAdjustment = 0.07;
+    cashAdjustment = 0.03;
+    reason = `Markets are expensive (CAPE: ${cape.toFixed(1)} vs avg ${historicalAvg}). Recommending a more defensive allocation to protect against potential corrections.`;
+  } else if (cape > CAPE_THRESHOLDS.expensive) {
+    // Expensive - reduce stocks moderately
+    stocksAdjustment = -0.05;
+    bondsAdjustment = 0.03;
+    cashAdjustment = 0.02;
+    reason = `Markets are somewhat expensive (CAPE: ${cape.toFixed(1)} vs avg ${historicalAvg}). Slightly reducing equity exposure.`;
+  } else if (cape < CAPE_THRESHOLDS.cheap) {
+    // Cheap - increase stocks
+    stocksAdjustment = 0.10;
+    bondsAdjustment = -0.07;
+    cashAdjustment = -0.03;
+    reason = `Markets appear undervalued (CAPE: ${cape.toFixed(1)} vs avg ${historicalAvg}). This is a good opportunity to increase equity exposure.`;
+  } else if (cape < CAPE_THRESHOLDS.fair) {
+    // Fair value - slight increase
+    stocksAdjustment = 0.05;
+    bondsAdjustment = -0.03;
+    cashAdjustment = -0.02;
+    reason = `Markets are fairly valued (CAPE: ${cape.toFixed(1)} vs avg ${historicalAvg}). Slightly increasing equity exposure.`;
+  }
+
+  if (stocksAdjustment === 0) {
+    return { allocation: baseAllocation, adjustment: null };
+  }
+
+  // Apply adjustments within constraints
+  const adjustedStocks = Math.max(
+    constraints.stocks.min,
+    Math.min(constraints.stocks.max, baseAllocation.stocks + stocksAdjustment)
+  );
+  const adjustedBonds = Math.max(
+    constraints.bonds.min,
+    Math.min(constraints.bonds.max, baseAllocation.bonds + bondsAdjustment)
+  );
+  const adjustedCash = Math.max(
+    constraints.cash.min,
+    Math.min(constraints.cash.max, baseAllocation.cash + cashAdjustment)
+  );
+
+  // Normalize
+  const total = adjustedStocks + adjustedBonds + adjustedCash + baseAllocation.real_estate + baseAllocation.other;
+
+  const adjustedAllocation: Allocation = {
+    stocks: adjustedStocks / total,
+    bonds: adjustedBonds / total,
+    cash: adjustedCash / total,
+    real_estate: baseAllocation.real_estate / total,
+    other: baseAllocation.other / total,
+  };
+
+  const actualStocksAdjustment = adjustedAllocation.stocks - baseAllocation.stocks;
+  const actualBondsAdjustment = adjustedAllocation.bonds - baseAllocation.bonds;
+  const actualCashAdjustment = adjustedAllocation.cash - baseAllocation.cash;
+
+  return {
+    allocation: adjustedAllocation,
+    adjustment: {
+      stocks: Math.round(actualStocksAdjustment * 100),
+      bonds: Math.round(actualBondsAdjustment * 100),
+      cash: Math.round(actualCashAdjustment * 100),
+      reason,
+    },
+  };
+}
+
+// Calculate factor tilts for stock allocation
+function calculateFactorTilts(
+  stockAllocation: number,
+  totalPortfolioValue: number,
+  marketValuation: MarketValuation
+): StockBreakdown {
+  const stockValue = stockAllocation * totalPortfolioValue;
+  const { cape } = marketValuation;
+
+  // Core vs Tilt split based on market conditions
+  // In expensive markets, increase tilt towards value factors
+  let corePercentage = 0.60; // 60% core, 40% tilts by default
+  let tiltPercentage = 0.40;
+
+  if (cape > CAPE_THRESHOLDS.expensive) {
+    corePercentage = 0.55;
+    tiltPercentage = 0.45;
+  } else if (cape < CAPE_THRESHOLDS.cheap) {
+    corePercentage = 0.70;
+    tiltPercentage = 0.30;
+  }
+
+  const coreValue = stockValue * corePercentage;
+  const tiltValue = stockValue * tiltPercentage;
+
+  // Core holdings: 70% US, 30% International
+  const coreHoldings = {
+    usTotalMarket: {
+      allocation: 0.70,
+      amount: Math.round(coreValue * 0.70),
+    },
+    intlTotalMarket: {
+      allocation: 0.30,
+      amount: Math.round(coreValue * 0.30),
+    },
+  };
+
+  // Factor tilts - adjust based on market valuation
+  const factorTilts: FactorTilt[] = [];
+
+  if (cape > CAPE_THRESHOLDS.expensive) {
+    // Expensive markets: favor value, reduce growth
+    factorTilts.push({
+      name: 'Value Stocks',
+      ticker: 'VTV',
+      allocation: 0.50,
+      dollarAmount: Math.round(tiltValue * 0.50),
+      reason: 'CAPE is high, value stocks offer better risk-adjusted returns',
+      status: 'recommended',
+    });
+    factorTilts.push({
+      name: 'Small Cap Value',
+      ticker: 'VBR',
+      allocation: 0.30,
+      dollarAmount: Math.round(tiltValue * 0.30),
+      reason: 'Historical premium, currently trading at attractive valuations',
+      status: 'recommended',
+    });
+    factorTilts.push({
+      name: 'Momentum/Growth',
+      ticker: 'VUG',
+      allocation: 0.20,
+      dollarAmount: Math.round(tiltValue * 0.20),
+      reason: 'Reduced growth exposure in expensive markets',
+      status: 'reduced',
+    });
+  } else if (cape < CAPE_THRESHOLDS.fair) {
+    // Cheap/fair markets: balanced approach with more growth
+    factorTilts.push({
+      name: 'Value Stocks',
+      ticker: 'VTV',
+      allocation: 0.35,
+      dollarAmount: Math.round(tiltValue * 0.35),
+      reason: 'Maintain value exposure for diversification',
+      status: 'neutral',
+    });
+    factorTilts.push({
+      name: 'Small Cap Value',
+      ticker: 'VBR',
+      allocation: 0.25,
+      dollarAmount: Math.round(tiltValue * 0.25),
+      reason: 'Small cap premium opportunity in fair-valued markets',
+      status: 'neutral',
+    });
+    factorTilts.push({
+      name: 'Momentum/Growth',
+      ticker: 'VUG',
+      allocation: 0.40,
+      dollarAmount: Math.round(tiltValue * 0.40),
+      reason: 'Increase growth exposure in undervalued markets',
+      status: 'recommended',
+    });
+  } else {
+    // Normal valuation
+    factorTilts.push({
+      name: 'Value Stocks',
+      ticker: 'VTV',
+      allocation: 0.40,
+      dollarAmount: Math.round(tiltValue * 0.40),
+      reason: 'Balanced value exposure',
+      status: 'neutral',
+    });
+    factorTilts.push({
+      name: 'Small Cap Value',
+      ticker: 'VBR',
+      allocation: 0.30,
+      dollarAmount: Math.round(tiltValue * 0.30),
+      reason: 'Small cap value premium',
+      status: 'neutral',
+    });
+    factorTilts.push({
+      name: 'Momentum/Growth',
+      ticker: 'VUG',
+      allocation: 0.30,
+      dollarAmount: Math.round(tiltValue * 0.30),
+      reason: 'Growth factor exposure',
+      status: 'neutral',
+    });
+  }
+
+  return {
+    coreHoldings,
+    factorTilts,
+    corePercentage,
+    tiltPercentage,
+  };
+}
 
 // Risk tolerance constraints
 const RISK_CONSTRAINTS = {
@@ -242,7 +493,8 @@ export function optimizePortfolio(
     max_bonds?: number;
     min_cash?: number;
     max_cash?: number;
-  }
+  },
+  capeRatio?: number
 ): OptimizationResult {
   // Calculate total portfolio value
   const totalValue =
@@ -262,10 +514,10 @@ export function optimizePortfolio(
   });
 
   // Get base target allocation
-  let recommendedAllocation = { ...TARGET_ALLOCATIONS[riskTolerance] };
+  let baseAllocation = { ...TARGET_ALLOCATIONS[riskTolerance] };
 
   // Adjust for time horizon
-  recommendedAllocation = adjustForTimeHorizon(recommendedAllocation, timeHorizon, riskTolerance);
+  baseAllocation = adjustForTimeHorizon(baseAllocation, timeHorizon, riskTolerance);
 
   // Apply custom constraints if provided
   if (customConstraints) {
@@ -279,21 +531,38 @@ export function optimizePortfolio(
     if (customConstraints.max_cash !== undefined) constraints.cash.max = customConstraints.max_cash;
 
     // Clamp to constraints
-    recommendedAllocation.stocks = Math.max(constraints.stocks.min, Math.min(constraints.stocks.max, recommendedAllocation.stocks));
-    recommendedAllocation.bonds = Math.max(constraints.bonds.min, Math.min(constraints.bonds.max, recommendedAllocation.bonds));
-    recommendedAllocation.cash = Math.max(constraints.cash.min, Math.min(constraints.cash.max, recommendedAllocation.cash));
+    baseAllocation.stocks = Math.max(constraints.stocks.min, Math.min(constraints.stocks.max, baseAllocation.stocks));
+    baseAllocation.bonds = Math.max(constraints.bonds.min, Math.min(constraints.bonds.max, baseAllocation.bonds));
+    baseAllocation.cash = Math.max(constraints.cash.min, Math.min(constraints.cash.max, baseAllocation.cash));
 
     // Normalize
-    const total = Object.values(recommendedAllocation).reduce((sum, val) => sum + val, 0);
+    const total = Object.values(baseAllocation).reduce((sum, val) => sum + val, 0);
     if (total !== 1) {
       const factor = 1 / total;
-      recommendedAllocation.stocks *= factor;
-      recommendedAllocation.bonds *= factor;
-      recommendedAllocation.cash *= factor;
-      recommendedAllocation.real_estate *= factor;
-      recommendedAllocation.other *= factor;
+      baseAllocation.stocks *= factor;
+      baseAllocation.bonds *= factor;
+      baseAllocation.cash *= factor;
+      baseAllocation.real_estate *= factor;
+      baseAllocation.other *= factor;
     }
   }
+
+  // Get market valuation
+  const marketValuation = getMarketValuation(capeRatio);
+
+  // Adjust for market valuation
+  const { allocation: recommendedAllocation, adjustment: marketAdjustment } = adjustForMarketValuation(
+    baseAllocation,
+    marketValuation,
+    riskTolerance
+  );
+
+  // Calculate factor tilts for stock allocation
+  const stockBreakdown = calculateFactorTilts(
+    recommendedAllocation.stocks,
+    totalValue,
+    marketValuation
+  );
 
   // Calculate metrics
   const expectedReturn = calculateExpectedReturn(recommendedAllocation);
@@ -307,14 +576,27 @@ export function optimizePortfolio(
     totalValue
   );
 
+  // Build rationale
+  let rationale = '';
+  if (marketAdjustment) {
+    rationale = marketAdjustment.reason;
+  } else {
+    rationale = `Markets are fairly valued (CAPE: ${marketValuation.cape.toFixed(1)}). Using standard allocation for your ${riskTolerance} risk profile.`;
+  }
+
   return {
     current_allocation: currentAllocation,
     recommended_allocation: recommendedAllocation,
+    base_allocation: baseAllocation,
+    market_adjustment: marketAdjustment,
     expected_return: Math.round(expectedReturn * 10000) / 100, // Convert to percentage with 2 decimals
     expected_volatility: Math.round(expectedVolatility * 10000) / 100,
     sharpe_ratio: Math.round(sharpeRatio * 100) / 100,
     rebalancing_trades: rebalancingTrades,
     total_portfolio_value: totalValue,
+    market_valuation: marketValuation,
+    rationale,
+    stock_breakdown: stockBreakdown,
   };
 }
 

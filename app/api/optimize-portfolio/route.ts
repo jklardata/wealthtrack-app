@@ -101,7 +101,8 @@ export async function POST(request: NextRequest) {
       risk_tolerance,
       time_horizon,
       constraints,
-    } = body as OptimizationRequest;
+      cape_ratio,
+    } = body as OptimizationRequest & { cape_ratio?: number };
 
     if (!risk_tolerance || !time_horizon) {
       return NextResponse.json(
@@ -126,7 +127,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Run optimization
+    // Run optimization with optional CAPE ratio
     const result = optimizePortfolio(
       {
         stocks: netWorthEntry.stocks || 0,
@@ -137,7 +138,8 @@ export async function POST(request: NextRequest) {
       },
       risk_tolerance as RiskTolerance,
       time_horizon,
-      constraints
+      constraints,
+      cape_ratio
     );
 
     // Save optimization result

@@ -203,14 +203,52 @@ export interface OptimizationRequest {
   };
 }
 
+export interface MarketValuation {
+  cape: number;           // Shiller CAPE ratio
+  historicalAvg: number;  // Historical average CAPE
+  valuation: 'cheap' | 'fair' | 'expensive' | 'very_expensive';
+  fetchedAt: string;
+}
+
+export interface FactorTilt {
+  name: string;
+  ticker: string;
+  allocation: number;      // Percentage of stock allocation
+  dollarAmount: number;
+  reason: string;
+  status: 'recommended' | 'reduced' | 'neutral';
+}
+
+export interface StockBreakdown {
+  coreHoldings: {
+    usTotalMarket: { allocation: number; amount: number };
+    intlTotalMarket: { allocation: number; amount: number };
+  };
+  factorTilts: FactorTilt[];
+  corePercentage: number;    // % of stocks in core
+  tiltPercentage: number;    // % of stocks in tilts
+}
+
+export interface AllocationAdjustment {
+  stocks: number;
+  bonds: number;
+  cash: number;
+  reason: string;
+}
+
 export interface OptimizationResult {
   current_allocation: Allocation;
   recommended_allocation: Allocation;
+  base_allocation: Allocation;
+  market_adjustment: AllocationAdjustment | null;
   expected_return: number;
   expected_volatility: number;
   sharpe_ratio: number;
   rebalancing_trades: RebalancingTrade[];
   total_portfolio_value: number;
+  market_valuation?: MarketValuation;
+  rationale?: string;
+  stock_breakdown?: StockBreakdown;
 }
 
 export type AccountType = 'taxable' | '401k' | 'ira' | 'roth_ira' | 'hsa' | 'other';
