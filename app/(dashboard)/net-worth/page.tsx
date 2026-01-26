@@ -36,7 +36,10 @@ import {
   ArrowUpDown,
   RefreshCw,
   Settings,
+  X,
+  AlertTriangle,
 } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import type { NetWorthEntry, NetWorthFormData } from "@/lib/types";
 
@@ -266,6 +269,9 @@ export default function NetWorthPage() {
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [syncing, setSyncing] = useState(false);
   const [syncMessage, setSyncMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isBulkDeleting, setIsBulkDeleting] = useState(false);
 
   const fetchEntries = useCallback(async () => {
     try {
@@ -411,6 +417,60 @@ export default function NetWorthPage() {
     setSortOrder((prev) => (prev === "desc" ? "asc" : "desc"));
   };
 
+  const handleSelectAll = (checked: boolean) => {
+    if (checked) {
+      setSelectedIds(new Set(entries.map((e) => e.id)));
+    } else {
+      setSelectedIds(new Set());
+    }
+  };
+
+  const handleSelectOne = (id: string, checked: boolean) => {
+    const newSelected = new Set(selectedIds);
+    if (checked) {
+      newSelected.add(id);
+    } else {
+      newSelected.delete(id);
+    }
+    setSelectedIds(newSelected);
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedIds.size === 0) return;
+
+    setIsBulkDeleting(true);
+    try {
+      const response = await fetch("/api/net-worth", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids: Array.from(selectedIds) }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete entries");
+      }
+
+      const result = await response.json();
+      setSelectedIds(new Set());
+      setIsDeleteDialogOpen(false);
+      await fetchEntries();
+      setSyncMessage({
+        type: "success",
+        text: `Successfully deleted ${result.deleted} entries`,
+      });
+    } catch (err) {
+      setSyncMessage({
+        type: "error",
+        text: err instanceof Error ? err.message : "Failed to delete entries",
+      });
+    } finally {
+      setIsBulkDeleting(false);
+    }
+  };
+
+  const isAllSelected = entries.length > 0 && selectedIds.size === entries.length;
+  const isSomeSelected = selectedIds.size > 0 && selectedIds.size < entries.length;
+
   const sortedEntries = [...entries].sort((a, b) => {
     const dateA = new Date(a.date).getTime();
     const dateB = new Date(b.date).getTime();
@@ -500,6 +560,69 @@ export default function NetWorthPage() {
         </div>
       </div>
 
+      {/* Bulk Actions Bar */}
+      {selectedIds.size > 0 && (
+        <div className="flex items-center justify-between p-3 rounded-lg bg-orange-500/10 border border-orange-500/20">
+          <div className="flex items-center gap-3">
+            <span className="text-sm font-medium">
+              {selectedIds.size} {selectedIds.size === 1 ? "entry" : "entries"} selected
+            </span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setSelectedIds(new Set())}
+            >
+              <X className="h-4 w-4 mr-1" />
+              Clear
+            </Button>
+          </div>
+          <Button
+            variant="destructive"
+            size="sm"
+            onClick={() => setIsDeleteDialogOpen(true)}
+          >
+            <Trash2 className="h-4 w-4 mr-2" />
+            Delete Selected
+          </Button>
+        </div>
+      )}
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-red-500" />
+              Confirm Deletion
+            </DialogTitle>
+          </DialogHeader>
+          <div className="py-4">
+            <p className="text-muted-foreground">
+              Are you sure you want to delete {selectedIds.size}{" "}
+              {selectedIds.size === 1 ? "entry" : "entries"}? This action cannot be undone.
+            </p>
+          </div>
+          <div className="flex gap-3">
+            <Button
+              variant="outline"
+              className="flex-1"
+              onClick={() => setIsDeleteDialogOpen(false)}
+              disabled={isBulkDeleting}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              className="flex-1"
+              onClick={handleBulkDelete}
+              disabled={isBulkDeleting}
+            >
+              {isBulkDeleting ? "Deleting..." : "Delete"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {/* Sync Message */}
       {syncMessage && (
         <div
@@ -544,6 +667,14 @@ export default function NetWorthPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
+                    <TableHead className="w-10">
+                      <Checkbox
+                        checked={isAllSelected}
+                        indeterminate={isSomeSelected}
+                        onChange={(e) => handleSelectAll(e.target.checked)}
+                        aria-label="Select all"
+                      />
+                    </TableHead>
                     <TableHead>
                       <Button
                         variant="ghost"
@@ -569,7 +700,14 @@ export default function NetWorthPage() {
                 </TableHeader>
                 <TableBody>
                   {sortedEntries.map((entry) => (
-                    <TableRow key={entry.id}>
+                    <TableRow key={entry.id} className={selectedIds.has(entry.id) ? "bg-orange-500/5" : ""}>
+                      <TableCell>
+                        <Checkbox
+                          checked={selectedIds.has(entry.id)}
+                          onChange={(e) => handleSelectOne(entry.id, e.target.checked)}
+                          aria-label={`Select entry from ${formatDate(entry.date)}`}
+                        />
+                      </TableCell>
                       <TableCell className="font-medium">
                         {formatDate(entry.date)}
                       </TableCell>

@@ -3,6 +3,41 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createServerSupabaseClient } from '@/lib/supabase';
 import type { NetWorthFormData } from '@/lib/types';
 
+// DELETE - Bulk delete entries
+export async function DELETE(request: NextRequest) {
+  try {
+    const { userId } = await auth();
+
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { ids } = await request.json();
+
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+      return NextResponse.json({ error: 'No entry IDs provided' }, { status: 400 });
+    }
+
+    const supabase = createServerSupabaseClient();
+
+    const { error } = await supabase
+      .from('net_worth_entries')
+      .delete()
+      .eq('user_id', userId)
+      .in('id', ids);
+
+    if (error) {
+      console.error('Supabase error:', error);
+      return NextResponse.json({ error: 'Failed to delete entries' }, { status: 500 });
+    }
+
+    return NextResponse.json({ deleted: ids.length });
+  } catch (error) {
+    console.error('Error deleting net worth entries:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
+
 export async function GET() {
   try {
     const { userId } = await auth();
