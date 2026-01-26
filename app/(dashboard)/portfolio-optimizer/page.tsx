@@ -223,12 +223,8 @@ function AllocationChart({
             ))}
           </Pie>
           <Tooltip
-            formatter={(value: number, name: string, props: { payload?: { amount?: number } }) => {
-              const amount = props.payload?.amount;
-              return [
-                `${value.toFixed(1)}%${amount ? ` (${formatCurrency(amount)})` : ""}`,
-                name,
-              ];
+            formatter={(value, name) => {
+              return [`${Number(value).toFixed(1)}%`, name];
             }}
           />
           <Legend />
@@ -737,7 +733,7 @@ export default function PortfolioOptimizerPage() {
                   <XAxis dataKey="name" className="text-xs" />
                   <YAxis unit="%" className="text-xs" />
                   <Tooltip
-                    formatter={(value: number) => `${value.toFixed(1)}%`}
+                    formatter={(value) => `${Number(value).toFixed(1)}%`}
                     contentStyle={{
                       backgroundColor: "hsl(var(--card))",
                       border: "1px solid hsl(var(--border))",
