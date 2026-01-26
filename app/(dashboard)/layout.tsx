@@ -11,6 +11,7 @@ import {
   Award,
   Settings,
   Menu,
+  PieChart,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,6 +24,7 @@ const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/net-worth", label: "Net Worth", icon: TrendingUp },
   { href: "/credit-cards", label: "Credit Cards", icon: CreditCard },
+  { href: "/portfolio-optimizer", label: "Portfolio Optimizer", icon: PieChart },
   { href: "/award-programs", label: "Award Programs", icon: Award, disabled: true },
   { href: "/settings", label: "Settings", icon: Settings },
 ];

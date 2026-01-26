@@ -142,3 +142,91 @@ export interface CreditCardFormData {
   close_date?: string;
   notes?: string;
 }
+
+// Portfolio Optimization Types
+export type RiskTolerance = 'conservative' | 'moderate' | 'aggressive';
+
+export interface Allocation {
+  stocks: number;
+  bonds: number;
+  cash: number;
+  real_estate: number;
+  other: number;
+}
+
+export interface RebalancingTrade {
+  action: 'buy' | 'sell';
+  category: keyof Allocation;
+  amount: number;
+  percentage: number;
+}
+
+export interface PortfolioOptimization {
+  id: string;
+  user_id: string;
+  run_date: string;
+  risk_tolerance: RiskTolerance;
+  time_horizon: number;
+  current_allocation: Allocation;
+  recommended_allocation: Allocation;
+  expected_return: number;
+  expected_volatility: number;
+  sharpe_ratio: number;
+  rebalancing_trades: RebalancingTrade[];
+  applied: boolean;
+  applied_date: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface RiskQuestionnaireAnswer {
+  questionId: number;
+  answer: number; // 1-5 scale
+}
+
+export interface RiskAssessmentResult {
+  score: number; // 0-100
+  tolerance: RiskTolerance;
+  timeHorizon: number;
+}
+
+export interface OptimizationRequest {
+  risk_tolerance: RiskTolerance;
+  time_horizon: number;
+  constraints?: {
+    min_stocks?: number;
+    max_stocks?: number;
+    min_bonds?: number;
+    max_bonds?: number;
+    min_cash?: number;
+    max_cash?: number;
+  };
+}
+
+export interface OptimizationResult {
+  current_allocation: Allocation;
+  recommended_allocation: Allocation;
+  expected_return: number;
+  expected_volatility: number;
+  sharpe_ratio: number;
+  rebalancing_trades: RebalancingTrade[];
+  total_portfolio_value: number;
+}
+
+export type AccountType = 'taxable' | '401k' | 'ira' | 'roth_ira' | 'hsa' | 'other';
+export type AssetClass = 'stocks' | 'bonds' | 'cash' | 'real_estate' | 'crypto' | 'other';
+
+export interface Holding {
+  id: string;
+  user_id: string;
+  symbol: string;
+  name: string | null;
+  shares: number;
+  cost_basis: number;
+  current_price: number | null;
+  purchase_date: string | null;
+  account_type: AccountType;
+  asset_class: AssetClass;
+  created_at: string;
+  updated_at: string;
+}
