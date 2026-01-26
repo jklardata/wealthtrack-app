@@ -286,6 +286,7 @@ export default function NetWorthPage() {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isBulkDeleting, setIsBulkDeleting] = useState(false);
+  const [isRemoveAllDialogOpen, setIsRemoveAllDialogOpen] = useState(false);
 
   const fetchEntries = useCallback(async () => {
     try {
@@ -484,6 +485,40 @@ export default function NetWorthPage() {
     }
   };
 
+  const handleRemoveAll = async () => {
+    if (entries.length === 0) return;
+
+    setIsBulkDeleting(true);
+    try {
+      const allIds = entries.map((e) => e.id);
+      const response = await fetch("/api/net-worth", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids: allIds }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete entries");
+      }
+
+      const result = await response.json();
+      setSelectedIds(new Set());
+      setIsRemoveAllDialogOpen(false);
+      await fetchEntries();
+      setSyncMessage({
+        type: "success",
+        text: `Successfully deleted all ${result.deleted} entries`,
+      });
+    } catch (err) {
+      setSyncMessage({
+        type: "error",
+        text: err instanceof Error ? err.message : "Failed to delete entries",
+      });
+    } finally {
+      setIsBulkDeleting(false);
+    }
+  };
+
   const isAllSelected = entries.length > 0 && selectedIds.size === entries.length;
   const isSomeSelected = selectedIds.size > 0 && selectedIds.size < entries.length;
 
@@ -542,6 +577,15 @@ export default function NetWorthPage() {
           <Button variant="outline" onClick={handleExportCSV} disabled={entries.length === 0}>
             <Download className="h-4 w-4 mr-2" />
             Export CSV
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => setIsRemoveAllDialogOpen(true)}
+            disabled={entries.length === 0}
+            className="text-red-500 hover:text-red-600 hover:bg-red-50"
+          >
+            <Trash2 className="h-4 w-4 mr-2" />
+            Remove All
           </Button>
           <Dialog
             open={isDialogOpen}
@@ -634,6 +678,42 @@ export default function NetWorthPage() {
               disabled={isBulkDeleting}
             >
               {isBulkDeleting ? "Deleting..." : "Delete"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Remove All Confirmation Dialog */}
+      <Dialog open={isRemoveAllDialogOpen} onOpenChange={setIsRemoveAllDialogOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-red-500" />
+              Remove All Entries
+            </DialogTitle>
+          </DialogHeader>
+          <div className="py-4">
+            <p className="text-muted-foreground">
+              Are you sure you want to delete <span className="font-bold text-foreground">all {entries.length} entries</span>?
+              This action cannot be undone.
+            </p>
+          </div>
+          <div className="flex gap-3">
+            <Button
+              variant="outline"
+              className="flex-1"
+              onClick={() => setIsRemoveAllDialogOpen(false)}
+              disabled={isBulkDeleting}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              className="flex-1"
+              onClick={handleRemoveAll}
+              disabled={isBulkDeleting}
+            >
+              {isBulkDeleting ? "Deleting..." : "Remove All"}
             </Button>
           </div>
         </DialogContent>
