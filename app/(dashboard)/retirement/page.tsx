@@ -25,10 +25,19 @@ import {
   ResponsiveContainer,
   ReferenceLine,
 } from "recharts";
-import { TrendingUp, MapPin, Calculator, DollarSign } from "lucide-react";
+import { TrendingUp, MapPin, Calculator, DollarSign, Globe, CheckCircle, Clock } from "lucide-react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { CITIES, getCityById, DEFAULT_WEIGHTS } from "@/lib/col-data";
 import {
   calculateRetirementProjection,
+  calculateEffectiveCOL,
   validateRetirementParams,
   type SpendingWeights,
   type RetirementParams,
@@ -54,6 +63,7 @@ export default function RetirementPage() {
   const [loadingNetWorth, setLoadingNetWorth] = useState(true);
 
   // User inputs
+  const [currentCityId, setCurrentCityId] = useState("nyc"); // Anchor city for COL comparison
   const [selectedCityId, setSelectedCityId] = useState("austin");
   const [currentSpend, setCurrentSpend] = useState("60000");
   const [withdrawalRate, setWithdrawalRate] = useState("4");
@@ -126,8 +136,46 @@ export default function RetirementPage() {
     setWeights(DEFAULT_WEIGHTS);
   };
 
+  const currentCity = getCityById(currentCityId);
   const selectedCity = getCityById(selectedCityId);
   const totalWeights = Object.values(weights).reduce((sum, w) => sum + w, 0);
+
+  // Calculate comparison data for all cities
+  const allCitiesComparison = CITIES.map((city) => {
+    const currentCOL = currentCity ? calculateEffectiveCOL(currentCity, weights) : 1;
+    const cityCOL = calculateEffectiveCOL(city, weights);
+    const relativeMultiplier = cityCOL / currentCOL;
+    const adjustedSpend = parseFloat(currentSpend) * relativeMultiplier;
+    const requiredNW = adjustedSpend / (parseFloat(withdrawalRate) / 100);
+
+    // Calculate years to retirement
+    const r = parseFloat(expectedReturn) / 100;
+    let years = Infinity;
+    if (currentNetWorth >= requiredNW) {
+      years = 0;
+    } else if (r > 0 && annualSavings > 0) {
+      const numerator = requiredNW * r + annualSavings;
+      const denominator = currentNetWorth * r + annualSavings;
+      if (denominator > 0 && numerator > 0) {
+        years = Math.log(numerator / denominator) / Math.log(1 + r);
+      }
+    }
+
+    return {
+      city,
+      effectiveCOL: cityCOL,
+      relativeMultiplier,
+      adjustedSpend,
+      requiredNW,
+      yearsToRetirement: years,
+      canRetireNow: currentNetWorth >= requiredNW,
+    };
+  }).sort((a, b) => a.yearsToRetirement - b.yearsToRetirement);
+
+  // Dynamic headline
+  const citiesCanRetireNow = allCitiesComparison.filter(c => c.canRetireNow);
+  const cheapestRetireNow = citiesCanRetireNow[0];
+  const nextMilestone = allCitiesComparison.find(c => !c.canRetireNow);
 
   // Format chart data
   const chartData = results?.projections.map((p) => ({
@@ -160,6 +208,48 @@ export default function RetirementPage() {
         </p>
       </div>
 
+      {/* Dynamic Headline */}
+      {currentNetWorth > 0 && (
+        <Card className={citiesCanRetireNow.length > 0 ? "border-green-500/30 bg-green-500/5" : "border-orange-500/30 bg-orange-500/5"}>
+          <CardContent className="pt-6">
+            <div className="flex items-start gap-3">
+              {citiesCanRetireNow.length > 0 ? (
+                <>
+                  <CheckCircle className="h-6 w-6 text-green-500 mt-0.5" />
+                  <div>
+                    <p className="text-lg font-semibold text-green-600">
+                      You can retire today in {cheapestRetireNow?.city.city_name}!
+                    </p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      With your {formatCurrency(currentNetWorth)} net worth, you could retire in{" "}
+                      <span className="font-medium">{citiesCanRetireNow.length} {citiesCanRetireNow.length === 1 ? "city" : "cities"}</span> right now.
+                      {citiesCanRetireNow.length > 1 && (
+                        <> Including: {citiesCanRetireNow.slice(0, 3).map(c => c.city.city_name).join(", ")}{citiesCanRetireNow.length > 3 && ` and ${citiesCanRetireNow.length - 3} more`}.</>
+                      )}
+                    </p>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <Clock className="h-6 w-6 text-orange-500 mt-0.5" />
+                  <div>
+                    <p className="text-lg font-semibold text-orange-600">
+                      {nextMilestone && isFinite(nextMilestone.yearsToRetirement)
+                        ? `${nextMilestone.yearsToRetirement.toFixed(1)} years to retire in ${nextMilestone.city.city_name}`
+                        : "Keep saving to reach your retirement goal!"}
+                    </p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Current net worth: {formatCurrency(currentNetWorth)} •
+                      Need {nextMilestone ? formatCurrency(nextMilestone.requiredNW) : "more savings"} to retire in the most affordable city.
+                    </p>
+                  </div>
+                </>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* No data warning */}
       {netWorthEntries.length === 0 && (
         <Card className="border-orange-500/20 bg-orange-500/5">
@@ -189,6 +279,27 @@ export default function RetirementPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
+              <Label htmlFor="currentCity">Current City (Baseline)</Label>
+              <Select value={currentCityId} onValueChange={setCurrentCityId}>
+                <SelectTrigger id="currentCity" className="w-full">
+                  <SelectValue placeholder="Select your current city" />
+                </SelectTrigger>
+                <SelectContent>
+                  {CITIES.map((city) => (
+                    <SelectItem key={city.city_id} value={city.city_id}>
+                      {city.city_name}, {city.country}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {currentCity && (
+                <p className="text-xs text-muted-foreground">
+                  Your spending is anchored to this city&apos;s cost of living
+                </p>
+              )}
+            </div>
+
+            <div className="space-y-2">
               <Label htmlFor="city">Target Retirement City</Label>
               <Select value={selectedCityId} onValueChange={setSelectedCityId}>
                 <SelectTrigger id="city" className="w-full">
@@ -202,9 +313,9 @@ export default function RetirementPage() {
                   ))}
                 </SelectContent>
               </Select>
-              {selectedCity && (
+              {selectedCity && currentCity && (
                 <p className="text-xs text-muted-foreground">
-                  COL Index: {selectedCity.base_index} (NYC = 100) • Confidence: {selectedCity.confidence}
+                  {((calculateEffectiveCOL(selectedCity, weights) / calculateEffectiveCOL(currentCity, weights)) * 100).toFixed(0)}% of {currentCity.city_name}&apos;s cost • Confidence: {selectedCity.confidence}
                 </p>
               )}
             </div>
@@ -496,6 +607,72 @@ export default function RetirementPage() {
               </CardContent>
             </Card>
           )}
+
+          {/* All Cities Comparison */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Globe className="h-5 w-5 text-orange-500" />
+                All Cities Comparison
+              </CardTitle>
+              <p className="text-sm text-muted-foreground">
+                Based on your {formatCurrency(parseFloat(currentSpend))} annual spending in {currentCity?.city_name || "your current city"}
+              </p>
+            </CardHeader>
+            <CardContent>
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>City</TableHead>
+                      <TableHead className="text-right">Years to Retire</TableHead>
+                      <TableHead className="text-right">Required NW</TableHead>
+                      <TableHead className="text-right">Annual Cost</TableHead>
+                      <TableHead className="text-right">COL vs {currentCity?.city_name || "NYC"}</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {allCitiesComparison.map((item) => (
+                      <TableRow
+                        key={item.city.city_id}
+                        className={
+                          item.city.city_id === selectedCityId
+                            ? "bg-orange-500/10"
+                            : item.canRetireNow
+                            ? "bg-green-500/5"
+                            : ""
+                        }
+                      >
+                        <TableCell className="font-medium">
+                          <div className="flex items-center gap-2">
+                            {item.canRetireNow && <CheckCircle className="h-4 w-4 text-green-500" />}
+                            {item.city.city_name}
+                            <span className="text-xs text-muted-foreground">{item.city.country}</span>
+                          </div>
+                        </TableCell>
+                        <TableCell className={`text-right font-medium ${item.canRetireNow ? "text-green-500" : ""}`}>
+                          {item.canRetireNow
+                            ? "Now!"
+                            : isFinite(item.yearsToRetirement)
+                            ? `${item.yearsToRetirement.toFixed(1)} yrs`
+                            : "∞"}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {formatCurrency(item.requiredNW)}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {formatCurrency(item.adjustedSpend)}
+                        </TableCell>
+                        <TableCell className={`text-right ${item.relativeMultiplier < 1 ? "text-green-500" : item.relativeMultiplier > 1 ? "text-red-500" : ""}`}>
+                          {(item.relativeMultiplier * 100).toFixed(0)}%
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </CardContent>
+          </Card>
         </>
       )}
     </div>
