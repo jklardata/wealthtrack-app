@@ -70,6 +70,7 @@ export async function POST() {
           cash: row.cash,
           real_estate: row.real_estate,
           points_value: row.points_value,
+          commodities: row.commodities,
           other_assets: row.other_assets,
           total_debts: row.total_debts,
           notes: row.notes || null,

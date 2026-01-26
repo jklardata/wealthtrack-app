@@ -58,6 +58,7 @@ const COLORS = {
   bonds: "#3b82f6", // Blue
   cash: "#22c55e", // Green
   real_estate: "#a855f7", // Purple
+  commodities: "#eab308", // Yellow
   other: "#6b7280", // Gray
 };
 
@@ -66,6 +67,7 @@ const CATEGORY_LABELS: Record<keyof Allocation, string> = {
   bonds: "Bonds",
   cash: "Cash",
   real_estate: "Real Estate",
+  commodities: "Commodities",
   other: "Other",
 };
 

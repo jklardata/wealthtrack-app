@@ -45,6 +45,7 @@ export interface NetWorthEntry {
   cash: number;
   real_estate: number;
   points_value: number;
+  commodities: number;
   other_assets: number;
   total_assets: number;
   total_debts: number;
@@ -61,6 +62,7 @@ export interface NetWorthFormData {
   cash: number;
   real_estate: number;
   points_value: number;
+  commodities: number;
   other_assets: number;
   total_debts: number;
   notes?: string;
@@ -84,6 +86,7 @@ export interface SheetRow {
   cash: number;
   real_estate: number;
   points_value: number;
+  commodities: number;
   other_assets: number;
   total_debts: number;
   notes?: string;
@@ -151,6 +154,7 @@ export interface Allocation {
   bonds: number;
   cash: number;
   real_estate: number;
+  commodities: number;
   other: number;
 }
 

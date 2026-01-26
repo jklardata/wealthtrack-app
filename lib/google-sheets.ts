@@ -37,10 +37,10 @@ export async function fetchSheetData(sheetId: string): Promise<SheetRow[]> {
   const sheets = getGoogleSheetsClient();
 
   // Fetch data from the first sheet, assuming headers in row 1
-  // Expected columns: Date, Stocks, Bonds, Cash, Real Estate, Points Value, Other Assets, Total Debts, Notes
+  // Expected columns: Date, Stocks, Bonds, Cash, Real Estate, Points Value, Commodities, Other Assets, Total Debts, Notes
   const response = await sheets.spreadsheets.values.get({
     spreadsheetId: sheetId,
-    range: 'A2:I1000', // Skip header row, get up to 1000 rows
+    range: 'A2:J1000', // Skip header row, get up to 1000 rows
   });
 
   const rows = response.data.values || [];
@@ -54,9 +54,10 @@ export async function fetchSheetData(sheetId: string): Promise<SheetRow[]> {
       cash: parseNumber(row[3]),
       real_estate: parseNumber(row[4]),
       points_value: parseNumber(row[5]),
-      other_assets: parseNumber(row[6]),
-      total_debts: parseNumber(row[7]),
-      notes: row[8] || undefined,
+      commodities: parseNumber(row[6]),
+      other_assets: parseNumber(row[7]),
+      total_debts: parseNumber(row[8]),
+      notes: row[9] || undefined,
     }));
 }
 
@@ -146,6 +147,7 @@ export async function createTemplateSpreadsheet(userEmail: string): Promise<{
                       { userEnteredValue: { stringValue: 'Cash' }, userEnteredFormat: { textFormat: { bold: true }, backgroundColor: { red: 0.2, green: 0.2, blue: 0.2 } } },
                       { userEnteredValue: { stringValue: 'Real Estate' }, userEnteredFormat: { textFormat: { bold: true }, backgroundColor: { red: 0.2, green: 0.2, blue: 0.2 } } },
                       { userEnteredValue: { stringValue: 'Points Value' }, userEnteredFormat: { textFormat: { bold: true }, backgroundColor: { red: 0.2, green: 0.2, blue: 0.2 } } },
+                      { userEnteredValue: { stringValue: 'Commodities' }, userEnteredFormat: { textFormat: { bold: true }, backgroundColor: { red: 0.2, green: 0.2, blue: 0.2 } } },
                       { userEnteredValue: { stringValue: 'Other Assets' }, userEnteredFormat: { textFormat: { bold: true }, backgroundColor: { red: 0.2, green: 0.2, blue: 0.2 } } },
                       { userEnteredValue: { stringValue: 'Total Debts' }, userEnteredFormat: { textFormat: { bold: true }, backgroundColor: { red: 0.2, green: 0.2, blue: 0.2 } } },
                       { userEnteredValue: { stringValue: 'Notes' }, userEnteredFormat: { textFormat: { bold: true }, backgroundColor: { red: 0.2, green: 0.2, blue: 0.2 } } },
@@ -160,6 +162,7 @@ export async function createTemplateSpreadsheet(userEmail: string): Promise<{
                       { userEnteredValue: { numberValue: 15000 }, userEnteredFormat: { numberFormat: { type: 'CURRENCY' } } },
                       { userEnteredValue: { numberValue: 0 }, userEnteredFormat: { numberFormat: { type: 'CURRENCY' } } },
                       { userEnteredValue: { numberValue: 5000 }, userEnteredFormat: { numberFormat: { type: 'CURRENCY' } } },
+                      { userEnteredValue: { numberValue: 0 }, userEnteredFormat: { numberFormat: { type: 'CURRENCY' } } },
                       { userEnteredValue: { numberValue: 0 }, userEnteredFormat: { numberFormat: { type: 'CURRENCY' } } },
                       { userEnteredValue: { numberValue: 0 }, userEnteredFormat: { numberFormat: { type: 'CURRENCY' } } },
                       { userEnteredValue: { stringValue: 'Sample entry - update with your data' } },
@@ -189,7 +192,7 @@ export async function createTemplateSpreadsheet(userEmail: string): Promise<{
                 sheetId: 0,
                 dimension: 'COLUMNS',
                 startIndex: 0,
-                endIndex: 9,
+                endIndex: 10,
               },
             },
           },

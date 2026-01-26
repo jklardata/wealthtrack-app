@@ -39,6 +39,7 @@ export async function PUT(
         cash: body.cash || 0,
         real_estate: body.real_estate || 0,
         points_value: body.points_value || 0,
+        commodities: body.commodities || 0,
         other_assets: body.other_assets || 0,
         total_debts: body.total_debts || 0,
         notes: body.notes || null,

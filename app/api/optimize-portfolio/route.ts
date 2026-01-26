@@ -134,6 +134,7 @@ export async function POST(request: NextRequest) {
         bonds: netWorthEntry.bonds || 0,
         cash: netWorthEntry.cash || 0,
         real_estate: netWorthEntry.real_estate || 0,
+        commodities: netWorthEntry.commodities || 0,
         other_assets: netWorthEntry.other_assets || 0,
       },
       risk_tolerance as RiskTolerance,

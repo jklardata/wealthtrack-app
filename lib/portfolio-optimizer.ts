@@ -16,6 +16,7 @@ const ASSET_RETURNS = {
   bonds: 0.05,       // 5% expected return
   cash: 0.04,        // 4% (current high-yield savings)
   real_estate: 0.08, // 8% expected return
+  commodities: 0.05, // 5% expected return (gold, etc.)
   other: 0.06,       // 6% expected return
 };
 
@@ -25,6 +26,7 @@ const ASSET_VOLATILITY = {
   bonds: 0.06,       // 6% volatility
   cash: 0.01,        // 1% volatility (nearly risk-free)
   real_estate: 0.12, // 12% volatility
+  commodities: 0.15, // 15% volatility
   other: 0.10,       // 10% volatility
 };
 
@@ -132,13 +134,14 @@ function adjustForMarketValuation(
   );
 
   // Normalize
-  const total = adjustedStocks + adjustedBonds + adjustedCash + baseAllocation.real_estate + baseAllocation.other;
+  const total = adjustedStocks + adjustedBonds + adjustedCash + baseAllocation.real_estate + baseAllocation.commodities + baseAllocation.other;
 
   const adjustedAllocation: Allocation = {
     stocks: adjustedStocks / total,
     bonds: adjustedBonds / total,
     cash: adjustedCash / total,
     real_estate: baseAllocation.real_estate / total,
+    commodities: baseAllocation.commodities / total,
     other: baseAllocation.other / total,
   };
 
@@ -292,6 +295,7 @@ const RISK_CONSTRAINTS = {
     bonds: { min: 0.30, max: 0.50 },
     cash: { min: 0.15, max: 0.35 },
     real_estate: { min: 0, max: 0.15 },
+    commodities: { min: 0, max: 0.10 },
     other: { min: 0, max: 0.10 },
   },
   moderate: {
@@ -299,6 +303,7 @@ const RISK_CONSTRAINTS = {
     bonds: { min: 0.20, max: 0.35 },
     cash: { min: 0.05, max: 0.20 },
     real_estate: { min: 0, max: 0.20 },
+    commodities: { min: 0, max: 0.10 },
     other: { min: 0, max: 0.10 },
   },
   aggressive: {
@@ -306,6 +311,7 @@ const RISK_CONSTRAINTS = {
     bonds: { min: 0.05, max: 0.20 },
     cash: { min: 0.02, max: 0.10 },
     real_estate: { min: 0, max: 0.25 },
+    commodities: { min: 0, max: 0.15 },
     other: { min: 0, max: 0.15 },
   },
 };
@@ -316,21 +322,24 @@ const TARGET_ALLOCATIONS: Record<RiskTolerance, Allocation> = {
     stocks: 0.30,
     bonds: 0.40,
     cash: 0.20,
-    real_estate: 0.10,
+    real_estate: 0.05,
+    commodities: 0.05,
     other: 0.00,
   },
   moderate: {
     stocks: 0.55,
     bonds: 0.25,
     cash: 0.10,
-    real_estate: 0.10,
+    real_estate: 0.05,
+    commodities: 0.05,
     other: 0.00,
   },
   aggressive: {
     stocks: 0.75,
     bonds: 0.10,
     cash: 0.05,
-    real_estate: 0.10,
+    real_estate: 0.05,
+    commodities: 0.05,
     other: 0.00,
   },
 };
@@ -342,6 +351,7 @@ function calculateExpectedReturn(allocation: Allocation): number {
     allocation.bonds * ASSET_RETURNS.bonds +
     allocation.cash * ASSET_RETURNS.cash +
     allocation.real_estate * ASSET_RETURNS.real_estate +
+    allocation.commodities * ASSET_RETURNS.commodities +
     allocation.other * ASSET_RETURNS.other
   );
 }
@@ -388,7 +398,7 @@ function calculateSharpeRatio(expectedReturn: number, volatility: number, riskFr
 function amountsToPercentages(amounts: Record<string, number>): Allocation {
   const total = Object.values(amounts).reduce((sum, val) => sum + val, 0);
   if (total === 0) {
-    return { stocks: 0, bonds: 0, cash: 0, real_estate: 0, other: 0 };
+    return { stocks: 0, bonds: 0, cash: 0, real_estate: 0, commodities: 0, other: 0 };
   }
 
   return {
@@ -396,6 +406,7 @@ function amountsToPercentages(amounts: Record<string, number>): Allocation {
     bonds: amounts.bonds / total,
     cash: amounts.cash / total,
     real_estate: amounts.real_estate / total,
+    commodities: amounts.commodities / total,
     other: amounts.other / total,
   };
 }
@@ -464,13 +475,14 @@ function adjustForTimeHorizon(
   );
 
   // Normalize to ensure sum = 1
-  const total = adjustedStocks + adjustedBonds + adjustedCash + baseAllocation.real_estate + baseAllocation.other;
+  const total = adjustedStocks + adjustedBonds + adjustedCash + baseAllocation.real_estate + baseAllocation.commodities + baseAllocation.other;
 
   return {
     stocks: adjustedStocks / total,
     bonds: adjustedBonds / total,
     cash: adjustedCash / total,
     real_estate: baseAllocation.real_estate / total,
+    commodities: baseAllocation.commodities / total,
     other: baseAllocation.other / total,
   };
 }
@@ -482,6 +494,7 @@ export function optimizePortfolio(
     bonds: number;
     cash: number;
     real_estate: number;
+    commodities: number;
     other_assets: number;
   },
   riskTolerance: RiskTolerance,
@@ -502,6 +515,7 @@ export function optimizePortfolio(
     currentAmounts.bonds +
     currentAmounts.cash +
     currentAmounts.real_estate +
+    currentAmounts.commodities +
     currentAmounts.other_assets;
 
   // Convert to allocation percentages
@@ -510,6 +524,7 @@ export function optimizePortfolio(
     bonds: currentAmounts.bonds,
     cash: currentAmounts.cash,
     real_estate: currentAmounts.real_estate,
+    commodities: currentAmounts.commodities,
     other: currentAmounts.other_assets,
   });
 

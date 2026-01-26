@@ -80,6 +80,7 @@ function EntryForm({ entry, onSubmit, onClose, isSubmitting }: EntryFormProps) {
     cash: entry?.cash || 0,
     real_estate: entry?.real_estate || 0,
     points_value: entry?.points_value || 0,
+    commodities: entry?.commodities || 0,
     other_assets: entry?.other_assets || 0,
     total_debts: entry?.total_debts || 0,
     notes: entry?.notes || "",
@@ -91,6 +92,7 @@ function EntryForm({ entry, onSubmit, onClose, isSubmitting }: EntryFormProps) {
     Number(formData.cash) +
     Number(formData.real_estate) +
     Number(formData.points_value) +
+    Number(formData.commodities) +
     Number(formData.other_assets);
 
   const netWorth = totalAssets - Number(formData.total_debts);
@@ -108,6 +110,7 @@ function EntryForm({ entry, onSubmit, onClose, isSubmitting }: EntryFormProps) {
       cash: Number(formData.cash),
       real_estate: Number(formData.real_estate),
       points_value: Number(formData.points_value),
+      commodities: Number(formData.commodities),
       other_assets: Number(formData.other_assets),
       total_debts: Number(formData.total_debts),
     });
@@ -179,6 +182,17 @@ function EntryForm({ entry, onSubmit, onClose, isSubmitting }: EntryFormProps) {
             step="0.01"
             value={formData.points_value}
             onChange={(e) => handleChange("points_value", e.target.value)}
+            placeholder="0"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="commodities">Commodities</Label>
+          <Input
+            id="commodities"
+            type="number"
+            step="0.01"
+            value={formData.commodities}
+            onChange={(e) => handleChange("commodities", e.target.value)}
             placeholder="0"
           />
         </div>
@@ -352,6 +366,7 @@ export default function NetWorthPage() {
       "Cash",
       "Real Estate",
       "Points Value",
+      "Commodities",
       "Other Assets",
       "Total Assets",
       "Total Debts",
@@ -366,6 +381,7 @@ export default function NetWorthPage() {
       entry.cash,
       entry.real_estate,
       entry.points_value,
+      entry.commodities || 0,
       entry.other_assets,
       entry.total_assets,
       entry.total_debts,
@@ -691,6 +707,7 @@ export default function NetWorthPage() {
                     <TableHead className="text-right">Cash</TableHead>
                     <TableHead className="text-right">Real Estate</TableHead>
                     <TableHead className="text-right">Points</TableHead>
+                    <TableHead className="text-right">Commodities</TableHead>
                     <TableHead className="text-right">Other</TableHead>
                     <TableHead className="text-right">Total Assets</TableHead>
                     <TableHead className="text-right">Debts</TableHead>
@@ -725,6 +742,9 @@ export default function NetWorthPage() {
                       </TableCell>
                       <TableCell className="text-right">
                         {formatCurrency(entry.points_value)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {formatCurrency(entry.commodities || 0)}
                       </TableCell>
                       <TableCell className="text-right">
                         {formatCurrency(entry.other_assets)}
