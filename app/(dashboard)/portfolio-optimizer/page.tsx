@@ -625,11 +625,16 @@ export default function PortfolioOptimizerPage() {
         setOptimization({
           current_allocation: optimizationData.optimization.current_allocation,
           recommended_allocation: optimizationData.optimization.recommended_allocation,
+          base_allocation: optimizationData.optimization.base_allocation || optimizationData.optimization.recommended_allocation,
+          market_adjustment: optimizationData.optimization.market_adjustment || null,
           expected_return: optimizationData.optimization.expected_return,
           expected_volatility: optimizationData.optimization.expected_volatility,
           sharpe_ratio: optimizationData.optimization.sharpe_ratio,
           rebalancing_trades: optimizationData.optimization.rebalancing_trades || [],
-          total_portfolio_value: 0, // Will be calculated
+          total_portfolio_value: optimizationData.optimization.total_portfolio_value || 0,
+          market_valuation: optimizationData.optimization.market_valuation,
+          rationale: optimizationData.optimization.rationale,
+          stock_breakdown: optimizationData.optimization.stock_breakdown,
         });
       }
     } catch (err) {
