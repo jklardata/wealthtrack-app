@@ -1113,6 +1113,7 @@ function EditEntryForm({ entry, onSubmit, onClose, isSubmitting }: EditEntryForm
     cash: entry.cash,
     real_estate: entry.real_estate,
     points_value: entry.points_value,
+    commodities: entry.commodities || 0,
     other_assets: entry.other_assets,
     total_debts: entry.total_debts,
     notes: entry.notes || "",
@@ -1124,6 +1125,7 @@ function EditEntryForm({ entry, onSubmit, onClose, isSubmitting }: EditEntryForm
     Number(formData.cash) +
     Number(formData.real_estate) +
     Number(formData.points_value) +
+    Number(formData.commodities) +
     Number(formData.other_assets);
 
   const netWorth = totalAssets - Number(formData.total_debts);
@@ -1141,6 +1143,7 @@ function EditEntryForm({ entry, onSubmit, onClose, isSubmitting }: EditEntryForm
       cash: Number(formData.cash),
       real_estate: Number(formData.real_estate),
       points_value: Number(formData.points_value),
+      commodities: Number(formData.commodities),
       other_assets: Number(formData.other_assets),
       total_debts: Number(formData.total_debts),
     });
