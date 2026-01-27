@@ -24,6 +24,9 @@ import {
   Legend,
   ResponsiveContainer,
   ReferenceLine,
+  Area,
+  ComposedChart,
+  ReferenceArea,
 } from "recharts";
 import { TrendingUp, MapPin, Calculator, DollarSign, Globe, CheckCircle, Clock, ChevronDown, ChevronUp, Briefcase, FileSpreadsheet, RefreshCw, ExternalLink } from "lucide-react";
 import {
@@ -1007,99 +1010,211 @@ export default function RetirementPage() {
           )}
 
           {/* Projection Chart */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Net Worth Projection</CardTitle>
+          <Card className="overflow-hidden">
+            <CardHeader className="bg-gradient-to-r from-orange-500/5 to-green-500/5 border-b">
+              <CardTitle className="text-lg flex items-center gap-2">
+                <TrendingUp className="h-5 w-5 text-orange-500" />
+                Net Worth Projection
+              </CardTitle>
               <p className="text-sm text-muted-foreground">
                 Based on {formatPercent(parseFloat(expectedReturn) / 100)} annual return and {formatCurrency(annualSavings)}/year savings
               </p>
             </CardHeader>
-            <CardContent>
-              <div className="mb-4 p-3 bg-muted/50 rounded-lg text-sm text-muted-foreground">
-                <p>
-                  The <span className="text-orange-500 font-medium">orange line</span> shows your projected net worth growth over time,
-                  combining your current savings rate with compound investment returns.
-                  The <span className="text-green-500 font-medium">green dashed line</span> marks your full retirement goal—the amount needed
-                  so your safe withdrawal covers expenses in your target city.
-                  {results.semiRetirement && (
-                    <>
-                      {' '}The <span className="text-blue-500 font-medium">blue dashed line</span> marks your semi-retirement threshold—a lower
-                      amount where consulting income bridges the gap.
-                      The <span className="text-blue-500/50 font-medium">shaded blue region</span> shows your semi-retirement period.
-                    </>
-                  )}
-                </p>
+            <CardContent className="pt-6">
+              {/* Legend explanation */}
+              <div className="mb-6 flex flex-wrap gap-4 text-sm">
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-1 bg-orange-500 rounded"></div>
+                  <span className="text-muted-foreground">Your Net Worth</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-0.5 bg-green-500 border-dashed border-t-2 border-green-500"></div>
+                  <span className="text-muted-foreground">Full Retirement Goal ({formatCurrency(results.requiredNetWorth)})</span>
+                </div>
+                {results.semiRetirement && (
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-0.5 bg-blue-500 border-dashed border-t-2 border-blue-500"></div>
+                    <span className="text-muted-foreground">Semi-Retirement ({formatCurrency(results.semiRetirement.requiredNetWorthWithSemi)})</span>
+                  </div>
+                )}
               </div>
+
               {chartData.length > 0 ? (
-                <ResponsiveContainer width="100%" height={400}>
-                  <LineChart data={chartData}>
-                    <CartesianGrid strokeDasharray="3 3" />
+                <ResponsiveContainer width="100%" height={450}>
+                  <ComposedChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
+                    <defs>
+                      {/* Gradient for the area fill */}
+                      <linearGradient id="netWorthGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#f97316" stopOpacity={0.3}/>
+                        <stop offset="95%" stopColor="#f97316" stopOpacity={0.05}/>
+                      </linearGradient>
+                      {/* Glow effect for the line */}
+                      <filter id="glow">
+                        <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                        <feMerge>
+                          <feMergeNode in="coloredBlur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                    </defs>
+
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" strokeOpacity={0.5} />
+
                     <XAxis
                       dataKey="year"
-                      label={{ value: "Years from Now", position: "insideBottom", offset: -5 }}
+                      axisLine={{ stroke: '#9ca3af', strokeWidth: 1 }}
+                      tickLine={{ stroke: '#9ca3af' }}
+                      tick={{ fill: '#6b7280', fontSize: 12 }}
+                      label={{
+                        value: "Years from Now",
+                        position: "insideBottom",
+                        offset: -10,
+                        fill: '#6b7280',
+                        fontSize: 12,
+                      }}
                     />
+
                     <YAxis
-                      tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
-                      label={{ value: "Net Worth", angle: -90, position: "insideLeft" }}
+                      tickFormatter={(value) => {
+                        if (value >= 1000000) return `$${(value / 1000000).toFixed(1)}M`;
+                        return `$${(value / 1000).toFixed(0)}k`;
+                      }}
+                      axisLine={{ stroke: '#9ca3af', strokeWidth: 1 }}
+                      tickLine={{ stroke: '#9ca3af' }}
+                      tick={{ fill: '#6b7280', fontSize: 12 }}
+                      width={70}
                     />
+
+                    {/* Custom Tooltip */}
                     <Tooltip
-                      formatter={(value, name) => {
-                        if (name === "Net Worth") {
-                          return value ? formatCurrency(value as number) : '';
+                      content={({ active, payload, label }) => {
+                        if (active && payload && payload.length) {
+                          const data = payload[0].payload;
+                          const netWorth = data["Net Worth"] as number;
+                          const phase = data.phase as string;
+                          const distanceToGoal = results.requiredNetWorth - netWorth;
+                          const percentToGoal = (netWorth / results.requiredNetWorth) * 100;
+
+                          return (
+                            <div className="bg-white dark:bg-gray-900 p-4 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 min-w-[220px]">
+                              <div className="flex items-center gap-2 mb-3 pb-2 border-b border-gray-100 dark:border-gray-800">
+                                <div className={`w-2 h-2 rounded-full ${
+                                  phase === 'accumulation' ? 'bg-gray-500' :
+                                  phase === 'semi-retirement' ? 'bg-blue-500' : 'bg-green-500'
+                                }`}></div>
+                                <span className="font-semibold text-gray-900 dark:text-gray-100">
+                                  Year {label}
+                                </span>
+                                <span className={`text-xs px-2 py-0.5 rounded-full ${
+                                  phase === 'accumulation' ? 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400' :
+                                  phase === 'semi-retirement' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-400' :
+                                  'bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-400'
+                                }`}>
+                                  {phase === 'accumulation' ? 'Working' :
+                                   phase === 'semi-retirement' ? 'Semi-Retired' : 'Fully Retired'}
+                                </span>
+                              </div>
+
+                              <div className="space-y-2">
+                                <div className="flex justify-between items-center">
+                                  <span className="text-gray-500 dark:text-gray-400 text-sm">Net Worth</span>
+                                  <span className="font-bold text-orange-500 text-lg">{formatCurrency(netWorth)}</span>
+                                </div>
+
+                                <div className="flex justify-between items-center">
+                                  <span className="text-gray-500 dark:text-gray-400 text-sm">Progress to Goal</span>
+                                  <span className={`font-medium ${percentToGoal >= 100 ? 'text-green-500' : 'text-gray-700 dark:text-gray-300'}`}>
+                                    {percentToGoal.toFixed(0)}%
+                                  </span>
+                                </div>
+
+                                {distanceToGoal > 0 && (
+                                  <div className="flex justify-between items-center">
+                                    <span className="text-gray-500 dark:text-gray-400 text-sm">Gap to Goal</span>
+                                    <span className="font-medium text-red-500">{formatCurrency(distanceToGoal)}</span>
+                                  </div>
+                                )}
+
+                                {distanceToGoal <= 0 && (
+                                  <div className="flex items-center gap-1 text-green-500 text-sm mt-1">
+                                    <CheckCircle className="h-4 w-4" />
+                                    <span>Goal achieved!</span>
+                                  </div>
+                                )}
+
+                                {/* Progress bar */}
+                                <div className="mt-2 pt-2 border-t border-gray-100 dark:border-gray-800">
+                                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                    <div
+                                      className={`h-2 rounded-full transition-all ${
+                                        percentToGoal >= 100 ? 'bg-green-500' : 'bg-orange-500'
+                                      }`}
+                                      style={{ width: `${Math.min(percentToGoal, 100)}%` }}
+                                    ></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          );
                         }
-                        return value;
-                      }}
-                      labelFormatter={(label) => {
-                        const dataPoint = chartData.find(d => d.year === label);
-                        const phaseLabel = dataPoint?.phase
-                          ? ` (${dataPoint.phase === 'accumulation' ? 'Working' : dataPoint.phase === 'semi-retirement' ? 'Semi-Retired' : 'Fully Retired'})`
-                          : '';
-                        return `Year ${label}${phaseLabel}`;
+                        return null;
                       }}
                     />
-                    <Legend />
-                    {/* Semi-retirement threshold line (if applicable) */}
+
+                    {/* Semi-retirement shaded region */}
+                    {results.semiRetirement && isFinite(results.semiRetirement.yearsToSemiRetirement) && (
+                      <ReferenceArea
+                        x1={Math.round(results.semiRetirement.yearsToSemiRetirement)}
+                        x2={Math.round(results.semiRetirement.yearsToSemiRetirement + results.semiRetirement.totalSemiRetirementYears)}
+                        fill="#3b82f6"
+                        fillOpacity={0.1}
+                        stroke="#3b82f6"
+                        strokeOpacity={0.3}
+                      />
+                    )}
+
+                    {/* Semi-retirement threshold line */}
                     {results.semiRetirement && (
                       <ReferenceLine
                         y={results.semiRetirement.requiredNetWorthWithSemi}
                         stroke="#3b82f6"
-                        strokeDasharray="5 5"
-                        label={{ value: "Semi-Retirement", position: "right" }}
+                        strokeWidth={2}
+                        strokeDasharray="8 4"
                       />
                     )}
+
                     {/* Full retirement goal line */}
                     <ReferenceLine
                       y={results.requiredNetWorth}
                       stroke="#22c55e"
-                      strokeDasharray="5 5"
-                      label={{ value: "Full Retirement", position: "right" }}
+                      strokeWidth={2}
+                      strokeDasharray="8 4"
                     />
-                    {/* Semi-retirement start marker (vertical line) */}
-                    {results.semiRetirement && isFinite(results.semiRetirement.yearsToSemiRetirement) && results.semiRetirement.yearsToSemiRetirement > 0 && (
-                      <ReferenceLine
-                        x={Math.round(results.semiRetirement.yearsToSemiRetirement)}
-                        stroke="#3b82f6"
-                        strokeDasharray="3 3"
-                        label={{ value: "Start Semi-Retirement", position: "top", fill: "#3b82f6" }}
-                      />
-                    )}
-                    {/* Semi-retirement end marker (vertical line) */}
-                    {results.semiRetirement && isFinite(results.semiRetirement.yearsToSemiRetirement) && (
-                      <ReferenceLine
-                        x={Math.round(results.semiRetirement.yearsToSemiRetirement + results.semiRetirement.totalSemiRetirementYears)}
-                        stroke="#22c55e"
-                        strokeDasharray="3 3"
-                        label={{ value: "Full Retirement", position: "top", fill: "#22c55e" }}
-                      />
-                    )}
+
+                    {/* Area fill under the line */}
+                    <Area
+                      type="monotone"
+                      dataKey="Net Worth"
+                      stroke="none"
+                      fill="url(#netWorthGradient)"
+                    />
+
+                    {/* Main net worth line */}
                     <Line
                       type="monotone"
                       dataKey="Net Worth"
                       stroke="#f97316"
-                      strokeWidth={2}
+                      strokeWidth={3}
                       dot={false}
+                      activeDot={{
+                        r: 6,
+                        fill: "#f97316",
+                        stroke: "#fff",
+                        strokeWidth: 2,
+                      }}
+                      filter="url(#glow)"
                     />
-                  </LineChart>
+                  </ComposedChart>
                 </ResponsiveContainer>
               ) : (
                 <div className="h-[400px] flex items-center justify-center text-muted-foreground">
