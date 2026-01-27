@@ -88,7 +88,7 @@ function getProgressColor(progress: number, gotBonus: boolean): string {
   if (gotBonus) return "bg-green-500";
   if (progress >= 100) return "bg-green-500";
   if (progress >= 75) return "bg-yellow-500";
-  return "bg-orange-500";
+  return "bg-primary";
 }
 
 interface CardFormProps {
@@ -315,7 +315,7 @@ function CardForm({ card, onSubmit, onClose, isSubmitting }: CardFormProps) {
         </Button>
         <Button
           type="submit"
-          className="flex-1 bg-orange-500 hover:bg-orange-600"
+          className="flex-1 bg-primary hover:bg-primary/90"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Saving..." : card ? "Update Card" : "Add Card"}
@@ -362,11 +362,11 @@ function CreditCardItem({
           <div className="flex items-center gap-3">
             <div className={cn(
               "p-2 rounded-lg",
-              isComplete ? "bg-green-500/10" : "bg-orange-500/10"
+              isComplete ? "bg-green-500/10" : "bg-primary/10"
             )}>
               <CreditCardIcon className={cn(
                 "h-5 w-5",
-                isComplete ? "text-green-500" : "text-orange-500"
+                isComplete ? "text-green-500" : "text-primary"
               )} />
             </div>
             <div>
@@ -729,7 +729,7 @@ export default function CreditCardsPage() {
           }}
         >
           <DialogTrigger asChild>
-            <Button className="bg-orange-500 hover:bg-orange-600">
+            <Button className="bg-primary hover:bg-primary/90">
               <Plus className="h-4 w-4 mr-2" />
               Add Card
             </Button>
@@ -764,7 +764,7 @@ export default function CreditCardsPage() {
         </Card>
         <Card>
           <CardContent className="pt-6">
-            <div className="text-2xl font-bold text-orange-500">{cardsInProgress.length}</div>
+            <div className="text-2xl font-bold text-primary">{cardsInProgress.length}</div>
             <p className="text-sm text-muted-foreground">SUBs In Progress</p>
           </CardContent>
         </Card>
@@ -791,7 +791,7 @@ export default function CreditCardsPage() {
               No credit cards added yet. Add your first card to start tracking!
             </p>
             <Button
-              className="bg-orange-500 hover:bg-orange-600"
+              className="bg-primary hover:bg-primary/90"
               onClick={() => setIsDialogOpen(true)}
             >
               <Plus className="h-4 w-4 mr-2" />

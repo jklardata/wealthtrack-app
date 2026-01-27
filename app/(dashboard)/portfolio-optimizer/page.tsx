@@ -149,7 +149,7 @@ function RiskQuestionnaire({
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Target className="h-5 w-5 text-orange-500" />
+          <Target className="h-5 w-5 text-primary" />
           Risk Assessment
         </CardTitle>
         <CardDescription>
@@ -157,7 +157,7 @@ function RiskQuestionnaire({
         </CardDescription>
         <div className="w-full bg-muted rounded-full h-2 mt-2">
           <div
-            className="bg-orange-500 h-2 rounded-full transition-all duration-300"
+            className="bg-primary h-2 rounded-full transition-all duration-300"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -173,8 +173,8 @@ function RiskQuestionnaire({
               className={cn(
                 "w-full text-left p-4 rounded-lg border-2 transition-all",
                 selectedAnswer === option.score
-                  ? "border-orange-500 bg-orange-500/10"
-                  : "border-border hover:border-orange-500/50 hover:bg-muted/50"
+                  ? "border-primary bg-primary/10"
+                  : "border-border hover:border-primary/50 hover:bg-muted/50"
               )}
             >
               {option.text}
@@ -194,7 +194,7 @@ function RiskQuestionnaire({
           <Button
             onClick={handleNext}
             disabled={selectedAnswer === null}
-            className="bg-orange-500 hover:bg-orange-600"
+            className="bg-primary hover:bg-primary/90"
           >
             {currentQuestion === questions.length - 1 ? "Complete" : "Next"}
             <ChevronRight className="h-4 w-4 ml-1" />
@@ -570,7 +570,7 @@ function AllocationBreakdownCard({
           {/* Final Recommendation */}
           <div className="grid grid-cols-4 text-sm font-bold">
             <div>Final</div>
-            <div className="text-right text-orange-500">{formatPct(finalAllocation.stocks)}</div>
+            <div className="text-right text-primary">{formatPct(finalAllocation.stocks)}</div>
             <div className="text-right text-blue-500">{formatPct(finalAllocation.bonds)}</div>
             <div className="text-right text-green-500">{formatPct(finalAllocation.cash)}</div>
           </div>
@@ -604,7 +604,7 @@ function StockBreakdownCard({
     <Card>
       <CardHeader className="pb-2">
         <CardTitle className="text-base flex items-center gap-2">
-          <TrendingUp className="h-4 w-4 text-orange-500" />
+          <TrendingUp className="h-4 w-4 text-primary" />
           Stock Allocation Breakdown
         </CardTitle>
         <CardDescription>
@@ -918,7 +918,7 @@ export default function PortfolioOptimizerPage() {
           <Button
             onClick={() => runOptimization()}
             disabled={optimizing}
-            className="bg-orange-500 hover:bg-orange-600"
+            className="bg-primary hover:bg-primary/90"
           >
             {optimizing ? (
               <>
@@ -988,9 +988,9 @@ export default function PortfolioOptimizerPage() {
 
           {/* Allocation Comparison - Full Width */}
           <Card>
-            <CardHeader className="bg-gradient-to-r from-orange-500/5 to-blue-500/5 border-b">
+            <CardHeader className="bg-gradient-to-r from-primary/5 to-blue-500/5 border-b">
               <CardTitle className="flex items-center gap-2">
-                <Target className="h-5 w-5 text-orange-500" />
+                <Target className="h-5 w-5 text-primary" />
                 Current vs Recommended Allocation
               </CardTitle>
               <CardDescription>
@@ -1006,7 +1006,7 @@ export default function PortfolioOptimizerPage() {
                     totalValue={optimization.total_portfolio_value}
                   />
                 </div>
-                <div className="p-4 rounded-xl bg-gradient-to-br from-orange-500/5 to-green-500/5 border border-orange-500/20">
+                <div className="p-4 rounded-xl bg-gradient-to-br from-primary/5 to-green-500/5 border border-primary/20">
                   <AllocationChart
                     allocation={optimization.recommended_allocation}
                     title="✨ Recommended Portfolio"
@@ -1132,7 +1132,7 @@ export default function PortfolioOptimizerPage() {
                   />
                   <Legend />
                   <Bar dataKey="current" name="Current" fill="#6b7280" />
-                  <Bar dataKey="recommended" name="Recommended" fill="#f97316" />
+                  <Bar dataKey="recommended" name="Recommended" fill="#a3e635" />
                 </BarChart>
               </ResponsiveContainer>
             </CardContent>

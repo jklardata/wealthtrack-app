@@ -310,7 +310,7 @@ function EntryForm({ entry, onSubmit, onClose, isSubmitting }: EntryFormProps) {
         </Button>
         <Button
           type="submit"
-          className="flex-1 bg-orange-500 hover:bg-orange-600"
+          className="flex-1 bg-primary hover:bg-primary/90"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Saving..." : entry ? "Update Entry" : "Add Entry"}
@@ -708,7 +708,7 @@ export default function NetWorthPage() {
             }}
           >
             <DialogTrigger asChild>
-              <Button className="bg-orange-500 hover:bg-orange-600">
+              <Button className="bg-primary hover:bg-primary/90">
                 <Plus className="h-4 w-4 mr-2" />
                 Add Entry
               </Button>
@@ -735,7 +735,7 @@ export default function NetWorthPage() {
 
       {/* Bulk Actions Bar */}
       {selectedIds.size > 0 && (
-        <div className="flex items-center justify-between p-3 rounded-lg bg-orange-500/10 border border-orange-500/20">
+        <div className="flex items-center justify-between p-3 rounded-lg bg-primary/10 border border-primary/20">
           <div className="flex items-center gap-3">
             <span className="text-sm font-medium">
               {selectedIds.size} {selectedIds.size === 1 ? "entry" : "entries"} selected
@@ -864,7 +864,7 @@ export default function NetWorthPage() {
                 No entries yet. Add your first net worth entry to get started.
               </p>
               <Button
-                className="bg-orange-500 hover:bg-orange-600"
+                className="bg-primary hover:bg-primary/90"
                 onClick={() => setIsDialogOpen(true)}
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -920,7 +920,7 @@ export default function NetWorthPage() {
                   {sortedEntries.map((entry, index) => {
                     const metrics = getMetricsForEntry(entry, index, entries);
                     return (
-                    <TableRow key={entry.id} className={selectedIds.has(entry.id) ? "bg-orange-500/5" : ""}>
+                    <TableRow key={entry.id} className={selectedIds.has(entry.id) ? "bg-primary/5" : ""}>
                       <TableCell>
                         <Checkbox
                           checked={selectedIds.has(entry.id)}

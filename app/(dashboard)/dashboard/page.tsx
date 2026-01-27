@@ -582,7 +582,7 @@ export default function DashboardPage() {
           </Popover>
 
           <Link href="/net-worth">
-            <Button className="bg-orange-500 hover:bg-orange-600">
+            <Button className="bg-primary hover:bg-primary/90">
               <Plus className="h-4 w-4 mr-2" />
               Add Entry
             </Button>
@@ -772,7 +772,7 @@ export default function DashboardPage() {
               </div>
               <div className="text-muted-foreground">
                 <span className="font-medium text-foreground">At this rate:</span>{" "}
-                <span className="text-orange-500 font-medium">
+                <span className="text-primary font-medium">
                   {formatCurrency(growthMetrics.projectedYear)} by Dec {new Date().getFullYear()}
                 </span>
               </div>
@@ -823,7 +823,7 @@ export default function DashboardPage() {
                     hiddenCategories.has("netWorth") ? "opacity-40" : "opacity-100"
                   )}
                 >
-                  <span className="w-3 h-3 rounded-full bg-orange-500" />
+                  <span className="w-3 h-3 rounded-full" style={{ backgroundColor: '#a3e635' }} />
                   <span>Net Worth</span>
                 </button>
                 {Object.entries(ASSET_COLORS).map(([key, color]) => (
@@ -865,10 +865,10 @@ export default function DashboardPage() {
                       type="monotone"
                       dataKey="netWorth"
                       name="Net Worth"
-                      stroke="#f97316"
+                      stroke="#a3e635"
                       strokeWidth={3}
-                      dot={{ fill: "#f97316", strokeWidth: 2, r: 4 }}
-                      activeDot={{ r: 8, fill: "#f97316", stroke: "#fff", strokeWidth: 2 }}
+                      dot={{ fill: "#a3e635", strokeWidth: 2, r: 4 }}
+                      activeDot={{ r: 8, fill: "#a3e635", stroke: "#fff", strokeWidth: 2 }}
                     />
                   )}
                   {!hiddenCategories.has("stocks") && (
@@ -946,7 +946,7 @@ export default function DashboardPage() {
                 No data in selected range. Try adjusting the date filter.
               </p>
               <Link href="/net-worth">
-                <Button className="bg-orange-500 hover:bg-orange-600">
+                <Button className="bg-primary hover:bg-primary/90">
                   <Plus className="h-4 w-4 mr-2" />
                   Add Entry
                 </Button>
@@ -1119,11 +1119,11 @@ export default function DashboardPage() {
 
       {/* Quick Actions */}
       <div className="grid gap-4 md:grid-cols-2">
-        <Card className="cursor-pointer hover:border-orange-500/50 transition-colors">
+        <Card className="cursor-pointer hover:border-primary/50 transition-colors">
           <Link href="/net-worth">
             <CardContent className="flex items-center gap-4 p-6">
-              <div className="p-3 rounded-lg bg-orange-500/10">
-                <TrendingUp className="h-6 w-6 text-orange-500" />
+              <div className="p-3 rounded-lg bg-primary/10">
+                <TrendingUp className="h-6 w-6 text-primary" />
               </div>
               <div>
                 <h3 className="font-semibold">Net Worth Timeline</h3>
@@ -1136,7 +1136,7 @@ export default function DashboardPage() {
           </Link>
         </Card>
 
-        <Card className="cursor-pointer hover:border-orange-500/50 transition-colors">
+        <Card className="cursor-pointer hover:border-primary/50 transition-colors">
           <Link href="/settings">
             <CardContent className="flex items-center gap-4 p-6">
               <div className="p-3 rounded-lg bg-green-500/10">
@@ -1406,7 +1406,7 @@ function EditEntryForm({ entry, onSubmit, onClose, isSubmitting }: EditEntryForm
         </Button>
         <Button
           type="submit"
-          className="flex-1 bg-orange-500 hover:bg-orange-600"
+          className="flex-1 bg-primary hover:bg-primary/90"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Saving..." : "Update Entry"}

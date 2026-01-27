@@ -38,7 +38,7 @@ function Sidebar({ className }: { className?: string }) {
     <div className={cn("flex flex-col h-full", className)}>
       <div className="p-6 border-b">
         <Link href="/dashboard" className="flex items-center gap-2">
-          <TrendingUp className="h-6 w-6 text-orange-500" />
+          <TrendingUp className="h-6 w-6 text-primary" />
           <span className="font-bold text-lg">WealthTrack</span>
         </Link>
       </div>
@@ -51,9 +51,9 @@ function Sidebar({ className }: { className?: string }) {
               key={item.href}
               href={item.disabled ? "#" : item.href}
               className={cn(
-                "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                "flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-all duration-200",
                 isActive
-                  ? "bg-orange-500/10 text-orange-500"
+                  ? "bg-primary/10 text-primary"
                   : "text-muted-foreground hover:bg-muted hover:text-foreground",
                 item.disabled && "opacity-50 cursor-not-allowed"
               )}
@@ -94,7 +94,7 @@ export default function DashboardLayout({
       <div className="flex flex-1 flex-col">
         <header className="md:hidden flex items-center justify-between p-4 border-b bg-card">
           <Link href="/dashboard" className="flex items-center gap-2">
-            <TrendingUp className="h-5 w-5 text-orange-500" />
+            <TrendingUp className="h-5 w-5 text-primary" />
             <span className="font-bold">WealthTrack</span>
           </Link>
           <div className="flex items-center gap-3">

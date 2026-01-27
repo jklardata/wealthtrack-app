@@ -17,7 +17,7 @@ export default async function HomePage() {
       <header className="border-b">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <TrendingUp className="h-6 w-6 text-orange-500" />
+            <TrendingUp className="h-6 w-6 text-primary" />
             <span className="font-bold text-xl">WealthTrack</span>
           </Link>
           <SignInButton mode="modal">
@@ -29,14 +29,14 @@ export default async function HomePage() {
       <main className="flex-1 flex items-center justify-center">
         <div className="container mx-auto px-4 py-16 text-center max-w-3xl">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            Track Your <span className="text-orange-500">Net Worth</span> Over Time
+            Track Your <span className="text-primary">Net Worth</span> Over Time
           </h1>
           <p className="text-xl text-muted-foreground mb-8">
             Simple, secure net worth tracking. Monitor your assets, debts, and
             financial progress with beautiful charts and insights.
           </p>
           <SignInButton mode="modal">
-            <Button size="lg" className="bg-orange-500 hover:bg-orange-600">
+            <Button size="lg" className="bg-primary hover:bg-primary/90">
               Get Started
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>

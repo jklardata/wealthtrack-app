@@ -213,11 +213,11 @@ export default function SettingsPage() {
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Create Template Button - Prominent CTA */}
-          <div className="bg-gradient-to-r from-orange-500/10 to-yellow-500/10 border border-orange-500/20 rounded-lg p-6">
+          <div className="bg-gradient-to-r from-primary/10 to-yellow-500/10 border border-primary/20 rounded-lg p-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div className="flex items-start gap-4">
-                <div className="p-3 rounded-lg bg-orange-500/20">
-                  <FileSpreadsheet className="h-6 w-6 text-orange-500" />
+                <div className="p-3 rounded-lg bg-primary/20">
+                  <FileSpreadsheet className="h-6 w-6 text-primary" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg">Quick Start</h3>
@@ -230,7 +230,7 @@ export default function SettingsPage() {
               <Button
                 onClick={handleCreateTemplate}
                 disabled={creating}
-                className="bg-orange-500 hover:bg-orange-600 whitespace-nowrap"
+                className="bg-primary hover:bg-primary/90 whitespace-nowrap"
                 size="lg"
               >
                 {creating ? (
@@ -256,7 +256,7 @@ export default function SettingsPage() {
                   href={createdSheetUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-orange-500 hover:text-orange-600 flex items-center gap-1 mt-2"
+                  className="text-sm text-primary hover:text-primary/80 flex items-center gap-1 mt-2"
                 >
                   <ExternalLink className="h-4 w-4" />
                   Open your new spreadsheet
@@ -322,7 +322,7 @@ export default function SettingsPage() {
                 href={`https://docs.google.com/spreadsheets/d/${sheetId}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-orange-500 hover:text-orange-600 flex items-center gap-1"
+                className="text-primary hover:text-primary/80 flex items-center gap-1"
               >
                 Open Sheet
                 <ExternalLink className="h-3 w-3" />

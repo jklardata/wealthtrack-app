@@ -315,7 +315,7 @@ export default function RetirementPage() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
-          <Calculator className="h-6 w-6 text-orange-500" />
+          <Calculator className="h-6 w-6 text-primary" />
           Retirement Calculator
         </h1>
         <p className="text-muted-foreground">
@@ -325,7 +325,7 @@ export default function RetirementPage() {
 
       {/* Dynamic Headline */}
       {currentNetWorth > 0 && (
-        <Card className={citiesCanRetireNow.length > 0 ? "border-green-500/30 bg-green-500/5" : "border-orange-500/30 bg-orange-500/5"}>
+        <Card className={citiesCanRetireNow.length > 0 ? "border-green-500/30 bg-green-500/5" : "border-primary/30 bg-primary/5"}>
           <CardContent className="pt-6">
             <div className="flex items-start gap-3">
               {citiesCanRetireNow.length > 0 ? (
@@ -346,9 +346,9 @@ export default function RetirementPage() {
                 </>
               ) : (
                 <>
-                  <Clock className="h-6 w-6 text-orange-500 mt-0.5" />
+                  <Clock className="h-6 w-6 text-primary mt-0.5" />
                   <div>
-                    <p className="text-lg font-semibold text-orange-600">
+                    <p className="text-lg font-semibold text-primary">
                       {nextMilestone && isFinite(nextMilestone.yearsToRetirement)
                         ? `${nextMilestone.yearsToRetirement.toFixed(1)} years to retire in ${nextMilestone.city.city_name}`
                         : "Keep saving to reach your retirement goal!"}
@@ -365,140 +365,8 @@ export default function RetirementPage() {
         </Card>
       )}
 
-      {/* Geo-Arbitrage Insights */}
-      {currentNetWorth > 0 && currentCity && allCitiesComparison.length > 0 && (
-        <Card className="border-purple-500/20 bg-gradient-to-r from-purple-500/5 to-blue-500/5">
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
-              <Plane className="h-5 w-5 text-purple-500" />
-              Geo-Arbitrage Opportunities
-            </CardTitle>
-            <p className="text-sm text-muted-foreground">
-              How relocating could accelerate your financial independence
-            </p>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {/* Best savings opportunities */}
-            {(() => {
-              const currentCityData = allCitiesComparison.find(c => c.city.city_id === currentCityId);
-              if (!currentCityData) return null;
-
-              // Find cities with lower COL than current city
-              const cheaperCities = allCitiesComparison
-                .filter(c => c.relativeMultiplier < 0.95 && c.city.city_id !== currentCityId)
-                .slice(0, 3);
-
-              // Calculate years saved for each cheaper city
-              const currentYearsToRetire = currentCityData.yearsToRetirement;
-
-              return (
-                <div className="space-y-3">
-                  {cheaperCities.map((city) => {
-                    const netWorthSavings = currentCityData.requiredNW - city.requiredNW;
-                    const yearsSaved = isFinite(currentYearsToRetire) && isFinite(city.yearsToRetirement)
-                      ? currentYearsToRetire - city.yearsToRetirement
-                      : null;
-
-                    return (
-                      <div
-                        key={city.city.city_id}
-                        className="p-4 rounded-lg bg-white/50 dark:bg-gray-900/50 border border-purple-500/10 hover:border-purple-500/30 transition-colors"
-                      >
-                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center">
-                              <MapPin className="h-5 w-5 text-purple-500" />
-                            </div>
-                            <div>
-                              <p className="font-medium">
-                                Move to {city.city.city_name}, {city.city.country}
-                              </p>
-                              <p className="text-xs text-muted-foreground">
-                                {(city.relativeMultiplier * 100).toFixed(0)}% of {currentCity.city_name}&apos;s cost of living
-                              </p>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-4 text-sm">
-                            {netWorthSavings > 0 && (
-                              <div className="flex items-center gap-1.5">
-                                <PiggyBank className="h-4 w-4 text-green-500" />
-                                <span className="text-green-600 font-medium">
-                                  {formatCurrency(netWorthSavings)} less needed
-                                </span>
-                              </div>
-                            )}
-                            {yearsSaved !== null && yearsSaved > 0 && (
-                              <div className="flex items-center gap-1.5">
-                                <Clock className="h-4 w-4 text-blue-500" />
-                                <span className="text-blue-600 font-medium">
-                                  {yearsSaved.toFixed(1)} years earlier
-                                </span>
-                              </div>
-                            )}
-                            {city.canRetireNow && !currentCityData.canRetireNow && (
-                              <div className="flex items-center gap-1.5">
-                                <CheckCircle className="h-4 w-4 text-green-500" />
-                                <span className="text-green-600 font-medium">
-                                  Retire now!
-                                </span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-
-                  {cheaperCities.length === 0 && (
-                    <p className="text-sm text-muted-foreground text-center py-4">
-                      You&apos;re already in one of the most affordable cities for your spending profile.
-                    </p>
-                  )}
-
-                  {/* Summary callout */}
-                  {cheaperCities.length > 0 && (() => {
-                    const bestCity = cheaperCities[0];
-                    const netWorthSavings = currentCityData.requiredNW - bestCity.requiredNW;
-                    const yearsSaved = isFinite(currentYearsToRetire) && isFinite(bestCity.yearsToRetirement)
-                      ? currentYearsToRetire - bestCity.yearsToRetirement
-                      : null;
-
-                    return (
-                      <div className="p-4 mt-4 rounded-lg bg-gradient-to-r from-purple-500/10 to-blue-500/10 border border-purple-500/20">
-                        <div className="flex items-start gap-3">
-                          <Lightbulb className="h-5 w-5 text-purple-500 mt-0.5 flex-shrink-0" />
-                          <div>
-                            <p className="font-medium text-purple-700 dark:text-purple-300">
-                              Top Geo-Arbitrage Opportunity
-                            </p>
-                            <p className="text-sm text-muted-foreground mt-1">
-                              Moving from <span className="font-medium">{currentCity.city_name}</span> to{" "}
-                              <span className="font-medium">{bestCity.city.city_name}</span>{" "}
-                              {netWorthSavings > 0 && (
-                                <>reduces your required net worth by <span className="font-medium text-green-600">{formatCurrency(netWorthSavings)}</span></>
-                              )}
-                              {yearsSaved !== null && yearsSaved > 0 && (
-                                <>{netWorthSavings > 0 ? " and " : ""}accelerates FI by <span className="font-medium text-blue-600">{yearsSaved.toFixed(1)} years</span></>
-                              )}
-                              {bestCity.canRetireNow && !currentCityData.canRetireNow && (
-                                <>, allowing you to <span className="font-medium text-green-600">retire immediately</span></>
-                              )}
-                              .
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })()}
-                </div>
-              );
-            })()}
-          </CardContent>
-        </Card>
-      )}
-
       {/* Tax Optimization Strategies */}
-      <Card className="border-amber-500/20 bg-gradient-to-r from-amber-500/5 to-orange-500/5">
+      <Card className="border-amber-500/20 bg-gradient-to-r from-amber-500/5 to-primary/5">
         <CardHeader
           className="cursor-pointer select-none"
           onClick={() => {
@@ -612,7 +480,7 @@ export default function RetirementPage() {
           </div>
 
           {/* Strategy Combinations */}
-          <div className="p-4 rounded-lg bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20">
+          <div className="p-4 rounded-lg bg-gradient-to-r from-amber-500/10 to-primary/10 border border-amber-500/20">
             <div className="flex items-start gap-3">
               <Lightbulb className="h-5 w-5 text-amber-500 mt-0.5 flex-shrink-0" />
               <div>
@@ -644,12 +512,12 @@ export default function RetirementPage() {
 
       {/* No data warning */}
       {netWorthEntries.length === 0 && (
-        <Card className="border-orange-500/20 bg-orange-500/5">
+        <Card className="border-primary/20 bg-primary/5">
           <CardContent className="pt-6">
             <div className="flex items-start gap-3">
-              <TrendingUp className="h-5 w-5 text-orange-500 mt-0.5" />
+              <TrendingUp className="h-5 w-5 text-primary mt-0.5" />
               <div>
-                <p className="font-medium text-orange-500">No Net Worth Data</p>
+                <p className="font-medium text-primary">No Net Worth Data</p>
                 <p className="text-sm text-muted-foreground mt-1">
                   Add net worth entries to see personalized calculations based on your current financial situation and savings rate.
                 </p>
@@ -663,7 +531,7 @@ export default function RetirementPage() {
       <Card>
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
-            <MapPin className="h-5 w-5 text-orange-500" />
+            <MapPin className="h-5 w-5 text-primary" />
             Retirement Location & Spending
           </CardTitle>
           <p className="text-sm text-muted-foreground">
@@ -715,6 +583,44 @@ export default function RetirementPage() {
                     {((calculateEffectiveCOL(selectedCity, weights) / calculateEffectiveCOL(currentCity, weights)) * 100).toFixed(0)}% of {currentCity.city_name}&apos;s cost • Confidence: {selectedCity.confidence}
                   </p>
                 )}
+                {/* Geo-Arbitrage Callout */}
+                {selectedCity && currentCity && selectedCityId !== currentCityId && currentNetWorth > 0 && (() => {
+                  const currentCityData = allCitiesComparison.find(c => c.city.city_id === currentCityId);
+                  const targetCityData = allCitiesComparison.find(c => c.city.city_id === selectedCityId);
+                  if (!currentCityData || !targetCityData) return null;
+
+                  const netWorthSavings = currentCityData.requiredNW - targetCityData.requiredNW;
+                  const yearsSaved = isFinite(currentCityData.yearsToRetirement) && isFinite(targetCityData.yearsToRetirement)
+                    ? currentCityData.yearsToRetirement - targetCityData.yearsToRetirement
+                    : null;
+                  const canRetireNowInTarget = targetCityData.canRetireNow && !currentCityData.canRetireNow;
+
+                  // Only show if there's a meaningful difference
+                  if (netWorthSavings <= 0 && (yearsSaved === null || yearsSaved <= 0) && !canRetireNowInTarget) return null;
+
+                  return (
+                    <div className="mt-3 p-3 rounded-lg bg-lime-500/10 border border-lime-500/30">
+                      <div className="flex items-start gap-2">
+                        <Plane className="h-4 w-4 text-lime-500 mt-0.5 flex-shrink-0" />
+                        <div className="text-sm">
+                          <span className="font-medium text-lime-400">Geo-Arbitrage: </span>
+                          <span className="text-muted-foreground">
+                            Moving to {selectedCity.city_name}
+                            {netWorthSavings > 0 && (
+                              <> saves <span className="font-semibold text-lime-400">{formatCurrency(netWorthSavings)}</span></>
+                            )}
+                            {yearsSaved !== null && yearsSaved > 0 && (
+                              <>{netWorthSavings > 0 ? " and " : " "}accelerates FI by <span className="font-semibold text-lime-400">{yearsSaved.toFixed(1)} years</span></>
+                            )}
+                            {canRetireNowInTarget && (
+                              <> — <span className="font-semibold text-lime-400">you could retire now!</span></>
+                            )}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
               </div>
             </div>
 
@@ -884,7 +790,7 @@ export default function RetirementPage() {
                   </div>
                   <div>
                     <span className="text-muted-foreground">Tax Withheld</span>
-                    <p className="font-medium text-orange-500">
+                    <p className="font-medium text-primary">
                       {formatCurrency(parseFloat(consultingIncome) * (consultingTaxRate / 100))}/yr
                     </p>
                   </div>
@@ -1068,11 +974,11 @@ export default function RetirementPage() {
               <div className="mt-4 pt-4 border-t">
                 <div className="flex justify-between items-center text-sm font-medium">
                   <span>Total Monthly</span>
-                  <span className="text-orange-500">{formatCurrency(results.monthlySpend)}</span>
+                  <span className="text-primary">{formatCurrency(results.monthlySpend)}</span>
                 </div>
                 <div className="flex justify-between items-center text-sm font-medium mt-1">
                   <span>Total Annual</span>
-                  <span className="text-orange-500">{formatCurrency(results.adjustedSpend)}</span>
+                  <span className="text-primary">{formatCurrency(results.adjustedSpend)}</span>
                 </div>
               </div>
             </CardContent>
@@ -1126,7 +1032,7 @@ export default function RetirementPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-orange-500">
+                <div className="text-2xl font-bold text-primary">
                   {formatCurrency(results.adjustedSpend)}
                 </div>
                 <p className="text-xs text-muted-foreground mt-1">
@@ -1288,9 +1194,9 @@ export default function RetirementPage() {
 
           {/* Projection Chart */}
           <Card className="overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-orange-500/5 to-green-500/5 border-b">
+            <CardHeader className="bg-gradient-to-r from-primary/5 to-green-500/5 border-b">
               <CardTitle className="text-lg flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-orange-500" />
+                <TrendingUp className="h-5 w-5 text-primary" />
                 Net Worth Projection
               </CardTitle>
               <p className="text-sm text-muted-foreground">
@@ -1301,7 +1207,7 @@ export default function RetirementPage() {
               {/* Legend explanation */}
               <div className="mb-6 flex flex-wrap gap-4 text-sm">
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-1 bg-orange-500 rounded"></div>
+                  <div className="w-4 h-1 bg-primary rounded"></div>
                   <span className="text-muted-foreground">Your Net Worth</span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -1322,8 +1228,8 @@ export default function RetirementPage() {
                     <defs>
                       {/* Gradient for the area fill */}
                       <linearGradient id="netWorthGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#f97316" stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor="#f97316" stopOpacity={0.05}/>
+                        <stop offset="5%" stopColor="#a3e635" stopOpacity={0.3}/>
+                        <stop offset="95%" stopColor="#a3e635" stopOpacity={0.05}/>
                       </linearGradient>
                       {/* Glow effect for the line */}
                       <filter id="glow">
@@ -1395,7 +1301,7 @@ export default function RetirementPage() {
                               <div className="space-y-2">
                                 <div className="flex justify-between items-center">
                                   <span className="text-gray-500 dark:text-gray-400 text-sm">Net Worth</span>
-                                  <span className="font-bold text-orange-500 text-lg">{formatCurrency(netWorth)}</span>
+                                  <span className="font-bold text-primary text-lg">{formatCurrency(netWorth)}</span>
                                 </div>
 
                                 <div className="flex justify-between items-center">
@@ -1424,7 +1330,7 @@ export default function RetirementPage() {
                                   <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                                     <div
                                       className={`h-2 rounded-full transition-all ${
-                                        percentToGoal >= 100 ? 'bg-green-500' : 'bg-orange-500'
+                                        percentToGoal >= 100 ? 'bg-green-500' : 'bg-primary'
                                       }`}
                                       style={{ width: `${Math.min(percentToGoal, 100)}%` }}
                                     ></div>
@@ -1480,12 +1386,12 @@ export default function RetirementPage() {
                     <Line
                       type="monotone"
                       dataKey="Net Worth"
-                      stroke="#f97316"
+                      stroke="#a3e635"
                       strokeWidth={3}
                       dot={false}
                       activeDot={{
                         r: 6,
-                        fill: "#f97316",
+                        fill: "#a3e635",
                         stroke: "#fff",
                         strokeWidth: 2,
                       }}
@@ -1505,7 +1411,7 @@ export default function RetirementPage() {
           <Card>
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-                <Globe className="h-5 w-5 text-orange-500" />
+                <Globe className="h-5 w-5 text-primary" />
                 All Cities Comparison
               </CardTitle>
               <p className="text-sm text-muted-foreground">
@@ -1532,7 +1438,7 @@ export default function RetirementPage() {
                         key={item.city.city_id}
                         className={
                           item.city.city_id === selectedCityId
-                            ? "bg-orange-500/10"
+                            ? "bg-primary/10"
                             : item.canRetireNow
                             ? "bg-green-500/5"
                             : ""
