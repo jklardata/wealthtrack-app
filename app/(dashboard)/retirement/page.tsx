@@ -15,20 +15,17 @@ import {
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
-  LineChart,
   Line,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
   ReferenceLine,
   Area,
   ComposedChart,
-  ReferenceArea,
 } from "recharts";
-import { TrendingUp, MapPin, Calculator, DollarSign, Globe, CheckCircle, Clock, ChevronDown, ChevronUp, Briefcase, FileSpreadsheet, RefreshCw, ExternalLink, Plane, Building2, Landmark, PiggyBank, Lightbulb, ArrowRight } from "lucide-react";
+import { TrendingUp, MapPin, Calculator, DollarSign, Globe, CheckCircle, Clock, ChevronDown, Plane, Building2, Landmark, PiggyBank, Lightbulb, ArrowRight } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -44,9 +41,8 @@ import {
   validateRetirementParams,
   type SpendingWeights,
   type RetirementParams,
-  type SemiRetirementParams,
 } from "@/lib/retirement-calculator";
-import type { NetWorthEntry, ConsultingIncomeSheetRow } from "@/lib/types";
+import type { NetWorthEntry } from "@/lib/types";
 
 function formatCurrency(value: number): string {
   return new Intl.NumberFormat("en-US", {
@@ -74,18 +70,6 @@ export default function RetirementPage() {
   const [expectedReturn, setExpectedReturn] = useState("5");
   const [weights, setWeights] = useState<SpendingWeights>(DEFAULT_WEIGHTS);
 
-  // Semi-retirement / consulting income inputs
-  const [semiRetirementExpanded, setSemiRetirementExpanded] = useState(false);
-  const [consultingIncome, setConsultingIncome] = useState("0");
-  const [consultingYears, setConsultingYears] = useState("5");
-  const [consultingTaxRate, setConsultingTaxRate] = useState(20); // Percentage as integer for slider
-
-  // Consulting income sheet integration
-  const [consultingSheetData, setConsultingSheetData] = useState<ConsultingIncomeSheetRow[]>([]);
-  const [hasConsultingSheet, setHasConsultingSheet] = useState(false);
-  const [loadingConsultingSheet, setLoadingConsultingSheet] = useState(false);
-  const [creatingConsultingSheet, setCreatingConsultingSheet] = useState(false);
-  const [consultingSheetError, setConsultingSheetError] = useState<string | null>(null);
 
   // Calculated values
   const [results, setResults] = useState<ReturnType<typeof calculateRetirementProjection> | null>(null);
@@ -108,74 +92,6 @@ export default function RetirementPage() {
     fetchNetWorth();
   }, []);
 
-  // Fetch consulting income sheet data
-  const fetchConsultingIncomeData = async () => {
-    setLoadingConsultingSheet(true);
-    setConsultingSheetError(null);
-    try {
-      const response = await fetch("/api/consulting-income");
-      const data = await response.json();
-
-      if (data.error) {
-        setConsultingSheetError(data.error);
-        return;
-      }
-
-      setHasConsultingSheet(data.hasSheet);
-      setConsultingSheetData(data.data || []);
-
-      // If we have data, auto-populate the first year's income
-      if (data.aggregated && data.aggregated.length > 0) {
-        const firstYear = data.aggregated[0];
-        setConsultingIncome(firstYear.totalGrossIncome.toString());
-        setConsultingTaxRate(Math.round(firstYear.avgTaxRate * 100));
-        // Set years based on how many years of data we have
-        setConsultingYears(data.aggregated.length.toString());
-        // Auto-expand the section if we have data
-        setSemiRetirementExpanded(true);
-      }
-    } catch (error) {
-      console.error("Error fetching consulting income:", error);
-      setConsultingSheetError("Failed to fetch consulting income data");
-    } finally {
-      setLoadingConsultingSheet(false);
-    }
-  };
-
-  // Fetch consulting income on mount
-  useEffect(() => {
-    fetchConsultingIncomeData();
-  }, []);
-
-  // Create consulting income sheet
-  const createConsultingSheet = async () => {
-    setCreatingConsultingSheet(true);
-    setConsultingSheetError(null);
-    try {
-      const response = await fetch("/api/create-consulting-income-sheet", {
-        method: "POST",
-      });
-      const data = await response.json();
-
-      if (data.error) {
-        setConsultingSheetError(data.error);
-        return;
-      }
-
-      // Open the new sheet in a new tab
-      if (data.spreadsheetUrl) {
-        window.open(data.spreadsheetUrl, "_blank");
-      }
-
-      // Refresh the data
-      await fetchConsultingIncomeData();
-    } catch (error) {
-      console.error("Error creating consulting income sheet:", error);
-      setConsultingSheetError("Failed to create consulting income sheet");
-    } finally {
-      setCreatingConsultingSheet(false);
-    }
-  };
 
   // Get current net worth and annual savings from most recent entry
   const latestEntry = netWorthEntries.length > 0
@@ -200,18 +116,6 @@ export default function RetirementPage() {
     const targetCityCOL = calculateEffectiveCOL(city, weights);
     const relativeMultiplier = targetCityCOL / currentCityCOL;
 
-    // Build semi-retirement params if consulting income is configured
-    const grossConsulting = parseFloat(consultingIncome) || 0;
-    const yearsConsulting = parseInt(consultingYears) || 0;
-    const semiRetirement: SemiRetirementParams | undefined =
-      grossConsulting > 0 && yearsConsulting > 0
-        ? {
-            grossConsultingIncome: grossConsulting,
-            consultingYears: yearsConsulting,
-            consultingTaxRate: consultingTaxRate / 100,
-          }
-        : undefined;
-
     const params: RetirementParams = {
       currentSpend: parseFloat(currentSpend) * relativeMultiplier || 0,
       currentNetWorth,
@@ -220,7 +124,6 @@ export default function RetirementPage() {
       expectedReturn: parseFloat(expectedReturn) / 100,
       city,
       weights,
-      semiRetirement,
     };
 
     const validationErrors = validateRetirementParams(params);
@@ -232,7 +135,7 @@ export default function RetirementPage() {
       const projection = calculateRetirementProjection(params);
       setResults(projection);
     }
-  }, [selectedCityId, currentCityId, currentSpend, withdrawalRate, expectedReturn, weights, currentNetWorth, annualSavings, consultingIncome, consultingYears, consultingTaxRate]);
+  }, [selectedCityId, currentCityId, currentSpend, withdrawalRate, expectedReturn, weights, currentNetWorth, annualSavings]);
 
   const handleWeightChange = (category: keyof SpendingWeights, value: number[]) => {
     setWeights((prev) => ({
@@ -696,196 +599,6 @@ export default function RetirementPage() {
         </CardContent>
       </Card>
 
-      {/* Semi-Retirement / Light Consulting Section - Collapsible */}
-      <Card className="border-blue-500/20">
-        <CardHeader
-          className="cursor-pointer select-none"
-          onClick={() => setSemiRetirementExpanded(!semiRetirementExpanded)}
-        >
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              <Briefcase className="h-5 w-5 text-blue-500" />
-              <CardTitle className="text-lg">Semi-Retirement / Light Consulting</CardTitle>
-              <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded">Optional</span>
-            </div>
-            {semiRetirementExpanded ? (
-              <ChevronUp className="h-5 w-5 text-muted-foreground" />
-            ) : (
-              <ChevronDown className="h-5 w-5 text-muted-foreground" />
-            )}
-          </div>
-          <p className="text-sm text-muted-foreground">
-            Plan a transition period where part-time consulting income reduces your portfolio withdrawals
-          </p>
-        </CardHeader>
-        {semiRetirementExpanded && (
-          <CardContent className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-3">
-              <div className="space-y-2">
-                <Label htmlFor="consultingIncome">Annual Consulting Income (Gross)</Label>
-                <div className="relative">
-                  <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    id="consultingIncome"
-                    type="number"
-                    value={consultingIncome}
-                    onChange={(e) => setConsultingIncome(e.target.value)}
-                    className="pl-9"
-                    placeholder="0"
-                  />
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  Expected annual gross income from consulting or part-time work
-                </p>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="consultingYears">Years of Semi-Retirement</Label>
-                <Input
-                  id="consultingYears"
-                  type="number"
-                  min="0"
-                  max="20"
-                  value={consultingYears}
-                  onChange={(e) => setConsultingYears(e.target.value)}
-                  placeholder="5"
-                />
-                <p className="text-xs text-muted-foreground">
-                  How long you plan to continue consulting (0-20 years)
-                </p>
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <Label>Effective Tax Rate</Label>
-                  <span className="text-sm font-medium">{consultingTaxRate}%</span>
-                </div>
-                <Slider
-                  value={[consultingTaxRate]}
-                  onValueChange={(value) => setConsultingTaxRate(value[0])}
-                  min={0}
-                  max={40}
-                  step={1}
-                  className="w-full"
-                />
-                <p className="text-xs text-muted-foreground">
-                  Blended federal + state + self-employment taxes
-                </p>
-              </div>
-            </div>
-
-            {/* Semi-retirement preview */}
-            {parseFloat(consultingIncome) > 0 && parseInt(consultingYears) > 0 && (
-              <div className="p-4 bg-blue-500/5 rounded-lg border border-blue-500/20">
-                <div className="grid gap-4 md:grid-cols-3 text-sm">
-                  <div>
-                    <span className="text-muted-foreground">Net Consulting Income</span>
-                    <p className="font-medium text-blue-500">
-                      {formatCurrency(parseFloat(consultingIncome) * (1 - consultingTaxRate / 100))}/yr
-                    </p>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground">Bridge Period</span>
-                    <p className="font-medium">{consultingYears} years</p>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground">Tax Withheld</span>
-                    <p className="font-medium text-primary">
-                      {formatCurrency(parseFloat(consultingIncome) * (consultingTaxRate / 100))}/yr
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Google Sheet Integration */}
-            <div className="pt-4 border-t">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <FileSpreadsheet className="h-4 w-4 text-green-600" />
-                  <span className="text-sm font-medium">Google Sheets Integration</span>
-                </div>
-                <div className="flex gap-2">
-                  {hasConsultingSheet ? (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        fetchConsultingIncomeData();
-                      }}
-                      disabled={loadingConsultingSheet}
-                      className="text-xs"
-                    >
-                      {loadingConsultingSheet ? (
-                        <RefreshCw className="h-3 w-3 mr-1 animate-spin" />
-                      ) : (
-                        <RefreshCw className="h-3 w-3 mr-1" />
-                      )}
-                      Sync from Sheet
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        createConsultingSheet();
-                      }}
-                      disabled={creatingConsultingSheet}
-                      className="text-xs"
-                    >
-                      {creatingConsultingSheet ? (
-                        <RefreshCw className="h-3 w-3 mr-1 animate-spin" />
-                      ) : (
-                        <FileSpreadsheet className="h-3 w-3 mr-1" />
-                      )}
-                      Create Sheet
-                    </Button>
-                  )}
-                </div>
-              </div>
-
-              {consultingSheetError && (
-                <p className="text-xs text-red-500 mb-2">{consultingSheetError}</p>
-              )}
-
-              {hasConsultingSheet && consultingSheetData.length > 0 && (
-                <div className="p-3 bg-green-500/5 rounded-lg border border-green-500/20">
-                  <p className="text-xs text-muted-foreground mb-2">
-                    Imported {consultingSheetData.length} row(s) from your Consulting Income sheet
-                  </p>
-                  <div className="space-y-1 max-h-32 overflow-y-auto">
-                    {consultingSheetData.slice(0, 5).map((row, idx) => (
-                      <div key={idx} className="flex justify-between text-xs">
-                        <span className="text-muted-foreground">
-                          {row.year} - {row.client_name || row.income_type}
-                        </span>
-                        <span className="font-medium">
-                          {formatCurrency(row.gross_income)} @ {(row.effective_tax_rate * 100).toFixed(0)}%
-                        </span>
-                      </div>
-                    ))}
-                    {consultingSheetData.length > 5 && (
-                      <p className="text-xs text-muted-foreground">
-                        ...and {consultingSheetData.length - 5} more
-                      </p>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {!hasConsultingSheet && (
-                <p className="text-xs text-muted-foreground">
-                  Create a Google Sheet to track your projected consulting income by year.
-                  You can enter income projections and import them here.
-                </p>
-              )}
-            </div>
-          </CardContent>
-        )}
-      </Card>
-
       {/* Spending Weights & Cost Breakdown - Side by Side */}
       <div className="grid gap-6 md:grid-cols-2">
         {/* Spending Category Weights */}
@@ -1094,104 +807,6 @@ export default function RetirementPage() {
             </Card>
           </div>
 
-          {/* Semi-Retirement Impact Section */}
-          {results.semiRetirement && (
-            <Card className="border-blue-500/20 bg-blue-500/5">
-              <CardHeader>
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <Briefcase className="h-5 w-5 text-blue-500" />
-                  Semi-Retirement Impact
-                </CardTitle>
-                <p className="text-sm text-muted-foreground">
-                  How consulting income changes your retirement timeline
-                </p>
-              </CardHeader>
-              <CardContent>
-                <div className="grid gap-4 md:grid-cols-4 mb-6">
-                  <div className="p-4 bg-background rounded-lg">
-                    <p className="text-sm text-muted-foreground">Years to Semi-Retirement</p>
-                    <p className="text-2xl font-bold text-blue-500">
-                      {isFinite(results.semiRetirement.yearsToSemiRetirement)
-                        ? results.semiRetirement.yearsToSemiRetirement.toFixed(1)
-                        : "∞"}
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      vs {isFinite(results.yearsToRetirement) ? results.yearsToRetirement.toFixed(1) : "∞"} for full retirement
-                    </p>
-                  </div>
-                  <div className="p-4 bg-background rounded-lg">
-                    <p className="text-sm text-muted-foreground">Required Net Worth (Semi)</p>
-                    <p className="text-2xl font-bold text-green-500">
-                      {formatCurrency(results.semiRetirement.requiredNetWorthWithSemi)}
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {formatCurrency(results.semiRetirement.netWorthSavings)} less than full retirement
-                    </p>
-                  </div>
-                  <div className="p-4 bg-background rounded-lg">
-                    <p className="text-sm text-muted-foreground">Portfolio Withdrawal (Semi)</p>
-                    <p className="text-2xl font-bold text-purple-500">
-                      {formatCurrency(results.semiRetirement.portfolioWithdrawalDuringSemi)}/yr
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {results.semiRetirement.excessSavings > 0
-                        ? `+${formatCurrency(results.semiRetirement.excessSavings)}/yr added to portfolio`
-                        : `vs ${formatCurrency(results.adjustedSpend)}/yr full retirement`}
-                    </p>
-                  </div>
-                  <div className="p-4 bg-background rounded-lg">
-                    <p className="text-sm text-muted-foreground">Bridge Period</p>
-                    <p className="text-2xl font-bold">{results.semiRetirement.totalSemiRetirementYears} years</p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      of consulting income
-                    </p>
-                  </div>
-                </div>
-
-                {/* Timeline Phases */}
-                <div className="space-y-2">
-                  <p className="text-sm font-medium">Retirement Timeline</p>
-                  <div className="flex flex-col gap-2">
-                    {results.semiRetirement.phases.map((phase, idx) => (
-                      <div
-                        key={idx}
-                        className={`p-3 rounded-lg border ${
-                          phase.type === 'accumulation'
-                            ? 'bg-gray-500/5 border-gray-500/20'
-                            : phase.type === 'semi-retirement'
-                            ? 'bg-blue-500/5 border-blue-500/20'
-                            : 'bg-green-500/5 border-green-500/20'
-                        }`}
-                      >
-                        <div className="flex justify-between items-center">
-                          <div className="flex items-center gap-2">
-                            <span className={`text-sm font-medium ${
-                              phase.type === 'accumulation'
-                                ? 'text-gray-600'
-                                : phase.type === 'semi-retirement'
-                                ? 'text-blue-600'
-                                : 'text-green-600'
-                            }`}>
-                              {phase.type === 'accumulation' && 'Working / Accumulation'}
-                              {phase.type === 'semi-retirement' && 'Semi-Retirement'}
-                              {phase.type === 'full-retirement' && 'Full Retirement'}
-                            </span>
-                            <span className="text-xs text-muted-foreground">
-                              Year {phase.startYear.toFixed(1)} → {isFinite(phase.endYear) ? `Year ${phase.endYear.toFixed(1)}` : 'Ongoing'}
-                            </span>
-                          </div>
-                          <span className="text-xs text-muted-foreground">
-                            {phase.description}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
           {/* Projection Chart */}
           <Card className="overflow-hidden">
             <CardHeader className="bg-gradient-to-r from-primary/5 to-green-500/5 border-b">
@@ -1205,21 +820,32 @@ export default function RetirementPage() {
             </CardHeader>
             <CardContent className="pt-6">
               {/* Legend explanation */}
-              <div className="mb-6 flex flex-wrap gap-4 text-sm">
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-1 bg-primary rounded"></div>
-                  <span className="text-muted-foreground">Your Net Worth</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-0.5 bg-green-500 border-dashed border-t-2 border-green-500"></div>
-                  <span className="text-muted-foreground">Full Retirement Goal ({formatCurrency(results.requiredNetWorth)})</span>
-                </div>
-                {results.semiRetirement && (
+              <div className="mb-6 space-y-3">
+                <div className="flex flex-wrap gap-4 text-sm">
                   <div className="flex items-center gap-2">
-                    <div className="w-4 h-0.5 bg-blue-500 border-dashed border-t-2 border-blue-500"></div>
-                    <span className="text-muted-foreground">Semi-Retirement ({formatCurrency(results.semiRetirement.requiredNetWorthWithSemi)})</span>
+                    <div className="w-4 h-1 bg-primary rounded"></div>
+                    <span className="text-muted-foreground">Your Net Worth Projection</span>
                   </div>
-                )}
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  <span className="font-medium">City Retirement Thresholds:</span> Horizontal lines show required net worth for each city
+                </div>
+                <div className="flex flex-wrap gap-3 text-xs">
+                  {allCitiesComparison.slice(0, 6).map((item, idx) => {
+                    const colors = ['#22c55e', '#3b82f6', '#f59e0b', '#ec4899', '#8b5cf6', '#06b6d4'];
+                    return (
+                      <div key={item.city.city_id} className="flex items-center gap-1.5">
+                        <div
+                          className="w-3 h-0.5"
+                          style={{ backgroundColor: colors[idx], borderTop: `2px dashed ${colors[idx]}` }}
+                        />
+                        <span className="text-muted-foreground">
+                          {item.city.city_name} ({formatCurrency(item.requiredNW)})
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
 
               {chartData.length > 0 ? (
@@ -1274,27 +900,18 @@ export default function RetirementPage() {
                         if (active && payload && payload.length) {
                           const data = payload[0].payload;
                           const netWorth = data["Net Worth"] as number;
-                          const phase = data.phase as string;
                           const distanceToGoal = results.requiredNetWorth - netWorth;
                           const percentToGoal = (netWorth / results.requiredNetWorth) * 100;
 
+                          // Find cities you can retire in at this net worth
+                          const citiesCanRetire = allCitiesComparison.filter(c => netWorth >= c.requiredNW);
+                          const nextCity = allCitiesComparison.find(c => netWorth < c.requiredNW);
+
                           return (
-                            <div className="bg-white dark:bg-gray-900 p-4 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 min-w-[220px]">
+                            <div className="bg-white dark:bg-gray-900 p-4 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 min-w-[250px]">
                               <div className="flex items-center gap-2 mb-3 pb-2 border-b border-gray-100 dark:border-gray-800">
-                                <div className={`w-2 h-2 rounded-full ${
-                                  phase === 'accumulation' ? 'bg-gray-500' :
-                                  phase === 'semi-retirement' ? 'bg-blue-500' : 'bg-green-500'
-                                }`}></div>
                                 <span className="font-semibold text-gray-900 dark:text-gray-100">
                                   Year {label}
-                                </span>
-                                <span className={`text-xs px-2 py-0.5 rounded-full ${
-                                  phase === 'accumulation' ? 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400' :
-                                  phase === 'semi-retirement' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-400' :
-                                  'bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-400'
-                                }`}>
-                                  {phase === 'accumulation' ? 'Working' :
-                                   phase === 'semi-retirement' ? 'Semi-Retired' : 'Fully Retired'}
                                 </span>
                               </div>
 
@@ -1304,29 +921,30 @@ export default function RetirementPage() {
                                   <span className="font-bold text-primary text-lg">{formatCurrency(netWorth)}</span>
                                 </div>
 
-                                <div className="flex justify-between items-center">
-                                  <span className="text-gray-500 dark:text-gray-400 text-sm">Progress to Goal</span>
-                                  <span className={`font-medium ${percentToGoal >= 100 ? 'text-green-500' : 'text-gray-700 dark:text-gray-300'}`}>
-                                    {percentToGoal.toFixed(0)}%
-                                  </span>
-                                </div>
-
-                                {distanceToGoal > 0 && (
-                                  <div className="flex justify-between items-center">
-                                    <span className="text-gray-500 dark:text-gray-400 text-sm">Gap to Goal</span>
-                                    <span className="font-medium text-red-500">{formatCurrency(distanceToGoal)}</span>
+                                {citiesCanRetire.length > 0 && (
+                                  <div className="pt-2 border-t border-gray-100 dark:border-gray-800">
+                                    <span className="text-xs text-green-500 font-medium">
+                                      Can retire in: {citiesCanRetire.slice(0, 3).map(c => c.city.city_name).join(', ')}
+                                      {citiesCanRetire.length > 3 && ` +${citiesCanRetire.length - 3} more`}
+                                    </span>
                                   </div>
                                 )}
 
-                                {distanceToGoal <= 0 && (
-                                  <div className="flex items-center gap-1 text-green-500 text-sm mt-1">
-                                    <CheckCircle className="h-4 w-4" />
-                                    <span>Goal achieved!</span>
+                                {nextCity && (
+                                  <div className="flex justify-between items-center text-xs">
+                                    <span className="text-gray-500 dark:text-gray-400">Next: {nextCity.city.city_name}</span>
+                                    <span className="text-muted-foreground">{formatCurrency(nextCity.requiredNW - netWorth)} away</span>
                                   </div>
                                 )}
 
-                                {/* Progress bar */}
+                                {/* Progress bar to selected city */}
                                 <div className="mt-2 pt-2 border-t border-gray-100 dark:border-gray-800">
+                                  <div className="flex justify-between text-xs mb-1">
+                                    <span className="text-muted-foreground">Progress to {selectedCity?.city_name}</span>
+                                    <span className={percentToGoal >= 100 ? 'text-green-500' : 'text-muted-foreground'}>
+                                      {percentToGoal.toFixed(0)}%
+                                    </span>
+                                  </div>
                                   <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                                     <div
                                       className={`h-2 rounded-full transition-all ${
@@ -1344,35 +962,25 @@ export default function RetirementPage() {
                       }}
                     />
 
-                    {/* Semi-retirement shaded region */}
-                    {results.semiRetirement && isFinite(results.semiRetirement.yearsToSemiRetirement) && (
-                      <ReferenceArea
-                        x1={Math.round(results.semiRetirement.yearsToSemiRetirement)}
-                        x2={Math.round(results.semiRetirement.yearsToSemiRetirement + results.semiRetirement.totalSemiRetirementYears)}
-                        fill="#3b82f6"
-                        fillOpacity={0.1}
-                        stroke="#3b82f6"
-                        strokeOpacity={0.3}
-                      />
-                    )}
-
-                    {/* Semi-retirement threshold line */}
-                    {results.semiRetirement && (
-                      <ReferenceLine
-                        y={results.semiRetirement.requiredNetWorthWithSemi}
-                        stroke="#3b82f6"
-                        strokeWidth={2}
-                        strokeDasharray="8 4"
-                      />
-                    )}
-
-                    {/* Full retirement goal line */}
-                    <ReferenceLine
-                      y={results.requiredNetWorth}
-                      stroke="#22c55e"
-                      strokeWidth={2}
-                      strokeDasharray="8 4"
-                    />
+                    {/* City retirement threshold lines */}
+                    {allCitiesComparison.slice(0, 6).map((item, idx) => {
+                      const colors = ['#22c55e', '#3b82f6', '#f59e0b', '#ec4899', '#8b5cf6', '#06b6d4'];
+                      return (
+                        <ReferenceLine
+                          key={item.city.city_id}
+                          y={item.requiredNW}
+                          stroke={colors[idx]}
+                          strokeWidth={idx === 0 ? 2 : 1.5}
+                          strokeDasharray="8 4"
+                          label={{
+                            value: item.city.city_name,
+                            position: 'right',
+                            fill: colors[idx],
+                            fontSize: 10,
+                          }}
+                        />
+                      );
+                    })}
 
                     {/* Area fill under the line */}
                     <Area
