@@ -25,7 +25,7 @@ import {
   ResponsiveContainer,
   ReferenceLine,
 } from "recharts";
-import { TrendingUp, MapPin, Calculator, DollarSign, Globe, CheckCircle, Clock } from "lucide-react";
+import { TrendingUp, MapPin, Calculator, DollarSign, Globe, CheckCircle, Clock, ChevronDown, ChevronUp, Briefcase } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -41,6 +41,7 @@ import {
   validateRetirementParams,
   type SpendingWeights,
   type RetirementParams,
+  type SemiRetirementParams,
 } from "@/lib/retirement-calculator";
 import type { NetWorthEntry } from "@/lib/types";
 
@@ -69,6 +70,12 @@ export default function RetirementPage() {
   const [withdrawalRate, setWithdrawalRate] = useState("4");
   const [expectedReturn, setExpectedReturn] = useState("5");
   const [weights, setWeights] = useState<SpendingWeights>(DEFAULT_WEIGHTS);
+
+  // Semi-retirement / consulting income inputs
+  const [semiRetirementExpanded, setSemiRetirementExpanded] = useState(false);
+  const [consultingIncome, setConsultingIncome] = useState("0");
+  const [consultingYears, setConsultingYears] = useState("5");
+  const [consultingTaxRate, setConsultingTaxRate] = useState(20); // Percentage as integer for slider
 
   // Calculated values
   const [results, setResults] = useState<ReturnType<typeof calculateRetirementProjection> | null>(null);
@@ -114,6 +121,18 @@ export default function RetirementPage() {
     const targetCityCOL = calculateEffectiveCOL(city, weights);
     const relativeMultiplier = targetCityCOL / currentCityCOL;
 
+    // Build semi-retirement params if consulting income is configured
+    const grossConsulting = parseFloat(consultingIncome) || 0;
+    const yearsConsulting = parseInt(consultingYears) || 0;
+    const semiRetirement: SemiRetirementParams | undefined =
+      grossConsulting > 0 && yearsConsulting > 0
+        ? {
+            grossConsultingIncome: grossConsulting,
+            consultingYears: yearsConsulting,
+            consultingTaxRate: consultingTaxRate / 100,
+          }
+        : undefined;
+
     const params: RetirementParams = {
       currentSpend: parseFloat(currentSpend) * relativeMultiplier || 0,
       currentNetWorth,
@@ -122,16 +141,19 @@ export default function RetirementPage() {
       expectedReturn: parseFloat(expectedReturn) / 100,
       city,
       weights,
+      semiRetirement,
     };
 
     const validationErrors = validateRetirementParams(params);
+    // Filter out warnings (they start with "Warning:") from blocking errors
+    const blockingErrors = validationErrors.filter(e => !e.startsWith('Warning:'));
     setErrors(validationErrors);
 
-    if (validationErrors.length === 0) {
+    if (blockingErrors.length === 0) {
       const projection = calculateRetirementProjection(params);
       setResults(projection);
     }
-  }, [selectedCityId, currentCityId, currentSpend, withdrawalRate, expectedReturn, weights, currentNetWorth, annualSavings]);
+  }, [selectedCityId, currentCityId, currentSpend, withdrawalRate, expectedReturn, weights, currentNetWorth, annualSavings, consultingIncome, consultingYears, consultingTaxRate]);
 
   const handleWeightChange = (category: keyof SpendingWeights, value: number[]) => {
     setWeights((prev) => ({
@@ -190,10 +212,11 @@ export default function RetirementPage() {
   const cheapestRetireNow = citiesCanRetireNow.length > 0 ? citiesCanRetireNow[0] : null;
   const nextMilestone = allCitiesComparison.find(c => !c.canRetireNow);
 
-  // Format chart data
+  // Format chart data with phase information
   const chartData = results?.projections.map((p) => ({
     year: p.year,
     "Net Worth": p.netWorth,
+    phase: p.phase,
   })) || [];
 
   if (loadingNetWorth) {
@@ -411,6 +434,111 @@ export default function RetirementPage() {
         </CardContent>
       </Card>
 
+      {/* Semi-Retirement / Light Consulting Section - Collapsible */}
+      <Card className="border-blue-500/20">
+        <CardHeader
+          className="cursor-pointer select-none"
+          onClick={() => setSemiRetirementExpanded(!semiRetirementExpanded)}
+        >
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-2">
+              <Briefcase className="h-5 w-5 text-blue-500" />
+              <CardTitle className="text-lg">Semi-Retirement / Light Consulting</CardTitle>
+              <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded">Optional</span>
+            </div>
+            {semiRetirementExpanded ? (
+              <ChevronUp className="h-5 w-5 text-muted-foreground" />
+            ) : (
+              <ChevronDown className="h-5 w-5 text-muted-foreground" />
+            )}
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Plan a transition period where part-time consulting income reduces your portfolio withdrawals
+          </p>
+        </CardHeader>
+        {semiRetirementExpanded && (
+          <CardContent className="space-y-4">
+            <div className="grid gap-4 md:grid-cols-3">
+              <div className="space-y-2">
+                <Label htmlFor="consultingIncome">Annual Consulting Income (Gross)</Label>
+                <div className="relative">
+                  <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="consultingIncome"
+                    type="number"
+                    value={consultingIncome}
+                    onChange={(e) => setConsultingIncome(e.target.value)}
+                    className="pl-9"
+                    placeholder="0"
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Expected annual gross income from consulting or part-time work
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="consultingYears">Years of Semi-Retirement</Label>
+                <Input
+                  id="consultingYears"
+                  type="number"
+                  min="0"
+                  max="20"
+                  value={consultingYears}
+                  onChange={(e) => setConsultingYears(e.target.value)}
+                  placeholder="5"
+                />
+                <p className="text-xs text-muted-foreground">
+                  How long you plan to continue consulting (0-20 years)
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <Label>Effective Tax Rate</Label>
+                  <span className="text-sm font-medium">{consultingTaxRate}%</span>
+                </div>
+                <Slider
+                  value={[consultingTaxRate]}
+                  onValueChange={(value) => setConsultingTaxRate(value[0])}
+                  min={0}
+                  max={40}
+                  step={1}
+                  className="w-full"
+                />
+                <p className="text-xs text-muted-foreground">
+                  Blended federal + state + self-employment taxes
+                </p>
+              </div>
+            </div>
+
+            {/* Semi-retirement preview */}
+            {parseFloat(consultingIncome) > 0 && parseInt(consultingYears) > 0 && (
+              <div className="p-4 bg-blue-500/5 rounded-lg border border-blue-500/20">
+                <div className="grid gap-4 md:grid-cols-3 text-sm">
+                  <div>
+                    <span className="text-muted-foreground">Net Consulting Income</span>
+                    <p className="font-medium text-blue-500">
+                      {formatCurrency(parseFloat(consultingIncome) * (1 - consultingTaxRate / 100))}/yr
+                    </p>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Bridge Period</span>
+                    <p className="font-medium">{consultingYears} years</p>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Tax Withheld</span>
+                    <p className="font-medium text-orange-500">
+                      {formatCurrency(parseFloat(consultingIncome) * (consultingTaxRate / 100))}/yr
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </CardContent>
+        )}
+      </Card>
+
       {/* Spending Weights & Cost Breakdown - Side by Side */}
       <div className="grid gap-6 md:grid-cols-2">
         {/* Spending Category Weights */}
@@ -511,13 +639,16 @@ export default function RetirementPage() {
         )}
       </div>
 
-      {/* Validation Errors */}
+      {/* Validation Errors and Warnings */}
       {errors.length > 0 && (
-        <Card className="border-red-500/20 bg-red-500/5">
+        <Card className={errors.some(e => !e.startsWith('Warning:')) ? "border-red-500/20 bg-red-500/5" : "border-yellow-500/20 bg-yellow-500/5"}>
           <CardContent className="pt-6">
             <div className="space-y-1">
               {errors.map((error, idx) => (
-                <p key={idx} className="text-sm text-red-500">
+                <p
+                  key={idx}
+                  className={`text-sm ${error.startsWith('Warning:') ? 'text-yellow-600' : 'text-red-500'}`}
+                >
                   • {error}
                 </p>
               ))}
@@ -527,7 +658,7 @@ export default function RetirementPage() {
       )}
 
       {/* Results Section */}
-      {results && errors.length === 0 && (
+      {results && errors.filter(e => !e.startsWith('Warning:')).length === 0 && (
         <>
           {/* Key Metrics */}
           <div className="grid gap-4 md:grid-cols-5">
@@ -616,6 +747,104 @@ export default function RetirementPage() {
             </Card>
           </div>
 
+          {/* Semi-Retirement Impact Section */}
+          {results.semiRetirement && (
+            <Card className="border-blue-500/20 bg-blue-500/5">
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <Briefcase className="h-5 w-5 text-blue-500" />
+                  Semi-Retirement Impact
+                </CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  How consulting income changes your retirement timeline
+                </p>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-4 md:grid-cols-4 mb-6">
+                  <div className="p-4 bg-background rounded-lg">
+                    <p className="text-sm text-muted-foreground">Years to Semi-Retirement</p>
+                    <p className="text-2xl font-bold text-blue-500">
+                      {isFinite(results.semiRetirement.yearsToSemiRetirement)
+                        ? results.semiRetirement.yearsToSemiRetirement.toFixed(1)
+                        : "∞"}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      vs {isFinite(results.yearsToRetirement) ? results.yearsToRetirement.toFixed(1) : "∞"} for full retirement
+                    </p>
+                  </div>
+                  <div className="p-4 bg-background rounded-lg">
+                    <p className="text-sm text-muted-foreground">Required Net Worth (Semi)</p>
+                    <p className="text-2xl font-bold text-green-500">
+                      {formatCurrency(results.semiRetirement.requiredNetWorthWithSemi)}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {formatCurrency(results.semiRetirement.netWorthSavings)} less than full retirement
+                    </p>
+                  </div>
+                  <div className="p-4 bg-background rounded-lg">
+                    <p className="text-sm text-muted-foreground">Portfolio Withdrawal (Semi)</p>
+                    <p className="text-2xl font-bold text-purple-500">
+                      {formatCurrency(results.semiRetirement.portfolioWithdrawalDuringSemi)}/yr
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {results.semiRetirement.excessSavings > 0
+                        ? `+${formatCurrency(results.semiRetirement.excessSavings)}/yr added to portfolio`
+                        : `vs ${formatCurrency(results.adjustedSpend)}/yr full retirement`}
+                    </p>
+                  </div>
+                  <div className="p-4 bg-background rounded-lg">
+                    <p className="text-sm text-muted-foreground">Bridge Period</p>
+                    <p className="text-2xl font-bold">{results.semiRetirement.totalSemiRetirementYears} years</p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      of consulting income
+                    </p>
+                  </div>
+                </div>
+
+                {/* Timeline Phases */}
+                <div className="space-y-2">
+                  <p className="text-sm font-medium">Retirement Timeline</p>
+                  <div className="flex flex-col gap-2">
+                    {results.semiRetirement.phases.map((phase, idx) => (
+                      <div
+                        key={idx}
+                        className={`p-3 rounded-lg border ${
+                          phase.type === 'accumulation'
+                            ? 'bg-gray-500/5 border-gray-500/20'
+                            : phase.type === 'semi-retirement'
+                            ? 'bg-blue-500/5 border-blue-500/20'
+                            : 'bg-green-500/5 border-green-500/20'
+                        }`}
+                      >
+                        <div className="flex justify-between items-center">
+                          <div className="flex items-center gap-2">
+                            <span className={`text-sm font-medium ${
+                              phase.type === 'accumulation'
+                                ? 'text-gray-600'
+                                : phase.type === 'semi-retirement'
+                                ? 'text-blue-600'
+                                : 'text-green-600'
+                            }`}>
+                              {phase.type === 'accumulation' && 'Working / Accumulation'}
+                              {phase.type === 'semi-retirement' && 'Semi-Retirement'}
+                              {phase.type === 'full-retirement' && 'Full Retirement'}
+                            </span>
+                            <span className="text-xs text-muted-foreground">
+                              Year {phase.startYear.toFixed(1)} → {isFinite(phase.endYear) ? `Year ${phase.endYear.toFixed(1)}` : 'Ongoing'}
+                            </span>
+                          </div>
+                          <span className="text-xs text-muted-foreground">
+                            {phase.description}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
           {/* Projection Chart */}
           <Card>
             <CardHeader>
@@ -629,9 +858,15 @@ export default function RetirementPage() {
                 <p>
                   The <span className="text-orange-500 font-medium">orange line</span> shows your projected net worth growth over time,
                   combining your current savings rate with compound investment returns.
-                  The <span className="text-green-500 font-medium">green dashed line</span> marks your retirement goal—the amount needed
+                  The <span className="text-green-500 font-medium">green dashed line</span> marks your full retirement goal—the amount needed
                   so your safe withdrawal covers expenses in your target city.
-                  When the orange line crosses the green line, you can retire.
+                  {results.semiRetirement && (
+                    <>
+                      {' '}The <span className="text-blue-500 font-medium">blue dashed line</span> marks your semi-retirement threshold—a lower
+                      amount where consulting income bridges the gap.
+                      The <span className="text-blue-500/50 font-medium">shaded blue region</span> shows your semi-retirement period.
+                    </>
+                  )}
                 </p>
               </div>
               {chartData.length > 0 ? (
@@ -647,16 +882,55 @@ export default function RetirementPage() {
                       label={{ value: "Net Worth", angle: -90, position: "insideLeft" }}
                     />
                     <Tooltip
-                      formatter={(value) => value ? formatCurrency(value as number) : ''}
-                      labelFormatter={(label) => `Year ${label}`}
+                      formatter={(value, name) => {
+                        if (name === "Net Worth") {
+                          return value ? formatCurrency(value as number) : '';
+                        }
+                        return value;
+                      }}
+                      labelFormatter={(label) => {
+                        const dataPoint = chartData.find(d => d.year === label);
+                        const phaseLabel = dataPoint?.phase
+                          ? ` (${dataPoint.phase === 'accumulation' ? 'Working' : dataPoint.phase === 'semi-retirement' ? 'Semi-Retired' : 'Fully Retired'})`
+                          : '';
+                        return `Year ${label}${phaseLabel}`;
+                      }}
                     />
                     <Legend />
+                    {/* Semi-retirement threshold line (if applicable) */}
+                    {results.semiRetirement && (
+                      <ReferenceLine
+                        y={results.semiRetirement.requiredNetWorthWithSemi}
+                        stroke="#3b82f6"
+                        strokeDasharray="5 5"
+                        label={{ value: "Semi-Retirement", position: "right" }}
+                      />
+                    )}
+                    {/* Full retirement goal line */}
                     <ReferenceLine
                       y={results.requiredNetWorth}
                       stroke="#22c55e"
                       strokeDasharray="5 5"
-                      label={{ value: "Retirement Goal", position: "right" }}
+                      label={{ value: "Full Retirement", position: "right" }}
                     />
+                    {/* Semi-retirement start marker (vertical line) */}
+                    {results.semiRetirement && isFinite(results.semiRetirement.yearsToSemiRetirement) && results.semiRetirement.yearsToSemiRetirement > 0 && (
+                      <ReferenceLine
+                        x={Math.round(results.semiRetirement.yearsToSemiRetirement)}
+                        stroke="#3b82f6"
+                        strokeDasharray="3 3"
+                        label={{ value: "Start Semi-Retirement", position: "top", fill: "#3b82f6" }}
+                      />
+                    )}
+                    {/* Semi-retirement end marker (vertical line) */}
+                    {results.semiRetirement && isFinite(results.semiRetirement.yearsToSemiRetirement) && (
+                      <ReferenceLine
+                        x={Math.round(results.semiRetirement.yearsToSemiRetirement + results.semiRetirement.totalSemiRetirementYears)}
+                        stroke="#22c55e"
+                        strokeDasharray="3 3"
+                        label={{ value: "Full Retirement", position: "top", fill: "#22c55e" }}
+                      />
+                    )}
                     <Line
                       type="monotone"
                       dataKey="Net Worth"
