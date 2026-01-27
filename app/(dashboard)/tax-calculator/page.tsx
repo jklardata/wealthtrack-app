@@ -1,0 +1,959 @@
+"use client";
+
+import { useEffect, useState, useMemo } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Cell,
+  Legend,
+  PieChart,
+  Pie,
+} from "recharts";
+import {
+  Calculator,
+  DollarSign,
+  Building2,
+  Briefcase,
+  Plane,
+  PiggyBank,
+  TrendingUp,
+  ChevronDown,
+  ChevronUp,
+  Info,
+  CheckCircle,
+  AlertTriangle,
+  Landmark,
+  Receipt,
+  ArrowRight,
+} from "lucide-react";
+
+// 2024 Tax Constants
+const TAX_CONSTANTS = {
+  // Social Security
+  socialSecurityWageBase: 168600,
+  socialSecurityRate: 0.062,
+  medicareRate: 0.0145,
+  additionalMedicareThreshold: 200000,
+  additionalMedicareRate: 0.009,
+
+  // Self-Employment
+  selfEmploymentTaxRate: 0.153, // 12.4% SS + 2.9% Medicare
+  selfEmploymentDeduction: 0.5, // Deduct half of SE tax
+
+  // FEIE
+  feieExclusion2024: 126500,
+
+  // Standard Deduction 2024
+  standardDeductionSingle: 14600,
+  standardDeductionMarried: 29200,
+
+  // QBI Deduction
+  qbiDeductionRate: 0.20,
+  qbiPhaseoutSingle: 191950,
+  qbiPhaseoutMarried: 383900,
+
+  // Federal Tax Brackets 2024 (Single)
+  federalBracketsSingle: [
+    { min: 0, max: 11600, rate: 0.10 },
+    { min: 11600, max: 47150, rate: 0.12 },
+    { min: 47150, max: 100525, rate: 0.22 },
+    { min: 100525, max: 191950, rate: 0.24 },
+    { min: 191950, max: 243725, rate: 0.32 },
+    { min: 243725, max: 609350, rate: 0.35 },
+    { min: 609350, max: Infinity, rate: 0.37 },
+  ],
+
+  // Federal Tax Brackets 2024 (Married Filing Jointly)
+  federalBracketsMarried: [
+    { min: 0, max: 23200, rate: 0.10 },
+    { min: 23200, max: 94300, rate: 0.12 },
+    { min: 94300, max: 201050, rate: 0.22 },
+    { min: 201050, max: 383900, rate: 0.24 },
+    { min: 383900, max: 487450, rate: 0.32 },
+    { min: 487450, max: 731200, rate: 0.35 },
+    { min: 731200, max: Infinity, rate: 0.37 },
+  ],
+};
+
+// State tax rates (simplified - using flat rates for major states)
+const STATE_TAX_RATES: Record<string, { rate: number; name: string }> = {
+  none: { rate: 0, name: "No State Tax (TX, FL, WY, etc.)" },
+  ca: { rate: 0.093, name: "California (9.3% avg)" },
+  ny: { rate: 0.0685, name: "New York (6.85% avg)" },
+  nj: { rate: 0.0637, name: "New Jersey (6.37% avg)" },
+  ma: { rate: 0.05, name: "Massachusetts (5%)" },
+  il: { rate: 0.0495, name: "Illinois (4.95%)" },
+  pa: { rate: 0.0307, name: "Pennsylvania (3.07%)" },
+  wa: { rate: 0, name: "Washington (0%)" },
+  co: { rate: 0.044, name: "Colorado (4.4%)" },
+  ga: { rate: 0.055, name: "Georgia (5.5% avg)" },
+  nc: { rate: 0.0525, name: "North Carolina (5.25%)" },
+  az: { rate: 0.025, name: "Arizona (2.5%)" },
+  other: { rate: 0.05, name: "Other (5% estimate)" },
+};
+
+function formatCurrency(value: number): string {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(value);
+}
+
+function formatPercent(value: number): string {
+  return (value * 100).toFixed(1) + "%";
+}
+
+// Calculate federal income tax
+function calculateFederalTax(taxableIncome: number, filingStatus: "single" | "married"): number {
+  const brackets = filingStatus === "single"
+    ? TAX_CONSTANTS.federalBracketsSingle
+    : TAX_CONSTANTS.federalBracketsMarried;
+
+  let tax = 0;
+  let remainingIncome = taxableIncome;
+
+  for (const bracket of brackets) {
+    if (remainingIncome <= 0) break;
+    const taxableInBracket = Math.min(remainingIncome, bracket.max - bracket.min);
+    tax += taxableInBracket * bracket.rate;
+    remainingIncome -= taxableInBracket;
+  }
+
+  return tax;
+}
+
+// Calculate Self-Employment Tax
+function calculateSETax(netSelfEmploymentIncome: number): { ssTax: number; medicareTax: number; total: number } {
+  // SE tax is calculated on 92.35% of net SE income
+  const seBase = netSelfEmploymentIncome * 0.9235;
+
+  // Social Security portion (capped at wage base)
+  const ssBase = Math.min(seBase, TAX_CONSTANTS.socialSecurityWageBase);
+  const ssTax = ssBase * TAX_CONSTANTS.socialSecurityRate * 2; // Both employer and employee portions
+
+  // Medicare portion (no cap)
+  let medicareTax = seBase * TAX_CONSTANTS.medicareRate * 2;
+
+  // Additional Medicare tax on income over threshold
+  if (seBase > TAX_CONSTANTS.additionalMedicareThreshold) {
+    medicareTax += (seBase - TAX_CONSTANTS.additionalMedicareThreshold) * TAX_CONSTANTS.additionalMedicareRate;
+  }
+
+  return {
+    ssTax,
+    medicareTax,
+    total: ssTax + medicareTax,
+  };
+}
+
+// Calculate FICA taxes for W-2 income
+function calculateFICA(wages: number): { employeeSS: number; employeeMedicare: number; employerSS: number; employerMedicare: number; total: number } {
+  const ssBase = Math.min(wages, TAX_CONSTANTS.socialSecurityWageBase);
+  const employeeSS = ssBase * TAX_CONSTANTS.socialSecurityRate;
+  const employerSS = ssBase * TAX_CONSTANTS.socialSecurityRate;
+
+  let employeeMedicare = wages * TAX_CONSTANTS.medicareRate;
+  const employerMedicare = wages * TAX_CONSTANTS.medicareRate;
+
+  // Additional Medicare tax on employee side only
+  if (wages > TAX_CONSTANTS.additionalMedicareThreshold) {
+    employeeMedicare += (wages - TAX_CONSTANTS.additionalMedicareThreshold) * TAX_CONSTANTS.additionalMedicareRate;
+  }
+
+  return {
+    employeeSS,
+    employeeMedicare,
+    employerSS,
+    employerMedicare,
+    total: employeeSS + employeeMedicare + employerSS + employerMedicare,
+  };
+}
+
+interface TaxCalculation {
+  grossIncome: number;
+  structure: string;
+  salary: number;
+  distributions: number;
+  seTax: number;
+  ficaEmployee: number;
+  ficaEmployer: number;
+  federalTax: number;
+  stateTax: number;
+  totalTax: number;
+  takeHomePay: number;
+  effectiveRate: number;
+  qbiDeduction: number;
+  retirement401k: number;
+  hsaContribution: number;
+  feieExclusion: number;
+}
+
+export default function TaxCalculatorPage() {
+  // Input state
+  const [grossIncome, setGrossIncome] = useState("150000");
+  const [filingStatus, setFilingStatus] = useState<"single" | "married">("single");
+  const [stateCode, setStateCode] = useState("none");
+  const [businessExpenses, setBusinessExpenses] = useState("10000");
+
+  // S-Corp settings
+  const [sCorpSalaryPercent, setSCorpSalaryPercent] = useState(40);
+  const [customSalary, setCustomSalary] = useState("");
+
+  // Retirement & Benefits
+  const [solo401kContribution, setSolo401kContribution] = useState("23000");
+  const [hsaContribution, setHsaContribution] = useState("4150");
+
+  // FEIE
+  const [useFEIE, setUseFEIE] = useState(false);
+  const [daysAbroad, setDaysAbroad] = useState("330");
+
+  // UI State
+  const [showAdvanced, setShowAdvanced] = useState(false);
+
+  // Parse inputs
+  const gross = parseFloat(grossIncome) || 0;
+  const expenses = parseFloat(businessExpenses) || 0;
+  const netIncome = gross - expenses;
+  const retirement401k = parseFloat(solo401kContribution) || 0;
+  const hsa = parseFloat(hsaContribution) || 0;
+  const standardDeduction = filingStatus === "single"
+    ? TAX_CONSTANTS.standardDeductionSingle
+    : TAX_CONSTANTS.standardDeductionMarried;
+  const stateRate = STATE_TAX_RATES[stateCode]?.rate || 0;
+
+  // Calculate for each business structure
+  const calculations = useMemo(() => {
+    const results: TaxCalculation[] = [];
+
+    // 1. Sole Proprietor / LLC (disregarded entity)
+    const soleProprietor = (() => {
+      const seTaxResult = calculateSETax(netIncome);
+      const seDeduction = seTaxResult.total * 0.5; // Deduct half of SE tax
+
+      // QBI Deduction (20% of qualified business income)
+      const qbiBase = netIncome - seDeduction;
+      const qbiDeduction = Math.min(qbiBase * TAX_CONSTANTS.qbiDeductionRate, qbiBase);
+
+      // Taxable income
+      const taxableIncome = Math.max(0, netIncome - seDeduction - retirement401k - hsa - standardDeduction - qbiDeduction);
+
+      // Apply FEIE if eligible
+      let feieExclusion = 0;
+      let adjustedTaxableIncome = taxableIncome;
+      if (useFEIE && parseInt(daysAbroad) >= 330) {
+        feieExclusion = Math.min(netIncome, TAX_CONSTANTS.feieExclusion2024);
+        adjustedTaxableIncome = Math.max(0, taxableIncome - feieExclusion);
+      }
+
+      const federalTax = calculateFederalTax(adjustedTaxableIncome, filingStatus);
+      const stateTax = (netIncome - retirement401k - hsa) * stateRate;
+      const totalTax = seTaxResult.total + federalTax + stateTax;
+
+      return {
+        grossIncome: gross,
+        structure: "Sole Prop / LLC",
+        salary: 0,
+        distributions: netIncome,
+        seTax: seTaxResult.total,
+        ficaEmployee: 0,
+        ficaEmployer: 0,
+        federalTax,
+        stateTax,
+        totalTax,
+        takeHomePay: gross - expenses - totalTax - retirement401k - hsa,
+        effectiveRate: totalTax / gross,
+        qbiDeduction,
+        retirement401k,
+        hsaContribution: hsa,
+        feieExclusion,
+      };
+    })();
+    results.push(soleProprietor);
+
+    // 2. S-Corp with reasonable salary
+    const sCorp = (() => {
+      // Calculate reasonable salary (either percentage or custom)
+      const salary = customSalary
+        ? parseFloat(customSalary)
+        : netIncome * (sCorpSalaryPercent / 100);
+      const distributions = netIncome - salary;
+
+      // FICA on salary only
+      const fica = calculateFICA(salary);
+
+      // QBI Deduction on distributions only (S-Corp wages don't qualify)
+      const qbiDeduction = distributions > 0
+        ? Math.min(distributions * TAX_CONSTANTS.qbiDeductionRate, distributions)
+        : 0;
+
+      // Employer portion of FICA is deductible
+      const taxableIncome = Math.max(0,
+        salary + distributions - fica.employerSS - fica.employerMedicare - retirement401k - hsa - standardDeduction - qbiDeduction
+      );
+
+      // Apply FEIE if eligible (only applies to earned income / salary)
+      let feieExclusion = 0;
+      let adjustedTaxableIncome = taxableIncome;
+      if (useFEIE && parseInt(daysAbroad) >= 330) {
+        feieExclusion = Math.min(salary, TAX_CONSTANTS.feieExclusion2024);
+        adjustedTaxableIncome = Math.max(0, taxableIncome - feieExclusion);
+      }
+
+      const federalTax = calculateFederalTax(adjustedTaxableIncome, filingStatus);
+      const stateTax = (salary + distributions - retirement401k - hsa) * stateRate;
+      const totalTax = fica.employeeSS + fica.employeeMedicare + fica.employerSS + fica.employerMedicare + federalTax + stateTax;
+
+      return {
+        grossIncome: gross,
+        structure: "S-Corp",
+        salary,
+        distributions,
+        seTax: 0,
+        ficaEmployee: fica.employeeSS + fica.employeeMedicare,
+        ficaEmployer: fica.employerSS + fica.employerMedicare,
+        federalTax,
+        stateTax,
+        totalTax,
+        takeHomePay: gross - expenses - totalTax - retirement401k - hsa,
+        effectiveRate: totalTax / gross,
+        qbiDeduction,
+        retirement401k,
+        hsaContribution: hsa,
+        feieExclusion,
+      };
+    })();
+    results.push(sCorp);
+
+    // 3. W-2 Employee comparison
+    const w2Employee = (() => {
+      const salary = netIncome; // Assume equivalent salary
+      const fica = calculateFICA(salary);
+
+      const taxableIncome = Math.max(0, salary - retirement401k - hsa - standardDeduction);
+
+      // FEIE for W-2 employees working abroad
+      let feieExclusion = 0;
+      let adjustedTaxableIncome = taxableIncome;
+      if (useFEIE && parseInt(daysAbroad) >= 330) {
+        feieExclusion = Math.min(salary, TAX_CONSTANTS.feieExclusion2024);
+        adjustedTaxableIncome = Math.max(0, taxableIncome - feieExclusion);
+      }
+
+      const federalTax = calculateFederalTax(adjustedTaxableIncome, filingStatus);
+      const stateTax = (salary - retirement401k - hsa) * stateRate;
+      // Note: Employer FICA is not included in employee's tax burden for comparison
+      const totalTax = fica.employeeSS + fica.employeeMedicare + federalTax + stateTax;
+
+      return {
+        grossIncome: gross,
+        structure: "W-2 Employee",
+        salary,
+        distributions: 0,
+        seTax: 0,
+        ficaEmployee: fica.employeeSS + fica.employeeMedicare,
+        ficaEmployer: fica.employerSS + fica.employerMedicare,
+        federalTax,
+        stateTax,
+        totalTax,
+        takeHomePay: salary - totalTax - Math.min(retirement401k, 23000) - hsa, // W-2 limited to employee 401k
+        effectiveRate: totalTax / salary,
+        qbiDeduction: 0,
+        retirement401k: Math.min(retirement401k, 23000),
+        hsaContribution: hsa,
+        feieExclusion,
+      };
+    })();
+    results.push(w2Employee);
+
+    return results;
+  }, [gross, netIncome, expenses, filingStatus, stateRate, sCorpSalaryPercent, customSalary, retirement401k, hsa, useFEIE, daysAbroad, standardDeduction]);
+
+  // Find the best strategy
+  const bestStrategy = calculations.reduce((best, calc) =>
+    calc.takeHomePay > best.takeHomePay ? calc : best
+  , calculations[0]);
+
+  // Savings comparison
+  const sCorpSavings = calculations[1].takeHomePay - calculations[0].takeHomePay;
+
+  // Quarterly estimated tax (for self-employed)
+  const quarterlyTax = bestStrategy.structure !== "W-2 Employee"
+    ? (bestStrategy.federalTax + bestStrategy.seTax) / 4
+    : 0;
+
+  // Chart data
+  const comparisonData = calculations.map((calc) => ({
+    name: calc.structure,
+    "Take-Home": calc.takeHomePay,
+    "Federal Tax": calc.federalTax,
+    "State Tax": calc.stateTax,
+    "FICA/SE Tax": calc.seTax + calc.ficaEmployee + calc.ficaEmployer,
+  }));
+
+  // Tax breakdown pie chart data
+  const taxBreakdownData = [
+    { name: "Federal Income Tax", value: bestStrategy.federalTax, color: "#a3e635" },
+    { name: "State Tax", value: bestStrategy.stateTax, color: "#22d3ee" },
+    { name: "FICA/SE Tax", value: bestStrategy.seTax + bestStrategy.ficaEmployee + bestStrategy.ficaEmployer, color: "#f472b6" },
+    { name: "Take-Home Pay", value: bestStrategy.takeHomePay, color: "#4ade80" },
+  ].filter(d => d.value > 0);
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div>
+        <h1 className="text-2xl font-bold flex items-center gap-2">
+          <Calculator className="h-6 w-6 text-primary" />
+          Tax-Optimized Take-Home Pay Calculator
+        </h1>
+        <p className="text-muted-foreground">
+          Compare tax strategies for consultants and solo practitioners
+        </p>
+      </div>
+
+      {/* Key Insight Card */}
+      {sCorpSavings > 1000 && (
+        <Card className="border-primary/30 bg-primary/5">
+          <CardContent className="pt-6">
+            <div className="flex items-start gap-3">
+              <CheckCircle className="h-6 w-6 text-primary mt-0.5" />
+              <div>
+                <p className="text-lg font-semibold text-primary">
+                  S-Corp could save you {formatCurrency(sCorpSavings)}/year
+                </p>
+                <p className="text-sm text-muted-foreground mt-1">
+                  By paying yourself a {formatCurrency(calculations[1].salary)} salary and taking {formatCurrency(calculations[1].distributions)} as distributions,
+                  you avoid {formatCurrency(calculations[0].seTax - calculations[1].ficaEmployee - calculations[1].ficaEmployer)} in self-employment taxes.
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Input Section */}
+      <div className="grid gap-6 lg:grid-cols-3">
+        {/* Income & Business */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Briefcase className="h-5 w-5 text-primary" />
+              Income & Business
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="grossIncome">Gross Consulting Income</Label>
+              <div className="relative">
+                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="grossIncome"
+                  type="number"
+                  value={grossIncome}
+                  onChange={(e) => setGrossIncome(e.target.value)}
+                  className="pl-9"
+                  placeholder="150000"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="expenses">Business Expenses</Label>
+              <div className="relative">
+                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="expenses"
+                  type="number"
+                  value={businessExpenses}
+                  onChange={(e) => setBusinessExpenses(e.target.value)}
+                  className="pl-9"
+                  placeholder="10000"
+                />
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Net business income: {formatCurrency(netIncome)}
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="filingStatus">Filing Status</Label>
+              <Select value={filingStatus} onValueChange={(v) => setFilingStatus(v as "single" | "married")}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="single">Single</SelectItem>
+                  <SelectItem value="married">Married Filing Jointly</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="state">State</Label>
+              <Select value={stateCode} onValueChange={setStateCode}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {Object.entries(STATE_TAX_RATES).map(([code, { name }]) => (
+                    <SelectItem key={code} value={code}>{name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* S-Corp Strategy */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Building2 className="h-5 w-5 text-primary" />
+              S-Corp Strategy
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <Label>Reasonable Salary %</Label>
+                <span className="text-sm font-medium">{sCorpSalaryPercent}%</span>
+              </div>
+              <Slider
+                value={[sCorpSalaryPercent]}
+                onValueChange={(v) => setSCorpSalaryPercent(v[0])}
+                min={30}
+                max={70}
+                step={5}
+              />
+              <p className="text-xs text-muted-foreground">
+                Salary: {formatCurrency(netIncome * (sCorpSalaryPercent / 100))} •
+                Distributions: {formatCurrency(netIncome * (1 - sCorpSalaryPercent / 100))}
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="customSalary">Or Custom Salary Amount</Label>
+              <div className="relative">
+                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="customSalary"
+                  type="number"
+                  value={customSalary}
+                  onChange={(e) => setCustomSalary(e.target.value)}
+                  className="pl-9"
+                  placeholder="Leave blank to use %"
+                />
+              </div>
+            </div>
+
+            <div className="p-3 rounded-lg bg-muted/50 text-sm space-y-2">
+              <p className="font-medium flex items-center gap-1">
+                <Info className="h-4 w-4" />
+                Reasonable Salary Guidelines
+              </p>
+              <ul className="text-xs text-muted-foreground space-y-1">
+                <li>• Must be "reasonable" for your industry/role</li>
+                <li>• IRS scrutinizes salaries below 40% of net income</li>
+                <li>• Consider similar W-2 positions as benchmark</li>
+                <li>• Document your salary methodology</li>
+              </ul>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Tax-Advantaged Accounts */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <PiggyBank className="h-5 w-5 text-primary" />
+              Tax-Advantaged Accounts
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="solo401k">Solo 401(k) Contribution</Label>
+              <div className="relative">
+                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="solo401k"
+                  type="number"
+                  value={solo401kContribution}
+                  onChange={(e) => setSolo401kContribution(e.target.value)}
+                  className="pl-9"
+                  placeholder="23000"
+                />
+              </div>
+              <p className="text-xs text-muted-foreground">
+                2024 max: $23,000 employee + 25% employer (up to $69,000 total)
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="hsa">HSA Contribution</Label>
+              <div className="relative">
+                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  id="hsa"
+                  type="number"
+                  value={hsaContribution}
+                  onChange={(e) => setHsaContribution(e.target.value)}
+                  className="pl-9"
+                  placeholder="4150"
+                />
+              </div>
+              <p className="text-xs text-muted-foreground">
+                2024 max: $4,150 individual / $8,300 family
+              </p>
+            </div>
+
+            <div className="pt-2 border-t">
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label htmlFor="feie" className="flex items-center gap-2">
+                    <Plane className="h-4 w-4" />
+                    Use FEIE
+                  </Label>
+                  <p className="text-xs text-muted-foreground">
+                    Foreign Earned Income Exclusion
+                  </p>
+                </div>
+                <Switch
+                  id="feie"
+                  checked={useFEIE}
+                  onCheckedChange={setUseFEIE}
+                />
+              </div>
+
+              {useFEIE && (
+                <div className="mt-3 space-y-2">
+                  <Label htmlFor="daysAbroad">Days Living Abroad</Label>
+                  <Input
+                    id="daysAbroad"
+                    type="number"
+                    value={daysAbroad}
+                    onChange={(e) => setDaysAbroad(e.target.value)}
+                    placeholder="330"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Need 330+ days to qualify. Excludes up to {formatCurrency(TAX_CONSTANTS.feieExclusion2024)} in 2024.
+                  </p>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Results Comparison */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg flex items-center gap-2">
+            <TrendingUp className="h-5 w-5 text-primary" />
+            Strategy Comparison
+          </CardTitle>
+          <p className="text-sm text-muted-foreground">
+            Side-by-side comparison of different business structures
+          </p>
+        </CardHeader>
+        <CardContent>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[180px]">Structure</TableHead>
+                  <TableHead className="text-right">Salary</TableHead>
+                  <TableHead className="text-right">Distributions</TableHead>
+                  <TableHead className="text-right">SE/FICA Tax</TableHead>
+                  <TableHead className="text-right">Federal Tax</TableHead>
+                  <TableHead className="text-right">State Tax</TableHead>
+                  <TableHead className="text-right">Total Tax</TableHead>
+                  <TableHead className="text-right">Take-Home</TableHead>
+                  <TableHead className="text-right">Effective Rate</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {calculations.map((calc) => (
+                  <TableRow
+                    key={calc.structure}
+                    className={calc.structure === bestStrategy.structure ? "bg-primary/10" : ""}
+                  >
+                    <TableCell className="font-medium">
+                      <div className="flex items-center gap-2">
+                        {calc.structure === bestStrategy.structure && (
+                          <CheckCircle className="h-4 w-4 text-primary" />
+                        )}
+                        {calc.structure}
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-right">{formatCurrency(calc.salary)}</TableCell>
+                    <TableCell className="text-right">{formatCurrency(calc.distributions)}</TableCell>
+                    <TableCell className="text-right text-pink-500">
+                      {formatCurrency(calc.seTax + calc.ficaEmployee + calc.ficaEmployer)}
+                    </TableCell>
+                    <TableCell className="text-right">{formatCurrency(calc.federalTax)}</TableCell>
+                    <TableCell className="text-right">{formatCurrency(calc.stateTax)}</TableCell>
+                    <TableCell className="text-right font-medium text-red-500">
+                      {formatCurrency(calc.totalTax)}
+                    </TableCell>
+                    <TableCell className="text-right font-bold text-primary">
+                      {formatCurrency(calc.takeHomePay)}
+                    </TableCell>
+                    <TableCell className="text-right">{formatPercent(calc.effectiveRate)}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Visual Comparison */}
+      <div className="grid gap-6 lg:grid-cols-2">
+        {/* Bar Chart */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Take-Home Comparison</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={comparisonData} layout="vertical">
+                <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+                <XAxis type="number" tickFormatter={(v) => `$${(v/1000).toFixed(0)}k`} />
+                <YAxis type="category" dataKey="name" width={100} />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "#1a1a1a",
+                    border: "1px solid #333",
+                    borderRadius: "8px",
+                  }}
+                  formatter={(value) => formatCurrency(value as number)}
+                />
+                <Bar dataKey="Take-Home" fill="#a3e635" radius={[0, 4, 4, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+
+        {/* Tax Breakdown Pie */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">
+              Tax Breakdown ({bestStrategy.structure})
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={taxBreakdownData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={100}
+                  paddingAngle={2}
+                  dataKey="value"
+                >
+                  {taxBreakdownData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "#1a1a1a",
+                    border: "1px solid #333",
+                    borderRadius: "8px",
+                  }}
+                  formatter={(value) => formatCurrency(value as number)}
+                />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Quarterly Estimates & Recommendations */}
+      <div className="grid gap-6 lg:grid-cols-2">
+        {/* Quarterly Estimated Taxes */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Receipt className="h-5 w-5 text-primary" />
+              Quarterly Estimated Taxes
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="p-4 rounded-lg bg-muted/50">
+                <p className="text-sm text-muted-foreground">Federal + SE Tax</p>
+                <p className="text-2xl font-bold">{formatCurrency(quarterlyTax)}</p>
+                <p className="text-xs text-muted-foreground">per quarter</p>
+              </div>
+              <div className="p-4 rounded-lg bg-muted/50">
+                <p className="text-sm text-muted-foreground">State Tax</p>
+                <p className="text-2xl font-bold">{formatCurrency(bestStrategy.stateTax / 4)}</p>
+                <p className="text-xs text-muted-foreground">per quarter</p>
+              </div>
+            </div>
+
+            <div className="space-y-2 text-sm">
+              <p className="font-medium">2024 Quarterly Due Dates:</p>
+              <div className="grid grid-cols-2 gap-2 text-muted-foreground">
+                <div>Q1: April 15, 2024</div>
+                <div>Q2: June 17, 2024</div>
+                <div>Q3: September 16, 2024</div>
+                <div>Q4: January 15, 2025</div>
+              </div>
+            </div>
+
+            <div className="p-3 rounded-lg bg-amber-500/10 border border-amber-500/20 text-sm">
+              <div className="flex items-start gap-2">
+                <AlertTriangle className="h-4 w-4 text-amber-500 mt-0.5" />
+                <div>
+                  <p className="font-medium text-amber-500">Avoid Underpayment Penalty</p>
+                  <p className="text-muted-foreground text-xs mt-1">
+                    Pay at least 90% of current year tax or 100% of prior year tax (110% if AGI &gt; $150k).
+                  </p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Strategy Recommendations */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Landmark className="h-5 w-5 text-primary" />
+              Recommendations
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {/* S-Corp Recommendation */}
+            {sCorpSavings > 5000 && (
+              <div className="p-4 rounded-lg bg-primary/5 border border-primary/20">
+                <div className="flex items-start gap-3">
+                  <Building2 className="h-5 w-5 text-primary mt-0.5" />
+                  <div>
+                    <p className="font-medium">Consider S-Corp Election</p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      With {formatCurrency(gross)} gross income, S-Corp could save you {formatCurrency(sCorpSavings)}/year
+                      by avoiding self-employment tax on distributions.
+                    </p>
+                    <div className="flex items-center gap-1 text-xs text-primary mt-2">
+                      <ArrowRight className="h-3 w-3" />
+                      File Form 2553 by March 15th
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Solo 401k Recommendation */}
+            {retirement401k < 23000 && netIncome > 100000 && (
+              <div className="p-4 rounded-lg bg-cyan-500/5 border border-cyan-500/20">
+                <div className="flex items-start gap-3">
+                  <PiggyBank className="h-5 w-5 text-cyan-500 mt-0.5" />
+                  <div>
+                    <p className="font-medium">Max Out Solo 401(k)</p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      You could contribute up to {formatCurrency(Math.min(69000, 23000 + netIncome * 0.25))} and reduce
+                      your taxable income significantly.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* FEIE Recommendation */}
+            {!useFEIE && netIncome > 100000 && (
+              <div className="p-4 rounded-lg bg-violet-500/5 border border-violet-500/20">
+                <div className="flex items-start gap-3">
+                  <Plane className="h-5 w-5 text-violet-500 mt-0.5" />
+                  <div>
+                    <p className="font-medium">Consider Living Abroad</p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      The Foreign Earned Income Exclusion could exclude {formatCurrency(TAX_CONSTANTS.feieExclusion2024)} of
+                      your income from federal taxes if you live abroad 330+ days.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* HSA Recommendation */}
+            {hsa < 4150 && (
+              <div className="p-4 rounded-lg bg-emerald-500/5 border border-emerald-500/20">
+                <div className="flex items-start gap-3">
+                  <DollarSign className="h-5 w-5 text-emerald-500 mt-0.5" />
+                  <div>
+                    <p className="font-medium">Max Out HSA</p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      HSA offers triple tax advantage. Consider maxing at {formatCurrency(filingStatus === "married" ? 8300 : 4150)}.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* State Tax Note */}
+            {stateRate > 0.05 && (
+              <div className="p-4 rounded-lg bg-rose-500/5 border border-rose-500/20">
+                <div className="flex items-start gap-3">
+                  <Landmark className="h-5 w-5 text-rose-500 mt-0.5" />
+                  <div>
+                    <p className="font-medium">High State Tax</p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      You&apos;re paying {formatCurrency(bestStrategy.stateTax)} in state taxes.
+                      Moving to a no-income-tax state could save you significantly.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Disclaimer */}
+      <Card className="border-muted">
+        <CardContent className="pt-6">
+          <p className="text-xs text-muted-foreground">
+            <strong>Disclaimer:</strong> This calculator provides estimates for educational purposes only.
+            Tax laws are complex and change frequently. Consult a qualified tax professional or CPA
+            before making any tax decisions. This tool does not account for all deductions, credits,
+            AMT, NIIT, state/local specifics, or individual circumstances.
+          </p>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
