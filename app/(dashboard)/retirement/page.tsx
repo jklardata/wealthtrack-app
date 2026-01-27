@@ -106,8 +106,16 @@ export default function RetirementPage() {
     const city = getCityById(selectedCityId);
     if (!city) return;
 
+    const currentCityData = getCityById(currentCityId);
+    if (!currentCityData) return;
+
+    // Calculate relative COL multiplier based on current city
+    const currentCityCOL = calculateEffectiveCOL(currentCityData, weights);
+    const targetCityCOL = calculateEffectiveCOL(city, weights);
+    const relativeMultiplier = targetCityCOL / currentCityCOL;
+
     const params: RetirementParams = {
-      currentSpend: parseFloat(currentSpend) || 0,
+      currentSpend: parseFloat(currentSpend) * relativeMultiplier || 0,
       currentNetWorth,
       annualSavings,
       withdrawalRate: parseFloat(withdrawalRate) / 100,
@@ -123,7 +131,7 @@ export default function RetirementPage() {
       const projection = calculateRetirementProjection(params);
       setResults(projection);
     }
-  }, [selectedCityId, currentSpend, withdrawalRate, expectedReturn, weights, currentNetWorth, annualSavings]);
+  }, [selectedCityId, currentCityId, currentSpend, withdrawalRate, expectedReturn, weights, currentNetWorth, annualSavings]);
 
   const handleWeightChange = (category: keyof SpendingWeights, value: number[]) => {
     setWeights((prev) => ({
@@ -140,13 +148,17 @@ export default function RetirementPage() {
   const selectedCity = getCityById(selectedCityId);
   const totalWeights = Object.values(weights).reduce((sum, w) => sum + w, 0);
 
+  // Safe withdrawal amount from current net worth
+  const safeWithdrawalAmount = currentNetWorth * (parseFloat(withdrawalRate) / 100);
+
   // Calculate comparison data for all cities
+  const currentCOL = currentCity ? calculateEffectiveCOL(currentCity, weights) : 1;
   const allCitiesComparison = CITIES.map((city) => {
-    const currentCOL = currentCity ? calculateEffectiveCOL(currentCity, weights) : 1;
     const cityCOL = calculateEffectiveCOL(city, weights);
     const relativeMultiplier = cityCOL / currentCOL;
     const adjustedSpend = parseFloat(currentSpend) * relativeMultiplier;
     const requiredNW = adjustedSpend / (parseFloat(withdrawalRate) / 100);
+    const cityWithdrawalAmount = currentNetWorth * (parseFloat(withdrawalRate) / 100);
 
     // Calculate years to retirement
     const r = parseFloat(expectedReturn) / 100;
@@ -169,12 +181,13 @@ export default function RetirementPage() {
       requiredNW,
       yearsToRetirement: years,
       canRetireNow: currentNetWorth >= requiredNW,
+      withdrawalAmount: cityWithdrawalAmount,
     };
   }).sort((a, b) => a.yearsToRetirement - b.yearsToRetirement);
 
-  // Dynamic headline
+  // Dynamic headline - recalculate based on current inputs
   const citiesCanRetireNow = allCitiesComparison.filter(c => c.canRetireNow);
-  const cheapestRetireNow = citiesCanRetireNow[0];
+  const cheapestRetireNow = citiesCanRetireNow.length > 0 ? citiesCanRetireNow[0] : null;
   const nextMilestone = allCitiesComparison.find(c => !c.canRetireNow);
 
   // Format chart data
@@ -268,121 +281,134 @@ export default function RetirementPage() {
       )}
 
       {/* Input Section */}
-      <div className="grid gap-6 md:grid-cols-2">
-        {/* Left Column - Location & Basic Inputs */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
-              <MapPin className="h-5 w-5 text-orange-500" />
-              Retirement Location & Spending
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="currentCity">Current City (Baseline)</Label>
-              <Select value={currentCityId} onValueChange={setCurrentCityId}>
-                <SelectTrigger id="currentCity" className="w-full">
-                  <SelectValue placeholder="Select your current city" />
-                </SelectTrigger>
-                <SelectContent>
-                  {CITIES.map((city) => (
-                    <SelectItem key={city.city_id} value={city.city_id}>
-                      {city.city_name}, {city.country}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {currentCity && (
-                <p className="text-xs text-muted-foreground">
-                  Your spending is anchored to this city&apos;s cost of living
-                </p>
-              )}
-            </div>
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg flex items-center gap-2">
+            <MapPin className="h-5 w-5 text-orange-500" />
+            Retirement Location & Spending
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="currentCity">Current City (Baseline)</Label>
+                <Select value={currentCityId} onValueChange={setCurrentCityId}>
+                  <SelectTrigger id="currentCity" className="w-full">
+                    <SelectValue placeholder="Select your current city" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {CITIES.map((city) => (
+                      <SelectItem key={city.city_id} value={city.city_id}>
+                        {city.city_name}, {city.country}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {currentCity && (
+                  <p className="text-xs text-muted-foreground">
+                    Your spending is anchored to this city&apos;s cost of living
+                  </p>
+                )}
+              </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="city">Target Retirement City</Label>
-              <Select value={selectedCityId} onValueChange={setSelectedCityId}>
-                <SelectTrigger id="city" className="w-full">
-                  <SelectValue placeholder="Select a city" />
-                </SelectTrigger>
-                <SelectContent>
-                  {CITIES.map((city) => (
-                    <SelectItem key={city.city_id} value={city.city_id}>
-                      {city.city_name}, {city.country}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {selectedCity && currentCity && (
-                <p className="text-xs text-muted-foreground">
-                  {((calculateEffectiveCOL(selectedCity, weights) / calculateEffectiveCOL(currentCity, weights)) * 100).toFixed(0)}% of {currentCity.city_name}&apos;s cost • Confidence: {selectedCity.confidence}
-                </p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="currentSpend">Current Annual Spending</Label>
-              <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="currentSpend"
-                  type="number"
-                  value={currentSpend}
-                  onChange={(e) => setCurrentSpend(e.target.value)}
-                  className="pl-9"
-                  placeholder="60000"
-                />
+              <div className="space-y-2">
+                <Label htmlFor="city">Target Retirement City</Label>
+                <Select value={selectedCityId} onValueChange={setSelectedCityId}>
+                  <SelectTrigger id="city" className="w-full">
+                    <SelectValue placeholder="Select a city" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {CITIES.map((city) => (
+                      <SelectItem key={city.city_id} value={city.city_id}>
+                        {city.city_name}, {city.country}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {selectedCity && currentCity && (
+                  <p className="text-xs text-muted-foreground">
+                    {((calculateEffectiveCOL(selectedCity, weights) / calculateEffectiveCOL(currentCity, weights)) * 100).toFixed(0)}% of {currentCity.city_name}&apos;s cost • Confidence: {selectedCity.confidence}
+                  </p>
+                )}
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="withdrawalRate">Safe Withdrawal Rate (%)</Label>
-              <Input
-                id="withdrawalRate"
-                type="number"
-                step="0.1"
-                value={withdrawalRate}
-                onChange={(e) => setWithdrawalRate(e.target.value)}
-                placeholder="4.0"
-              />
-              <p className="text-xs text-muted-foreground">
-                The 4% rule suggests withdrawing 4% of your portfolio annually
-              </p>
-            </div>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="currentSpend">Current Annual Spending</Label>
+                <div className="relative">
+                  <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="currentSpend"
+                    type="number"
+                    value={currentSpend}
+                    onChange={(e) => setCurrentSpend(e.target.value)}
+                    className="pl-9"
+                    placeholder="60000"
+                  />
+                </div>
+              </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="expectedReturn">Expected Real Return (%)</Label>
-              <Input
-                id="expectedReturn"
-                type="number"
-                step="0.1"
-                value={expectedReturn}
-                onChange={(e) => setExpectedReturn(e.target.value)}
-                placeholder="5.0"
-              />
-              <p className="text-xs text-muted-foreground">
-                Annual return after inflation (historically ~7% for stocks, ~3% inflation)
-              </p>
+              <div className="space-y-2">
+                <Label htmlFor="withdrawalRate">Safe Withdrawal Rate (%)</Label>
+                <Input
+                  id="withdrawalRate"
+                  type="number"
+                  step="0.1"
+                  value={withdrawalRate}
+                  onChange={(e) => setWithdrawalRate(e.target.value)}
+                  placeholder="4.0"
+                />
+                <p className="text-xs text-muted-foreground">
+                  The 4% rule suggests withdrawing 4% of your portfolio annually
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="expectedReturn">Expected Real Return (%)</Label>
+                <Input
+                  id="expectedReturn"
+                  type="number"
+                  step="0.1"
+                  value={expectedReturn}
+                  onChange={(e) => setExpectedReturn(e.target.value)}
+                  placeholder="5.0"
+                />
+                <p className="text-xs text-muted-foreground">
+                  Annual return after inflation (historically ~7% for stocks, ~3% inflation)
+                </p>
+              </div>
             </div>
 
             {latestEntry && (
-              <div className="pt-4 border-t space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Current Net Worth</span>
-                  <span className="font-medium">{formatCurrency(currentNetWorth)}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Annual Savings</span>
-                  <span className={`font-medium ${annualSavings >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                    {formatCurrency(annualSavings)}
-                  </span>
+              <div className="space-y-4">
+                <div className="p-4 rounded-lg bg-muted/50 space-y-3">
+                  <h4 className="text-sm font-medium">Your Financial Snapshot</h4>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Current Net Worth</span>
+                    <span className="font-medium">{formatCurrency(currentNetWorth)}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Annual Savings</span>
+                    <span className={`font-medium ${annualSavings >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                      {formatCurrency(annualSavings)}
+                    </span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Safe Withdrawal ({withdrawalRate}%)</span>
+                    <span className="font-medium text-purple-500">{formatCurrency(safeWithdrawalAmount)}/yr</span>
+                  </div>
                 </div>
               </div>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </CardContent>
+      </Card>
 
-        {/* Right Column - Spending Category Weights */}
+      {/* Spending Weights & Cost Breakdown - Side by Side */}
+      <div className="grid gap-6 md:grid-cols-2">
+        {/* Spending Category Weights */}
         <Card>
           <CardHeader>
             <div className="flex justify-between items-center">
@@ -431,6 +457,53 @@ export default function RetirementPage() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Cost Breakdown */}
+        {selectedCity && results && errors.length === 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">
+                Cost Breakdown in {selectedCity.city_name}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {[
+                  { label: "Housing", index: selectedCity.housing_index, weight: weights.housing },
+                  { label: "Food", index: selectedCity.food_index, weight: weights.food },
+                  { label: "Transport", index: selectedCity.transport_index, weight: weights.transport },
+                  { label: "Healthcare", index: selectedCity.healthcare_index, weight: weights.healthcare },
+                  { label: "Utilities", index: selectedCity.utilities_index, weight: weights.utilities },
+                  { label: "Lifestyle", index: selectedCity.base_index, weight: weights.lifestyle },
+                ].map((category) => {
+                  const monthlyCost = (results.adjustedSpend / 12) * category.weight;
+                  return (
+                    <div key={category.label} className="flex justify-between items-center text-sm">
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium">{category.label}</span>
+                        <span className="text-muted-foreground">({(category.weight * 100).toFixed(0)}%)</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span className="text-muted-foreground">Index: {category.index}</span>
+                        <span className="font-medium">{formatCurrency(monthlyCost)}/mo</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="mt-4 pt-4 border-t">
+                <div className="flex justify-between items-center text-sm font-medium">
+                  <span>Total Monthly</span>
+                  <span className="text-orange-500">{formatCurrency(results.monthlySpend)}</span>
+                </div>
+                <div className="flex justify-between items-center text-sm font-medium mt-1">
+                  <span>Total Annual</span>
+                  <span className="text-orange-500">{formatCurrency(results.adjustedSpend)}</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
       </div>
 
       {/* Validation Errors */}
@@ -452,7 +525,7 @@ export default function RetirementPage() {
       {results && errors.length === 0 && (
         <>
           {/* Key Metrics */}
-          <div className="grid gap-4 md:grid-cols-4">
+          <div className="grid gap-4 md:grid-cols-5">
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -481,6 +554,22 @@ export default function RetirementPage() {
                 </div>
                 <p className="text-xs text-muted-foreground mt-1">
                   {formatCurrency(results.monthlySpend)}/month
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  Safe Withdrawal
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-purple-500">
+                  {formatCurrency(safeWithdrawalAmount)}
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {withdrawalRate}% of {formatCurrency(currentNetWorth)}
                 </p>
               </CardContent>
             </Card>
@@ -571,43 +660,6 @@ export default function RetirementPage() {
             </CardContent>
           </Card>
 
-          {/* Breakdown by Category */}
-          {selectedCity && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">
-                  Cost Breakdown in {selectedCity.city_name}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {[
-                    { label: "Housing", index: selectedCity.housing_index, weight: weights.housing },
-                    { label: "Food", index: selectedCity.food_index, weight: weights.food },
-                    { label: "Transport", index: selectedCity.transport_index, weight: weights.transport },
-                    { label: "Healthcare", index: selectedCity.healthcare_index, weight: weights.healthcare },
-                    { label: "Utilities", index: selectedCity.utilities_index, weight: weights.utilities },
-                    { label: "Lifestyle", index: selectedCity.base_index, weight: weights.lifestyle },
-                  ].map((category) => {
-                    const monthlyCost = (results.adjustedSpend / 12) * category.weight;
-                    return (
-                      <div key={category.label} className="flex justify-between items-center text-sm">
-                        <div className="flex items-center gap-2">
-                          <span className="font-medium">{category.label}</span>
-                          <span className="text-muted-foreground">({category.weight * 100}%)</span>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <span className="text-muted-foreground">Index: {category.index}</span>
-                          <span className="font-medium">{formatCurrency(monthlyCost)}/mo</span>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
           {/* All Cities Comparison */}
           <Card>
             <CardHeader>
@@ -616,7 +668,7 @@ export default function RetirementPage() {
                 All Cities Comparison
               </CardTitle>
               <p className="text-sm text-muted-foreground">
-                Based on your {formatCurrency(parseFloat(currentSpend))} annual spending in {currentCity?.city_name || "your current city"}
+                Based on your {formatCurrency(parseFloat(currentSpend))} annual spending in {currentCity?.city_name || "your current city"} • Current Net Worth: {formatCurrency(currentNetWorth)}
               </p>
             </CardHeader>
             <CardContent>
@@ -626,7 +678,9 @@ export default function RetirementPage() {
                     <TableRow>
                       <TableHead>City</TableHead>
                       <TableHead className="text-right">Years to Retire</TableHead>
+                      <TableHead className="text-right">Net Worth</TableHead>
                       <TableHead className="text-right">Required NW</TableHead>
+                      <TableHead className="text-right">Safe Withdrawal</TableHead>
                       <TableHead className="text-right">Annual Cost</TableHead>
                       <TableHead className="text-right">COL vs {currentCity?.city_name || "NYC"}</TableHead>
                     </TableRow>
@@ -658,7 +712,13 @@ export default function RetirementPage() {
                             : "∞"}
                         </TableCell>
                         <TableCell className="text-right">
+                          {formatCurrency(currentNetWorth)}
+                        </TableCell>
+                        <TableCell className="text-right">
                           {formatCurrency(item.requiredNW)}
+                        </TableCell>
+                        <TableCell className={`text-right ${item.withdrawalAmount >= item.adjustedSpend ? "text-green-500" : "text-muted-foreground"}`}>
+                          {formatCurrency(item.withdrawalAmount)}
                         </TableCell>
                         <TableCell className="text-right">
                           {formatCurrency(item.adjustedSpend)}
