@@ -1,5 +1,5 @@
 import { google } from 'googleapis';
-import type { SheetRow, CreditCardSheetRow, CreditCardStatus } from './types';
+import type { SheetRow, CreditCardSheetRow, CreditCardStatus, ConsultingIncomeSheetRow, ConsultingIncomeType } from './types';
 
 const SERVICE_ACCOUNT_EMAIL = 'wealthtrack-sheets@wealth-tracker-485215.iam.gserviceaccount.com';
 
@@ -492,4 +492,272 @@ function parseBoolean(value: string | undefined): boolean {
   if (!value) return false;
   const normalized = value.toLowerCase().trim();
   return normalized === 'true' || normalized === 'yes' || normalized === '1';
+}
+
+function parseIncomeType(value: string | undefined): ConsultingIncomeType {
+  if (!value) return 'consulting';
+  const normalized = value.toLowerCase().trim();
+  if (normalized === 'freelance') return 'freelance';
+  if (normalized === 'part-time' || normalized === 'part time') return 'part-time';
+  if (normalized === 'contract') return 'contract';
+  if (normalized === 'other') return 'other';
+  return 'consulting';
+}
+
+export async function createConsultingIncomeTemplateSpreadsheet(userEmail: string): Promise<{
+  spreadsheetId: string;
+  spreadsheetUrl: string;
+  error?: string
+}> {
+  const { sheets, drive } = getGoogleSheetsClientFull();
+
+  try {
+    // Create the spreadsheet with template
+    const createResponse = await sheets.spreadsheets.create({
+      requestBody: {
+        properties: {
+          title: 'WealthTrack - Consulting Income Tracker',
+        },
+        sheets: [
+          {
+            properties: {
+              title: 'Consulting Income',
+              gridProperties: {
+                frozenRowCount: 1,
+              },
+            },
+            data: [
+              {
+                startRow: 0,
+                startColumn: 0,
+                rowData: [
+                  {
+                    values: [
+                      { userEnteredValue: { stringValue: 'Year' }, userEnteredFormat: { textFormat: { bold: true }, backgroundColor: { red: 0.2, green: 0.2, blue: 0.2 } } },
+                      { userEnteredValue: { stringValue: 'Gross Income' }, userEnteredFormat: { textFormat: { bold: true }, backgroundColor: { red: 0.2, green: 0.2, blue: 0.2 } } },
+                      { userEnteredValue: { stringValue: 'Tax Rate (%)' }, userEnteredFormat: { textFormat: { bold: true }, backgroundColor: { red: 0.2, green: 0.2, blue: 0.2 } } },
+                      { userEnteredValue: { stringValue: 'Client/Project' }, userEnteredFormat: { textFormat: { bold: true }, backgroundColor: { red: 0.2, green: 0.2, blue: 0.2 } } },
+                      { userEnteredValue: { stringValue: 'Income Type' }, userEnteredFormat: { textFormat: { bold: true }, backgroundColor: { red: 0.2, green: 0.2, blue: 0.2 } } },
+                      { userEnteredValue: { stringValue: 'Notes' }, userEnteredFormat: { textFormat: { bold: true }, backgroundColor: { red: 0.2, green: 0.2, blue: 0.2 } } },
+                    ],
+                  },
+                  // Sample row with example data
+                  {
+                    values: [
+                      { userEnteredValue: { numberValue: new Date().getFullYear() } },
+                      { userEnteredValue: { numberValue: 30000 }, userEnteredFormat: { numberFormat: { type: 'CURRENCY' } } },
+                      { userEnteredValue: { numberValue: 20 }, userEnteredFormat: { numberFormat: { type: 'NUMBER', pattern: '0.0' } } },
+                      { userEnteredValue: { stringValue: 'Example Client' } },
+                      { userEnteredValue: { stringValue: 'consulting' } },
+                      { userEnteredValue: { stringValue: 'Sample entry - update with your projected consulting income' } },
+                    ],
+                  },
+                  // Second sample row for future year
+                  {
+                    values: [
+                      { userEnteredValue: { numberValue: new Date().getFullYear() + 1 } },
+                      { userEnteredValue: { numberValue: 25000 }, userEnteredFormat: { numberFormat: { type: 'CURRENCY' } } },
+                      { userEnteredValue: { numberValue: 20 }, userEnteredFormat: { numberFormat: { type: 'NUMBER', pattern: '0.0' } } },
+                      { userEnteredValue: { stringValue: 'Example Client' } },
+                      { userEnteredValue: { stringValue: 'consulting' } },
+                      { userEnteredValue: { stringValue: 'Projected income for next year' } },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+          // Add a second sheet with instructions
+          {
+            properties: {
+              title: 'Instructions',
+            },
+            data: [
+              {
+                startRow: 0,
+                startColumn: 0,
+                rowData: [
+                  { values: [{ userEnteredValue: { stringValue: 'WealthTrack Consulting Income Tracker' }, userEnteredFormat: { textFormat: { bold: true, fontSize: 14 } } }] },
+                  { values: [{ userEnteredValue: { stringValue: '' } }] },
+                  { values: [{ userEnteredValue: { stringValue: 'This sheet tracks your expected consulting/part-time income for semi-retirement planning.' } }] },
+                  { values: [{ userEnteredValue: { stringValue: '' } }] },
+                  { values: [{ userEnteredValue: { stringValue: 'Column Definitions:' }, userEnteredFormat: { textFormat: { bold: true } } }] },
+                  { values: [{ userEnteredValue: { stringValue: '• Year: The year this income is expected (e.g., 2025, 2026)' } }] },
+                  { values: [{ userEnteredValue: { stringValue: '• Gross Income: Total annual income before taxes' } }] },
+                  { values: [{ userEnteredValue: { stringValue: '• Tax Rate (%): Your effective tax rate (federal + state + self-employment), typically 20-35%' } }] },
+                  { values: [{ userEnteredValue: { stringValue: '• Client/Project: Optional - name of client or project' } }] },
+                  { values: [{ userEnteredValue: { stringValue: '• Income Type: consulting, freelance, part-time, contract, or other' } }] },
+                  { values: [{ userEnteredValue: { stringValue: '• Notes: Any additional notes about this income' } }] },
+                  { values: [{ userEnteredValue: { stringValue: '' } }] },
+                  { values: [{ userEnteredValue: { stringValue: 'Tips:' }, userEnteredFormat: { textFormat: { bold: true } } }] },
+                  { values: [{ userEnteredValue: { stringValue: '• Add one row per year of expected consulting income' } }] },
+                  { values: [{ userEnteredValue: { stringValue: '• Be conservative with estimates - it\'s better to underestimate' } }] },
+                  { values: [{ userEnteredValue: { stringValue: '• Update regularly as your plans become clearer' } }] },
+                  { values: [{ userEnteredValue: { stringValue: '• The retirement calculator will use the most recent year\'s data as the baseline' } }] },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    });
+
+    const spreadsheetId = createResponse.data.spreadsheetId;
+    if (!spreadsheetId) {
+      throw new Error('Failed to create spreadsheet');
+    }
+
+    // Auto-resize columns
+    await sheets.spreadsheets.batchUpdate({
+      spreadsheetId,
+      requestBody: {
+        requests: [
+          {
+            autoResizeDimensions: {
+              dimensions: {
+                sheetId: 0,
+                dimension: 'COLUMNS',
+                startIndex: 0,
+                endIndex: 6,
+              },
+            },
+          },
+        ],
+      },
+    });
+
+    // Share with service account (so it can read later)
+    await drive.permissions.create({
+      fileId: spreadsheetId,
+      requestBody: {
+        type: 'user',
+        role: 'reader',
+        emailAddress: SERVICE_ACCOUNT_EMAIL,
+      },
+      sendNotificationEmail: false,
+    });
+
+    // Share with user as owner/editor
+    await drive.permissions.create({
+      fileId: spreadsheetId,
+      requestBody: {
+        type: 'user',
+        role: 'writer',
+        emailAddress: userEmail,
+      },
+      sendNotificationEmail: true,
+    });
+
+    // Transfer ownership to user
+    try {
+      const permissionsResponse = await drive.permissions.list({
+        fileId: spreadsheetId,
+        fields: 'permissions(id,emailAddress)',
+      });
+
+      const userPermission = permissionsResponse.data.permissions?.find(
+        p => p.emailAddress?.toLowerCase() === userEmail.toLowerCase()
+      );
+
+      if (userPermission?.id) {
+        await drive.permissions.update({
+          fileId: spreadsheetId,
+          permissionId: userPermission.id,
+          transferOwnership: true,
+          requestBody: {
+            role: 'owner',
+          },
+        });
+      }
+    } catch {
+      console.log('Could not transfer ownership, user remains as editor');
+    }
+
+    return {
+      spreadsheetId,
+      spreadsheetUrl: `https://docs.google.com/spreadsheets/d/${spreadsheetId}`,
+    };
+  } catch (error: unknown) {
+    const err = error as { message?: string; code?: number; errors?: Array<{ reason?: string; domain?: string }> };
+    console.error('Error creating consulting income template spreadsheet:', JSON.stringify(err, null, 2));
+
+    let errorMessage = err.message || 'Failed to create spreadsheet';
+    if (err.errors && err.errors.length > 0) {
+      const reasons = err.errors.map(e => e.reason).join(', ');
+      errorMessage = `${errorMessage} (${reasons})`;
+    }
+
+    return {
+      spreadsheetId: '',
+      spreadsheetUrl: '',
+      error: errorMessage,
+    };
+  }
+}
+
+export async function fetchConsultingIncomeSheetData(sheetId: string): Promise<ConsultingIncomeSheetRow[]> {
+  const sheets = getGoogleSheetsClient();
+
+  // First, get the sheet metadata to find the correct sheet name
+  const metadata = await sheets.spreadsheets.get({
+    spreadsheetId: sheetId,
+    fields: 'sheets.properties.title',
+  });
+
+  const sheetNames = metadata.data.sheets?.map(s => s.properties?.title) || [];
+
+  // Try to find 'Consulting Income' sheet, otherwise use the first sheet
+  let sheetName = sheetNames.find(name =>
+    name?.toLowerCase() === 'consulting income' ||
+    name?.toLowerCase() === 'consultingincome' ||
+    name?.toLowerCase() === 'income'
+  ) || sheetNames[0] || 'Sheet1';
+
+  // Fetch data from the sheet
+  // Expected columns: Year, Gross Income, Tax Rate (%), Client/Project, Income Type, Notes
+  const response = await sheets.spreadsheets.values.get({
+    spreadsheetId: sheetId,
+    range: `'${sheetName}'!A2:F1000`, // Skip header row, quote sheet name to handle spaces
+  });
+
+  const rows = response.data.values || [];
+
+  return rows
+    .filter((row) => row[0] && row[1]) // Filter out rows without year or income
+    .map((row) => ({
+      year: parseInt(row[0]) || new Date().getFullYear(),
+      gross_income: parseNumber(row[1]),
+      effective_tax_rate: parseNumber(row[2]) / 100, // Convert from percentage to decimal
+      client_name: row[3] || undefined,
+      income_type: parseIncomeType(row[4]),
+      notes: row[5] || undefined,
+    }));
+}
+
+// Helper to get aggregated consulting income for a specific year range
+export function aggregateConsultingIncomeByYear(
+  rows: ConsultingIncomeSheetRow[],
+  startYear: number,
+  endYear: number
+): { year: number; totalGrossIncome: number; avgTaxRate: number }[] {
+  const yearMap = new Map<number, { total: number; taxSum: number; count: number }>();
+
+  rows.forEach(row => {
+    if (row.year >= startYear && row.year <= endYear) {
+      const existing = yearMap.get(row.year) || { total: 0, taxSum: 0, count: 0 };
+      yearMap.set(row.year, {
+        total: existing.total + row.gross_income,
+        taxSum: existing.taxSum + row.effective_tax_rate,
+        count: existing.count + 1,
+      });
+    }
+  });
+
+  return Array.from(yearMap.entries())
+    .map(([year, data]) => ({
+      year,
+      totalGrossIncome: data.total,
+      avgTaxRate: data.taxSum / data.count,
+    }))
+    .sort((a, b) => a.year - b.year);
 }

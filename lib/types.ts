@@ -77,8 +77,10 @@ export interface UserSettings {
   user_id: string;
   google_sheet_id: string | null;
   credit_cards_sheet_id: string | null;
+  consulting_income_sheet_id: string | null;
   last_sync_at: string | null;
   credit_cards_last_sync_at: string | null;
+  consulting_income_last_sync_at: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -96,6 +98,32 @@ export interface SheetRow {
   notes?: string;
   pre_tax_income: number;
   monthly_expenses: number;
+}
+
+// Consulting Income Sheet Row - for semi-retirement planning
+export interface ConsultingIncomeSheetRow {
+  year: number;                    // Year of consulting income (e.g., 2025)
+  gross_income: number;            // Annual gross consulting income
+  effective_tax_rate: number;      // Tax rate as decimal (e.g., 0.20 for 20%)
+  client_name?: string;            // Optional client/project name
+  income_type: ConsultingIncomeType; // Type of income
+  notes?: string;                  // Optional notes
+}
+
+export type ConsultingIncomeType = 'consulting' | 'freelance' | 'part-time' | 'contract' | 'other';
+
+// Database entry for consulting income
+export interface ConsultingIncomeEntry {
+  id: string;
+  user_id: string;
+  year: number;
+  gross_income: number;
+  effective_tax_rate: number;
+  client_name: string | null;
+  income_type: ConsultingIncomeType;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
 }
 
 // Calculated metrics for net worth entries (computed in UI, not stored)

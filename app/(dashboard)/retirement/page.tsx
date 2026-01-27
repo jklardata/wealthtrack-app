@@ -25,7 +25,7 @@ import {
   ResponsiveContainer,
   ReferenceLine,
 } from "recharts";
-import { TrendingUp, MapPin, Calculator, DollarSign, Globe, CheckCircle, Clock, ChevronDown, ChevronUp, Briefcase } from "lucide-react";
+import { TrendingUp, MapPin, Calculator, DollarSign, Globe, CheckCircle, Clock, ChevronDown, ChevronUp, Briefcase, FileSpreadsheet, RefreshCw, ExternalLink } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -43,7 +43,7 @@ import {
   type RetirementParams,
   type SemiRetirementParams,
 } from "@/lib/retirement-calculator";
-import type { NetWorthEntry } from "@/lib/types";
+import type { NetWorthEntry, ConsultingIncomeSheetRow } from "@/lib/types";
 
 function formatCurrency(value: number): string {
   return new Intl.NumberFormat("en-US", {
@@ -77,6 +77,13 @@ export default function RetirementPage() {
   const [consultingYears, setConsultingYears] = useState("5");
   const [consultingTaxRate, setConsultingTaxRate] = useState(20); // Percentage as integer for slider
 
+  // Consulting income sheet integration
+  const [consultingSheetData, setConsultingSheetData] = useState<ConsultingIncomeSheetRow[]>([]);
+  const [hasConsultingSheet, setHasConsultingSheet] = useState(false);
+  const [loadingConsultingSheet, setLoadingConsultingSheet] = useState(false);
+  const [creatingConsultingSheet, setCreatingConsultingSheet] = useState(false);
+  const [consultingSheetError, setConsultingSheetError] = useState<string | null>(null);
+
   // Calculated values
   const [results, setResults] = useState<ReturnType<typeof calculateRetirementProjection> | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
@@ -97,6 +104,75 @@ export default function RetirementPage() {
     }
     fetchNetWorth();
   }, []);
+
+  // Fetch consulting income sheet data
+  const fetchConsultingIncomeData = async () => {
+    setLoadingConsultingSheet(true);
+    setConsultingSheetError(null);
+    try {
+      const response = await fetch("/api/consulting-income");
+      const data = await response.json();
+
+      if (data.error) {
+        setConsultingSheetError(data.error);
+        return;
+      }
+
+      setHasConsultingSheet(data.hasSheet);
+      setConsultingSheetData(data.data || []);
+
+      // If we have data, auto-populate the first year's income
+      if (data.aggregated && data.aggregated.length > 0) {
+        const firstYear = data.aggregated[0];
+        setConsultingIncome(firstYear.totalGrossIncome.toString());
+        setConsultingTaxRate(Math.round(firstYear.avgTaxRate * 100));
+        // Set years based on how many years of data we have
+        setConsultingYears(data.aggregated.length.toString());
+        // Auto-expand the section if we have data
+        setSemiRetirementExpanded(true);
+      }
+    } catch (error) {
+      console.error("Error fetching consulting income:", error);
+      setConsultingSheetError("Failed to fetch consulting income data");
+    } finally {
+      setLoadingConsultingSheet(false);
+    }
+  };
+
+  // Fetch consulting income on mount
+  useEffect(() => {
+    fetchConsultingIncomeData();
+  }, []);
+
+  // Create consulting income sheet
+  const createConsultingSheet = async () => {
+    setCreatingConsultingSheet(true);
+    setConsultingSheetError(null);
+    try {
+      const response = await fetch("/api/create-consulting-income-sheet", {
+        method: "POST",
+      });
+      const data = await response.json();
+
+      if (data.error) {
+        setConsultingSheetError(data.error);
+        return;
+      }
+
+      // Open the new sheet in a new tab
+      if (data.spreadsheetUrl) {
+        window.open(data.spreadsheetUrl, "_blank");
+      }
+
+      // Refresh the data
+      await fetchConsultingIncomeData();
+    } catch (error) {
+      console.error("Error creating consulting income sheet:", error);
+      setConsultingSheetError("Failed to create consulting income sheet");
+    } finally {
+      setCreatingConsultingSheet(false);
+    }
+  };
 
   // Get current net worth and annual savings from most recent entry
   const latestEntry = netWorthEntries.length > 0
@@ -535,6 +611,91 @@ export default function RetirementPage() {
                 </div>
               </div>
             )}
+
+            {/* Google Sheet Integration */}
+            <div className="pt-4 border-t">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <FileSpreadsheet className="h-4 w-4 text-green-600" />
+                  <span className="text-sm font-medium">Google Sheets Integration</span>
+                </div>
+                <div className="flex gap-2">
+                  {hasConsultingSheet ? (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        fetchConsultingIncomeData();
+                      }}
+                      disabled={loadingConsultingSheet}
+                      className="text-xs"
+                    >
+                      {loadingConsultingSheet ? (
+                        <RefreshCw className="h-3 w-3 mr-1 animate-spin" />
+                      ) : (
+                        <RefreshCw className="h-3 w-3 mr-1" />
+                      )}
+                      Sync from Sheet
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        createConsultingSheet();
+                      }}
+                      disabled={creatingConsultingSheet}
+                      className="text-xs"
+                    >
+                      {creatingConsultingSheet ? (
+                        <RefreshCw className="h-3 w-3 mr-1 animate-spin" />
+                      ) : (
+                        <FileSpreadsheet className="h-3 w-3 mr-1" />
+                      )}
+                      Create Sheet
+                    </Button>
+                  )}
+                </div>
+              </div>
+
+              {consultingSheetError && (
+                <p className="text-xs text-red-500 mb-2">{consultingSheetError}</p>
+              )}
+
+              {hasConsultingSheet && consultingSheetData.length > 0 && (
+                <div className="p-3 bg-green-500/5 rounded-lg border border-green-500/20">
+                  <p className="text-xs text-muted-foreground mb-2">
+                    Imported {consultingSheetData.length} row(s) from your Consulting Income sheet
+                  </p>
+                  <div className="space-y-1 max-h-32 overflow-y-auto">
+                    {consultingSheetData.slice(0, 5).map((row, idx) => (
+                      <div key={idx} className="flex justify-between text-xs">
+                        <span className="text-muted-foreground">
+                          {row.year} - {row.client_name || row.income_type}
+                        </span>
+                        <span className="font-medium">
+                          {formatCurrency(row.gross_income)} @ {(row.effective_tax_rate * 100).toFixed(0)}%
+                        </span>
+                      </div>
+                    ))}
+                    {consultingSheetData.length > 5 && (
+                      <p className="text-xs text-muted-foreground">
+                        ...and {consultingSheetData.length - 5} more
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {!hasConsultingSheet && (
+                <p className="text-xs text-muted-foreground">
+                  Create a Google Sheet to track your projected consulting income by year.
+                  You can enter income projections and import them here.
+                </p>
+              )}
+            </div>
           </CardContent>
         )}
       </Card>
