@@ -287,6 +287,11 @@ export default function RetirementPage() {
             <MapPin className="h-5 w-5 text-orange-500" />
             Retirement Location & Spending
           </CardTitle>
+          <p className="text-sm text-muted-foreground">
+            You can retire when your safe withdrawal amount covers your annual spending. For example, with a 4% withdrawal rate,
+            you need 25x your annual expenses saved (e.g., {formatCurrency(parseFloat(currentSpend) || 60000)} spending requires {formatCurrency((parseFloat(currentSpend) || 60000) * 25)}).
+            Moving to a lower cost-of-living city reduces your required nest egg.
+          </p>
         </CardHeader>
         <CardContent>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -620,6 +625,15 @@ export default function RetirementPage() {
               </p>
             </CardHeader>
             <CardContent>
+              <div className="mb-4 p-3 bg-muted/50 rounded-lg text-sm text-muted-foreground">
+                <p>
+                  The <span className="text-orange-500 font-medium">orange line</span> shows your projected net worth growth over time,
+                  combining your current savings rate with compound investment returns.
+                  The <span className="text-green-500 font-medium">green dashed line</span> marks your retirement goal—the amount needed
+                  so your safe withdrawal covers expenses in your target city.
+                  When the orange line crosses the green line, you can retire.
+                </p>
+              </div>
               {chartData.length > 0 ? (
                 <ResponsiveContainer width="100%" height={400}>
                   <LineChart data={chartData}>
