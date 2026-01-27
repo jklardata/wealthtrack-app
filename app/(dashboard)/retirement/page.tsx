@@ -28,7 +28,7 @@ import {
   ComposedChart,
   ReferenceArea,
 } from "recharts";
-import { TrendingUp, MapPin, Calculator, DollarSign, Globe, CheckCircle, Clock, ChevronDown, ChevronUp, Briefcase, FileSpreadsheet, RefreshCw, ExternalLink } from "lucide-react";
+import { TrendingUp, MapPin, Calculator, DollarSign, Globe, CheckCircle, Clock, ChevronDown, ChevronUp, Briefcase, FileSpreadsheet, RefreshCw, ExternalLink, Plane, Building2, Landmark, PiggyBank, Lightbulb, ArrowRight } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -364,6 +364,283 @@ export default function RetirementPage() {
           </CardContent>
         </Card>
       )}
+
+      {/* Geo-Arbitrage Insights */}
+      {currentNetWorth > 0 && currentCity && allCitiesComparison.length > 0 && (
+        <Card className="border-purple-500/20 bg-gradient-to-r from-purple-500/5 to-blue-500/5">
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Plane className="h-5 w-5 text-purple-500" />
+              Geo-Arbitrage Opportunities
+            </CardTitle>
+            <p className="text-sm text-muted-foreground">
+              How relocating could accelerate your financial independence
+            </p>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {/* Best savings opportunities */}
+            {(() => {
+              const currentCityData = allCitiesComparison.find(c => c.city.city_id === currentCityId);
+              if (!currentCityData) return null;
+
+              // Find cities with lower COL than current city
+              const cheaperCities = allCitiesComparison
+                .filter(c => c.relativeMultiplier < 0.95 && c.city.city_id !== currentCityId)
+                .slice(0, 3);
+
+              // Calculate years saved for each cheaper city
+              const currentYearsToRetire = currentCityData.yearsToRetirement;
+
+              return (
+                <div className="space-y-3">
+                  {cheaperCities.map((city) => {
+                    const netWorthSavings = currentCityData.requiredNW - city.requiredNW;
+                    const yearsSaved = isFinite(currentYearsToRetire) && isFinite(city.yearsToRetirement)
+                      ? currentYearsToRetire - city.yearsToRetirement
+                      : null;
+
+                    return (
+                      <div
+                        key={city.city.city_id}
+                        className="p-4 rounded-lg bg-white/50 dark:bg-gray-900/50 border border-purple-500/10 hover:border-purple-500/30 transition-colors"
+                      >
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center">
+                              <MapPin className="h-5 w-5 text-purple-500" />
+                            </div>
+                            <div>
+                              <p className="font-medium">
+                                Move to {city.city.city_name}, {city.city.country}
+                              </p>
+                              <p className="text-xs text-muted-foreground">
+                                {(city.relativeMultiplier * 100).toFixed(0)}% of {currentCity.city_name}&apos;s cost of living
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex flex-wrap gap-4 text-sm">
+                            {netWorthSavings > 0 && (
+                              <div className="flex items-center gap-1.5">
+                                <PiggyBank className="h-4 w-4 text-green-500" />
+                                <span className="text-green-600 font-medium">
+                                  {formatCurrency(netWorthSavings)} less needed
+                                </span>
+                              </div>
+                            )}
+                            {yearsSaved !== null && yearsSaved > 0 && (
+                              <div className="flex items-center gap-1.5">
+                                <Clock className="h-4 w-4 text-blue-500" />
+                                <span className="text-blue-600 font-medium">
+                                  {yearsSaved.toFixed(1)} years earlier
+                                </span>
+                              </div>
+                            )}
+                            {city.canRetireNow && !currentCityData.canRetireNow && (
+                              <div className="flex items-center gap-1.5">
+                                <CheckCircle className="h-4 w-4 text-green-500" />
+                                <span className="text-green-600 font-medium">
+                                  Retire now!
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+
+                  {cheaperCities.length === 0 && (
+                    <p className="text-sm text-muted-foreground text-center py-4">
+                      You&apos;re already in one of the most affordable cities for your spending profile.
+                    </p>
+                  )}
+
+                  {/* Summary callout */}
+                  {cheaperCities.length > 0 && (() => {
+                    const bestCity = cheaperCities[0];
+                    const netWorthSavings = currentCityData.requiredNW - bestCity.requiredNW;
+                    const yearsSaved = isFinite(currentYearsToRetire) && isFinite(bestCity.yearsToRetirement)
+                      ? currentYearsToRetire - bestCity.yearsToRetirement
+                      : null;
+
+                    return (
+                      <div className="p-4 mt-4 rounded-lg bg-gradient-to-r from-purple-500/10 to-blue-500/10 border border-purple-500/20">
+                        <div className="flex items-start gap-3">
+                          <Lightbulb className="h-5 w-5 text-purple-500 mt-0.5 flex-shrink-0" />
+                          <div>
+                            <p className="font-medium text-purple-700 dark:text-purple-300">
+                              Top Geo-Arbitrage Opportunity
+                            </p>
+                            <p className="text-sm text-muted-foreground mt-1">
+                              Moving from <span className="font-medium">{currentCity.city_name}</span> to{" "}
+                              <span className="font-medium">{bestCity.city.city_name}</span>{" "}
+                              {netWorthSavings > 0 && (
+                                <>reduces your required net worth by <span className="font-medium text-green-600">{formatCurrency(netWorthSavings)}</span></>
+                              )}
+                              {yearsSaved !== null && yearsSaved > 0 && (
+                                <>{netWorthSavings > 0 ? " and " : ""}accelerates FI by <span className="font-medium text-blue-600">{yearsSaved.toFixed(1)} years</span></>
+                              )}
+                              {bestCity.canRetireNow && !currentCityData.canRetireNow && (
+                                <>, allowing you to <span className="font-medium text-green-600">retire immediately</span></>
+                              )}
+                              .
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })()}
+                </div>
+              );
+            })()}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Tax Optimization Strategies */}
+      <Card className="border-amber-500/20 bg-gradient-to-r from-amber-500/5 to-orange-500/5">
+        <CardHeader
+          className="cursor-pointer select-none"
+          onClick={() => {
+            const el = document.getElementById('tax-strategies-content');
+            if (el) el.classList.toggle('hidden');
+            const chevron = document.getElementById('tax-strategies-chevron');
+            if (chevron) chevron.classList.toggle('rotate-180');
+          }}
+        >
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-2">
+              <Landmark className="h-5 w-5 text-amber-500" />
+              <CardTitle className="text-lg">Tax Optimization Strategies</CardTitle>
+              <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded">For US Taxpayers</span>
+            </div>
+            <ChevronDown id="tax-strategies-chevron" className="h-5 w-5 text-muted-foreground transition-transform" />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Strategies to reduce your tax burden during accumulation and retirement
+          </p>
+        </CardHeader>
+        <CardContent id="tax-strategies-content" className="hidden space-y-4">
+          <div className="grid gap-4 md:grid-cols-2">
+            {/* FEIE */}
+            <div className="p-4 rounded-lg bg-white/50 dark:bg-gray-900/50 border border-amber-500/10">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center flex-shrink-0">
+                  <Plane className="h-5 w-5 text-amber-500" />
+                </div>
+                <div>
+                  <h4 className="font-medium flex items-center gap-2">
+                    Foreign Earned Income Exclusion (FEIE)
+                    <span className="text-xs text-green-600 bg-green-500/10 px-2 py-0.5 rounded">Up to $126,500 tax-free (2024)</span>
+                  </h4>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Live abroad for 330+ days/year to exclude foreign earned income from US taxes.
+                    Combine with geo-arbitrage for maximum impact.
+                  </p>
+                  <div className="mt-2 text-xs text-muted-foreground">
+                    <span className="font-medium">Best for:</span> Consultants, remote workers living abroad
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* S-Corp */}
+            <div className="p-4 rounded-lg bg-white/50 dark:bg-gray-900/50 border border-amber-500/10">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center flex-shrink-0">
+                  <Building2 className="h-5 w-5 text-amber-500" />
+                </div>
+                <div>
+                  <h4 className="font-medium flex items-center gap-2">
+                    S-Corp Election
+                    <span className="text-xs text-green-600 bg-green-500/10 px-2 py-0.5 rounded">Save 15.3% SE tax</span>
+                  </h4>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Pay yourself a reasonable salary and take remaining profits as distributions
+                    to avoid self-employment tax on distributions.
+                  </p>
+                  <div className="mt-2 text-xs text-muted-foreground">
+                    <span className="font-medium">Best for:</span> Consultants earning $80k+/year with profits over salary
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Solo 401k */}
+            <div className="p-4 rounded-lg bg-white/50 dark:bg-gray-900/50 border border-amber-500/10">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center flex-shrink-0">
+                  <PiggyBank className="h-5 w-5 text-amber-500" />
+                </div>
+                <div>
+                  <h4 className="font-medium flex items-center gap-2">
+                    Solo 401(k)
+                    <span className="text-xs text-green-600 bg-green-500/10 px-2 py-0.5 rounded">Up to $69,000/year (2024)</span>
+                  </h4>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Contribute as both employee ($23,000) and employer (25% of compensation).
+                    Mega backdoor Roth available with some plans.
+                  </p>
+                  <div className="mt-2 text-xs text-muted-foreground">
+                    <span className="font-medium">Best for:</span> Self-employed with no employees
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* HSA */}
+            <div className="p-4 rounded-lg bg-white/50 dark:bg-gray-900/50 border border-amber-500/10">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center flex-shrink-0">
+                  <DollarSign className="h-5 w-5 text-amber-500" />
+                </div>
+                <div>
+                  <h4 className="font-medium flex items-center gap-2">
+                    Health Savings Account (HSA)
+                    <span className="text-xs text-green-600 bg-green-500/10 px-2 py-0.5 rounded">Triple tax advantage</span>
+                  </h4>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Contribute $4,150 (individual) or $8,300 (family) in 2024.
+                    Tax-free contributions, growth, and qualified withdrawals.
+                  </p>
+                  <div className="mt-2 text-xs text-muted-foreground">
+                    <span className="font-medium">Best for:</span> Anyone with HDHP, invest and pay medical out-of-pocket
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Strategy Combinations */}
+          <div className="p-4 rounded-lg bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/20">
+            <div className="flex items-start gap-3">
+              <Lightbulb className="h-5 w-5 text-amber-500 mt-0.5 flex-shrink-0" />
+              <div>
+                <p className="font-medium text-amber-700 dark:text-amber-300">
+                  Optimal Strategy Stack for Consultants
+                </p>
+                <div className="mt-2 space-y-2 text-sm text-muted-foreground">
+                  <div className="flex items-center gap-2">
+                    <ArrowRight className="h-4 w-4 text-amber-500" />
+                    <span><span className="font-medium">S-Corp + Solo 401(k):</span> Reduce SE taxes while maximizing retirement contributions</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <ArrowRight className="h-4 w-4 text-amber-500" />
+                    <span><span className="font-medium">FEIE + Geo-Arbitrage:</span> Live in a low-cost country, exclude income from US taxes</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <ArrowRight className="h-4 w-4 text-amber-500" />
+                    <span><span className="font-medium">HSA Stealth IRA:</span> Max HSA, invest aggressively, pay medical out-of-pocket, reimburse later</span>
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground mt-3 pt-3 border-t border-amber-500/20">
+                  Consult a tax professional for your specific situation. Tax laws change annually.
+                </p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* No data warning */}
       {netWorthEntries.length === 0 && (
