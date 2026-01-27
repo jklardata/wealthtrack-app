@@ -61,13 +61,24 @@ type DateRange = {
 
 type PresetRange = "all" | "this-month" | "last-month" | "this-quarter" | "last-quarter" | "ytd" | "last-year" | "custom";
 
+// Vibrant, distinct colors for better visibility
 const ASSET_COLORS = {
-  stocks: "#f97316",
-  bonds: "#3b82f6",
-  cash: "#22c55e",
-  real_estate: "#8b5cf6",
-  points_value: "#eab308",
-  other_assets: "#6b7280",
+  stocks: "#f97316", // Bright Orange
+  bonds: "#0ea5e9", // Sky Blue
+  cash: "#10b981", // Emerald Green
+  real_estate: "#8b5cf6", // Violet Purple
+  points_value: "#f59e0b", // Amber Yellow
+  other_assets: "#64748b", // Slate Gray
+};
+
+// Gradient pairs for visual appeal
+const ASSET_GRADIENTS = {
+  stocks: { start: "#fb923c", end: "#ea580c" },
+  bonds: { start: "#38bdf8", end: "#0284c7" },
+  cash: { start: "#34d399", end: "#059669" },
+  real_estate: { start: "#a78bfa", end: "#7c3aed" },
+  points_value: { start: "#fbbf24", end: "#d97706" },
+  other_assets: { start: "#94a3b8", end: "#475569" },
 };
 
 const ASSET_LABELS: Record<string, string> = {
@@ -432,14 +443,20 @@ export default function DashboardPage() {
     const total = Number(latestEntry.total_assets);
     if (total === 0) return [];
 
-    return [
-      { name: "Stocks", value: Number(latestEntry.stocks), color: ASSET_COLORS.stocks },
-      { name: "Bonds", value: Number(latestEntry.bonds), color: ASSET_COLORS.bonds },
-      { name: "Cash", value: Number(latestEntry.cash), color: ASSET_COLORS.cash },
-      { name: "Real Estate", value: Number(latestEntry.real_estate), color: ASSET_COLORS.real_estate },
-      { name: "Points", value: Number(latestEntry.points_value), color: ASSET_COLORS.points_value },
-      { name: "Other", value: Number(latestEntry.other_assets), color: ASSET_COLORS.other_assets },
+    const data = [
+      { name: "Stocks", key: "stocks", value: Number(latestEntry.stocks), color: ASSET_COLORS.stocks },
+      { name: "Bonds", key: "bonds", value: Number(latestEntry.bonds), color: ASSET_COLORS.bonds },
+      { name: "Cash", key: "cash", value: Number(latestEntry.cash), color: ASSET_COLORS.cash },
+      { name: "Real Estate", key: "real_estate", value: Number(latestEntry.real_estate), color: ASSET_COLORS.real_estate },
+      { name: "Points", key: "points_value", value: Number(latestEntry.points_value), color: ASSET_COLORS.points_value },
+      { name: "Other", key: "other_assets", value: Number(latestEntry.other_assets), color: ASSET_COLORS.other_assets },
     ].filter((item) => item.value > 0);
+
+    // Calculate percentages
+    return data.map((item) => ({
+      ...item,
+      percent: (item.value / total) * 100,
+    })).sort((a, b) => b.value - a.value); // Sort by value descending
   }, [latestEntry]);
 
   // Stacked bar chart data for allocation over time
@@ -948,34 +965,100 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             {allocationData.length > 0 ? (
-              <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                  <Pie
-                    data={allocationData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={100}
-                    paddingAngle={2}
-                    dataKey="value"
-                    label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}
-                    labelLine={false}
-                  >
-                    {allocationData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: "#1a1a1a",
-                      border: "1px solid #333",
-                      borderRadius: "8px",
-                    }}
-                    formatter={(value) => [formatCurrency(value as number), ""]}
-                  />
-                  <Legend />
-                </PieChart>
-              </ResponsiveContainer>
+              <div className="space-y-4">
+                {/* Pie Chart */}
+                <div className="relative">
+                  <ResponsiveContainer width="100%" height={200}>
+                    <PieChart>
+                      <defs>
+                        {Object.entries(ASSET_GRADIENTS).map(([key, gradient]) => (
+                          <linearGradient key={key} id={`dash-gradient-${key}`} x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stopColor={gradient.start} />
+                            <stop offset="100%" stopColor={gradient.end} />
+                          </linearGradient>
+                        ))}
+                      </defs>
+                      <Pie
+                        data={allocationData}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={55}
+                        outerRadius={80}
+                        paddingAngle={3}
+                        dataKey="value"
+                        stroke="none"
+                      >
+                        {allocationData.map((entry) => (
+                          <Cell
+                            key={`cell-${entry.key}`}
+                            fill={`url(#dash-gradient-${entry.key})`}
+                            className="drop-shadow-sm"
+                          />
+                        ))}
+                      </Pie>
+                      <Tooltip
+                        content={({ active, payload }) => {
+                          if (active && payload && payload.length) {
+                            const item = payload[0].payload;
+                            return (
+                              <div className="bg-white dark:bg-gray-900 px-3 py-2 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
+                                <div className="flex items-center gap-2">
+                                  <div
+                                    className="w-3 h-3 rounded-full"
+                                    style={{ backgroundColor: item.color }}
+                                  />
+                                  <span className="font-medium">{item.name}</span>
+                                </div>
+                                <div className="text-lg font-bold mt-1">{item.percent.toFixed(1)}%</div>
+                                <div className="text-sm text-muted-foreground">
+                                  {formatCurrency(item.value)}
+                                </div>
+                              </div>
+                            );
+                          }
+                          return null;
+                        }}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+
+                  {/* Center label */}
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="text-center">
+                      <div className="text-xl font-bold">
+                        {formatCurrency(latestEntry?.total_assets || 0)}
+                      </div>
+                      <div className="text-xs text-muted-foreground">Total Assets</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Breakdown List */}
+                <div className="space-y-2">
+                  {allocationData.map((item) => (
+                    <div
+                      key={item.key}
+                      className="flex items-center justify-between p-2 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
+                    >
+                      <div className="flex items-center gap-2">
+                        <div
+                          className="w-3 h-3 rounded-full flex-shrink-0"
+                          style={{ backgroundColor: item.color }}
+                        />
+                        <span className="text-sm font-medium">{item.name}</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span className="text-sm font-bold" style={{ color: item.color }}>
+                          {item.percent.toFixed(1)}%
+                        </span>
+                        <span className="text-xs text-muted-foreground w-20 text-right">
+                          {formatCurrency(item.value)}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             ) : (
               <div className="flex items-center justify-center h-[300px] text-muted-foreground">
                 No asset data available

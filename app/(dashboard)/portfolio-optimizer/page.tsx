@@ -53,13 +53,24 @@ interface RiskQuestion {
   options: { text: string; score: number }[];
 }
 
+// Vibrant, distinct colors for better visibility
 const COLORS = {
-  stocks: "#f97316", // Orange
-  bonds: "#3b82f6", // Blue
-  cash: "#22c55e", // Green
-  real_estate: "#a855f7", // Purple
-  commodities: "#eab308", // Yellow
-  other: "#6b7280", // Gray
+  stocks: "#f97316", // Bright Orange
+  bonds: "#0ea5e9", // Sky Blue
+  cash: "#10b981", // Emerald Green
+  real_estate: "#8b5cf6", // Violet Purple
+  commodities: "#f59e0b", // Amber Yellow
+  other: "#64748b", // Slate Gray
+};
+
+// Gradient pairs for visual appeal
+const COLOR_GRADIENTS = {
+  stocks: { start: "#fb923c", end: "#ea580c" },
+  bonds: { start: "#38bdf8", end: "#0284c7" },
+  cash: { start: "#34d399", end: "#059669" },
+  real_estate: { start: "#a78bfa", end: "#7c3aed" },
+  commodities: { start: "#fbbf24", end: "#d97706" },
+  other: { start: "#94a3b8", end: "#475569" },
 };
 
 const CATEGORY_LABELS: Record<keyof Allocation, string> = {
@@ -194,7 +205,7 @@ function RiskQuestionnaire({
   );
 }
 
-// Allocation Pie Chart Component
+// Improved Allocation Pie Chart Component with breakdown list
 function AllocationChart({
   allocation,
   title,
@@ -207,38 +218,126 @@ function AllocationChart({
   const data = Object.entries(allocation)
     .filter(([, value]) => value > 0.001)
     .map(([key, value]) => ({
+      key: key as keyof Allocation,
       name: CATEGORY_LABELS[key as keyof Allocation],
       value: value * 100,
+      rawValue: value,
       color: COLORS[key as keyof Allocation],
       amount: totalValue ? value * totalValue : undefined,
-    }));
+    }))
+    .sort((a, b) => b.value - a.value); // Sort by value descending
+
+  const totalPercent = data.reduce((sum, d) => sum + d.value, 0);
 
   return (
-    <div className="text-center">
-      <h4 className="font-medium mb-2">{title}</h4>
-      <ResponsiveContainer width="100%" height={200}>
-        <PieChart>
-          <Pie
-            data={data}
-            cx="50%"
-            cy="50%"
-            innerRadius={50}
-            outerRadius={80}
-            paddingAngle={2}
-            dataKey="value"
+    <div className="space-y-4">
+      {/* Title */}
+      <h4 className="font-semibold text-center text-lg">{title}</h4>
+
+      {/* Pie Chart */}
+      <div className="relative">
+        <ResponsiveContainer width="100%" height={180}>
+          <PieChart>
+            <defs>
+              {Object.entries(COLOR_GRADIENTS).map(([key, gradient]) => (
+                <linearGradient key={key} id={`gradient-${key}`} x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stopColor={gradient.start} />
+                  <stop offset="100%" stopColor={gradient.end} />
+                </linearGradient>
+              ))}
+            </defs>
+            <Pie
+              data={data}
+              cx="50%"
+              cy="50%"
+              innerRadius={55}
+              outerRadius={80}
+              paddingAngle={3}
+              dataKey="value"
+              stroke="none"
+            >
+              {data.map((entry) => (
+                <Cell
+                  key={`cell-${entry.key}`}
+                  fill={`url(#gradient-${entry.key})`}
+                  className="drop-shadow-sm"
+                />
+              ))}
+            </Pie>
+            <Tooltip
+              content={({ active, payload }) => {
+                if (active && payload && payload.length) {
+                  const item = payload[0].payload;
+                  return (
+                    <div className="bg-white dark:bg-gray-900 px-3 py-2 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
+                      <div className="flex items-center gap-2">
+                        <div
+                          className="w-3 h-3 rounded-full"
+                          style={{ backgroundColor: item.color }}
+                        />
+                        <span className="font-medium">{item.name}</span>
+                      </div>
+                      <div className="text-lg font-bold mt-1">{item.value.toFixed(1)}%</div>
+                      {item.amount !== undefined && (
+                        <div className="text-sm text-muted-foreground">
+                          {formatCurrency(item.amount)}
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+                return null;
+              }}
+            />
+          </PieChart>
+        </ResponsiveContainer>
+
+        {/* Center label */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="text-center">
+            <div className="text-2xl font-bold">{totalPercent.toFixed(0)}%</div>
+            <div className="text-xs text-muted-foreground">Total</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Breakdown List */}
+      <div className="space-y-2">
+        {data.map((item) => (
+          <div
+            key={item.key}
+            className="flex items-center justify-between p-2 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
           >
-            {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={entry.color} />
-            ))}
-          </Pie>
-          <Tooltip
-            formatter={(value, name) => {
-              return [`${Number(value).toFixed(1)}%`, name];
-            }}
-          />
-          <Legend />
-        </PieChart>
-      </ResponsiveContainer>
+            <div className="flex items-center gap-2">
+              <div
+                className="w-3 h-3 rounded-full flex-shrink-0"
+                style={{ backgroundColor: item.color }}
+              />
+              <span className="text-sm font-medium">{item.name}</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-sm font-bold" style={{ color: item.color }}>
+                {item.value.toFixed(1)}%
+              </span>
+              {item.amount !== undefined && (
+                <span className="text-xs text-muted-foreground w-20 text-right">
+                  {formatCurrency(item.amount)}
+                </span>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Total value */}
+      {totalValue !== undefined && totalValue > 0 && (
+        <div className="pt-2 border-t">
+          <div className="flex justify-between items-center">
+            <span className="text-sm text-muted-foreground">Total Value</span>
+            <span className="font-bold">{formatCurrency(totalValue)}</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -887,33 +986,39 @@ export default function PortfolioOptimizerPage() {
             )}
           </div>
 
-          {/* Allocation Comparison */}
-          <div className="grid gap-6 md:grid-cols-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>Current vs Recommended Allocation</CardTitle>
-                <CardDescription>
-                  Compare your current portfolio with the optimal allocation
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 gap-4">
+          {/* Allocation Comparison - Full Width */}
+          <Card>
+            <CardHeader className="bg-gradient-to-r from-orange-500/5 to-blue-500/5 border-b">
+              <CardTitle className="flex items-center gap-2">
+                <Target className="h-5 w-5 text-orange-500" />
+                Current vs Recommended Allocation
+              </CardTitle>
+              <CardDescription>
+                Compare your current portfolio with the optimal allocation based on your risk profile
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pt-6">
+              <div className="grid md:grid-cols-2 gap-8">
+                <div className="p-4 rounded-xl bg-muted/20 border">
                   <AllocationChart
                     allocation={optimization.current_allocation}
-                    title="Current"
-                    totalValue={optimization.total_portfolio_value}
-                  />
-                  <AllocationChart
-                    allocation={optimization.recommended_allocation}
-                    title="Recommended"
+                    title="📊 Current Portfolio"
                     totalValue={optimization.total_portfolio_value}
                   />
                 </div>
-              </CardContent>
-            </Card>
+                <div className="p-4 rounded-xl bg-gradient-to-br from-orange-500/5 to-green-500/5 border border-orange-500/20">
+                  <AllocationChart
+                    allocation={optimization.recommended_allocation}
+                    title="✨ Recommended Portfolio"
+                    totalValue={optimization.total_portfolio_value}
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
-            {/* Key Metrics */}
-            <Card>
+          {/* Key Metrics */}
+          <Card>
               <CardHeader>
                 <CardTitle>Expected Performance</CardTitle>
                 <CardDescription>
@@ -951,7 +1056,6 @@ export default function PortfolioOptimizerPage() {
                 </div>
               </CardContent>
             </Card>
-          </div>
 
           {/* Rebalancing Actions */}
           <Card>
