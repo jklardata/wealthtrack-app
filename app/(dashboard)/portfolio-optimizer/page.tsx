@@ -35,7 +35,18 @@ import {
   Layers,
   Check,
   Minus,
+  Landmark,
+  PiggyBank,
+  Wallet,
 } from "lucide-react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import type {
   RiskTolerance,
   Allocation,
@@ -687,6 +698,222 @@ function StockBreakdownCard({
   );
 }
 
+// Tax Location Strategy Component
+function TaxLocationStrategyCard({
+  allocation,
+  totalValue,
+}: {
+  allocation: Allocation;
+  totalValue: number;
+}) {
+  // Tax efficiency data for each asset class
+  const taxEfficiencyData = [
+    {
+      asset: "Bonds (Interest)",
+      taxEfficiency: "Low",
+      taxRate: "Ordinary income (up to 37%)",
+      bestLocation: "Tax-Advantaged",
+      reason: "Interest taxed as ordinary income annually",
+      allocation: allocation.bonds,
+      value: allocation.bonds * totalValue,
+      icon: "🏛️",
+    },
+    {
+      asset: "REITs",
+      taxEfficiency: "Low",
+      taxRate: "Ordinary income (up to 37%)",
+      bestLocation: "Tax-Advantaged",
+      reason: "Dividends don't qualify for lower rates",
+      allocation: allocation.real_estate,
+      value: allocation.real_estate * totalValue,
+      icon: "🏢",
+    },
+    {
+      asset: "International Stocks",
+      taxEfficiency: "Medium",
+      taxRate: "15-20% LTCG + foreign tax credit",
+      bestLocation: "Taxable",
+      reason: "Foreign tax credit lost in tax-advantaged",
+      allocation: allocation.stocks * 0.3, // Assume 30% intl
+      value: allocation.stocks * 0.3 * totalValue,
+      icon: "🌍",
+    },
+    {
+      asset: "US Stocks (Index)",
+      taxEfficiency: "High",
+      taxRate: "15-20% LTCG, qualified dividends",
+      bestLocation: "Either/Taxable",
+      reason: "Tax-efficient, low turnover",
+      allocation: allocation.stocks * 0.7, // Assume 70% US
+      value: allocation.stocks * 0.7 * totalValue,
+      icon: "🇺🇸",
+    },
+    {
+      asset: "Cash/Money Market",
+      taxEfficiency: "Low",
+      taxRate: "Ordinary income (up to 37%)",
+      bestLocation: "Tax-Advantaged",
+      reason: "Interest taxed as ordinary income",
+      allocation: allocation.cash,
+      value: allocation.cash * totalValue,
+      icon: "💵",
+    },
+  ].filter(item => item.allocation > 0.001); // Filter out zero allocations
+
+  // Calculate suggested allocations
+  const taxAdvantaged = taxEfficiencyData
+    .filter(item => item.bestLocation === "Tax-Advantaged")
+    .reduce((sum, item) => sum + item.value, 0);
+
+  const taxable = taxEfficiencyData
+    .filter(item => item.bestLocation === "Taxable" || item.bestLocation === "Either/Taxable")
+    .reduce((sum, item) => sum + item.value, 0);
+
+  // Estimate annual tax savings from proper location
+  const estimatedAnnualYield = 0.04; // 4% average yield
+  const taxRateDiff = 0.22; // Difference between ordinary income and LTCG
+  const annualTaxSavings = taxAdvantaged * estimatedAnnualYield * taxRateDiff;
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-lg flex items-center gap-2">
+          <Landmark className="h-5 w-5 text-primary" />
+          Tax Location Strategy
+        </CardTitle>
+        <CardDescription>
+          Optimize where you hold each asset class to minimize taxes
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        {/* Summary Cards */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="p-4 rounded-lg bg-violet-500/10 border border-violet-500/20">
+            <div className="flex items-center gap-2 mb-2">
+              <PiggyBank className="h-5 w-5 text-violet-500" />
+              <span className="font-medium">Tax-Advantaged</span>
+            </div>
+            <div className="text-2xl font-bold text-violet-500">{formatCurrency(taxAdvantaged)}</div>
+            <p className="text-xs text-muted-foreground mt-1">401(k), IRA, HSA, Roth</p>
+          </div>
+          <div className="p-4 rounded-lg bg-cyan-500/10 border border-cyan-500/20">
+            <div className="flex items-center gap-2 mb-2">
+              <Wallet className="h-5 w-5 text-cyan-500" />
+              <span className="font-medium">Taxable Brokerage</span>
+            </div>
+            <div className="text-2xl font-bold text-cyan-500">{formatCurrency(taxable)}</div>
+            <p className="text-xs text-muted-foreground mt-1">Regular brokerage account</p>
+          </div>
+        </div>
+
+        {/* Estimated Savings */}
+        {annualTaxSavings > 100 && (
+          <div className="p-4 rounded-lg bg-primary/10 border border-primary/20">
+            <div className="flex items-start gap-3">
+              <CheckCircle2 className="h-5 w-5 text-primary mt-0.5" />
+              <div>
+                <p className="font-medium text-primary">
+                  Estimated Annual Tax Savings: {formatCurrency(annualTaxSavings)}
+                </p>
+                <p className="text-sm text-muted-foreground mt-1">
+                  By holding tax-inefficient assets in tax-advantaged accounts, you avoid paying
+                  ordinary income tax rates on bond interest and REIT dividends.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Detailed Table */}
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Asset Class</TableHead>
+                <TableHead>Tax Efficiency</TableHead>
+                <TableHead>Tax Treatment</TableHead>
+                <TableHead>Best Location</TableHead>
+                <TableHead className="text-right">Value</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {taxEfficiencyData.map((item) => (
+                <TableRow key={item.asset}>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <span>{item.icon}</span>
+                      <span className="font-medium">{item.asset}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <span className={cn(
+                      "px-2 py-1 rounded-full text-xs font-medium",
+                      item.taxEfficiency === "High" ? "bg-green-500/10 text-green-500" :
+                      item.taxEfficiency === "Medium" ? "bg-yellow-500/10 text-yellow-500" :
+                      "bg-red-500/10 text-red-500"
+                    )}>
+                      {item.taxEfficiency}
+                    </span>
+                  </TableCell>
+                  <TableCell className="text-sm text-muted-foreground">{item.taxRate}</TableCell>
+                  <TableCell>
+                    <span className={cn(
+                      "px-2 py-1 rounded-full text-xs font-medium",
+                      item.bestLocation === "Tax-Advantaged" ? "bg-violet-500/10 text-violet-500" :
+                      item.bestLocation === "Taxable" ? "bg-cyan-500/10 text-cyan-500" :
+                      "bg-gray-500/10 text-gray-500"
+                    )}>
+                      {item.bestLocation}
+                    </span>
+                  </TableCell>
+                  <TableCell className="text-right font-medium">{formatCurrency(item.value)}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+
+        {/* Recommendations */}
+        <div className="space-y-3">
+          <h4 className="font-medium flex items-center gap-2">
+            <Info className="h-4 w-4 text-muted-foreground" />
+            Tax Location Rules
+          </h4>
+          <div className="grid gap-3 md:grid-cols-2">
+            <div className="p-3 rounded-lg bg-violet-500/5 border border-violet-500/10">
+              <p className="font-medium text-violet-500 text-sm mb-2">Hold in Tax-Advantaged (401k, IRA):</p>
+              <ul className="text-xs text-muted-foreground space-y-1">
+                <li>• Bonds (taxable interest)</li>
+                <li>• REITs (non-qualified dividends)</li>
+                <li>• High-turnover funds</li>
+                <li>• Treasury I-Bonds (if in Trad IRA)</li>
+              </ul>
+            </div>
+            <div className="p-3 rounded-lg bg-cyan-500/5 border border-cyan-500/10">
+              <p className="font-medium text-cyan-500 text-sm mb-2">Hold in Taxable Brokerage:</p>
+              <ul className="text-xs text-muted-foreground space-y-1">
+                <li>• International stocks (foreign tax credit)</li>
+                <li>• US stock index funds (tax efficient)</li>
+                <li>• Tax-managed funds</li>
+                <li>• Municipal bonds (tax-free interest)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Special Note for Roth */}
+        <div className="p-3 rounded-lg bg-amber-500/5 border border-amber-500/10 text-sm">
+          <p className="font-medium text-amber-500 mb-1">Roth IRA Exception</p>
+          <p className="text-muted-foreground">
+            Consider holding highest-growth assets (stocks) in Roth accounts since all growth is tax-free.
+            This is especially valuable for long time horizons where compounding maximizes the tax benefit.
+          </p>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 // Main Page Component
 export default function PortfolioOptimizerPage() {
   const [loading, setLoading] = useState(true);
@@ -1095,6 +1322,14 @@ export default function PortfolioOptimizerPage() {
               breakdown={optimization.stock_breakdown}
               totalPortfolioValue={optimization.total_portfolio_value}
               stockAllocation={optimization.recommended_allocation.stocks}
+            />
+          )}
+
+          {/* Tax Location Strategy */}
+          {optimization.total_portfolio_value > 0 && (
+            <TaxLocationStrategyCard
+              allocation={optimization.recommended_allocation}
+              totalValue={optimization.total_portfolio_value}
             />
           )}
 

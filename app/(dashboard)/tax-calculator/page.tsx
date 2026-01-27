@@ -280,8 +280,8 @@ export default function TaxCalculatorPage() {
       return {
         grossIncome: gross,
         structure: "Sole Prop / LLC",
-        salary: 0,
-        distributions: netIncome,
+        salary: netIncome, // All SE income is earned income subject to SE tax
+        distributions: 0,
         seTax: seTaxResult.total,
         ficaEmployee: 0,
         ficaEmployer: 0,
@@ -357,7 +357,10 @@ export default function TaxCalculatorPage() {
       const salary = netIncome; // Assume equivalent salary
       const fica = calculateFICA(salary);
 
-      const taxableIncome = Math.max(0, salary - retirement401k - hsa - standardDeduction);
+      // W-2 employees limited to $23k employee contribution (no employer match in this comparison)
+      const w2_401k = Math.min(retirement401k, 23000);
+
+      const taxableIncome = Math.max(0, salary - w2_401k - hsa - standardDeduction);
 
       // FEIE for W-2 employees working abroad
       let feieExclusion = 0;
@@ -368,7 +371,7 @@ export default function TaxCalculatorPage() {
       }
 
       const federalTax = calculateFederalTax(adjustedTaxableIncome, filingStatus);
-      const stateTax = (salary - retirement401k - hsa) * stateRate;
+      const stateTax = (salary - w2_401k - hsa) * stateRate;
       // Note: Employer FICA is not included in employee's tax burden for comparison
       const totalTax = fica.employeeSS + fica.employeeMedicare + federalTax + stateTax;
 
@@ -383,10 +386,10 @@ export default function TaxCalculatorPage() {
         federalTax,
         stateTax,
         totalTax,
-        takeHomePay: salary - totalTax - Math.min(retirement401k, 23000) - hsa, // W-2 limited to employee 401k
+        takeHomePay: salary - totalTax - w2_401k - hsa,
         effectiveRate: totalTax / salary,
         qbiDeduction: 0,
-        retirement401k: Math.min(retirement401k, 23000),
+        retirement401k: w2_401k,
         hsaContribution: hsa,
         feieExclusion,
       };
@@ -395,6 +398,23 @@ export default function TaxCalculatorPage() {
 
     return results;
   }, [gross, netIncome, expenses, filingStatus, stateRate, sCorpSalaryPercent, customSalary, retirement401k, hsa, useFEIE, daysAbroad, standardDeduction]);
+
+  // Calculate max Solo 401k for self-employed (employee $23k + employer 25% of net SE income, max $69k total)
+  const maxSolo401k = Math.min(69000, 23000 + netIncome * 0.25);
+
+  // Tradeoffs data for Sole Prop vs W-2
+  const tradeoffsData = useMemo(() => {
+    const soleProp = calculations[0];
+    const w2 = calculations[2];
+
+    return {
+      seTaxDiff: soleProp.seTax - (w2.ficaEmployee), // SE tax vs employee FICA only
+      qbiSavings: soleProp.qbiDeduction * 0.22, // Approximate tax savings from QBI at 22% bracket
+      retirement401kDiff: soleProp.retirement401k - w2.retirement401k,
+      takeHomeDiff: soleProp.takeHomePay - w2.takeHomePay,
+      effectiveRateDiff: soleProp.effectiveRate - w2.effectiveRate,
+    };
+  }, [calculations]);
 
   // Find the best strategy
   const bestStrategy = calculations.reduce((best, calc) =>
@@ -731,6 +751,171 @@ export default function TaxCalculatorPage() {
                 ))}
               </TableBody>
             </Table>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Key Tradeoffs Analysis: Self-Employed vs W-2 */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg flex items-center gap-2">
+            <Info className="h-5 w-5 text-primary" />
+            Key Tradeoffs: Self-Employed vs W-2
+          </CardTitle>
+          <p className="text-sm text-muted-foreground">
+            Understanding the trade-offs between consulting and traditional employment
+          </p>
+        </CardHeader>
+        <CardContent>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[200px]">Factor</TableHead>
+                  <TableHead>Sole Prop / LLC</TableHead>
+                  <TableHead>W-2 Employee</TableHead>
+                  <TableHead className="text-right">Difference</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableCell className="font-medium">Payroll Taxes</TableCell>
+                  <TableCell>
+                    <div>
+                      <span className="text-pink-500 font-medium">{formatCurrency(calculations[0].seTax)}</span>
+                      <p className="text-xs text-muted-foreground">15.3% SE tax (both halves)</p>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div>
+                      <span className="text-cyan-500 font-medium">{formatCurrency(calculations[2].ficaEmployee)}</span>
+                      <p className="text-xs text-muted-foreground">7.65% FICA (employee only)</p>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <span className={tradeoffsData.seTaxDiff > 0 ? "text-red-500" : "text-green-500"}>
+                      {tradeoffsData.seTaxDiff > 0 ? "+" : ""}{formatCurrency(tradeoffsData.seTaxDiff)}
+                    </span>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">QBI Deduction</TableCell>
+                  <TableCell>
+                    <div>
+                      <span className="text-green-500 font-medium">{formatCurrency(calculations[0].qbiDeduction)}</span>
+                      <p className="text-xs text-muted-foreground">20% of qualified business income</p>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div>
+                      <span className="text-muted-foreground">$0</span>
+                      <p className="text-xs text-muted-foreground">Not available for W-2 wages</p>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <span className="text-green-500">~{formatCurrency(tradeoffsData.qbiSavings)} tax savings</span>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">401(k) Contribution</TableCell>
+                  <TableCell>
+                    <div>
+                      <span className="text-primary font-medium">{formatCurrency(calculations[0].retirement401k)}</span>
+                      <p className="text-xs text-muted-foreground">Max: {formatCurrency(maxSolo401k)} (Solo 401k)</p>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div>
+                      <span className="font-medium">{formatCurrency(calculations[2].retirement401k)}</span>
+                      <p className="text-xs text-muted-foreground">Max: $23,000 (employee only)</p>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <span className={tradeoffsData.retirement401kDiff > 0 ? "text-green-500" : "text-red-500"}>
+                      {tradeoffsData.retirement401kDiff > 0 ? "+" : ""}{formatCurrency(tradeoffsData.retirement401kDiff)}
+                    </span>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">Business Expenses</TableCell>
+                  <TableCell>
+                    <div>
+                      <span className="text-green-500 font-medium">{formatCurrency(expenses)}</span>
+                      <p className="text-xs text-muted-foreground">Fully deductible above-the-line</p>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div>
+                      <span className="text-muted-foreground">$0</span>
+                      <p className="text-xs text-muted-foreground">Unreimbursed expenses not deductible</p>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <span className="text-green-500">+{formatCurrency(expenses)}</span>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">Federal Income Tax</TableCell>
+                  <TableCell>
+                    <span className="font-medium">{formatCurrency(calculations[0].federalTax)}</span>
+                  </TableCell>
+                  <TableCell>
+                    <span className="font-medium">{formatCurrency(calculations[2].federalTax)}</span>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <span className={calculations[0].federalTax - calculations[2].federalTax > 0 ? "text-red-500" : "text-green-500"}>
+                      {calculations[0].federalTax - calculations[2].federalTax > 0 ? "+" : ""}
+                      {formatCurrency(calculations[0].federalTax - calculations[2].federalTax)}
+                    </span>
+                  </TableCell>
+                </TableRow>
+                <TableRow className="bg-muted/30 font-medium">
+                  <TableCell className="font-bold">Net Take-Home Pay</TableCell>
+                  <TableCell>
+                    <span className="text-primary font-bold">{formatCurrency(calculations[0].takeHomePay)}</span>
+                  </TableCell>
+                  <TableCell>
+                    <span className="font-bold">{formatCurrency(calculations[2].takeHomePay)}</span>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <span className={`font-bold ${tradeoffsData.takeHomeDiff > 0 ? "text-green-500" : "text-red-500"}`}>
+                      {tradeoffsData.takeHomeDiff > 0 ? "+" : ""}{formatCurrency(tradeoffsData.takeHomeDiff)}
+                    </span>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </div>
+
+          {/* Summary insight */}
+          <div className="mt-4 p-4 rounded-lg bg-muted/50">
+            <div className="flex items-start gap-3">
+              {tradeoffsData.takeHomeDiff > 0 ? (
+                <>
+                  <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />
+                  <div>
+                    <p className="font-medium text-green-500">Self-employment wins by {formatCurrency(tradeoffsData.takeHomeDiff)}</p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Despite higher payroll taxes, QBI deduction ({formatCurrency(calculations[0].qbiDeduction)}),
+                      business expense deductions ({formatCurrency(expenses)}), and higher 401k limits
+                      make self-employment more tax-efficient at your income level.
+                    </p>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5" />
+                  <div>
+                    <p className="font-medium text-amber-500">W-2 wins by {formatCurrency(Math.abs(tradeoffsData.takeHomeDiff))}</p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      At your income level, the SE tax burden ({formatCurrency(calculations[0].seTax)}) outweighs the
+                      QBI deduction benefit. Consider S-Corp election to save {formatCurrency(sCorpSavings)} by
+                      avoiding SE tax on distributions.
+                    </p>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </CardContent>
       </Card>
