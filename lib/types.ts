@@ -36,6 +36,21 @@ export interface WaitlistEntry {
   subscribed_at: string;
 }
 
+// Stripe Subscription Types
+export type EntitlementTier = 'free' | 'pro' | 'premium';
+
+export interface Subscription {
+  id: string;
+  user_id: string;
+  stripe_customer_id: string | null;
+  stripe_subscription_id: string | null;
+  entitlement_tier: EntitlementTier;
+  status: string;
+  current_period_end: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface NetWorthEntry {
   id: string;
   user_id: string;
@@ -313,6 +328,217 @@ export interface Holding {
   purchase_date: string | null;
   account_type: AccountType;
   asset_class: AssetClass;
+  created_at: string;
+  updated_at: string;
+}
+
+// ============================================
+// Scenario Types (Cross-Tool Financial Planning)
+// ============================================
+
+/**
+ * Spending category weights for cost-of-living calculations
+ * Must sum to 1.0 (100%)
+ */
+export interface SpendingWeights {
+  housing: number;
+  food: number;
+  transport: number;
+  healthcare: number;
+  utilities: number;
+  lifestyle: number;
+}
+
+/**
+ * Geo FI Score - Meta metric for location-based financial independence feasibility
+ */
+export interface GeoFIScore {
+  score: number;  // 0-100
+  label: 'Excellent' | 'Good' | 'Neutral' | 'Poor';
+}
+
+/**
+ * Scenario - A unified financial plan that persists across all tools
+ *
+ * Core principle:
+ * - Geographic Arbitrage changes the size of the problem
+ * - Retirement Calculator solves the problem
+ * - Portfolio Optimizer manages the risk
+ */
+export interface Scenario {
+  id: string;
+  user_id: string;
+  name: string;
+  description: string | null;
+  is_baseline: boolean;
+  is_active: boolean;
+
+  // Location Data
+  location_city_id: string;
+  location_city_name: string | null;
+  location_country: string | null;
+  effective_col_index: number;      // NYC = 1.0
+
+  // Income Streams
+  primary_income: number;           // Annual gross primary income
+  consulting_income: number;        // Annual gross consulting income (semi-retirement bridge)
+  consulting_years: number;         // Number of years of consulting bridge
+  consulting_tax_rate: number;      // Effective tax rate on consulting (0-1)
+
+  // Expenses
+  annual_expenses: number;          // Location-adjusted annual expenses
+  spending_weights: SpendingWeights;
+
+  // FI Parameters
+  withdrawal_rate: number;          // Safe withdrawal rate (default 0.04 = 4%)
+  expected_return: number;          // Expected real return (default 0.05 = 5%)
+  current_net_worth: number;        // Current portfolio value
+  annual_savings: number;           // Annual savings amount
+
+  // Derived Fields (calculated, not user-input)
+  annual_withdrawal_requirement: number;  // expenses - net consulting income
+  required_net_worth: number;             // Portfolio needed for FI
+  years_to_fi: number;                    // Years until financial independence
+  savings_rate: number;                   // Savings as % of income (0-1)
+  fi_score: number;                       // Geo FI Score (0-100)
+
+  // Portfolio Link
+  risk_tolerance: RiskTolerance | null;
+  time_horizon: number | null;
+
+  // Metadata
+  cloned_from_id: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+/**
+ * Input for creating/updating a scenario (excludes derived fields)
+ */
+export interface ScenarioInput {
+  name: string;
+  description?: string;
+  is_baseline?: boolean;
+  is_active?: boolean;
+
+  location_city_id: string;
+  location_city_name?: string;
+  location_country?: string;
+
+  primary_income: number;
+  consulting_income?: number;
+  consulting_years?: number;
+  consulting_tax_rate?: number;
+
+  annual_expenses: number;
+  spending_weights?: SpendingWeights;
+
+  withdrawal_rate?: number;
+  expected_return?: number;
+  current_net_worth: number;
+  annual_savings?: number;
+
+  risk_tolerance?: RiskTolerance;
+  time_horizon?: number;
+}
+
+/**
+ * Comparison between two scenarios (Move vs Stay analysis)
+ */
+export interface ScenarioComparison {
+  id: string;
+  user_id: string;
+  baseline_scenario_id: string;
+  compare_scenario_id: string;
+
+  // The full scenario objects for display
+  baseline: Scenario;
+  compare: Scenario;
+
+  // Deltas (compare - baseline): negative = better in compare scenario
+  delta_years_to_fi: number;          // Negative = retire faster
+  delta_required_net_worth: number;   // Negative = need less
+  delta_annual_expenses: number;      // Negative = spend less
+  delta_savings_rate: number;         // Positive = higher savings rate
+  delta_fi_score: number;             // Positive = better FI efficiency
+
+  // Semi-retirement analysis
+  semi_retirement_feasible: boolean;
+  consulting_covers_percentage: number;  // 0-1
+
+  // Human-readable insight
+  insight_text: string;               // "This move buys you ~5 years of FI"
+
+  created_at: string;
+}
+
+/**
+ * Summary comparison without full scenario objects (for lists)
+ */
+export interface ScenarioComparisonSummary {
+  id: string;
+  baseline_name: string;
+  compare_name: string;
+  delta_years_to_fi: number;
+  delta_required_net_worth: number;
+  insight_text: string;
+  created_at: string;
+}
+
+// ============================================
+// Tax Return Types
+// ============================================
+
+export type FilingStatus =
+  | 'single'
+  | 'married_filing_jointly'
+  | 'married_filing_separately'
+  | 'head_of_household'
+  | 'qualifying_widow';
+
+export interface TaxReturn {
+  id: string;
+  user_id: string;
+  tax_year: number;
+  filing_status: FilingStatus;
+
+  // Income
+  wages: number;
+  interest_income: number;
+  dividend_income: number;
+  qualified_dividends: number;
+  capital_gains: number;
+  ira_distributions: number;
+  pension_income: number;
+  social_security: number;
+  business_income: number;
+  other_income: number;
+  total_income: number;
+  agi: number;
+
+  // Deductions
+  adjustments: number;
+  deduction_type: 'standard' | 'itemized';
+  deduction_amount: number;
+  qbi_deduction: number;
+  taxable_income: number;
+
+  // Tax & Payments
+  total_tax: number;
+  federal_withheld: number;
+  estimated_payments: number;
+  refund_amount: number;
+  amount_owed: number;
+  effective_tax_rate: number;
+
+  // Self-employment
+  se_income: number;
+  se_tax: number;
+  se_deduction: number;
+
+  // Metadata
+  source: 'manual' | 'turbotax_pdf' | 'csv_upload';
+  notes: string | null;
   created_at: string;
   updated_at: string;
 }

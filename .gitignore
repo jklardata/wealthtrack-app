@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# scripts output/sensitive files
+scripts/*.pdf
+scripts/*.csv
+scripts/*_raw_text.txt

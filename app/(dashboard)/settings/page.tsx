@@ -15,8 +15,15 @@ import {
   Loader2,
   FileSpreadsheet,
   CreditCard,
+  Sparkles,
+  Crown,
+  Upload,
+  FileText,
+  Trash2,
 } from "lucide-react";
-import type { UserSettings } from "@/lib/types";
+import type { UserSettings, EntitlementTier, TaxReturn } from "@/lib/types";
+import { PRICING_TIERS } from "@/lib/stripe-config";
+import Link from "next/link";
 
 const SERVICE_ACCOUNT_EMAIL = "wealthtrack-sheets@wealth-tracker-485215.iam.gserviceaccount.com";
 
@@ -32,6 +39,18 @@ export default function SettingsPage() {
   const [creditCardsMessage, setCreditCardsMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [createdSheetUrl, setCreatedSheetUrl] = useState<string | null>(null);
   const [createdCreditCardsSheetUrl, setCreatedCreditCardsSheetUrl] = useState<string | null>(null);
+  const [subscription, setSubscription] = useState<{
+    entitlement_tier: EntitlementTier;
+    status: string;
+    current_period_end: string | null;
+  } | null>(null);
+
+  // Tax Returns state
+  const [taxReturns, setTaxReturns] = useState<TaxReturn[]>([]);
+  const [taxFile, setTaxFile] = useState<File | null>(null);
+  const [taxPreview, setTaxPreview] = useState<Partial<TaxReturn>[] | null>(null);
+  const [uploadingTax, setUploadingTax] = useState(false);
+  const [taxMessage, setTaxMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
   useEffect(() => {
     async function fetchSettings() {
@@ -49,7 +68,34 @@ export default function SettingsPage() {
         setLoading(false);
       }
     }
+
+    async function fetchSubscription() {
+      try {
+        const response = await fetch("/api/stripe/subscription");
+        if (response.ok) {
+          const data = await response.json();
+          setSubscription(data);
+        }
+      } catch (error) {
+        console.error("Error fetching subscription:", error);
+      }
+    }
+
+    async function fetchTaxReturns() {
+      try {
+        const response = await fetch("/api/tax-returns");
+        if (response.ok) {
+          const result = await response.json();
+          setTaxReturns(result.data || []);
+        }
+      } catch (error) {
+        console.error("Error fetching tax returns:", error);
+      }
+    }
+
     fetchSettings();
+    fetchSubscription();
+    fetchTaxReturns();
   }, []);
 
   const handleSave = async () => {
@@ -159,6 +205,114 @@ export default function SettingsPage() {
     }
   };
 
+  const handleTaxFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setTaxFile(file);
+    setTaxMessage(null);
+
+    // Parse CSV and show preview
+    try {
+      const text = await file.text();
+      const lines = text.trim().split("\n");
+      if (lines.length < 2) {
+        setTaxMessage({ type: "error", text: "CSV file is empty or has no data rows" });
+        return;
+      }
+
+      const headers = lines[0].split(",").map(h => h.trim().toLowerCase());
+      const records: Partial<TaxReturn>[] = [];
+
+      for (let i = 1; i < lines.length; i++) {
+        const values = lines[i].split(",");
+        const record: Record<string, string> = {};
+        headers.forEach((header, index) => {
+          record[header] = values[index]?.trim() || "";
+        });
+        records.push(record as unknown as Partial<TaxReturn>);
+      }
+
+      setTaxPreview(records);
+    } catch (error) {
+      setTaxMessage({ type: "error", text: "Failed to parse CSV file" });
+    }
+  };
+
+  const handleTaxUpload = async () => {
+    if (!taxPreview || taxPreview.length === 0) return;
+
+    setUploadingTax(true);
+    setTaxMessage(null);
+
+    try {
+      const response = await fetch("/api/tax-returns", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(taxPreview),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to upload tax returns");
+      }
+
+      setTaxMessage({
+        type: "success",
+        text: `Successfully imported ${result.imported} tax return(s)${result.errors?.length ? `. ${result.errors.length} error(s).` : ""}`,
+      });
+
+      // Refresh tax returns list
+      const refreshResponse = await fetch("/api/tax-returns");
+      if (refreshResponse.ok) {
+        const refreshResult = await refreshResponse.json();
+        setTaxReturns(refreshResult.data || []);
+      }
+
+      // Clear preview
+      setTaxPreview(null);
+      setTaxFile(null);
+    } catch (error) {
+      setTaxMessage({
+        type: "error",
+        text: error instanceof Error ? error.message : "Failed to upload",
+      });
+    } finally {
+      setUploadingTax(false);
+    }
+  };
+
+  const handleDeleteTaxReturn = async (year: number) => {
+    if (!confirm(`Delete tax return for ${year}?`)) return;
+
+    try {
+      const response = await fetch(`/api/tax-returns/${year}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete tax return");
+      }
+
+      setTaxReturns(taxReturns.filter(t => t.tax_year !== year));
+      setTaxMessage({ type: "success", text: `Deleted tax return for ${year}` });
+    } catch (error) {
+      setTaxMessage({
+        type: "error",
+        text: error instanceof Error ? error.message : "Failed to delete",
+      });
+    }
+  };
+
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      maximumFractionDigits: 0,
+    }).format(value);
+  };
+
   const extractSheetId = (input: string): string => {
     // If it's a full URL, extract the ID
     const match = input.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
@@ -197,9 +351,71 @@ export default function SettingsPage() {
       <div>
         <h1 className="text-3xl font-bold">Settings</h1>
         <p className="text-base text-muted-foreground mt-1">
-          Configure your Google Sheets integration
+          Configure your account and integrations
         </p>
       </div>
+
+      {/* Subscription Status Card */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            {subscription?.entitlement_tier === "premium" ? (
+              <Crown className="h-5 w-5 text-yellow-500" />
+            ) : subscription?.entitlement_tier === "pro" ? (
+              <Sparkles className="h-5 w-5 text-primary" />
+            ) : (
+              <Sparkles className="h-5 w-5 text-muted-foreground" />
+            )}
+            Subscription
+          </CardTitle>
+          <CardDescription>
+            Manage your WealthTrack subscription
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="font-medium">
+                Current Plan:{" "}
+                <span className={
+                  subscription?.entitlement_tier === "premium"
+                    ? "text-yellow-500"
+                    : subscription?.entitlement_tier === "pro"
+                    ? "text-primary"
+                    : "text-muted-foreground"
+                }>
+                  {subscription?.entitlement_tier
+                    ? PRICING_TIERS[subscription.entitlement_tier].name
+                    : "Free"}
+                </span>
+              </p>
+              {subscription?.current_period_end && subscription.entitlement_tier !== "free" && (
+                <p className="text-sm text-muted-foreground">
+                  Renews on {new Date(subscription.current_period_end).toLocaleDateString()}
+                </p>
+              )}
+            </div>
+            <Link href="/pricing">
+              <Button variant={subscription?.entitlement_tier === "free" ? "default" : "outline"}>
+                {subscription?.entitlement_tier === "free" ? "Upgrade" : "Manage Plan"}
+              </Button>
+            </Link>
+          </div>
+          {subscription?.entitlement_tier && subscription.entitlement_tier !== "free" && (
+            <div className="pt-2 border-t">
+              <p className="text-sm text-muted-foreground mb-2">Your plan includes:</p>
+              <ul className="text-sm space-y-1">
+                {PRICING_TIERS[subscription.entitlement_tier].features.map((feature) => (
+                  <li key={feature} className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-green-500" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>
@@ -529,6 +745,193 @@ export default function SettingsPage() {
           >
             {saving ? "Saving..." : "Save Settings"}
           </Button>
+        </CardContent>
+      </Card>
+
+      {/* Tax Returns Upload */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <FileText className="h-5 w-5 text-blue-600" />
+            Tax Returns
+          </CardTitle>
+          <CardDescription>
+            Upload tax return data from TurboTax PDF parser CSV export
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* Upload Section */}
+          <div className="bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/20 rounded-lg p-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-start gap-4">
+                <div className="p-3 rounded-lg bg-blue-500/20">
+                  <Upload className="h-6 w-6 text-blue-500" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg">Upload Tax Data</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Upload the CSV file generated by the TurboTax PDF parser script.
+                  </p>
+                </div>
+              </div>
+              <label className="cursor-pointer">
+                <input
+                  type="file"
+                  accept=".csv"
+                  onChange={handleTaxFileChange}
+                  className="hidden"
+                />
+                <div className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2">
+                  <Upload className="h-4 w-4" />
+                  Select CSV File
+                </div>
+              </label>
+            </div>
+
+            {taxFile && (
+              <div className="mt-4 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+                <p className="text-sm flex items-center gap-2">
+                  <FileText className="h-4 w-4" />
+                  Selected: {taxFile.name}
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Preview Section */}
+          {taxPreview && taxPreview.length > 0 && (
+            <div className="space-y-4">
+              <h4 className="font-medium">Preview ({taxPreview.length} record(s))</h4>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm border rounded-lg">
+                  <thead className="bg-muted">
+                    <tr>
+                      <th className="px-3 py-2 text-left">Year</th>
+                      <th className="px-3 py-2 text-left">Filing Status</th>
+                      <th className="px-3 py-2 text-right">AGI</th>
+                      <th className="px-3 py-2 text-right">Total Tax</th>
+                      <th className="px-3 py-2 text-right">Refund</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {taxPreview.map((record, idx) => (
+                      <tr key={idx} className="border-t">
+                        <td className="px-3 py-2">{record.tax_year}</td>
+                        <td className="px-3 py-2 capitalize">{String(record.filing_status).replace(/_/g, " ")}</td>
+                        <td className="px-3 py-2 text-right">{formatCurrency(Number(record.agi) || 0)}</td>
+                        <td className="px-3 py-2 text-right">{formatCurrency(Number(record.total_tax) || 0)}</td>
+                        <td className="px-3 py-2 text-right">{formatCurrency(Number(record.refund_amount) || 0)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <Button
+                onClick={handleTaxUpload}
+                disabled={uploadingTax}
+                className="bg-blue-500 hover:bg-blue-600"
+              >
+                {uploadingTax ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Uploading...
+                  </>
+                ) : (
+                  <>
+                    <Upload className="h-4 w-4 mr-2" />
+                    Upload Tax Returns
+                  </>
+                )}
+              </Button>
+            </div>
+          )}
+
+          {/* Message */}
+          {taxMessage && (
+            <div
+              className={`flex items-center gap-2 p-3 rounded-lg ${
+                taxMessage.type === "success"
+                  ? "bg-green-500/10 text-green-500"
+                  : "bg-red-500/10 text-red-500"
+              }`}
+            >
+              {taxMessage.type === "success" ? (
+                <Check className="h-4 w-4" />
+              ) : (
+                <AlertCircle className="h-4 w-4" />
+              )}
+              {taxMessage.text}
+            </div>
+          )}
+
+          {/* Existing Tax Returns */}
+          {taxReturns.length > 0 && (
+            <div className="space-y-4">
+              <h4 className="font-medium">Uploaded Tax Returns</h4>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm border rounded-lg">
+                  <thead className="bg-muted">
+                    <tr>
+                      <th className="px-3 py-2 text-left">Year</th>
+                      <th className="px-3 py-2 text-left">Status</th>
+                      <th className="px-3 py-2 text-right">Wages</th>
+                      <th className="px-3 py-2 text-right">AGI</th>
+                      <th className="px-3 py-2 text-right">Total Tax</th>
+                      <th className="px-3 py-2 text-right">Eff. Rate</th>
+                      <th className="px-3 py-2 text-right">Refund/Owed</th>
+                      <th className="px-3 py-2"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {taxReturns.map((tr) => (
+                      <tr key={tr.id} className="border-t">
+                        <td className="px-3 py-2 font-medium">{tr.tax_year}</td>
+                        <td className="px-3 py-2 capitalize">{tr.filing_status.replace(/_/g, " ")}</td>
+                        <td className="px-3 py-2 text-right">{formatCurrency(tr.wages)}</td>
+                        <td className="px-3 py-2 text-right">{formatCurrency(tr.agi)}</td>
+                        <td className="px-3 py-2 text-right">{formatCurrency(tr.total_tax)}</td>
+                        <td className="px-3 py-2 text-right">{(tr.effective_tax_rate * 100).toFixed(1)}%</td>
+                        <td className="px-3 py-2 text-right">
+                          {tr.refund_amount > 0 ? (
+                            <span className="text-green-500">+{formatCurrency(tr.refund_amount)}</span>
+                          ) : tr.amount_owed > 0 ? (
+                            <span className="text-red-500">-{formatCurrency(tr.amount_owed)}</span>
+                          ) : (
+                            "$0"
+                          )}
+                        </td>
+                        <td className="px-3 py-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleDeleteTaxReturn(tr.tax_year)}
+                            className="text-red-500 hover:text-red-600 hover:bg-red-500/10"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* Instructions */}
+          <div className="bg-muted/50 rounded-lg p-4 space-y-3">
+            <h4 className="font-medium">How to use:</h4>
+            <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
+              <li>Run the TurboTax PDF parser script on your tax return PDF</li>
+              <li>
+                <code className="text-xs bg-muted px-1 py-0.5 rounded">
+                  python3 scripts/turbotax_parser.py your_return.pdf -o tax_data.csv
+                </code>
+              </li>
+              <li>Upload the generated CSV file above</li>
+              <li>Review the preview and click Upload</li>
+            </ol>
+          </div>
         </CardContent>
       </Card>
     </div>
