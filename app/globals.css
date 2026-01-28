@@ -120,10 +120,11 @@
     @apply border-border outline-ring/50;
   }
   html {
-    font-size: 16px; /* Base font size */
+    font-size: 18px; /* Increased base font size for better readability */
+    scroll-behavior: smooth;
   }
   body {
-    @apply bg-background text-foreground antialiased text-base;
+    @apply bg-background text-foreground antialiased;
     font-feature-settings: "ss01", "ss02", "cv01";
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -136,12 +137,7 @@
 
   /* Page descriptions */
   .page-description {
-    @apply text-base text-muted-foreground mt-1;
-  }
-
-  /* Smooth scrolling */
-  html {
-    scroll-behavior: smooth;
+    @apply text-lg text-muted-foreground mt-1;
   }
 
   /* Better focus styles */
