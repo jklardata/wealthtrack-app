@@ -411,7 +411,7 @@ function RebalancingTrades({
 
       {buys.length > 0 && (
         <div>
-          <h4 className="font-medium text-green-500 mb-2">Buy</h4>
+          <h4 className="font-medium text-green-600 mb-2">Buy</h4>
           <div className="space-y-2">
             {buys.map((trade, i) => (
               <div
@@ -454,7 +454,7 @@ function MarketValuationCard({ valuation }: { valuation: MarketValuation }) {
   const getValuationColor = () => {
     switch (valuation.valuation) {
       case "cheap":
-        return "text-green-500 bg-green-500/10";
+        return "text-green-600 bg-green-500/10";
       case "fair":
         return "text-blue-500 bg-blue-500/10";
       case "expensive":
@@ -504,7 +504,7 @@ function MarketValuationCard({ valuation }: { valuation: MarketValuation }) {
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Deviation</span>
-            <span className={percentFromAvg > 0 ? "text-red-500" : "text-green-500"}>
+            <span className={percentFromAvg > 0 ? "text-red-500" : "text-green-600"}>
               {percentFromAvg > 0 ? "+" : ""}{percentFromAvg.toFixed(0)}%
             </span>
           </div>
@@ -563,13 +563,13 @@ function AllocationBreakdownCard({
           {marketAdjustment && (
             <div className="grid grid-cols-4 text-sm">
               <div className="text-muted-foreground">Market Adj (CAPE)</div>
-              <div className={cn("text-right", marketAdjustment.stocks < 0 ? "text-red-500" : marketAdjustment.stocks > 0 ? "text-green-500" : "")}>
+              <div className={cn("text-right", marketAdjustment.stocks < 0 ? "text-red-500" : marketAdjustment.stocks > 0 ? "text-green-600" : "")}>
                 {formatAdj(marketAdjustment.stocks)}
               </div>
-              <div className={cn("text-right", marketAdjustment.bonds < 0 ? "text-red-500" : marketAdjustment.bonds > 0 ? "text-green-500" : "")}>
+              <div className={cn("text-right", marketAdjustment.bonds < 0 ? "text-red-500" : marketAdjustment.bonds > 0 ? "text-green-600" : "")}>
                 {formatAdj(marketAdjustment.bonds)}
               </div>
-              <div className={cn("text-right", marketAdjustment.cash < 0 ? "text-red-500" : marketAdjustment.cash > 0 ? "text-green-500" : "")}>
+              <div className={cn("text-right", marketAdjustment.cash < 0 ? "text-red-500" : marketAdjustment.cash > 0 ? "text-green-600" : "")}>
                 {formatAdj(marketAdjustment.cash)}
               </div>
             </div>
@@ -583,7 +583,7 @@ function AllocationBreakdownCard({
             <div>Final</div>
             <div className="text-right text-primary">{formatPct(finalAllocation.stocks)}</div>
             <div className="text-right text-blue-500">{formatPct(finalAllocation.bonds)}</div>
-            <div className="text-right text-green-500">{formatPct(finalAllocation.cash)}</div>
+            <div className="text-right text-green-600">{formatPct(finalAllocation.cash)}</div>
           </div>
         </div>
 
@@ -665,7 +665,7 @@ function StockBreakdownCard({
                 <div className="flex items-start gap-3">
                   <div className={cn(
                     "mt-1 flex-shrink-0",
-                    tilt.status === "recommended" ? "text-green-500" : tilt.status === "reduced" ? "text-yellow-500" : "text-muted-foreground"
+                    tilt.status === "recommended" ? "text-green-600" : tilt.status === "reduced" ? "text-yellow-500" : "text-muted-foreground"
                   )}>
                     {tilt.status === "recommended" ? <Check className="h-4 w-4" /> : tilt.status === "reduced" ? <Minus className="h-4 w-4" /> : <div className="h-4 w-4" />}
                   </div>
@@ -848,7 +848,7 @@ function TaxLocationStrategyCard({
                   <TableCell>
                     <span className={cn(
                       "px-2 py-1 rounded-full text-xs font-medium",
-                      item.taxEfficiency === "High" ? "bg-green-500/10 text-green-500" :
+                      item.taxEfficiency === "High" ? "bg-green-500/10 text-green-600" :
                       item.taxEfficiency === "Medium" ? "bg-yellow-500/10 text-yellow-500" :
                       "bg-red-500/10 text-red-500"
                     )}>
@@ -1077,8 +1077,8 @@ export default function PortfolioOptimizerPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">Portfolio Optimizer</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-3xl font-bold">Portfolio Optimizer</h1>
+          <p className="text-base text-muted-foreground mt-1">
             Let&apos;s determine your risk profile to provide personalized recommendations
           </p>
         </div>
@@ -1130,8 +1130,8 @@ export default function PortfolioOptimizerPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold">Portfolio Optimizer</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-3xl font-bold">Portfolio Optimizer</h1>
+          <p className="text-base text-muted-foreground mt-1">
             AI-powered portfolio recommendations based on Modern Portfolio Theory
           </p>
         </div>
@@ -1255,7 +1255,7 @@ export default function PortfolioOptimizerPage() {
               <CardContent className="space-y-6">
                 <div className="grid grid-cols-3 gap-4">
                   <div className="text-center p-4 bg-green-500/10 rounded-lg">
-                    <p className="text-2xl font-bold text-green-500">
+                    <p className="text-2xl font-bold text-green-600">
                       {optimization.expected_return}%
                     </p>
                     <p className="text-sm text-muted-foreground">Expected Return</p>
@@ -1301,7 +1301,7 @@ export default function PortfolioOptimizerPage() {
               {optimization.rebalancing_trades.length > 0 && (
                 <div className="mt-6 flex justify-end">
                   {savedOptimization?.applied ? (
-                    <div className="flex items-center gap-2 text-green-500">
+                    <div className="flex items-center gap-2 text-green-600">
                       <CheckCircle2 className="h-5 w-5" />
                       <span>Marked as applied on {new Date(savedOptimization.applied_date!).toLocaleDateString()}</span>
                     </div>

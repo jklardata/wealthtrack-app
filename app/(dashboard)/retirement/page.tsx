@@ -217,11 +217,11 @@ export default function RetirementPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold flex items-center gap-2">
-          <Calculator className="h-6 w-6 text-primary" />
+        <h1 className="text-3xl font-bold flex items-center gap-2">
+          <Calculator className="h-7 w-7 text-primary" />
           Retirement Calculator
         </h1>
-        <p className="text-muted-foreground">
+        <p className="text-base text-muted-foreground mt-1">
           Plan your retirement with cost-of-living adjustments
         </p>
       </div>
@@ -380,7 +380,7 @@ export default function RetirementPage() {
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Annual Savings</span>
-                    <span className={`font-medium ${annualSavings >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                    <span className={`font-medium ${annualSavings >= 0 ? 'text-green-600' : 'text-red-500'}`}>
                       {formatCurrency(annualSavings)}
                     </span>
                   </div>
@@ -397,12 +397,12 @@ export default function RetirementPage() {
 
       {/* Dynamic Headline */}
       {currentNetWorth > 0 && (
-        <Card className={citiesCanRetireNow.length > 0 ? "border-green-500/30 bg-green-500/5" : "border-primary/30 bg-primary/5"}>
+        <Card className={citiesCanRetireNow.length > 0 ? "border-green-600/30 bg-green-600/5" : "border-primary/30 bg-primary/5"}>
           <CardContent className="pt-6">
             <div className="flex items-start gap-3">
               {citiesCanRetireNow.length > 0 ? (
                 <>
-                  <CheckCircle className="h-6 w-6 text-green-500 mt-0.5" />
+                  <CheckCircle className="h-6 w-6 text-green-600 mt-0.5" />
                   <div>
                     <p className="text-lg font-semibold text-green-600">
                       You can retire today in {cheapestRetireNow?.city.city_name}!
@@ -471,7 +471,7 @@ export default function RetirementPage() {
                 <div>
                   <h4 className="font-medium flex items-center gap-2">
                     Foreign Earned Income Exclusion (FEIE)
-                    <span className="text-xs text-green-600 bg-green-500/10 px-2 py-0.5 rounded">Up to $126,500 tax-free (2024)</span>
+                    <span className="text-xs text-green-600 bg-green-600/10 px-2 py-0.5 rounded">Up to $126,500 tax-free (2024)</span>
                   </h4>
                   <p className="text-sm text-muted-foreground mt-1">
                     Live abroad for 330+ days/year to exclude foreign earned income from US taxes.
@@ -493,7 +493,7 @@ export default function RetirementPage() {
                 <div>
                   <h4 className="font-medium flex items-center gap-2">
                     S-Corp Election
-                    <span className="text-xs text-green-600 bg-green-500/10 px-2 py-0.5 rounded">Save 15.3% SE tax</span>
+                    <span className="text-xs text-green-600 bg-green-600/10 px-2 py-0.5 rounded">Save 15.3% SE tax</span>
                   </h4>
                   <p className="text-sm text-muted-foreground mt-1">
                     Pay yourself a reasonable salary and take remaining profits as distributions
@@ -515,7 +515,7 @@ export default function RetirementPage() {
                 <div>
                   <h4 className="font-medium flex items-center gap-2">
                     Solo 401(k)
-                    <span className="text-xs text-green-600 bg-green-500/10 px-2 py-0.5 rounded">Up to $69,000/year (2024)</span>
+                    <span className="text-xs text-green-600 bg-green-600/10 px-2 py-0.5 rounded">Up to $69,000/year (2024)</span>
                   </h4>
                   <p className="text-sm text-muted-foreground mt-1">
                     Contribute as both employee ($23,000) and employer (25% of compensation).
@@ -537,7 +537,7 @@ export default function RetirementPage() {
                 <div>
                   <h4 className="font-medium flex items-center gap-2">
                     Health Savings Account (HSA)
-                    <span className="text-xs text-green-600 bg-green-500/10 px-2 py-0.5 rounded">Triple tax advantage</span>
+                    <span className="text-xs text-green-600 bg-green-600/10 px-2 py-0.5 rounded">Triple tax advantage</span>
                   </h4>
                   <p className="text-sm text-muted-foreground mt-1">
                     Contribute $4,150 (individual) or $8,300 (family) in 2024.
@@ -638,7 +638,7 @@ export default function RetirementPage() {
             <div className="pt-4 border-t">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Total Weight</span>
-                <span className={`font-medium ${Math.abs(totalWeights - 1.0) > 0.05 ? 'text-red-500' : 'text-green-500'}`}>
+                <span className={`font-medium ${Math.abs(totalWeights - 1.0) > 0.05 ? 'text-red-500' : 'text-green-600'}`}>
                   {(totalWeights * 100).toFixed(0)}%
                 </span>
               </div>
@@ -777,7 +777,7 @@ export default function RetirementPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-green-500">
+                <div className="text-2xl font-bold text-green-600">
                   {formatCurrency(results.requiredNetWorth)}
                 </div>
                 <p className="text-xs text-muted-foreground mt-1">
@@ -923,7 +923,7 @@ export default function RetirementPage() {
 
                                 {citiesCanRetire.length > 0 && (
                                   <div className="pt-2 border-t border-gray-100 dark:border-gray-800">
-                                    <span className="text-xs text-green-500 font-medium">
+                                    <span className="text-xs text-green-600 font-medium">
                                       Can retire in: {citiesCanRetire.slice(0, 3).map(c => c.city.city_name).join(', ')}
                                       {citiesCanRetire.length > 3 && ` +${citiesCanRetire.length - 3} more`}
                                     </span>
@@ -941,14 +941,14 @@ export default function RetirementPage() {
                                 <div className="mt-2 pt-2 border-t border-gray-100 dark:border-gray-800">
                                   <div className="flex justify-between text-xs mb-1">
                                     <span className="text-muted-foreground">Progress to {selectedCity?.city_name}</span>
-                                    <span className={percentToGoal >= 100 ? 'text-green-500' : 'text-muted-foreground'}>
+                                    <span className={percentToGoal >= 100 ? 'text-green-600' : 'text-muted-foreground'}>
                                       {percentToGoal.toFixed(0)}%
                                     </span>
                                   </div>
                                   <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                                     <div
                                       className={`h-2 rounded-full transition-all ${
-                                        percentToGoal >= 100 ? 'bg-green-500' : 'bg-primary'
+                                        percentToGoal >= 100 ? 'bg-green-600' : 'bg-primary'
                                       }`}
                                       style={{ width: `${Math.min(percentToGoal, 100)}%` }}
                                     ></div>
@@ -1048,18 +1048,18 @@ export default function RetirementPage() {
                           item.city.city_id === selectedCityId
                             ? "bg-primary/10"
                             : item.canRetireNow
-                            ? "bg-green-500/5"
+                            ? "bg-green-600/5"
                             : ""
                         }
                       >
                         <TableCell className="font-medium">
                           <div className="flex items-center gap-2">
-                            {item.canRetireNow && <CheckCircle className="h-4 w-4 text-green-500" />}
+                            {item.canRetireNow && <CheckCircle className="h-4 w-4 text-green-600" />}
                             {item.city.city_name}
                             <span className="text-xs text-muted-foreground">{item.city.country}</span>
                           </div>
                         </TableCell>
-                        <TableCell className={`text-right font-medium ${item.canRetireNow ? "text-green-500" : ""}`}>
+                        <TableCell className={`text-right font-medium ${item.canRetireNow ? "text-green-600" : ""}`}>
                           {item.canRetireNow
                             ? "Now!"
                             : isFinite(item.yearsToRetirement)
@@ -1069,7 +1069,7 @@ export default function RetirementPage() {
                         <TableCell className="text-right">
                           {formatCurrency(currentNetWorth)}
                         </TableCell>
-                        <TableCell className={`text-right ${item.withdrawalAmount >= item.adjustedSpend ? "text-green-500" : "text-muted-foreground"}`}>
+                        <TableCell className={`text-right ${item.withdrawalAmount >= item.adjustedSpend ? "text-green-600" : "text-muted-foreground"}`}>
                           {formatCurrency(item.withdrawalAmount)}
                         </TableCell>
                         <TableCell className="text-right">
@@ -1078,7 +1078,7 @@ export default function RetirementPage() {
                         <TableCell className="text-right">
                           {formatCurrency(item.adjustedSpend)}
                         </TableCell>
-                        <TableCell className={`text-right ${item.relativeMultiplier < 1 ? "text-green-500" : item.relativeMultiplier > 1 ? "text-red-500" : ""}`}>
+                        <TableCell className={`text-right ${item.relativeMultiplier < 1 ? "text-green-600" : item.relativeMultiplier > 1 ? "text-red-500" : ""}`}>
                           {(item.relativeMultiplier * 100).toFixed(0)}%
                         </TableCell>
                       </TableRow>

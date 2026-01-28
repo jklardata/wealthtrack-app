@@ -522,8 +522,8 @@ export default function DashboardPage() {
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-2xl font-bold">Dashboard</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-3xl font-bold">Dashboard</h1>
+          <p className="text-base text-muted-foreground mt-1">
             A tool for Independent Consultants to track net worth, optimize your portfolio, plan retirement, and maximize tax savings.
           </p>
         </div>
@@ -576,8 +576,8 @@ export default function DashboardPage() {
       {/* Header with Date Filters */}
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold">Dashboard</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-3xl font-bold">Dashboard</h1>
+          <p className="text-base text-muted-foreground mt-1">
             A tool for Independent Consultants to track net worth, optimize your portfolio, plan retirement, and maximize tax savings.
           </p>
         </div>
@@ -672,7 +672,7 @@ export default function DashboardPage() {
               Monthly Change
             </CardTitle>
             {monthlyChange >= 0 ? (
-              <TrendingUp className="h-4 w-4 text-green-500" />
+              <TrendingUp className="h-4 w-4 text-green-600" />
             ) : (
               <TrendingDown className="h-4 w-4 text-red-500" />
             )}
@@ -680,7 +680,7 @@ export default function DashboardPage() {
           <CardContent>
             <div
               className={`text-2xl font-bold ${
-                monthlyChange >= 0 ? "text-green-500" : "text-red-500"
+                monthlyChange >= 0 ? "text-green-600" : "text-red-500"
               }`}
             >
               {monthlyChange >= 0 ? "+" : ""}
@@ -746,7 +746,7 @@ export default function DashboardPage() {
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="h-5 w-5 text-green-500" />
+              <TrendingUp className="h-5 w-5 text-green-600" />
               Growth Trends
             </CardTitle>
           </CardHeader>
@@ -757,7 +757,7 @@ export default function DashboardPage() {
                 <p className="text-sm text-muted-foreground mb-1">This Month</p>
                 <p
                   className={`text-xl font-bold ${
-                    growthMetrics.thisMonth.amount >= 0 ? "text-green-500" : "text-red-500"
+                    growthMetrics.thisMonth.amount >= 0 ? "text-green-600" : "text-red-500"
                   }`}
                 >
                   {growthMetrics.thisMonth.amount >= 0 ? "+" : ""}
@@ -765,7 +765,7 @@ export default function DashboardPage() {
                 </p>
                 <p
                   className={`text-sm ${
-                    growthMetrics.thisMonth.percent >= 0 ? "text-green-500" : "text-red-500"
+                    growthMetrics.thisMonth.percent >= 0 ? "text-green-600" : "text-red-500"
                   }`}
                 >
                   {growthMetrics.thisMonth.percent >= 0 ? "+" : ""}
@@ -778,7 +778,7 @@ export default function DashboardPage() {
                 <p className="text-sm text-muted-foreground mb-1">Year to Date</p>
                 <p
                   className={`text-xl font-bold ${
-                    growthMetrics.ytd.amount >= 0 ? "text-green-500" : "text-red-500"
+                    growthMetrics.ytd.amount >= 0 ? "text-green-600" : "text-red-500"
                   }`}
                 >
                   {growthMetrics.ytd.amount >= 0 ? "+" : ""}
@@ -786,7 +786,7 @@ export default function DashboardPage() {
                 </p>
                 <p
                   className={`text-sm ${
-                    growthMetrics.ytd.percent >= 0 ? "text-green-500" : "text-red-500"
+                    growthMetrics.ytd.percent >= 0 ? "text-green-600" : "text-red-500"
                   }`}
                 >
                   {growthMetrics.ytd.percent >= 0 ? "+" : ""}
@@ -799,7 +799,7 @@ export default function DashboardPage() {
                 <p className="text-sm text-muted-foreground mb-1">All Time</p>
                 <p
                   className={`text-xl font-bold ${
-                    growthMetrics.allTime.amount >= 0 ? "text-green-500" : "text-red-500"
+                    growthMetrics.allTime.amount >= 0 ? "text-green-600" : "text-red-500"
                   }`}
                 >
                   {growthMetrics.allTime.amount >= 0 ? "+" : ""}
@@ -807,7 +807,7 @@ export default function DashboardPage() {
                 </p>
                 <p
                   className={`text-sm ${
-                    growthMetrics.allTime.percent >= 0 ? "text-green-500" : "text-red-500"
+                    growthMetrics.allTime.percent >= 0 ? "text-green-600" : "text-red-500"
                   }`}
                 >
                   {growthMetrics.allTime.percent >= 0 ? "+" : ""}
@@ -820,7 +820,7 @@ export default function DashboardPage() {
             <div className="pt-4 border-t flex flex-col sm:flex-row justify-between gap-2 text-sm">
               <div className="text-muted-foreground">
                 <span className="font-medium text-foreground">Avg Monthly Growth:</span>{" "}
-                <span className={growthMetrics.avgMonthlyGrowth >= 0 ? "text-green-500" : "text-red-500"}>
+                <span className={growthMetrics.avgMonthlyGrowth >= 0 ? "text-green-600" : "text-red-500"}>
                   {growthMetrics.avgMonthlyGrowth >= 0 ? "+" : ""}
                   {formatCurrency(growthMetrics.avgMonthlyGrowth)}
                 </span>
@@ -1195,7 +1195,7 @@ export default function DashboardPage() {
           <Link href="/settings">
             <CardContent className="flex items-center gap-4 p-6">
               <div className="p-3 rounded-lg bg-green-500/10">
-                <DollarSign className="h-6 w-6 text-green-500" />
+                <DollarSign className="h-6 w-6 text-green-600" />
               </div>
               <div>
                 <h3 className="font-semibold">Google Sheets Sync</h3>
@@ -1425,7 +1425,7 @@ function EditEntryForm({ entry, onSubmit, onClose, isSubmitting }: EditEntryForm
         </div>
         <div className="flex justify-between text-lg font-bold pt-2 border-t">
           <span>Net Worth</span>
-          <span className={netWorth >= 0 ? "text-green-500" : "text-red-500"}>
+          <span className={netWorth >= 0 ? "text-green-600" : "text-red-500"}>
             {formatCurrency(netWorth)}
           </span>
         </div>
@@ -1433,7 +1433,7 @@ function EditEntryForm({ entry, onSubmit, onClose, isSubmitting }: EditEntryForm
           <>
             <div className="flex justify-between text-sm pt-2 border-t">
               <span className="text-muted-foreground">Monthly Net Profit</span>
-              <span className={Number(formData.pre_tax_income) - Number(formData.monthly_expenses) >= 0 ? "text-green-500" : "text-red-500"}>
+              <span className={Number(formData.pre_tax_income) - Number(formData.monthly_expenses) >= 0 ? "text-green-600" : "text-red-500"}>
                 {formatCurrency(Number(formData.pre_tax_income) - Number(formData.monthly_expenses))}
               </span>
             </div>

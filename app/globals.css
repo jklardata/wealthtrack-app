@@ -119,11 +119,24 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    font-size: 16px; /* Base font size */
+  }
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-background text-foreground antialiased text-base;
     font-feature-settings: "ss01", "ss02", "cv01";
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Page titles */
+  .page-title {
+    @apply text-3xl font-bold;
+  }
+
+  /* Page descriptions */
+  .page-description {
+    @apply text-base text-muted-foreground mt-1;
   }
 
   /* Smooth scrolling */

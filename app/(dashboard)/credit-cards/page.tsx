@@ -74,7 +74,7 @@ function getDaysUntil(dateString: string | null): number | null {
 function getStatusColor(status: CreditCardStatus): string {
   switch (status) {
     case "active":
-      return "bg-green-500/10 text-green-500 border-green-500/20";
+      return "bg-green-500/10 text-green-600 border-green-500/20";
     case "pending":
       return "bg-yellow-500/10 text-yellow-500 border-yellow-500/20";
     case "closed":
@@ -238,7 +238,7 @@ function CardForm({ card, onSubmit, onClose, isSubmitting }: CardFormProps) {
           <div className="mt-3">
             <div className="flex justify-between text-sm mb-1">
               <span className="text-muted-foreground">Progress</span>
-              <span className={progress >= 100 ? "text-green-500" : ""}>
+              <span className={progress >= 100 ? "text-green-600" : ""}>
                 {formatCurrency(Number(formData.current_spend))} / {formatCurrency(formData.sub_requirement)}
               </span>
             </div>
@@ -353,7 +353,7 @@ function CreditCardItem({
       {/* Celebration effect for completed */}
       {isComplete && (
         <div className="absolute top-2 right-2">
-          <Sparkles className="h-5 w-5 text-green-500 animate-pulse" />
+          <Sparkles className="h-5 w-5 text-green-600 animate-pulse" />
         </div>
       )}
 
@@ -366,7 +366,7 @@ function CreditCardItem({
             )}>
               <CreditCardIcon className={cn(
                 "h-5 w-5",
-                isComplete ? "text-green-500" : "text-primary"
+                isComplete ? "text-green-600" : "text-primary"
               )} />
             </div>
             <div>
@@ -412,7 +412,7 @@ function CreditCardItem({
         {card.signup_bonus && (
           <div className="flex items-center gap-2">
             <span className="text-lg font-semibold">{card.signup_bonus}</span>
-            {isComplete && <CheckCircle2 className="h-4 w-4 text-green-500" />}
+            {isComplete && <CheckCircle2 className="h-4 w-4 text-green-600" />}
           </div>
         )}
 
@@ -425,7 +425,7 @@ function CreditCardItem({
               </span>
               <span className={cn(
                 "font-medium",
-                isComplete ? "text-green-500" : ""
+                isComplete ? "text-green-600" : ""
               )}>
                 {progress.toFixed(0)}%
               </span>
@@ -482,7 +482,7 @@ function CreditCardItem({
 
         {/* Got Bonus Badge */}
         {card.got_bonus && (
-          <div className="flex items-center gap-2 text-sm p-2 rounded-lg bg-green-500/10 text-green-500">
+          <div className="flex items-center gap-2 text-sm p-2 rounded-lg bg-green-500/10 text-green-600">
             <CheckCircle2 className="h-4 w-4" />
             <span>Bonus earned!</span>
           </div>
@@ -673,7 +673,7 @@ export default function CreditCardsPage() {
           className={cn(
             "flex items-center gap-2 p-3 rounded-lg",
             syncMessage.type === "success"
-              ? "bg-green-500/10 text-green-500 border border-green-500/20"
+              ? "bg-green-500/10 text-green-600 border border-green-500/20"
               : "bg-red-500/10 text-red-500 border border-red-500/20"
           )}
         >
@@ -695,8 +695,8 @@ export default function CreditCardsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold">Credit Cards</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-3xl font-bold">Credit Cards</h1>
+          <p className="text-base text-muted-foreground mt-1">
             Track your cards and sign-up bonus progress
           </p>
         </div>
@@ -770,7 +770,7 @@ export default function CreditCardsPage() {
         </Card>
         <Card>
           <CardContent className="pt-6">
-            <div className="text-2xl font-bold text-green-500">{bonusesEarned}</div>
+            <div className="text-2xl font-bold text-green-600">{bonusesEarned}</div>
             <p className="text-sm text-muted-foreground">Bonuses Earned</p>
           </CardContent>
         </Card>

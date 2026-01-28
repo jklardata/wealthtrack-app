@@ -504,11 +504,11 @@ export default function TaxCalculatorPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold flex items-center gap-2">
-          <Calculator className="h-6 w-6 text-primary" />
+        <h1 className="text-3xl font-bold flex items-center gap-2">
+          <Calculator className="h-7 w-7 text-primary" />
           Tax-Optimized Take-Home Pay Calculator
         </h1>
-        <p className="text-muted-foreground">
+        <p className="text-base text-muted-foreground mt-1">
           Compare tax strategies for consultants and solo practitioners
         </p>
       </div>
@@ -849,7 +849,7 @@ export default function TaxCalculatorPage() {
                     </div>
                   </TableCell>
                   <TableCell className="text-right">
-                    <span className={tradeoffsData.seTaxDiff > 0 ? "text-red-500" : "text-green-500"}>
+                    <span className={tradeoffsData.seTaxDiff > 0 ? "text-red-500" : "text-green-600"}>
                       {tradeoffsData.seTaxDiff > 0 ? "+" : ""}{formatCurrency(tradeoffsData.seTaxDiff)}
                     </span>
                   </TableCell>
@@ -858,7 +858,7 @@ export default function TaxCalculatorPage() {
                   <TableCell className="font-medium">QBI Deduction</TableCell>
                   <TableCell>
                     <div>
-                      <span className="text-green-500 font-medium">{formatCurrency(calculations[0].qbiDeduction)}</span>
+                      <span className="text-green-600 font-medium">{formatCurrency(calculations[0].qbiDeduction)}</span>
                       <p className="text-xs text-muted-foreground">20% of qualified business income</p>
                     </div>
                   </TableCell>
@@ -869,7 +869,7 @@ export default function TaxCalculatorPage() {
                     </div>
                   </TableCell>
                   <TableCell className="text-right">
-                    <span className="text-green-500">~{formatCurrency(tradeoffsData.qbiSavings)} tax savings</span>
+                    <span className="text-green-600">~{formatCurrency(tradeoffsData.qbiSavings)} tax savings</span>
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -887,7 +887,7 @@ export default function TaxCalculatorPage() {
                     </div>
                   </TableCell>
                   <TableCell className="text-right">
-                    <span className={tradeoffsData.retirement401kDiff > 0 ? "text-green-500" : "text-red-500"}>
+                    <span className={tradeoffsData.retirement401kDiff > 0 ? "text-green-600" : "text-red-500"}>
                       {tradeoffsData.retirement401kDiff > 0 ? "+" : ""}{formatCurrency(tradeoffsData.retirement401kDiff)}
                     </span>
                   </TableCell>
@@ -896,7 +896,7 @@ export default function TaxCalculatorPage() {
                   <TableCell className="font-medium">Business Expenses</TableCell>
                   <TableCell>
                     <div>
-                      <span className="text-green-500 font-medium">{formatCurrency(expenses)}</span>
+                      <span className="text-green-600 font-medium">{formatCurrency(expenses)}</span>
                       <p className="text-xs text-muted-foreground">Fully deductible above-the-line</p>
                     </div>
                   </TableCell>
@@ -907,7 +907,7 @@ export default function TaxCalculatorPage() {
                     </div>
                   </TableCell>
                   <TableCell className="text-right">
-                    <span className="text-green-500">+{formatCurrency(expenses)}</span>
+                    <span className="text-green-600">+{formatCurrency(expenses)}</span>
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -919,7 +919,7 @@ export default function TaxCalculatorPage() {
                     <span className="font-medium">{formatCurrency(calculations[2].federalTax)}</span>
                   </TableCell>
                   <TableCell className="text-right">
-                    <span className={calculations[0].federalTax - calculations[2].federalTax > 0 ? "text-red-500" : "text-green-500"}>
+                    <span className={calculations[0].federalTax - calculations[2].federalTax > 0 ? "text-red-500" : "text-green-600"}>
                       {calculations[0].federalTax - calculations[2].federalTax > 0 ? "+" : ""}
                       {formatCurrency(calculations[0].federalTax - calculations[2].federalTax)}
                     </span>
@@ -933,13 +933,13 @@ export default function TaxCalculatorPage() {
                     </div>
                   </TableCell>
                   <TableCell>
-                    <span className="text-green-500 font-medium">{formatCurrency(calculations[0].totalTaxSavings)}</span>
+                    <span className="text-green-600 font-medium">{formatCurrency(calculations[0].totalTaxSavings)}</span>
                   </TableCell>
                   <TableCell>
                     <span className="font-medium">{formatCurrency(calculations[2].totalTaxSavings)}</span>
                   </TableCell>
                   <TableCell className="text-right">
-                    <span className={tradeoffsData.totalTaxSavingsDiff > 0 ? "text-green-500" : "text-red-500"}>
+                    <span className={tradeoffsData.totalTaxSavingsDiff > 0 ? "text-green-600" : "text-red-500"}>
                       {tradeoffsData.totalTaxSavingsDiff > 0 ? "+" : ""}{formatCurrency(tradeoffsData.totalTaxSavingsDiff)}
                     </span>
                   </TableCell>
@@ -953,7 +953,7 @@ export default function TaxCalculatorPage() {
                     <span className="font-medium">{formatCurrency(calculations[2].takeHomePay)}</span>
                   </TableCell>
                   <TableCell className="text-right">
-                    <span className={tradeoffsData.takeHomeDiff > 0 ? "text-green-500" : "text-red-500"}>
+                    <span className={tradeoffsData.takeHomeDiff > 0 ? "text-green-600" : "text-red-500"}>
                       {tradeoffsData.takeHomeDiff > 0 ? "+" : ""}{formatCurrency(tradeoffsData.takeHomeDiff)}
                     </span>
                   </TableCell>
@@ -972,7 +972,7 @@ export default function TaxCalculatorPage() {
                     <span className="font-bold">{formatCurrency(calculations[2].totalWealthBuild)}</span>
                   </TableCell>
                   <TableCell className="text-right">
-                    <span className={`font-bold ${tradeoffsData.totalWealthDiff > 0 ? "text-green-500" : "text-red-500"}`}>
+                    <span className={`font-bold ${tradeoffsData.totalWealthDiff > 0 ? "text-green-600" : "text-red-500"}`}>
                       {tradeoffsData.totalWealthDiff > 0 ? "+" : ""}{formatCurrency(tradeoffsData.totalWealthDiff)}
                     </span>
                   </TableCell>
@@ -986,9 +986,9 @@ export default function TaxCalculatorPage() {
             <div className="flex items-start gap-3">
               {tradeoffsData.totalWealthDiff > 0 ? (
                 <>
-                  <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-green-600 mt-0.5" />
                   <div>
-                    <p className="font-medium text-green-500">Self-employment wins by {formatCurrency(tradeoffsData.totalWealthDiff)} in total wealth</p>
+                    <p className="font-medium text-green-600">Self-employment wins by {formatCurrency(tradeoffsData.totalWealthDiff)} in total wealth</p>
                     <p className="text-sm text-muted-foreground mt-1">
                       Self-employed can contribute {formatCurrency(calculations[0].retirement401k)} to Solo 401k vs W-2&apos;s {formatCurrency(calculations[2].retirement401k)} limit,
                       plus deduct {formatCurrency(expenses)} in business expenses and get {formatCurrency(calculations[0].qbiDeduction)} QBI deduction.

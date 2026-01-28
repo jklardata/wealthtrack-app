@@ -673,8 +673,8 @@ export default function NetWorthPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold">Net Worth Timeline</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-3xl font-bold">Net Worth Timeline</h1>
+          <p className="text-base text-muted-foreground mt-1">
             Track your net worth over time
           </p>
         </div>
