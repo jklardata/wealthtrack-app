@@ -34,7 +34,6 @@ import {
   ChevronUp,
   CheckCircle,
   AlertTriangle,
-  Lightbulb,
   ArrowUpRight,
   ArrowDownRight,
   Home,
@@ -44,6 +43,7 @@ import {
   TrendingDown,
   Clock,
   Info,
+  HelpCircle,
 } from "lucide-react";
 import { CITIES, DEFAULT_WEIGHTS, type CityData } from "@/lib/col-data";
 import {
@@ -479,8 +479,7 @@ export default function GeoArbitragePage() {
   // Generate callouts for the comparison city
   const callouts = generateCallouts(compareAnalysis, baselineAnalysis, targetSavingsRate);
 
-  // Find best cities for hero stats
-  const bestFICity = sortedCities.filter((c) => c.canAchieveFI)[0];
+  // Find cities meeting target
   const citiesMeetingTarget = sortedCities.filter((c) => c.meetsSavingsTarget && c.canAchieveFI);
 
   // Handle sort
@@ -514,24 +513,62 @@ export default function GeoArbitragePage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* Header with Description */}
       <div>
         <h1 className="text-3xl font-bold flex items-center gap-2">
           <Globe className="h-7 w-7 text-primary" />
           Geographic Arbitrage
         </h1>
-        <p className="text-base text-muted-foreground mt-1">
-          Compare cities to maximize your savings rate and accelerate financial independence
+        <p className="text-base text-muted-foreground mt-2">
+          Compare cities to find where your money goes furthest. Geographic arbitrage means
+          living in a lower cost-of-living area while earning income based on higher-cost markets.
         </p>
       </div>
 
-      {/* Controls */}
+      {/* How to Use This Dashboard */}
+      <Card className="border-primary/20 bg-primary/5">
+        <CardContent className="pt-6">
+          <div className="flex gap-3">
+            <HelpCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+            <div className="space-y-2">
+              <h3 className="font-semibold text-primary">How to Use This Dashboard</h3>
+              <ol className="text-sm text-muted-foreground space-y-1 list-decimal list-inside">
+                <li><strong>Set your baseline city</strong> - where you currently live or earn income from</li>
+                <li><strong>Choose a city to compare</strong> - select a potential relocation destination</li>
+                <li><strong>Enter your financials</strong> - gross income, current spending, and net worth</li>
+                <li><strong>Review the hero metrics</strong> - see how many years faster you could reach FI</li>
+                <li><strong>Explore the table</strong> - click any row to see detailed spending breakdowns</li>
+              </ol>
+              <p className="text-sm text-muted-foreground mt-2">
+                <strong>Key insight:</strong> A city with a lower cost of living lets you save more,
+                reducing both the years to FI and the total amount you need to retire.
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Controls - Now includes Compare To at the top */}
       <Card>
         <CardContent className="pt-6">
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-5">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {/* Baseline City */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">Current City (Baseline)</label>
+              <label className="text-sm font-medium flex items-center gap-1">
+                Your Current City (Baseline)
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Info className="h-3.5 w-3.5 text-muted-foreground" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="max-w-xs text-xs">
+                        Where you currently live. All comparisons will be made relative to this city.
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </label>
               <Select value={baselineCityId} onValueChange={setBaselineCityId}>
                 <SelectTrigger>
                   <SelectValue />
@@ -546,9 +583,60 @@ export default function GeoArbitragePage() {
               </Select>
             </div>
 
-            {/* Target Savings Rate - Extended to 90% */}
+            {/* Compare To City - MOVED TO TOP */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">Target Savings Rate</label>
+              <label className="text-sm font-medium flex items-center gap-1">
+                Compare To (Potential New City)
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Info className="h-3.5 w-3.5 text-muted-foreground" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="max-w-xs text-xs">
+                        Select a city you're considering moving to. The hero metrics below
+                        will show how this city compares to your baseline.
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </label>
+              <Select
+                value={compareCityId || "auto"}
+                onValueChange={(v) => setCompareCityId(v === "auto" ? null : v)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Best FI city (auto)" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="auto">Auto-select best FI city</SelectItem>
+                  {CITIES.filter((c) => c.city_id !== baselineCityId).map((city) => (
+                    <SelectItem key={city.city_id} value={city.city_id}>
+                      {city.city_name}, {city.country}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Target Savings Rate */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium flex items-center gap-1">
+                Target Savings Rate
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Info className="h-3.5 w-3.5 text-muted-foreground" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="max-w-xs text-xs">
+                        Your goal for what percentage of gross income you want to save.
+                        Cities that meet this target are highlighted in green.
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </label>
               <Select
                 value={targetSavingsRate.toString()}
                 onValueChange={(v) => setTargetSavingsRate(parseFloat(v))}
@@ -577,10 +665,28 @@ export default function GeoArbitragePage() {
                 </SelectContent>
               </Select>
             </div>
+          </div>
 
+          {/* Financial Inputs Row */}
+          <div className="grid gap-6 md:grid-cols-3 mt-6 pt-6 border-t">
             {/* Gross Income */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">Gross Annual Income</label>
+              <label className="text-sm font-medium flex items-center gap-1">
+                Gross Annual Income
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Info className="h-3.5 w-3.5 text-muted-foreground" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="max-w-xs text-xs">
+                        Your total annual income before taxes. This stays constant
+                        across all cities (assuming remote work).
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </label>
               <div className="relative">
                 <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <input
@@ -592,10 +698,10 @@ export default function GeoArbitragePage() {
               </div>
             </div>
 
-            {/* Baseline Annual Spend - NEW: Explicit input */}
+            {/* Baseline Annual Spend */}
             <div className="space-y-2">
               <label className="text-sm font-medium flex items-center gap-1">
-                Baseline Annual Spend
+                Current Annual Spending
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger>
@@ -603,8 +709,8 @@ export default function GeoArbitragePage() {
                     </TooltipTrigger>
                     <TooltipContent>
                       <p className="max-w-xs text-xs">
-                        Your current annual spending in your baseline city.
-                        This will be adjusted for each city based on cost of living.
+                        How much you spend per year in your baseline city.
+                        This will be adjusted up or down based on each city's cost of living.
                       </p>
                     </TooltipContent>
                   </Tooltip>
@@ -623,7 +729,22 @@ export default function GeoArbitragePage() {
 
             {/* Current Net Worth */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">Current Net Worth</label>
+              <label className="text-sm font-medium flex items-center gap-1">
+                Current Net Worth
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Info className="h-3.5 w-3.5 text-muted-foreground" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="max-w-xs text-xs">
+                        Your current invested assets. Used to calculate how many
+                        years until you reach financial independence.
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </label>
               <div className="relative">
                 <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <input
@@ -637,6 +758,16 @@ export default function GeoArbitragePage() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Comparison Header */}
+      {compareAnalysis && baselineAnalysis && (
+        <div className="bg-muted/50 rounded-lg p-4">
+          <p className="text-center text-muted-foreground">
+            Comparing <span className="font-semibold text-foreground">{baselineCity?.city_name}</span> (your current city)
+            to <span className="font-semibold text-foreground">{compareAnalysis.city.city_name}</span> (potential new city)
+          </p>
+        </div>
+      )}
 
       {/* ============================================================ */}
       {/* HERO METRICS - Top Strip */}
@@ -676,10 +807,10 @@ export default function GeoArbitragePage() {
                   </div>
                   <div className="text-xs text-muted-foreground mt-1">
                     {compareAnalysis.deltaYears < 0
-                      ? `Retire faster vs ${baselineCity?.city_name}`
+                      ? `Retire faster in ${compareAnalysis.city.city_name}`
                       : compareAnalysis.deltaYears > 0
-                        ? `Slower vs ${baselineCity?.city_name}`
-                        : `Same as ${baselineCity?.city_name}`
+                        ? `Slower in ${compareAnalysis.city.city_name}`
+                        : "Same timeline"
                     }
                   </div>
                 </div>
@@ -692,7 +823,7 @@ export default function GeoArbitragePage() {
             </CardContent>
           </Card>
 
-          {/* 2. Required Net Worth (Delta) */}
+          {/* 2. Required Net Worth in Comparison City */}
           <Card>
             <CardContent className="pt-6">
               <div className="text-sm text-muted-foreground flex items-center gap-1">
@@ -706,12 +837,15 @@ export default function GeoArbitragePage() {
                 compareAnalysis.deltaRequiredNW < 0 ? "text-green-600" : "text-red-500"
               }`}>
                 {compareAnalysis.deltaRequiredNW < 0 ? "−" : "+"}
-                {formatCurrencyCompact(Math.abs(compareAnalysis.deltaRequiredNW))} vs baseline
+                {formatCurrencyCompact(Math.abs(compareAnalysis.deltaRequiredNW))} vs {baselineCity?.city_name}
+              </div>
+              <div className="text-xs text-muted-foreground mt-1">
+                To retire in {compareAnalysis.city.city_name}
               </div>
             </CardContent>
           </Card>
 
-          {/* 3. Achievable Savings Rate */}
+          {/* 3. Achievable Savings Rate in Comparison City */}
           <Card className={compareAnalysis.meetsSavingsTarget ? "border-green-500/50 bg-green-50/50" : ""}>
             <CardContent className="pt-6">
               <div className="text-sm text-muted-foreground flex items-center gap-1">
@@ -732,16 +866,19 @@ export default function GeoArbitragePage() {
               </div>
               <div className="text-xs text-muted-foreground mt-1">
                 {compareAnalysis.savingsRate < 0
-                  ? "Unsustainable at current assumptions"
+                  ? "Spending exceeds income"
                   : compareAnalysis.meetsSavingsTarget
-                    ? `Above your ${formatPercent(targetSavingsRate)} target`
+                    ? `Meets your ${formatPercent(targetSavingsRate)} target`
                     : `Below ${formatPercent(targetSavingsRate)} target`
                 }
+              </div>
+              <div className="text-xs text-muted-foreground">
+                In {compareAnalysis.city.city_name}
               </div>
             </CardContent>
           </Card>
 
-          {/* 4. Housing Cost Leverage */}
+          {/* 4. Housing Cost in Comparison City */}
           <Card>
             <CardContent className="pt-6">
               <div className="text-sm text-muted-foreground flex items-center gap-1">
@@ -759,70 +896,53 @@ export default function GeoArbitragePage() {
                 {formatPercent(compareAnalysis.housingCostDelta)}
               </div>
               <div className="text-xs text-muted-foreground mt-1">
-                vs {baselineCity?.city_name}
+                {compareAnalysis.city.city_name} vs {baselineCity?.city_name}
+              </div>
+              <div className="text-xs text-muted-foreground">
+                {compareAnalysis.housingCostDelta < 0 ? "Lower housing costs" : "Higher housing costs"}
               </div>
             </CardContent>
           </Card>
 
-          {/* 5. FI Efficiency Ratio */}
+          {/* 5. FI Efficiency Ratio - With Explanation */}
           <Card>
             <CardContent className="pt-6">
               <div className="text-sm text-muted-foreground flex items-center gap-1">
                 <Zap className="h-4 w-4" />
                 FI Efficiency
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Info className="h-3.5 w-3.5" />
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-xs">
+                      <p className="text-xs">
+                        <strong>FI Efficiency = Savings Rate ÷ Cost of Living</strong>
+                        <br /><br />
+                        This measures how effectively you can build wealth in a city.
+                        A higher ratio means you're saving more relative to the cost of living.
+                        <br /><br />
+                        <strong>Excellent (0.5+):</strong> Ideal for rapid FI<br />
+                        <strong>Good (0.35-0.5):</strong> Solid progress<br />
+                        <strong>Neutral (0.2-0.35):</strong> Standard pace<br />
+                        <strong>Poor (&lt;0.2):</strong> Slow wealth building
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </div>
               <div className={`text-3xl font-bold mt-1 ${getFIEfficiencyColor(getFIEfficiencyLabel(compareAnalysis.fiEfficiencyRatio))}`}>
                 {getFIEfficiencyLabel(compareAnalysis.fiEfficiencyRatio)}
               </div>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger className="text-xs text-muted-foreground mt-1 cursor-help underline decoration-dotted">
-                    Ratio: {compareAnalysis.fiEfficiencyRatio.toFixed(2)}
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p className="max-w-xs text-xs">
-                      FI Efficiency = Savings Rate ÷ Effective COL.
-                      Higher ratio means better value: high savings in a low-cost area.
-                    </p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <div className="text-xs text-muted-foreground mt-1">
+                Ratio: {compareAnalysis.fiEfficiencyRatio.toFixed(2)}
+              </div>
+              <div className="text-xs text-muted-foreground">
+                In {compareAnalysis.city.city_name}
+              </div>
             </CardContent>
           </Card>
         </div>
-      )}
-
-      {/* Compare City Selector */}
-      {cityAnalysesWithDelta.length > 0 && (
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-4 flex-wrap">
-              <label className="text-sm font-medium">Compare to:</label>
-              <Select
-                value={compareCityId || "auto"}
-                onValueChange={(v) => setCompareCityId(v === "auto" ? null : v)}
-              >
-                <SelectTrigger className="w-64">
-                  <SelectValue placeholder="Best FI city (auto)" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="auto">Best FI city (auto)</SelectItem>
-                  {CITIES.filter((c) => c.city_id !== baselineCityId).map((city) => (
-                    <SelectItem key={city.city_id} value={city.city_id}>
-                      {city.city_name}, {city.country}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {compareAnalysis && (
-                <span className="text-sm text-muted-foreground">
-                  Comparing <span className="font-medium">{baselineCity?.city_name}</span> to{" "}
-                  <span className="font-medium">{compareAnalysis.city.city_name}</span>
-                </span>
-              )}
-            </div>
-          </CardContent>
-        </Card>
       )}
 
       {/* ============================================================ */}
@@ -849,37 +969,27 @@ export default function GeoArbitragePage() {
         </div>
       )}
 
-      {/* Summary Stats */}
-      <div className="grid gap-4 md:grid-cols-4">
+      {/* Summary Stats - Simplified */}
+      <div className="grid gap-4 md:grid-cols-2">
         <Card>
           <CardContent className="pt-6">
             <div className="text-sm text-muted-foreground">Cities Analyzed</div>
             <div className="text-2xl font-bold">{CITIES.length}</div>
+            <div className="text-xs text-muted-foreground mt-1">
+              Across all regions worldwide
+            </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="border-green-500/30">
           <CardContent className="pt-6">
-            <div className="text-sm text-muted-foreground">Meet {formatPercent(targetSavingsRate)} Target</div>
+            <div className="text-sm text-muted-foreground">
+              Cities That Meet {formatPercent(targetSavingsRate)} Savings Rate
+            </div>
             <div className="text-2xl font-bold text-green-600">
               {citiesMeetingTarget.length}
             </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-sm text-muted-foreground">Fastest to FI</div>
-            <div className="text-2xl font-bold text-primary">
-              {bestFICity?.city.city_name || "N/A"}
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <div className="text-sm text-muted-foreground">Baseline Years to FI</div>
-            <div className="text-2xl font-bold">
-              {baselineAnalysis && isFinite(baselineAnalysis.yearsToFI)
-                ? formatYears(baselineAnalysis.yearsToFI)
-                : "N/A"}
+            <div className="text-xs text-muted-foreground mt-1">
+              Where you can achieve your target savings
             </div>
           </CardContent>
         </Card>
@@ -893,7 +1003,8 @@ export default function GeoArbitragePage() {
             All Cities Comparison
           </CardTitle>
           <p className="text-sm text-muted-foreground">
-            Click column headers to sort. Click a row to expand details. Green = meets savings target.
+            Click column headers to sort. Click any row to expand and see detailed spending breakdown.
+            Cities highlighted in green meet your target savings rate.
           </p>
         </CardHeader>
         <CardContent>
@@ -1053,7 +1164,10 @@ export default function GeoArbitragePage() {
                               <div className="grid gap-4 md:grid-cols-3">
                                 {/* Spend Breakdown */}
                                 <div>
-                                  <h4 className="font-medium mb-2">Spending Breakdown</h4>
+                                  <h4 className="font-medium mb-2">Spending Breakdown (Estimated)</h4>
+                                  <p className="text-xs text-muted-foreground mb-2">
+                                    Based on {formatCurrency(analysis.afterTaxSpend)}/year total
+                                  </p>
                                   <div className="space-y-1 text-sm">
                                     <div className="flex justify-between">
                                       <span className="text-muted-foreground">Housing ({(weights.housing * 100).toFixed(0)}%)</span>
@@ -1091,7 +1205,7 @@ export default function GeoArbitragePage() {
                                       <span className="font-medium">{formatCurrency(analysis.requiredNW)}</span>
                                     </div>
                                     <div className="flex justify-between">
-                                      <span className="text-muted-foreground">Current Net Worth</span>
+                                      <span className="text-muted-foreground">Your Net Worth</span>
                                       <span>{formatCurrency(currentNetWorth)}</span>
                                     </div>
                                     <div className="flex justify-between">
@@ -1117,22 +1231,25 @@ export default function GeoArbitragePage() {
 
                                 {/* City Details */}
                                 <div>
-                                  <h4 className="font-medium mb-2">City Details</h4>
+                                  <h4 className="font-medium mb-2">City Cost Indices</h4>
+                                  <p className="text-xs text-muted-foreground mb-2">
+                                    NYC = 100 (higher = more expensive)
+                                  </p>
                                   <div className="space-y-1 text-sm">
                                     <div className="flex justify-between">
-                                      <span className="text-muted-foreground">Housing Index</span>
+                                      <span className="text-muted-foreground">Housing</span>
                                       <span>{analysis.city.housing_index}</span>
                                     </div>
                                     <div className="flex justify-between">
-                                      <span className="text-muted-foreground">Food Index</span>
+                                      <span className="text-muted-foreground">Food</span>
                                       <span>{analysis.city.food_index}</span>
                                     </div>
                                     <div className="flex justify-between">
-                                      <span className="text-muted-foreground">Healthcare Index</span>
+                                      <span className="text-muted-foreground">Healthcare</span>
                                       <span>{analysis.city.healthcare_index}</span>
                                     </div>
                                     <div className="flex justify-between">
-                                      <span className="text-muted-foreground">Tax Index</span>
+                                      <span className="text-muted-foreground">Tax Burden</span>
                                       <span>{analysis.city.tax_index}</span>
                                     </div>
                                     <div className="flex justify-between">
@@ -1146,7 +1263,7 @@ export default function GeoArbitragePage() {
                               {/* Comparison vs Baseline */}
                               {!isBaseline && baselineAnalysis && (
                                 <div className="pt-3 border-t">
-                                  <h4 className="font-medium mb-2">vs {baselineCity?.city_name}</h4>
+                                  <h4 className="font-medium mb-2">Compared to {baselineCity?.city_name}</h4>
                                   <div className="flex gap-6 text-sm flex-wrap">
                                     <div>
                                       <span className="text-muted-foreground">Spending: </span>
@@ -1195,13 +1312,28 @@ export default function GeoArbitragePage() {
       {/* Methodology Note */}
       <Card className="border-muted">
         <CardContent className="pt-6">
-          <p className="text-sm text-muted-foreground">
-            <strong>Methodology:</strong> COL indices are weighted by spending category (housing 35%, food 15%, transport 10%,
-            healthcare 10%, utilities 10%, lifestyle 20%). Tax adjustments use a simplified model based on relative tax burdens.
-            Years to FI assumes a {(expectedReturn * 100).toFixed(0)}% real return and {(withdrawalRate * 100).toFixed(0)}% safe withdrawal rate.
-            FI Efficiency Ratio = Savings Rate ÷ Effective COL (higher is better).
-            Data confidence varies by city. Always verify with local research before making relocation decisions.
-          </p>
+          <h4 className="font-medium mb-2">Understanding the Calculations</h4>
+          <div className="text-sm text-muted-foreground space-y-2">
+            <p>
+              <strong>Cost of Living (COL) Index:</strong> Weighted average of housing (35%), food (15%),
+              transport (10%), healthcare (10%), utilities (10%), and lifestyle (20%). NYC = 100.
+            </p>
+            <p>
+              <strong>Adjusted Spend:</strong> Your baseline spending scaled by the relative COL.
+              If a city has COL of 50, your spending would be roughly half.
+            </p>
+            <p>
+              <strong>Years to FI:</strong> Calculated using a {(expectedReturn * 100).toFixed(0)}% real investment return
+              and {(withdrawalRate * 100).toFixed(0)}% safe withdrawal rate.
+            </p>
+            <p>
+              <strong>FI Efficiency:</strong> Savings Rate ÷ COL. Higher is better—it means you're
+              saving a lot relative to costs.
+            </p>
+            <p className="text-xs italic mt-2">
+              Data confidence varies by city. Always verify with local research before making relocation decisions.
+            </p>
+          </div>
         </CardContent>
       </Card>
     </div>
