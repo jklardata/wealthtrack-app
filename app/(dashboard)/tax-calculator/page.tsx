@@ -1051,7 +1051,7 @@ export default function TaxCalculatorPage() {
                 />
                 <Bar dataKey="Total Wealth" radius={[0, 4, 4, 0]} label={{
                   position: 'right',
-                  formatter: (v: number) => formatCurrency(v),
+                  formatter: (value) => typeof value === 'number' ? formatCurrency(value) : String(value),
                   fill: '#64748b',
                   fontSize: 12
                 }}>
