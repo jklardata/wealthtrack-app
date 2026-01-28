@@ -32,6 +32,7 @@ import {
   Calendar,
   CheckCircle2,
   AlertTriangle,
+  FileText,
 } from "lucide-react";
 import type { TaxReturn } from "@/lib/types";
 
@@ -1057,6 +1058,190 @@ function QuarterlyTaxEstimator({
 }
 
 // ============================================
+// Module 5: Raw Tax Return Data
+// ============================================
+
+function TaxReturnRawData({
+  taxReturn,
+}: {
+  taxReturn: TaxReturn;
+}) {
+  const [expanded, setExpanded] = useState(false);
+
+  // Group fields into categories
+  const incomeFields = [
+    { label: "Wages (W-2)", key: "wages", value: taxReturn.wages },
+    { label: "Interest Income", key: "interest_income", value: taxReturn.interest_income },
+    { label: "Dividend Income", key: "dividend_income", value: taxReturn.dividend_income },
+    { label: "Qualified Dividends", key: "qualified_dividends", value: taxReturn.qualified_dividends },
+    { label: "Capital Gains/Losses", key: "capital_gains", value: taxReturn.capital_gains },
+    { label: "IRA Distributions", key: "ira_distributions", value: taxReturn.ira_distributions },
+    { label: "Pension Income", key: "pension_income", value: taxReturn.pension_income },
+    { label: "Social Security", key: "social_security", value: taxReturn.social_security },
+    { label: "Business Income (Sch C)", key: "business_income", value: taxReturn.business_income },
+    { label: "Other Income", key: "other_income", value: taxReturn.other_income },
+    { label: "Total Income", key: "total_income", value: taxReturn.total_income, isTotal: true },
+    { label: "Adjusted Gross Income (AGI)", key: "agi", value: taxReturn.agi, isTotal: true },
+  ];
+
+  const deductionFields = [
+    { label: "Adjustments to Income", key: "adjustments", value: taxReturn.adjustments },
+    { label: "Deduction Type", key: "deduction_type", value: taxReturn.deduction_type, isText: true },
+    { label: "Deduction Amount", key: "deduction_amount", value: taxReturn.deduction_amount },
+    { label: "QBI Deduction", key: "qbi_deduction", value: taxReturn.qbi_deduction },
+    { label: "Taxable Income", key: "taxable_income", value: taxReturn.taxable_income, isTotal: true },
+  ];
+
+  const taxPaymentFields = [
+    { label: "Total Tax", key: "total_tax", value: taxReturn.total_tax, isTotal: true },
+    { label: "Federal Withheld", key: "federal_withheld", value: taxReturn.federal_withheld },
+    { label: "Estimated Payments", key: "estimated_payments", value: taxReturn.estimated_payments },
+    { label: "Refund Amount", key: "refund_amount", value: taxReturn.refund_amount, isPositive: true },
+    { label: "Amount Owed", key: "amount_owed", value: taxReturn.amount_owed, isNegative: true },
+    { label: "Effective Tax Rate", key: "effective_tax_rate", value: taxReturn.effective_tax_rate, isPercent: true },
+  ];
+
+  const selfEmploymentFields = [
+    { label: "SE Income (Net)", key: "se_income", value: taxReturn.se_income },
+    { label: "SE Tax", key: "se_tax", value: taxReturn.se_tax },
+    { label: "SE Tax Deduction", key: "se_deduction", value: taxReturn.se_deduction },
+  ];
+
+  const metadataFields = [
+    { label: "Filing Status", value: taxReturn.filing_status.replace(/_/g, " "), isText: true },
+    { label: "Source", value: taxReturn.source.replace(/_/g, " "), isText: true },
+    { label: "Imported", value: new Date(taxReturn.created_at).toLocaleDateString(), isText: true },
+  ];
+
+  const renderField = (field: {
+    label: string;
+    key?: string;
+    value: number | string;
+    isTotal?: boolean;
+    isText?: boolean;
+    isPercent?: boolean;
+    isPositive?: boolean;
+    isNegative?: boolean;
+  }) => {
+    let displayValue: string;
+    let valueClass = "text-right";
+
+    if (field.isText) {
+      displayValue = String(field.value);
+      valueClass = "text-right capitalize";
+    } else if (field.isPercent) {
+      displayValue = formatPercent(field.value as number);
+    } else {
+      displayValue = formatCurrency(field.value as number);
+      if (field.isPositive && (field.value as number) > 0) {
+        valueClass = "text-right text-green-600";
+      } else if (field.isNegative && (field.value as number) > 0) {
+        valueClass = "text-right text-red-600";
+      }
+    }
+
+    return (
+      <div
+        key={field.label}
+        className={`flex justify-between py-1.5 ${field.isTotal ? "font-medium border-t pt-2 mt-1" : ""}`}
+      >
+        <span className="text-muted-foreground">{field.label}</span>
+        <span className={valueClass}>{displayValue}</span>
+      </div>
+    );
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle className="flex items-center gap-2">
+              <FileText className="h-5 w-5 text-primary" />
+              Tax Return Data — {taxReturn.tax_year}
+            </CardTitle>
+            <CardDescription>
+              All imported fields from your tax return
+            </CardDescription>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setExpanded(!expanded)}
+          >
+            {expanded ? "Collapse" : "Expand All"}
+          </Button>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className={`grid gap-6 ${expanded ? "" : "md:grid-cols-2 lg:grid-cols-4"}`}>
+          {/* Income Section */}
+          <div className="space-y-2">
+            <h4 className="font-medium text-sm flex items-center gap-2">
+              <DollarSign className="h-4 w-4 text-green-600" />
+              Income
+            </h4>
+            <div className="text-sm space-y-0.5">
+              {incomeFields.map(renderField)}
+            </div>
+          </div>
+
+          {/* Deductions Section */}
+          <div className="space-y-2">
+            <h4 className="font-medium text-sm flex items-center gap-2">
+              <Minus className="h-4 w-4 text-blue-600" />
+              Deductions
+            </h4>
+            <div className="text-sm space-y-0.5">
+              {deductionFields.map(renderField)}
+            </div>
+          </div>
+
+          {/* Tax & Payments Section */}
+          <div className="space-y-2">
+            <h4 className="font-medium text-sm flex items-center gap-2">
+              <Calculator className="h-4 w-4 text-red-600" />
+              Tax & Payments
+            </h4>
+            <div className="text-sm space-y-0.5">
+              {taxPaymentFields.map(renderField)}
+            </div>
+          </div>
+
+          {/* Self-Employment Section */}
+          <div className="space-y-2">
+            <h4 className="font-medium text-sm flex items-center gap-2">
+              <Building2 className="h-4 w-4 text-purple-600" />
+              Self-Employment
+            </h4>
+            <div className="text-sm space-y-0.5">
+              {selfEmploymentFields.map(renderField)}
+            </div>
+
+            {/* Metadata */}
+            <h4 className="font-medium text-sm flex items-center gap-2 mt-4 pt-4 border-t">
+              <Info className="h-4 w-4 text-muted-foreground" />
+              Metadata
+            </h4>
+            <div className="text-sm space-y-0.5">
+              {metadataFields.map(renderField)}
+            </div>
+          </div>
+        </div>
+
+        {/* Notes */}
+        {taxReturn.notes && (
+          <div className="mt-4 pt-4 border-t">
+            <h4 className="font-medium text-sm mb-2">Notes</h4>
+            <p className="text-sm text-muted-foreground">{taxReturn.notes}</p>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+// ============================================
 // Main Dashboard Component
 // ============================================
 
@@ -1174,6 +1359,9 @@ export default function TaxOptimizationPage() {
 
       {/* Module 4: Quarterly Tax Estimator (full width) */}
       <QuarterlyTaxEstimator taxReturn={mostRecentReturn!} />
+
+      {/* Module 5: Raw Tax Return Data */}
+      <TaxReturnRawData taxReturn={mostRecentReturn!} />
     </div>
   );
 }

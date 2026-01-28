@@ -919,19 +919,80 @@ export default function SettingsPage() {
           )}
 
           {/* Instructions */}
-          <div className="bg-muted/50 rounded-lg p-4 space-y-3">
-            <h4 className="font-medium">How to use:</h4>
-            <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
-              <li>Run the TurboTax PDF parser script on your tax return PDF</li>
-              <li>
-                <code className="text-xs bg-muted px-1 py-0.5 rounded">
-                  python3 scripts/turbotax_parser.py your_return.pdf -o tax_data.csv
+          <div className="bg-muted/50 rounded-lg p-4 space-y-4">
+            <h4 className="font-medium">How to Create and Upload Your Tax Data CSV</h4>
+
+            <div className="space-y-3">
+              <p className="text-sm font-medium text-foreground">Step 1: Install Python Dependencies</p>
+              <div className="bg-muted rounded-lg p-3">
+                <code className="text-xs block">pip install pdfplumber pandas</code>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Or if you have multiple Python versions: <code className="bg-muted px-1 rounded">python3 -m pip install pdfplumber pandas</code>
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              <p className="text-sm font-medium text-foreground">Step 2: Run the Parser Script</p>
+              <div className="bg-muted rounded-lg p-3 space-y-2">
+                <code className="text-xs block"># Parse a single tax return PDF</code>
+                <code className="text-xs block">python3 scripts/turbotax_parser.py ~/Downloads/2023_TaxReturn.pdf -o tax_data.csv</code>
+                <code className="text-xs block mt-2"># Parse multiple years into one file</code>
+                <code className="text-xs block">python3 scripts/turbotax_parser.py 2022.pdf 2023.pdf -o tax_data.csv</code>
+                <code className="text-xs block mt-2"># Debug mode (shows extracted text)</code>
+                <code className="text-xs block">python3 scripts/turbotax_parser.py return.pdf --dump-text</code>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <p className="text-sm font-medium text-foreground">Step 3: Upload the CSV</p>
+              <ol className="list-decimal list-inside space-y-1 text-sm text-muted-foreground">
+                <li>Click &quot;Select CSV File&quot; above and choose your <code className="bg-muted px-1 rounded">tax_data.csv</code></li>
+                <li>Review the preview table to verify the data looks correct</li>
+                <li>Click &quot;Upload Tax Returns&quot; to import</li>
+              </ol>
+            </div>
+
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-foreground">CSV Format (for manual creation)</p>
+              <p className="text-xs text-muted-foreground">
+                If you prefer to create the CSV manually, use these column headers:
+              </p>
+              <div className="bg-muted rounded-lg p-3 overflow-x-auto">
+                <code className="text-xs whitespace-nowrap">
+                  tax_year,filing_status,wages,interest_income,dividend_income,qualified_dividends,capital_gains,ira_distributions,pension_income,social_security,business_income,other_income,total_income,agi,adjustments,deduction_type,deduction_amount,qbi_deduction,taxable_income,total_tax,federal_withheld,estimated_payments,refund_amount,amount_owed,effective_tax_rate,se_income,se_tax,se_deduction,notes
                 </code>
-              </li>
-              <li>Upload the generated CSV file above</li>
-              <li>Review the preview and click Upload</li>
-            </ol>
+              </div>
+              <p className="text-xs text-muted-foreground mt-2">
+                <strong>filing_status values:</strong> single, married_filing_jointly, married_filing_separately, head_of_household, qualifying_widow
+              </p>
+            </div>
           </div>
+
+          {/* Link to Tax Optimization */}
+          {taxReturns.length > 0 && (
+            <div className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/20 rounded-lg p-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 rounded-lg bg-green-500/20">
+                    <Sparkles className="h-6 w-6 text-green-500" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg">View Tax Optimization Insights</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Analyze your tax health, deduction efficiency, S-Corp break-even, and quarterly estimates.
+                    </p>
+                  </div>
+                </div>
+                <Link href="/tax-optimization">
+                  <Button className="bg-green-500 hover:bg-green-600 whitespace-nowrap">
+                    <ExternalLink className="h-4 w-4 mr-2" />
+                    Tax Optimization Dashboard
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
