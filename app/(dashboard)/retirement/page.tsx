@@ -226,6 +226,175 @@ export default function RetirementPage() {
         </p>
       </div>
 
+      {/* Input Section - Retirement Location & Spending (moved to top) */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg flex items-center gap-2">
+            <MapPin className="h-5 w-5 text-primary" />
+            Retirement Location & Spending
+          </CardTitle>
+          <p className="text-sm text-muted-foreground">
+            You can retire when your safe withdrawal amount covers your annual spending. For example, with a 4% withdrawal rate,
+            you need 25x your annual expenses saved (e.g., {formatCurrency(parseFloat(currentSpend) || 60000)} spending requires {formatCurrency((parseFloat(currentSpend) || 60000) * 25)}).
+            Moving to a lower cost-of-living city reduces your required nest egg.
+          </p>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="currentCity">Current City (Baseline)</Label>
+                <Select value={currentCityId} onValueChange={setCurrentCityId}>
+                  <SelectTrigger id="currentCity" className="w-full">
+                    <SelectValue placeholder="Select your current city" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {CITIES.map((city) => (
+                      <SelectItem key={city.city_id} value={city.city_id}>
+                        {city.city_name}, {city.country}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {currentCity && (
+                  <p className="text-xs text-muted-foreground">
+                    Your spending is anchored to this city&apos;s cost of living
+                  </p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="city">Target Retirement City</Label>
+                <Select value={selectedCityId} onValueChange={setSelectedCityId}>
+                  <SelectTrigger id="city" className="w-full">
+                    <SelectValue placeholder="Select a city" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {CITIES.map((city) => (
+                      <SelectItem key={city.city_id} value={city.city_id}>
+                        {city.city_name}, {city.country}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {selectedCity && currentCity && (
+                  <p className="text-xs text-muted-foreground">
+                    {((calculateEffectiveCOL(selectedCity, weights) / calculateEffectiveCOL(currentCity, weights)) * 100).toFixed(0)}% of {currentCity.city_name}&apos;s cost • Confidence: {selectedCity.confidence}
+                  </p>
+                )}
+                {/* Geo-Arbitrage Callout */}
+                {selectedCity && currentCity && selectedCityId !== currentCityId && currentNetWorth > 0 && (() => {
+                  const currentCityData = allCitiesComparison.find(c => c.city.city_id === currentCityId);
+                  const targetCityData = allCitiesComparison.find(c => c.city.city_id === selectedCityId);
+                  if (!currentCityData || !targetCityData) return null;
+
+                  const netWorthSavings = currentCityData.requiredNW - targetCityData.requiredNW;
+                  const yearsSaved = isFinite(currentCityData.yearsToRetirement) && isFinite(targetCityData.yearsToRetirement)
+                    ? currentCityData.yearsToRetirement - targetCityData.yearsToRetirement
+                    : null;
+                  const canRetireNowInTarget = targetCityData.canRetireNow && !currentCityData.canRetireNow;
+
+                  // Only show if there's a meaningful difference
+                  if (netWorthSavings <= 0 && (yearsSaved === null || yearsSaved <= 0) && !canRetireNowInTarget) return null;
+
+                  return (
+                    <div className="mt-3 p-3 rounded-lg bg-primary/10 border border-primary/30">
+                      <div className="flex items-start gap-2">
+                        <Plane className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                        <div className="text-sm">
+                          <span className="font-medium text-primary">Geo-Arbitrage: </span>
+                          <span className="text-muted-foreground">
+                            Moving to {selectedCity.city_name}
+                            {netWorthSavings > 0 && (
+                              <> saves <span className="font-semibold text-primary">{formatCurrency(netWorthSavings)}</span></>
+                            )}
+                            {yearsSaved !== null && yearsSaved > 0 && (
+                              <>{netWorthSavings > 0 ? " and " : " "}accelerates FI by <span className="font-semibold text-primary">{yearsSaved.toFixed(1)} years</span></>
+                            )}
+                            {canRetireNowInTarget && (
+                              <> — <span className="font-semibold text-primary">you could retire now!</span></>
+                            )}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="currentSpend">Current Annual Spending</Label>
+                <div className="relative">
+                  <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    id="currentSpend"
+                    type="number"
+                    value={currentSpend}
+                    onChange={(e) => setCurrentSpend(e.target.value)}
+                    className="pl-9"
+                    placeholder="60000"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="withdrawalRate">Safe Withdrawal Rate (%)</Label>
+                <Input
+                  id="withdrawalRate"
+                  type="number"
+                  step="0.1"
+                  value={withdrawalRate}
+                  onChange={(e) => setWithdrawalRate(e.target.value)}
+                  placeholder="4.0"
+                />
+                <p className="text-xs text-muted-foreground">
+                  The 4% rule suggests withdrawing 4% of your portfolio annually
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="expectedReturn">Expected Real Return (%)</Label>
+                <Input
+                  id="expectedReturn"
+                  type="number"
+                  step="0.1"
+                  value={expectedReturn}
+                  onChange={(e) => setExpectedReturn(e.target.value)}
+                  placeholder="5.0"
+                />
+                <p className="text-xs text-muted-foreground">
+                  Annual return after inflation (historically ~7% for stocks, ~3% inflation)
+                </p>
+              </div>
+            </div>
+
+            {latestEntry && (
+              <div className="space-y-4">
+                <div className="p-4 rounded-lg bg-muted/50 space-y-3">
+                  <h4 className="text-sm font-medium">Your Financial Snapshot</h4>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Current Net Worth</span>
+                    <span className="font-medium">{formatCurrency(currentNetWorth)}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Annual Savings</span>
+                    <span className={`font-medium ${annualSavings >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                      {formatCurrency(annualSavings)}
+                    </span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Safe Withdrawal ({withdrawalRate}%)</span>
+                    <span className="font-medium text-purple-500">{formatCurrency(safeWithdrawalAmount)}/yr</span>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Dynamic Headline */}
       {currentNetWorth > 0 && (
         <Card className={citiesCanRetireNow.length > 0 ? "border-green-500/30 bg-green-500/5" : "border-primary/30 bg-primary/5"}>
@@ -429,175 +598,6 @@ export default function RetirementPage() {
           </CardContent>
         </Card>
       )}
-
-      {/* Input Section */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg flex items-center gap-2">
-            <MapPin className="h-5 w-5 text-primary" />
-            Retirement Location & Spending
-          </CardTitle>
-          <p className="text-sm text-muted-foreground">
-            You can retire when your safe withdrawal amount covers your annual spending. For example, with a 4% withdrawal rate,
-            you need 25x your annual expenses saved (e.g., {formatCurrency(parseFloat(currentSpend) || 60000)} spending requires {formatCurrency((parseFloat(currentSpend) || 60000) * 25)}).
-            Moving to a lower cost-of-living city reduces your required nest egg.
-          </p>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="currentCity">Current City (Baseline)</Label>
-                <Select value={currentCityId} onValueChange={setCurrentCityId}>
-                  <SelectTrigger id="currentCity" className="w-full">
-                    <SelectValue placeholder="Select your current city" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {CITIES.map((city) => (
-                      <SelectItem key={city.city_id} value={city.city_id}>
-                        {city.city_name}, {city.country}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {currentCity && (
-                  <p className="text-xs text-muted-foreground">
-                    Your spending is anchored to this city&apos;s cost of living
-                  </p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="city">Target Retirement City</Label>
-                <Select value={selectedCityId} onValueChange={setSelectedCityId}>
-                  <SelectTrigger id="city" className="w-full">
-                    <SelectValue placeholder="Select a city" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {CITIES.map((city) => (
-                      <SelectItem key={city.city_id} value={city.city_id}>
-                        {city.city_name}, {city.country}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {selectedCity && currentCity && (
-                  <p className="text-xs text-muted-foreground">
-                    {((calculateEffectiveCOL(selectedCity, weights) / calculateEffectiveCOL(currentCity, weights)) * 100).toFixed(0)}% of {currentCity.city_name}&apos;s cost • Confidence: {selectedCity.confidence}
-                  </p>
-                )}
-                {/* Geo-Arbitrage Callout */}
-                {selectedCity && currentCity && selectedCityId !== currentCityId && currentNetWorth > 0 && (() => {
-                  const currentCityData = allCitiesComparison.find(c => c.city.city_id === currentCityId);
-                  const targetCityData = allCitiesComparison.find(c => c.city.city_id === selectedCityId);
-                  if (!currentCityData || !targetCityData) return null;
-
-                  const netWorthSavings = currentCityData.requiredNW - targetCityData.requiredNW;
-                  const yearsSaved = isFinite(currentCityData.yearsToRetirement) && isFinite(targetCityData.yearsToRetirement)
-                    ? currentCityData.yearsToRetirement - targetCityData.yearsToRetirement
-                    : null;
-                  const canRetireNowInTarget = targetCityData.canRetireNow && !currentCityData.canRetireNow;
-
-                  // Only show if there's a meaningful difference
-                  if (netWorthSavings <= 0 && (yearsSaved === null || yearsSaved <= 0) && !canRetireNowInTarget) return null;
-
-                  return (
-                    <div className="mt-3 p-3 rounded-lg bg-lime-500/10 border border-lime-500/30">
-                      <div className="flex items-start gap-2">
-                        <Plane className="h-4 w-4 text-lime-500 mt-0.5 flex-shrink-0" />
-                        <div className="text-sm">
-                          <span className="font-medium text-lime-400">Geo-Arbitrage: </span>
-                          <span className="text-muted-foreground">
-                            Moving to {selectedCity.city_name}
-                            {netWorthSavings > 0 && (
-                              <> saves <span className="font-semibold text-lime-400">{formatCurrency(netWorthSavings)}</span></>
-                            )}
-                            {yearsSaved !== null && yearsSaved > 0 && (
-                              <>{netWorthSavings > 0 ? " and " : " "}accelerates FI by <span className="font-semibold text-lime-400">{yearsSaved.toFixed(1)} years</span></>
-                            )}
-                            {canRetireNowInTarget && (
-                              <> — <span className="font-semibold text-lime-400">you could retire now!</span></>
-                            )}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })()}
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="currentSpend">Current Annual Spending</Label>
-                <div className="relative">
-                  <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    id="currentSpend"
-                    type="number"
-                    value={currentSpend}
-                    onChange={(e) => setCurrentSpend(e.target.value)}
-                    className="pl-9"
-                    placeholder="60000"
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="withdrawalRate">Safe Withdrawal Rate (%)</Label>
-                <Input
-                  id="withdrawalRate"
-                  type="number"
-                  step="0.1"
-                  value={withdrawalRate}
-                  onChange={(e) => setWithdrawalRate(e.target.value)}
-                  placeholder="4.0"
-                />
-                <p className="text-xs text-muted-foreground">
-                  The 4% rule suggests withdrawing 4% of your portfolio annually
-                </p>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="expectedReturn">Expected Real Return (%)</Label>
-                <Input
-                  id="expectedReturn"
-                  type="number"
-                  step="0.1"
-                  value={expectedReturn}
-                  onChange={(e) => setExpectedReturn(e.target.value)}
-                  placeholder="5.0"
-                />
-                <p className="text-xs text-muted-foreground">
-                  Annual return after inflation (historically ~7% for stocks, ~3% inflation)
-                </p>
-              </div>
-            </div>
-
-            {latestEntry && (
-              <div className="space-y-4">
-                <div className="p-4 rounded-lg bg-muted/50 space-y-3">
-                  <h4 className="text-sm font-medium">Your Financial Snapshot</h4>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Current Net Worth</span>
-                    <span className="font-medium">{formatCurrency(currentNetWorth)}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Annual Savings</span>
-                    <span className={`font-medium ${annualSavings >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                      {formatCurrency(annualSavings)}
-                    </span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Safe Withdrawal ({withdrawalRate}%)</span>
-                    <span className="font-medium text-purple-500">{formatCurrency(safeWithdrawalAmount)}/yr</span>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </CardContent>
-      </Card>
 
       {/* Spending Weights & Cost Breakdown - Side by Side */}
       <div className="grid gap-6 md:grid-cols-2">
@@ -854,8 +854,8 @@ export default function RetirementPage() {
                     <defs>
                       {/* Gradient for the area fill */}
                       <linearGradient id="netWorthGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#a3e635" stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor="#a3e635" stopOpacity={0.05}/>
+                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
+                        <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.05}/>
                       </linearGradient>
                       {/* Glow effect for the line */}
                       <filter id="glow">
@@ -994,12 +994,12 @@ export default function RetirementPage() {
                     <Line
                       type="monotone"
                       dataKey="Net Worth"
-                      stroke="#a3e635"
+                      stroke="#3b82f6"
                       strokeWidth={3}
                       dot={false}
                       activeDot={{
                         r: 6,
-                        fill: "#a3e635",
+                        fill: "#3b82f6",
                         stroke: "#fff",
                         strokeWidth: 2,
                       }}
@@ -1034,8 +1034,8 @@ export default function RetirementPage() {
                       <TableHead>City</TableHead>
                       <TableHead className="text-right">Years to Retire</TableHead>
                       <TableHead className="text-right">Net Worth</TableHead>
-                      <TableHead className="text-right">Required NW</TableHead>
                       <TableHead className="text-right">Safe Withdrawal</TableHead>
+                      <TableHead className="text-right">Required NW</TableHead>
                       <TableHead className="text-right">Annual Cost</TableHead>
                       <TableHead className="text-right">COL vs {currentCity?.city_name || "NYC"}</TableHead>
                     </TableRow>
@@ -1069,11 +1069,11 @@ export default function RetirementPage() {
                         <TableCell className="text-right">
                           {formatCurrency(currentNetWorth)}
                         </TableCell>
-                        <TableCell className="text-right">
-                          {formatCurrency(item.requiredNW)}
-                        </TableCell>
                         <TableCell className={`text-right ${item.withdrawalAmount >= item.adjustedSpend ? "text-green-500" : "text-muted-foreground"}`}>
                           {formatCurrency(item.withdrawalAmount)}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {formatCurrency(item.requiredNW)}
                         </TableCell>
                         <TableCell className="text-right">
                           {formatCurrency(item.adjustedSpend)}

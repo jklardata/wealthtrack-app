@@ -516,6 +516,61 @@ export default function DashboardPage() {
     );
   }
 
+  // Empty state - show when no entries
+  if (!loading && entries.length === 0) {
+    return (
+      <div className="space-y-6">
+        {/* Header */}
+        <div>
+          <h1 className="text-2xl font-bold">Dashboard</h1>
+          <p className="text-muted-foreground">
+            A tool for Independent Consultants to track net worth, optimize your portfolio, plan retirement, and maximize tax savings.
+          </p>
+        </div>
+
+        {/* Empty State */}
+        <Card className="border-primary/20">
+          <CardContent className="py-16">
+            <div className="flex flex-col items-center justify-center text-center max-w-md mx-auto">
+              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-6">
+                <TrendingUp className="h-8 w-8 text-primary" />
+              </div>
+              <h2 className="text-xl font-semibold mb-2">Get Started with Your Financial Data</h2>
+              <p className="text-muted-foreground mb-6">
+                Add your first entry to start tracking your net worth and unlock powerful financial insights. You need at least one row of data to get started.
+              </p>
+              <div className="space-y-4 w-full">
+                <Link href="/net-worth">
+                  <Button className="w-full bg-primary hover:bg-primary/90">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Data Manually
+                  </Button>
+                </Link>
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t" />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-background px-2 text-muted-foreground">Or</span>
+                  </div>
+                </div>
+                <Link href="/settings">
+                  <Button variant="outline" className="w-full">
+                    <DollarSign className="h-4 w-4 mr-2" />
+                    Connect Google Sheets Template
+                  </Button>
+                </Link>
+              </div>
+              <p className="text-xs text-muted-foreground mt-6">
+                Use our Google Sheets template to easily import your financial data, or add entries manually through the Net Worth page.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       {/* Header with Date Filters */}
@@ -523,7 +578,7 @@ export default function DashboardPage() {
         <div>
           <h1 className="text-2xl font-bold">Dashboard</h1>
           <p className="text-muted-foreground">
-            Track your financial progress over time
+            A tool for Independent Consultants to track net worth, optimize your portfolio, plan retirement, and maximize tax savings.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -823,7 +878,7 @@ export default function DashboardPage() {
                     hiddenCategories.has("netWorth") ? "opacity-40" : "opacity-100"
                   )}
                 >
-                  <span className="w-3 h-3 rounded-full" style={{ backgroundColor: '#a3e635' }} />
+                  <span className="w-3 h-3 rounded-full" style={{ backgroundColor: '#3b82f6' }} />
                   <span>Net Worth</span>
                 </button>
                 {Object.entries(ASSET_COLORS).map(([key, color]) => (
@@ -865,10 +920,10 @@ export default function DashboardPage() {
                       type="monotone"
                       dataKey="netWorth"
                       name="Net Worth"
-                      stroke="#a3e635"
+                      stroke="#3b82f6"
                       strokeWidth={3}
-                      dot={{ fill: "#a3e635", strokeWidth: 2, r: 4 }}
-                      activeDot={{ r: 8, fill: "#a3e635", stroke: "#fff", strokeWidth: 2 }}
+                      dot={{ fill: "#3b82f6", strokeWidth: 2, r: 4 }}
+                      activeDot={{ r: 8, fill: "#3b82f6", stroke: "#fff", strokeWidth: 2 }}
                     />
                   )}
                   {!hiddenCategories.has("stocks") && (
