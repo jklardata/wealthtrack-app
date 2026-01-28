@@ -61,9 +61,24 @@ export async function POST(request: NextRequest) {
     // Handle JSON body (single record)
     const body = await request.json();
 
-    // If body is an array, it's a bulk import
+    // If body is an array, it's a bulk import - sanitize each record first
     if (Array.isArray(body)) {
-      const result = await importTaxReturns(body, userId, supabase);
+      const sanitizedRecords: Partial<TaxReturn>[] = [];
+      const errors: string[] = [];
+
+      for (let i = 0; i < body.length; i++) {
+        try {
+          sanitizedRecords.push(sanitizeTaxReturn(body[i]));
+        } catch (e) {
+          errors.push(`Record ${i + 1}: ${e instanceof Error ? e.message : 'Invalid data'}`);
+        }
+      }
+
+      if (sanitizedRecords.length === 0) {
+        return NextResponse.json({ imported: 0, errors }, { status: 400 });
+      }
+
+      const result = await importTaxReturns(sanitizedRecords, userId, supabase, errors);
       return NextResponse.json(result);
     }
 
