@@ -350,7 +350,7 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-4xl">
       <div>
         <h1 className="text-3xl font-bold">Settings</h1>
         <p className="text-base text-muted-foreground mt-1">
@@ -925,51 +925,80 @@ export default function SettingsPage() {
           <div className="bg-muted/50 rounded-lg p-4 space-y-4">
             <h4 className="font-medium">How to Create and Upload Your Tax Data CSV</h4>
 
+            {/* Privacy Notice */}
+            <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-3">
+              <p className="text-sm text-green-700 dark:text-green-400">
+                <strong>Privacy First:</strong> The Python script runs entirely on your computer.
+                Your tax return PDF never leaves your machine. The script extracts only financial figures
+                (no SSN, addresses, or other PII) into a CSV that you can review before uploading.
+              </p>
+            </div>
+
             <div className="space-y-3">
               <p className="text-sm font-medium text-foreground">Step 1: Install Python Dependencies</p>
+              <p className="text-xs text-muted-foreground mb-2">
+                Open Terminal (Mac) or Command Prompt (Windows) and run:
+              </p>
               <div className="bg-muted rounded-lg p-3">
                 <code className="text-xs block">pip install pdfplumber pandas</code>
               </div>
               <p className="text-xs text-muted-foreground">
-                Or if you have multiple Python versions: <code className="bg-muted px-1 rounded">python3 -m pip install pdfplumber pandas</code>
+                If that doesn&apos;t work, try: <code className="bg-muted px-1 rounded">python3 -m pip install pdfplumber pandas</code>
               </p>
             </div>
 
             <div className="space-y-3">
-              <p className="text-sm font-medium text-foreground">Step 2: Run the Parser Script</p>
-              <div className="bg-muted rounded-lg p-3 space-y-2">
-                <code className="text-xs block"># Parse a single tax return PDF</code>
-                <code className="text-xs block">python3 scripts/turbotax_parser.py ~/Downloads/2023_TaxReturn.pdf -o tax_data.csv</code>
-                <code className="text-xs block mt-2"># Parse multiple years into one file</code>
-                <code className="text-xs block">python3 scripts/turbotax_parser.py 2022.pdf 2023.pdf -o tax_data.csv</code>
-                <code className="text-xs block mt-2"># Debug mode (shows extracted text)</code>
-                <code className="text-xs block">python3 scripts/turbotax_parser.py return.pdf --dump-text</code>
-              </div>
+              <p className="text-sm font-medium text-foreground">Step 2: Download the Parser Script</p>
+              <p className="text-xs text-muted-foreground">
+                The script is located in the <code className="bg-muted px-1 rounded">scripts/</code> folder of the WealthTrack repository.
+                Save <code className="bg-muted px-1 rounded">turbotax_parser.py</code> to your computer.
+              </p>
             </div>
 
             <div className="space-y-3">
-              <p className="text-sm font-medium text-foreground">Step 3: Upload the CSV</p>
+              <p className="text-sm font-medium text-foreground">Step 3: Run the Parser on Your Tax Return PDF</p>
+              <p className="text-xs text-muted-foreground mb-2">
+                Navigate to where you saved the script and run:
+              </p>
+              <div className="bg-muted rounded-lg p-3 space-y-2">
+                <code className="text-xs block"># Parse your TurboTax PDF</code>
+                <code className="text-xs block">python3 turbotax_parser.py ~/Downloads/2023_TaxReturn.pdf -o tax_data.csv</code>
+                <code className="text-xs block mt-2"># Parse multiple years into one file</code>
+                <code className="text-xs block">python3 turbotax_parser.py 2022.pdf 2023.pdf -o tax_data.csv</code>
+              </div>
+              <p className="text-xs text-muted-foreground mt-2">
+                This creates a <code className="bg-muted px-1 rounded">tax_data.csv</code> file with only the financial data — no personal information.
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              <p className="text-sm font-medium text-foreground">Step 4: Review and Upload</p>
               <ol className="list-decimal list-inside space-y-1 text-sm text-muted-foreground">
-                <li>Click &quot;Select CSV File&quot; above and choose your <code className="bg-muted px-1 rounded">tax_data.csv</code></li>
-                <li>Review the preview table to verify the data looks correct</li>
+                <li>Open <code className="bg-muted px-1 rounded">tax_data.csv</code> to verify it contains only numbers (no SSN, no addresses)</li>
+                <li>Click &quot;Select CSV File&quot; above and choose your CSV</li>
+                <li>Review the preview table</li>
                 <li>Click &quot;Upload Tax Returns&quot; to import</li>
               </ol>
             </div>
 
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-foreground">CSV Format (for manual creation)</p>
-              <p className="text-xs text-muted-foreground">
-                If you prefer to create the CSV manually, use these column headers:
-              </p>
-              <div className="bg-muted rounded-lg p-3 overflow-x-auto">
-                <code className="text-xs whitespace-nowrap">
-                  tax_year,filing_status,wages,interest_income,dividend_income,qualified_dividends,capital_gains,ira_distributions,pension_income,social_security,business_income,other_income,total_income,agi,adjustments,deduction_type,deduction_amount,qbi_deduction,taxable_income,total_tax,federal_withheld,estimated_payments,refund_amount,amount_owed,effective_tax_rate,se_income,se_tax,se_deduction,notes
-                </code>
+            <details className="text-sm">
+              <summary className="cursor-pointer font-medium text-muted-foreground hover:text-foreground">
+                Advanced: Manual CSV Format
+              </summary>
+              <div className="mt-3 space-y-2">
+                <p className="text-xs text-muted-foreground">
+                  If you prefer to create the CSV manually, use these column headers:
+                </p>
+                <div className="bg-muted rounded-lg p-3 overflow-x-auto">
+                  <code className="text-xs break-all">
+                    tax_year, filing_status, wages, interest_income, dividend_income, qualified_dividends, capital_gains, ira_distributions, pension_income, social_security, business_income, other_income, total_income, agi, adjustments, deduction_type, deduction_amount, qbi_deduction, taxable_income, total_tax, federal_withheld, estimated_payments, refund_amount, amount_owed, effective_tax_rate, se_income, se_tax, se_deduction, notes
+                  </code>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  <strong>filing_status:</strong> single, married_filing_jointly, married_filing_separately, head_of_household, qualifying_widow
+                </p>
               </div>
-              <p className="text-xs text-muted-foreground mt-2">
-                <strong>filing_status values:</strong> single, married_filing_jointly, married_filing_separately, head_of_household, qualifying_widow
-              </p>
-            </div>
+            </details>
           </div>
 
           {/* Link to Tax Optimization */}

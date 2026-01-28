@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import type { TaxReturn } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -51,6 +52,8 @@ import {
   Landmark,
   Receipt,
   ArrowRight,
+  FileText,
+  RefreshCw,
 } from "lucide-react";
 
 // 2024 Tax Constants
@@ -243,6 +246,56 @@ export default function TaxCalculatorPage() {
 
   // UI State
   const [showAdvanced, setShowAdvanced] = useState(false);
+
+  // Tax Return Data (for auto-populate)
+  const [taxReturns, setTaxReturns] = useState<TaxReturn[]>([]);
+  const [loadingTaxReturns, setLoadingTaxReturns] = useState(true);
+
+  // Fetch tax returns on mount
+  useEffect(() => {
+    async function fetchTaxReturns() {
+      try {
+        const response = await fetch("/api/tax-returns");
+        if (response.ok) {
+          const result = await response.json();
+          setTaxReturns(result.data || []);
+        }
+      } catch (error) {
+        console.error("Error fetching tax returns:", error);
+      } finally {
+        setLoadingTaxReturns(false);
+      }
+    }
+    fetchTaxReturns();
+  }, []);
+
+  // Get most recent tax return
+  const mostRecentTaxReturn = useMemo(() => {
+    if (taxReturns.length === 0) return null;
+    return [...taxReturns].sort((a, b) => b.tax_year - a.tax_year)[0];
+  }, [taxReturns]);
+
+  // Auto-populate from tax return
+  const populateFromTaxReturn = () => {
+    if (!mostRecentTaxReturn) return;
+
+    // Use total_income as the gross consulting income
+    if (mostRecentTaxReturn.total_income > 0) {
+      setGrossIncome(mostRecentTaxReturn.total_income.toString());
+    }
+
+    // Set filing status if available
+    if (mostRecentTaxReturn.filing_status === "married_filing_jointly") {
+      setFilingStatus("married");
+    } else {
+      setFilingStatus("single");
+    }
+
+    // Set business expenses from adjustments if available
+    if (mostRecentTaxReturn.adjustments > 0) {
+      setBusinessExpenses(mostRecentTaxReturn.adjustments.toString());
+    }
+  };
 
   // Parse inputs
   const gross = parseFloat(grossIncome) || 0;
@@ -544,6 +597,29 @@ export default function TaxCalculatorPage() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
+            {/* Tax Return Auto-Populate Banner */}
+            {mostRecentTaxReturn && (
+              <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-3">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <FileText className="h-4 w-4 text-blue-500 flex-shrink-0" />
+                    <p className="text-sm text-blue-700 dark:text-blue-400 truncate">
+                      {mostRecentTaxReturn.tax_year} tax data available
+                    </p>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={populateFromTaxReturn}
+                    className="flex-shrink-0 text-blue-600 border-blue-300 hover:bg-blue-500/10"
+                  >
+                    <RefreshCw className="h-3 w-3 mr-1" />
+                    Use Tax Data
+                  </Button>
+                </div>
+              </div>
+            )}
+
             <div className="space-y-2">
               <Label htmlFor="grossIncome">Gross Consulting Income</Label>
               <div className="relative">

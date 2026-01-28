@@ -34,6 +34,13 @@ import {
   ArrowRight,
   CalendarIcon,
   Award,
+  BookOpen,
+  Globe,
+  Building2,
+  Calculator,
+  PiggyBank,
+  FileText,
+  Briefcase,
 } from "lucide-react";
 import {
   LineChart,
@@ -1208,6 +1215,157 @@ export default function DashboardPage() {
           </Link>
         </Card>
       </div>
+
+      {/* Articles Section */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <BookOpen className="h-5 w-5 text-primary" />
+            Resources for Independent Consultants
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {/* Article 1 */}
+            <Link href="/articles/working-remotely-from-another-country">
+              <Card className="h-full cursor-pointer hover:border-primary/50 hover:shadow-lg transition-all overflow-hidden group">
+                <div className="relative h-40 overflow-hidden">
+                  <img
+                    src="https://images.unsplash.com/photo-1488085061387-422e29b40080?w=600&h=300&fit=crop"
+                    alt="Working remotely from another country"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute bottom-3 left-3">
+                    <span className="text-xs font-medium text-white bg-blue-500 px-2 py-1 rounded-full">Remote Work</span>
+                  </div>
+                </div>
+                <CardContent className="p-4">
+                  <h3 className="font-semibold mb-2 line-clamp-2 group-hover:text-primary transition-colors">A US Guide for Working Remotely From Another Country</h3>
+                  <p className="text-sm text-muted-foreground line-clamp-2">
+                    Taxes, visas, and logistics for US-based consultants working abroad.
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+
+            {/* Article 2 */}
+            <Link href="/articles/best-bank-accounts-for-consultants">
+              <Card className="h-full cursor-pointer hover:border-primary/50 hover:shadow-lg transition-all overflow-hidden group">
+                <div className="relative h-40 overflow-hidden">
+                  <img
+                    src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&h=300&fit=crop"
+                    alt="Bank accounts for consultants"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute bottom-3 left-3">
+                    <span className="text-xs font-medium text-white bg-green-500 px-2 py-1 rounded-full">Banking</span>
+                  </div>
+                </div>
+                <CardContent className="p-4">
+                  <h3 className="font-semibold mb-2 line-clamp-2 group-hover:text-primary transition-colors">Best Bank Accounts for Remote Workers and Independent Consultants</h3>
+                  <p className="text-sm text-muted-foreground line-clamp-2">
+                    Compare Mercury, Schwab, Wise, and other top banks for freelancers.
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+
+            {/* Article 3 */}
+            <Link href="/articles/tax-strategies-2026-self-employed">
+              <Card className="h-full cursor-pointer hover:border-primary/50 hover:shadow-lg transition-all overflow-hidden group">
+                <div className="relative h-40 overflow-hidden">
+                  <img
+                    src="https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=600&h=300&fit=crop"
+                    alt="Tax strategies for self-employed"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute bottom-3 left-3">
+                    <span className="text-xs font-medium text-white bg-purple-500 px-2 py-1 rounded-full">Taxes</span>
+                  </div>
+                </div>
+                <CardContent className="p-4">
+                  <h3 className="font-semibold mb-2 line-clamp-2 group-hover:text-primary transition-colors">Tax Strategies in 2026 for Self-Employed Workers</h3>
+                  <p className="text-sm text-muted-foreground line-clamp-2">
+                    S-Corp election, Solo 401k, QBI deduction, and more strategies.
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+
+            {/* Article 4 */}
+            <Link href="/articles/why-track-net-worth">
+              <Card className="h-full cursor-pointer hover:border-primary/50 hover:shadow-lg transition-all overflow-hidden group">
+                <div className="relative h-40 overflow-hidden">
+                  <img
+                    src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=600&h=300&fit=crop"
+                    alt="Tracking net worth"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute bottom-3 left-3">
+                    <span className="text-xs font-medium text-white bg-orange-500 px-2 py-1 rounded-full">Wealth Building</span>
+                  </div>
+                </div>
+                <CardContent className="p-4">
+                  <h3 className="font-semibold mb-2 line-clamp-2 group-hover:text-primary transition-colors">Why Tracking Your Net Worth Over Time is Useful</h3>
+                  <p className="text-sm text-muted-foreground line-clamp-2">
+                    The psychological and practical benefits of monitoring your progress.
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+
+            {/* Article 5 */}
+            <Link href="/articles/how-feie-works">
+              <Card className="h-full cursor-pointer hover:border-primary/50 hover:shadow-lg transition-all overflow-hidden group">
+                <div className="relative h-40 overflow-hidden">
+                  <img
+                    src="https://images.unsplash.com/photo-1569025690938-a00729c9e1f9?w=600&h=300&fit=crop"
+                    alt="FEIE Foreign Earned Income Exclusion"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute bottom-3 left-3">
+                    <span className="text-xs font-medium text-white bg-cyan-500 px-2 py-1 rounded-full">Tax Planning</span>
+                  </div>
+                </div>
+                <CardContent className="p-4">
+                  <h3 className="font-semibold mb-2 line-clamp-2 group-hover:text-primary transition-colors">How the Foreign Earned Income Exclusion (FEIE) Works</h3>
+                  <p className="text-sm text-muted-foreground line-clamp-2">
+                    Exclude up to $130,000 of foreign income from US taxes.
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+
+            {/* Article 6 */}
+            <Link href="/articles/become-self-employed-freelancer-2026">
+              <Card className="h-full cursor-pointer hover:border-primary/50 hover:shadow-lg transition-all overflow-hidden group">
+                <div className="relative h-40 overflow-hidden">
+                  <img
+                    src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=300&fit=crop"
+                    alt="Become a freelancer"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute bottom-3 left-3">
+                    <span className="text-xs font-medium text-white bg-pink-500 px-2 py-1 rounded-full">Getting Started</span>
+                  </div>
+                </div>
+                <CardContent className="p-4">
+                  <h3 className="font-semibold mb-2 line-clamp-2 group-hover:text-primary transition-colors">How to Become a Self-Employed Freelancer in 2026</h3>
+                  <p className="text-sm text-muted-foreground line-clamp-2">
+                    A complete guide from finding clients to setting up your business.
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Edit Entry Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={(open) => {
