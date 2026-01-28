@@ -14,6 +14,7 @@ import {
   PieChart,
   Calculator,
   Receipt,
+  Globe,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,6 +30,7 @@ const navItems = [
   { href: "/portfolio-optimizer", label: "Portfolio Optimizer", icon: PieChart },
   { href: "/retirement", label: "Retirement Calculator", icon: Calculator },
   { href: "/tax-calculator", label: "Tax Calculator", icon: Receipt },
+  { href: "/geo-arbitrage", label: "Geo Arbitrage", icon: Globe },
   { href: "/award-programs", label: "Award Programs", icon: Award, disabled: true },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
