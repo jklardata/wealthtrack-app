@@ -283,20 +283,23 @@ export default function SettingsPage() {
     }
   };
 
-  const handleDeleteTaxReturn = async (year: number) => {
-    if (!confirm(`Delete tax return for ${year}?`)) return;
+  const handleDeleteTaxReturn = async (id: string, year: number) => {
+    if (!confirm(`Delete tax return for ${year || "this record"}?`)) return;
 
     try {
-      const response = await fetch(`/api/tax-returns/${year}`, {
+      // Use bulk delete API with ID
+      const response = await fetch("/api/tax-returns", {
         method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids: [id] }),
       });
 
       if (!response.ok) {
         throw new Error("Failed to delete tax return");
       }
 
-      setTaxReturns(taxReturns.filter(t => t.tax_year !== year));
-      setTaxMessage({ type: "success", text: `Deleted tax return for ${year}` });
+      setTaxReturns(taxReturns.filter(t => t.id !== id));
+      setTaxMessage({ type: "success", text: `Deleted tax return${year ? ` for ${year}` : ""}` });
     } catch (error) {
       setTaxMessage({
         type: "error",
@@ -904,7 +907,7 @@ export default function SettingsPage() {
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => handleDeleteTaxReturn(tr.tax_year)}
+                            onClick={() => handleDeleteTaxReturn(tr.id, tr.tax_year)}
                             className="text-red-500 hover:text-red-600 hover:bg-red-500/10"
                           >
                             <Trash2 className="h-4 w-4" />
