@@ -214,6 +214,12 @@ interface TaxCalculation {
   retirement401k: number;
   hsaContribution: number;
   feieExclusion: number;
+  // New metrics for better comparison
+  totalWealthBuild: number; // Take-home + 401k + HSA (what you actually keep/save)
+  taxSavingsFrom401k: number;
+  taxSavingsFromHSA: number;
+  taxSavingsFromExpenses: number;
+  totalTaxSavings: number; // Combined tax savings from all deductions
 }
 
 export default function TaxCalculatorPage() {
@@ -277,6 +283,16 @@ export default function TaxCalculatorPage() {
       const stateTax = (netIncome - retirement401k - hsa) * stateRate;
       const totalTax = seTaxResult.total + federalTax + stateTax;
 
+      const takeHomePay = gross - expenses - totalTax - retirement401k - hsa;
+
+      // Calculate tax savings (estimate marginal rate at 32% for high earners)
+      const marginalRate = 0.32;
+      const taxSavingsFrom401k = retirement401k * marginalRate;
+      const taxSavingsFromHSA = hsa * (marginalRate + 0.0765); // HSA also saves FICA
+      const taxSavingsFromExpenses = expenses * marginalRate;
+      const qbiTaxSavings = qbiDeduction * marginalRate;
+      const totalTaxSavings = taxSavingsFrom401k + taxSavingsFromHSA + taxSavingsFromExpenses + qbiTaxSavings;
+
       return {
         grossIncome: gross,
         structure: "Sole Prop / LLC",
@@ -288,12 +304,17 @@ export default function TaxCalculatorPage() {
         federalTax,
         stateTax,
         totalTax,
-        takeHomePay: gross - expenses - totalTax - retirement401k - hsa,
+        takeHomePay,
         effectiveRate: totalTax / gross,
         qbiDeduction,
         retirement401k,
         hsaContribution: hsa,
         feieExclusion,
+        totalWealthBuild: takeHomePay + retirement401k + hsa,
+        taxSavingsFrom401k,
+        taxSavingsFromHSA,
+        taxSavingsFromExpenses,
+        totalTaxSavings,
       };
     })();
     results.push(soleProprietor);
@@ -331,6 +352,16 @@ export default function TaxCalculatorPage() {
       const stateTax = (salary + distributions - retirement401k - hsa) * stateRate;
       const totalTax = fica.employeeSS + fica.employeeMedicare + fica.employerSS + fica.employerMedicare + federalTax + stateTax;
 
+      const takeHomePay = gross - expenses - totalTax - retirement401k - hsa;
+
+      // Calculate tax savings
+      const marginalRate = 0.32;
+      const taxSavingsFrom401k = retirement401k * marginalRate;
+      const taxSavingsFromHSA = hsa * (marginalRate + 0.0765);
+      const taxSavingsFromExpenses = expenses * marginalRate;
+      const qbiTaxSavings = qbiDeduction * marginalRate;
+      const totalTaxSavings = taxSavingsFrom401k + taxSavingsFromHSA + taxSavingsFromExpenses + qbiTaxSavings;
+
       return {
         grossIncome: gross,
         structure: "S-Corp",
@@ -342,12 +373,17 @@ export default function TaxCalculatorPage() {
         federalTax,
         stateTax,
         totalTax,
-        takeHomePay: gross - expenses - totalTax - retirement401k - hsa,
+        takeHomePay,
         effectiveRate: totalTax / gross,
         qbiDeduction,
         retirement401k,
         hsaContribution: hsa,
         feieExclusion,
+        totalWealthBuild: takeHomePay + retirement401k + hsa,
+        taxSavingsFrom401k,
+        taxSavingsFromHSA,
+        taxSavingsFromExpenses,
+        totalTaxSavings,
       };
     })();
     results.push(sCorp);
@@ -375,6 +411,15 @@ export default function TaxCalculatorPage() {
       // Note: Employer FICA is not included in employee's tax burden for comparison
       const totalTax = fica.employeeSS + fica.employeeMedicare + federalTax + stateTax;
 
+      const takeHomePay = salary - totalTax - w2_401k - hsa;
+
+      // Calculate tax savings (W-2 can't deduct business expenses, no QBI)
+      const marginalRate = 0.32;
+      const taxSavingsFrom401k = w2_401k * marginalRate;
+      const taxSavingsFromHSA = hsa * marginalRate; // W-2 HSA doesn't save FICA if through payroll, but we'll assume same
+      const taxSavingsFromExpenses = 0; // W-2 can't deduct business expenses
+      const totalTaxSavings = taxSavingsFrom401k + taxSavingsFromHSA;
+
       return {
         grossIncome: gross,
         structure: "W-2 Employee",
@@ -386,12 +431,17 @@ export default function TaxCalculatorPage() {
         federalTax,
         stateTax,
         totalTax,
-        takeHomePay: salary - totalTax - w2_401k - hsa,
+        takeHomePay,
         effectiveRate: totalTax / salary,
         qbiDeduction: 0,
         retirement401k: w2_401k,
         hsaContribution: hsa,
         feieExclusion,
+        totalWealthBuild: takeHomePay + w2_401k + hsa,
+        taxSavingsFrom401k,
+        taxSavingsFromHSA,
+        taxSavingsFromExpenses,
+        totalTaxSavings,
       };
     })();
     results.push(w2Employee);
@@ -409,16 +459,18 @@ export default function TaxCalculatorPage() {
 
     return {
       seTaxDiff: soleProp.seTax - (w2.ficaEmployee), // SE tax vs employee FICA only
-      qbiSavings: soleProp.qbiDeduction * 0.22, // Approximate tax savings from QBI at 22% bracket
+      qbiSavings: soleProp.qbiDeduction * 0.32, // Approximate tax savings from QBI at 32% bracket
       retirement401kDiff: soleProp.retirement401k - w2.retirement401k,
       takeHomeDiff: soleProp.takeHomePay - w2.takeHomePay,
+      totalWealthDiff: soleProp.totalWealthBuild - w2.totalWealthBuild,
+      totalTaxSavingsDiff: soleProp.totalTaxSavings - w2.totalTaxSavings,
       effectiveRateDiff: soleProp.effectiveRate - w2.effectiveRate,
     };
   }, [calculations]);
 
-  // Find the best strategy
+  // Find the best strategy based on Total Wealth Build (not just take-home)
   const bestStrategy = calculations.reduce((best, calc) =>
-    calc.takeHomePay > best.takeHomePay ? calc : best
+    calc.totalWealthBuild > best.totalWealthBuild ? calc : best
   , calculations[0]);
 
   // Savings comparison
@@ -429,21 +481,23 @@ export default function TaxCalculatorPage() {
     ? (bestStrategy.federalTax + bestStrategy.seTax) / 4
     : 0;
 
-  // Chart data
-  const comparisonData = calculations.map((calc) => ({
+  // Chart data - using Total Wealth Build for comparison
+  const comparisonData = calculations.map((calc, index) => ({
     name: calc.structure,
+    "Total Wealth": calc.totalWealthBuild,
     "Take-Home": calc.takeHomePay,
-    "Federal Tax": calc.federalTax,
-    "State Tax": calc.stateTax,
-    "FICA/SE Tax": calc.seTax + calc.ficaEmployee + calc.ficaEmployer,
+    "401k + HSA": calc.retirement401k + calc.hsaContribution,
+    color: ["#3b82f6", "#06b6d4", "#8b5cf6"][index], // Blue, Cyan, Purple
   }));
 
-  // Tax breakdown pie chart data
-  const taxBreakdownData = [
-    { name: "Federal Income Tax", value: bestStrategy.federalTax, color: "#a3e635" },
-    { name: "State Tax", value: bestStrategy.stateTax, color: "#22d3ee" },
-    { name: "FICA/SE Tax", value: bestStrategy.seTax + bestStrategy.ficaEmployee + bestStrategy.ficaEmployer, color: "#f472b6" },
-    { name: "Take-Home Pay", value: bestStrategy.takeHomePay, color: "#4ade80" },
+  // Tax breakdown pie chart data for Sole Prop (first calculation)
+  const solePropTaxData = [
+    { name: "Federal Tax", value: calculations[0].federalTax, color: "#3b82f6" },
+    { name: "State Tax", value: calculations[0].stateTax, color: "#06b6d4" },
+    { name: "SE Tax", value: calculations[0].seTax, color: "#f472b6" },
+    { name: "401k", value: calculations[0].retirement401k, color: "#22c55e" },
+    { name: "HSA", value: calculations[0].hsaContribution, color: "#84cc16" },
+    { name: "Take-Home", value: calculations[0].takeHomePay, color: "#8b5cf6" },
   ].filter(d => d.value > 0);
 
   return (
@@ -709,13 +763,13 @@ export default function TaxCalculatorPage() {
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[180px]">Structure</TableHead>
-                  <TableHead className="text-right">Salary</TableHead>
-                  <TableHead className="text-right">Distributions</TableHead>
+                  <TableHead className="text-right">401k</TableHead>
                   <TableHead className="text-right">SE/FICA Tax</TableHead>
                   <TableHead className="text-right">Federal Tax</TableHead>
                   <TableHead className="text-right">State Tax</TableHead>
                   <TableHead className="text-right">Total Tax</TableHead>
                   <TableHead className="text-right">Take-Home</TableHead>
+                  <TableHead className="text-right">Total Wealth</TableHead>
                   <TableHead className="text-right">Effective Rate</TableHead>
                 </TableRow>
               </TableHeader>
@@ -733,8 +787,7 @@ export default function TaxCalculatorPage() {
                         {calc.structure}
                       </div>
                     </TableCell>
-                    <TableCell className="text-right">{formatCurrency(calc.salary)}</TableCell>
-                    <TableCell className="text-right">{formatCurrency(calc.distributions)}</TableCell>
+                    <TableCell className="text-right text-green-600">{formatCurrency(calc.retirement401k)}</TableCell>
                     <TableCell className="text-right text-pink-500">
                       {formatCurrency(calc.seTax + calc.ficaEmployee + calc.ficaEmployer)}
                     </TableCell>
@@ -743,8 +796,11 @@ export default function TaxCalculatorPage() {
                     <TableCell className="text-right font-medium text-red-500">
                       {formatCurrency(calc.totalTax)}
                     </TableCell>
-                    <TableCell className="text-right font-bold text-primary">
+                    <TableCell className="text-right">
                       {formatCurrency(calc.takeHomePay)}
+                    </TableCell>
+                    <TableCell className="text-right font-bold text-primary">
+                      {formatCurrency(calc.totalWealthBuild)}
                     </TableCell>
                     <TableCell className="text-right">{formatPercent(calc.effectiveRate)}</TableCell>
                   </TableRow>
@@ -869,17 +925,55 @@ export default function TaxCalculatorPage() {
                     </span>
                   </TableCell>
                 </TableRow>
-                <TableRow className="bg-muted/30 font-medium">
-                  <TableCell className="font-bold">Net Take-Home Pay</TableCell>
-                  <TableCell>
-                    <span className="text-primary font-bold">{formatCurrency(calculations[0].takeHomePay)}</span>
+                <TableRow>
+                  <TableCell className="font-medium">
+                    <div>
+                      Total Tax Savings
+                      <p className="text-xs text-muted-foreground">From 401k, HSA, expenses, QBI</p>
+                    </div>
                   </TableCell>
                   <TableCell>
-                    <span className="font-bold">{formatCurrency(calculations[2].takeHomePay)}</span>
+                    <span className="text-green-500 font-medium">{formatCurrency(calculations[0].totalTaxSavings)}</span>
+                  </TableCell>
+                  <TableCell>
+                    <span className="font-medium">{formatCurrency(calculations[2].totalTaxSavings)}</span>
                   </TableCell>
                   <TableCell className="text-right">
-                    <span className={`font-bold ${tradeoffsData.takeHomeDiff > 0 ? "text-green-500" : "text-red-500"}`}>
+                    <span className={tradeoffsData.totalTaxSavingsDiff > 0 ? "text-green-500" : "text-red-500"}>
+                      {tradeoffsData.totalTaxSavingsDiff > 0 ? "+" : ""}{formatCurrency(tradeoffsData.totalTaxSavingsDiff)}
+                    </span>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">Net Take-Home Pay</TableCell>
+                  <TableCell>
+                    <span className="font-medium">{formatCurrency(calculations[0].takeHomePay)}</span>
+                  </TableCell>
+                  <TableCell>
+                    <span className="font-medium">{formatCurrency(calculations[2].takeHomePay)}</span>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <span className={tradeoffsData.takeHomeDiff > 0 ? "text-green-500" : "text-red-500"}>
                       {tradeoffsData.takeHomeDiff > 0 ? "+" : ""}{formatCurrency(tradeoffsData.takeHomeDiff)}
+                    </span>
+                  </TableCell>
+                </TableRow>
+                <TableRow className="bg-muted/30 font-medium">
+                  <TableCell className="font-bold">
+                    <div>
+                      Total Wealth Build
+                      <p className="text-xs font-normal text-muted-foreground">Take-home + 401k + HSA</p>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <span className="text-primary font-bold">{formatCurrency(calculations[0].totalWealthBuild)}</span>
+                  </TableCell>
+                  <TableCell>
+                    <span className="font-bold">{formatCurrency(calculations[2].totalWealthBuild)}</span>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <span className={`font-bold ${tradeoffsData.totalWealthDiff > 0 ? "text-green-500" : "text-red-500"}`}>
+                      {tradeoffsData.totalWealthDiff > 0 ? "+" : ""}{formatCurrency(tradeoffsData.totalWealthDiff)}
                     </span>
                   </TableCell>
                 </TableRow>
@@ -890,15 +984,19 @@ export default function TaxCalculatorPage() {
           {/* Summary insight */}
           <div className="mt-4 p-4 rounded-lg bg-muted/50">
             <div className="flex items-start gap-3">
-              {tradeoffsData.takeHomeDiff > 0 ? (
+              {tradeoffsData.totalWealthDiff > 0 ? (
                 <>
                   <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />
                   <div>
-                    <p className="font-medium text-green-500">Self-employment wins by {formatCurrency(tradeoffsData.takeHomeDiff)}</p>
+                    <p className="font-medium text-green-500">Self-employment wins by {formatCurrency(tradeoffsData.totalWealthDiff)} in total wealth</p>
                     <p className="text-sm text-muted-foreground mt-1">
-                      Despite higher payroll taxes, QBI deduction ({formatCurrency(calculations[0].qbiDeduction)}),
-                      business expense deductions ({formatCurrency(expenses)}), and higher 401k limits
-                      make self-employment more tax-efficient at your income level.
+                      Self-employed can contribute {formatCurrency(calculations[0].retirement401k)} to Solo 401k vs W-2&apos;s {formatCurrency(calculations[2].retirement401k)} limit,
+                      plus deduct {formatCurrency(expenses)} in business expenses and get {formatCurrency(calculations[0].qbiDeduction)} QBI deduction.
+                      {tradeoffsData.takeHomeDiff < 0 && (
+                        <span className="block mt-1 text-primary">
+                          Note: Take-home is {formatCurrency(Math.abs(tradeoffsData.takeHomeDiff))} lower because more goes to tax-advantaged retirement savings.
+                        </span>
+                      )}
                     </p>
                   </div>
                 </>
@@ -906,10 +1004,10 @@ export default function TaxCalculatorPage() {
                 <>
                   <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5" />
                   <div>
-                    <p className="font-medium text-amber-500">W-2 wins by {formatCurrency(Math.abs(tradeoffsData.takeHomeDiff))}</p>
+                    <p className="font-medium text-amber-500">W-2 wins by {formatCurrency(Math.abs(tradeoffsData.totalWealthDiff))} in total wealth</p>
                     <p className="text-sm text-muted-foreground mt-1">
                       At your income level, the SE tax burden ({formatCurrency(calculations[0].seTax)}) outweighs the
-                      QBI deduction benefit. Consider S-Corp election to save {formatCurrency(sCorpSavings)} by
+                      self-employment benefits. Consider S-Corp election to save {formatCurrency(sCorpSavings)} by
                       avoiding SE tax on distributions.
                     </p>
                   </div>
@@ -922,63 +1020,92 @@ export default function TaxCalculatorPage() {
 
       {/* Visual Comparison */}
       <div className="grid gap-6 lg:grid-cols-2">
-        {/* Bar Chart */}
+        {/* Bar Chart - Total Wealth Build Comparison */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Take-Home Comparison</CardTitle>
+            <CardTitle className="text-lg">Total Wealth Build Comparison</CardTitle>
+            <p className="text-sm text-muted-foreground">Take-home + 401k + HSA contributions</p>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={comparisonData} layout="vertical">
-                <CartesianGrid strokeDasharray="3 3" stroke="#333" />
-                <XAxis type="number" tickFormatter={(v) => `$${(v/1000).toFixed(0)}k`} />
-                <YAxis type="category" dataKey="name" width={100} />
+              <BarChart data={comparisonData} layout="vertical" margin={{ right: 80 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                <XAxis
+                  type="number"
+                  tickFormatter={(v) => `$${(v/1000).toFixed(0)}k`}
+                  stroke="#64748b"
+                />
+                <YAxis
+                  type="category"
+                  dataKey="name"
+                  width={100}
+                  stroke="#64748b"
+                />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: "#1a1a1a",
-                    border: "1px solid #333",
+                    backgroundColor: "#ffffff",
+                    border: "1px solid #e2e8f0",
                     borderRadius: "8px",
                   }}
                   formatter={(value) => formatCurrency(value as number)}
                 />
-                <Bar dataKey="Take-Home" fill="#a3e635" radius={[0, 4, 4, 0]} />
+                <Bar dataKey="Total Wealth" radius={[0, 4, 4, 0]} label={{
+                  position: 'right',
+                  formatter: (v: number) => formatCurrency(v),
+                  fill: '#64748b',
+                  fontSize: 12
+                }}>
+                  {comparisonData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Bar>
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
 
-        {/* Tax Breakdown Pie */}
+        {/* Tax Breakdown Pie - Sole Prop */}
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">
-              Tax Breakdown ({bestStrategy.structure})
+              Tax Breakdown (Sole Prop / LLC)
             </CardTitle>
+            <p className="text-sm text-muted-foreground">Where your gross income goes</p>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
               <PieChart>
                 <Pie
-                  data={taxBreakdownData}
+                  data={solePropTaxData}
                   cx="50%"
                   cy="50%"
-                  innerRadius={60}
-                  outerRadius={100}
+                  innerRadius={50}
+                  outerRadius={90}
                   paddingAngle={2}
                   dataKey="value"
+                  label={({ name, value, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                  labelLine={{ stroke: '#64748b', strokeWidth: 1 }}
                 >
-                  {taxBreakdownData.map((entry, index) => (
+                  {solePropTaxData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: "#1a1a1a",
-                    border: "1px solid #333",
+                    backgroundColor: "#ffffff",
+                    border: "1px solid #e2e8f0",
                     borderRadius: "8px",
                   }}
                   formatter={(value) => formatCurrency(value as number)}
                 />
-                <Legend />
+                <Legend
+                  verticalAlign="bottom"
+                  height={36}
+                  formatter={(value, entry) => {
+                    const item = solePropTaxData.find(d => d.name === value);
+                    return `${value}: ${item ? formatCurrency(item.value) : ''}`;
+                  }}
+                />
               </PieChart>
             </ResponsiveContainer>
           </CardContent>
