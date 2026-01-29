@@ -950,24 +950,34 @@ export default function SettingsPage() {
             <div className="space-y-3">
               <p className="text-sm font-medium text-foreground">Step 2: Download the Parser Script</p>
               <p className="text-xs text-muted-foreground">
-                The script is located in the <code className="bg-muted px-1 rounded">scripts/</code> folder of the WealthTrack repository.
-                Save <code className="bg-muted px-1 rounded">turbotax_parser.py</code> to your computer.
+                Download <code className="bg-muted px-1 rounded">turbotax_parser.py</code> and save it in the <strong>same folder</strong> as your TurboTax PDF file(s).
               </p>
+              <a
+                href="https://github.com/jklardata/wealthtrack-app/blob/main/scripts/turbotax_parser.py"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+              >
+                Download turbotax_parser.py from GitHub
+                <ExternalLink className="h-3 w-3" />
+              </a>
             </div>
 
             <div className="space-y-3">
               <p className="text-sm font-medium text-foreground">Step 3: Run the Parser on Your Tax Return PDF</p>
               <p className="text-xs text-muted-foreground mb-2">
-                Navigate to where you saved the script and run:
+                Open Terminal, navigate to the folder containing both the script and your PDF, then run:
               </p>
               <div className="bg-muted rounded-lg p-3 space-y-2">
-                <code className="text-xs block"># Parse your TurboTax PDF</code>
-                <code className="text-xs block">python3 turbotax_parser.py ~/Downloads/2023_TaxReturn.pdf -o tax_data.csv</code>
+                <code className="text-xs block"># Navigate to the folder with your files</code>
+                <code className="text-xs block">cd ~/Downloads</code>
+                <code className="text-xs block mt-2"># Parse your TurboTax PDF</code>
+                <code className="text-xs block">python3 turbotax_parser.py 2023_TaxReturn.pdf -o tax_data.csv</code>
                 <code className="text-xs block mt-2"># Parse multiple years into one file</code>
-                <code className="text-xs block">python3 turbotax_parser.py 2022.pdf 2023.pdf -o tax_data.csv</code>
+                <code className="text-xs block">python3 turbotax_parser.py 2022_TaxReturn.pdf 2023_TaxReturn.pdf -o tax_data.csv</code>
               </div>
               <p className="text-xs text-muted-foreground mt-2">
-                This creates a <code className="bg-muted px-1 rounded">tax_data.csv</code> file with only the financial data — no personal information.
+                This creates a <code className="bg-muted px-1 rounded">tax_data.csv</code> file in the same folder with only the financial data — no personal information.
               </p>
             </div>
 
