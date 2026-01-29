@@ -47,7 +47,7 @@ function Sidebar({ className }: { className?: string }) {
       <div className="p-6 border-b">
         <Link href="/dashboard" className="flex items-center gap-2">
           <TrendingUp className="h-6 w-6 text-primary" />
-          <span className="font-bold text-lg">WealthTrack</span>
+          <span className="font-bold text-lg">SoloFI</span>
         </Link>
       </div>
       <nav className="flex-1 p-4 space-y-1">
@@ -103,7 +103,7 @@ export default function DashboardLayout({
         <header className="md:hidden flex items-center justify-between p-4 border-b bg-card">
           <Link href="/dashboard" className="flex items-center gap-2">
             <TrendingUp className="h-5 w-5 text-primary" />
-            <span className="font-bold">WealthTrack</span>
+            <span className="font-bold">SoloFI</span>
           </Link>
           <div className="flex items-center gap-3">
             <UserButton afterSignOutUrl="/" />

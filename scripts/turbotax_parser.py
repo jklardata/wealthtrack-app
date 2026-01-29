@@ -3,7 +3,7 @@
 TurboTax PDF Parser
 
 Extracts tax return data from TurboTax PDF files and outputs to CSV format
-compatible with WealthTrack app upload.
+compatible with SoloFI app upload.
 
 Usage:
     python turbotax_parser.py input.pdf -o output.csv
@@ -25,7 +25,7 @@ import pdfplumber
 
 @dataclass
 class TaxReturnData:
-    """Data structure matching WealthTrack tax_returns schema"""
+    """Data structure matching SoloFI tax_returns schema"""
     tax_year: int = 0
     filing_status: str = 'single'
 

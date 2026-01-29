@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "WealthTrack - Net Worth Tracker",
-  description: "Track your net worth over time with WealthTrack",
+  title: "SoloFI - Financial Independence for Consultants",
+  description: "Build wealth. Reduce taxes. Retire on your terms. Built for self-employed professionals and independent consultants.",
 };
 
 export default function RootLayout({

@@ -55,6 +55,7 @@ import type {
   RebalancingTrade,
   MarketValuation,
   StockBreakdown,
+  Scenario,
 } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -928,16 +929,29 @@ export default function PortfolioOptimizerPage() {
   const [optimization, setOptimization] = useState<OptimizationResult | null>(null);
   const [savedOptimization, setSavedOptimization] = useState<PortfolioOptimization | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [activeScenario, setActiveScenario] = useState<Scenario | null>(null);
 
   const fetchData = useCallback(async () => {
     try {
-      // Fetch questions
-      const questionsRes = await fetch("/api/optimize-portfolio?action=questions");
+      // Fetch questions, optimization, and active scenario in parallel
+      const [questionsRes, optimizationRes, scenarioRes] = await Promise.all([
+        fetch("/api/optimize-portfolio?action=questions"),
+        fetch("/api/optimize-portfolio"),
+        fetch("/api/scenarios?active=true"),
+      ]);
+
       const questionsData = await questionsRes.json();
       setQuestions(questionsData.questions || []);
 
+      // Handle active scenario
+      if (scenarioRes.ok) {
+        const scenarioData = await scenarioRes.json();
+        if (scenarioData.data && scenarioData.data.length > 0) {
+          setActiveScenario(scenarioData.data[0]);
+        }
+      }
+
       // Fetch existing optimization and settings
-      const optimizationRes = await fetch("/api/optimize-portfolio");
       const optimizationData = await optimizationRes.json();
 
       if (optimizationData.settings?.risk_tolerance) {
@@ -1190,6 +1204,51 @@ export default function PortfolioOptimizerPage() {
               <div>
                 <p className="text-sm text-muted-foreground">Time Horizon</p>
                 <p className="font-semibold">{riskProfile.timeHorizon} years</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Withdrawal Context from Active Scenario */}
+      {activeScenario && activeScenario.annual_withdrawal_requirement > 0 && (
+        <Card className="border-primary/20 bg-primary/5">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base flex items-center gap-2">
+              <TrendingDown className="h-4 w-4 text-primary" />
+              Withdrawal Context: {activeScenario.name}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4 md:grid-cols-3">
+              <div>
+                <p className="text-sm text-muted-foreground">Annual Withdrawal Need</p>
+                <p className="text-2xl font-bold text-primary">
+                  {formatCurrency(activeScenario.annual_withdrawal_requirement)}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Required Portfolio</p>
+                <p className="text-lg font-semibold">
+                  {formatCurrency(activeScenario.required_net_worth)}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Location</p>
+                <p className="text-lg font-semibold">
+                  {activeScenario.location_city_name}
+                </p>
+              </div>
+            </div>
+            <div className="mt-4 p-3 bg-background/50 rounded-lg">
+              <div className="flex items-start gap-2">
+                <Info className="h-4 w-4 mt-0.5 flex-shrink-0 text-muted-foreground" />
+                <p className="text-sm text-muted-foreground">
+                  <strong className="text-foreground">Lower withdrawal needs reduce sequence-of-returns risk.</strong>{" "}
+                  A smaller annual withdrawal ({formatPercent(activeScenario.withdrawal_rate)}) means your portfolio
+                  can better withstand market downturns in early retirement. This may allow you to either
+                  retire earlier with the same risk level, or adopt a more conservative allocation for the same timeline.
+                </p>
               </div>
             </div>
           </CardContent>

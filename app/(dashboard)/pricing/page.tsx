@@ -188,8 +188,8 @@ function PricingContent() {
         <p>All plans include a 14-day money-back guarantee. Cancel anytime.</p>
         <p>
           Questions? Contact us at{" "}
-          <a href="mailto:support@wealthtrack.app" className="text-primary hover:underline">
-            support@wealthtrack.app
+          <a href="mailto:support@solofi.com" className="text-primary hover:underline">
+            support@solofi.com
           </a>
         </p>
       </div>

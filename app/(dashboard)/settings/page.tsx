@@ -372,7 +372,7 @@ export default function SettingsPage() {
             Subscription
           </CardTitle>
           <CardDescription>
-            Manage your WealthTrack subscription
+            Manage your SoloFI subscription
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">

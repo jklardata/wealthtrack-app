@@ -126,7 +126,7 @@ export async function createTemplateSpreadsheet(userEmail: string): Promise<{
     const createResponse = await sheets.spreadsheets.create({
       requestBody: {
         properties: {
-          title: 'WealthTrack - Net Worth Tracker',
+          title: 'SoloFI - Net Worth Tracker',
         },
         sheets: [
           {
@@ -282,7 +282,7 @@ export async function createCreditCardsTemplateSpreadsheet(userEmail: string): P
     const createResponse = await sheets.spreadsheets.create({
       requestBody: {
         properties: {
-          title: 'WealthTrack - Credit Cards Tracker',
+          title: 'SoloFI - Credit Cards Tracker',
         },
         sheets: [
           {
@@ -516,7 +516,7 @@ export async function createConsultingIncomeTemplateSpreadsheet(userEmail: strin
     const createResponse = await sheets.spreadsheets.create({
       requestBody: {
         properties: {
-          title: 'WealthTrack - Consulting Income Tracker',
+          title: 'SoloFI - Consulting Income Tracker',
         },
         sheets: [
           {
@@ -577,7 +577,7 @@ export async function createConsultingIncomeTemplateSpreadsheet(userEmail: strin
                 startRow: 0,
                 startColumn: 0,
                 rowData: [
-                  { values: [{ userEnteredValue: { stringValue: 'WealthTrack Consulting Income Tracker' }, userEnteredFormat: { textFormat: { bold: true, fontSize: 14 } } }] },
+                  { values: [{ userEnteredValue: { stringValue: 'SoloFI Consulting Income Tracker' }, userEnteredFormat: { textFormat: { bold: true, fontSize: 14 } } }] },
                   { values: [{ userEnteredValue: { stringValue: '' } }] },
                   { values: [{ userEnteredValue: { stringValue: 'This sheet tracks your expected consulting/part-time income for semi-retirement planning.' } }] },
                   { values: [{ userEnteredValue: { stringValue: '' } }] },
