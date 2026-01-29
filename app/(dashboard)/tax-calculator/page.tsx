@@ -616,11 +616,11 @@ export default function TaxCalculatorPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold flex items-center gap-2">
-          <Calculator className="h-7 w-7 text-primary" />
-          Tax-Optimized Take-Home Pay Calculator
+        <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
+          <Calculator className="h-6 w-6 sm:h-7 sm:w-7 text-primary flex-shrink-0" />
+          <span className="leading-tight">Tax-Optimized Take-Home Calculator</span>
         </h1>
-        <p className="text-base text-muted-foreground mt-1">
+        <p className="text-sm sm:text-base text-muted-foreground mt-1">
           Compare tax strategies for consultants and solo practitioners
         </p>
       </div>
@@ -646,7 +646,7 @@ export default function TaxCalculatorPage() {
       )}
 
       {/* Input Section */}
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid gap-4 md:gap-6 md:grid-cols-2 lg:grid-cols-3">
         {/* Income & Business */}
         <Card>
           <CardHeader>
@@ -958,20 +958,20 @@ export default function TaxCalculatorPage() {
             Side-by-side comparison of different business structures
           </p>
         </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <Table>
+        <CardContent className="px-2 sm:px-6">
+          <div className="overflow-x-auto -mx-2 sm:mx-0">
+            <Table className="min-w-[800px]">
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[180px]">Structure</TableHead>
-                  <TableHead className="text-right">401k</TableHead>
-                  <TableHead className="text-right">SE/FICA Tax</TableHead>
-                  <TableHead className="text-right">Federal Tax</TableHead>
-                  <TableHead className="text-right">State Tax</TableHead>
-                  <TableHead className="text-right">Total Tax</TableHead>
-                  <TableHead className="text-right">Take-Home</TableHead>
-                  <TableHead className="text-right">Total Wealth</TableHead>
-                  <TableHead className="text-right">Effective Rate</TableHead>
+                  <TableHead className="w-[120px] sm:w-[180px] sticky left-0 bg-background z-10">Structure</TableHead>
+                  <TableHead className="text-right whitespace-nowrap">401k</TableHead>
+                  <TableHead className="text-right whitespace-nowrap">SE/FICA</TableHead>
+                  <TableHead className="text-right whitespace-nowrap">Federal</TableHead>
+                  <TableHead className="text-right whitespace-nowrap">State</TableHead>
+                  <TableHead className="text-right whitespace-nowrap">Total Tax</TableHead>
+                  <TableHead className="text-right whitespace-nowrap">Take-Home</TableHead>
+                  <TableHead className="text-right whitespace-nowrap">Wealth</TableHead>
+                  <TableHead className="text-right whitespace-nowrap">Rate</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -980,12 +980,12 @@ export default function TaxCalculatorPage() {
                     key={calc.structure}
                     className={calc.structure === bestStrategy.structure ? "bg-primary/10" : ""}
                   >
-                    <TableCell className="font-medium">
-                      <div className="flex items-center gap-2">
+                    <TableCell className="font-medium sticky left-0 bg-background z-10">
+                      <div className="flex items-center gap-1 sm:gap-2">
                         {calc.structure === bestStrategy.structure && (
-                          <CheckCircle className="h-4 w-4 text-primary" />
+                          <CheckCircle className="h-4 w-4 text-primary flex-shrink-0" />
                         )}
-                        {calc.structure}
+                        <span className="text-xs sm:text-sm">{calc.structure}</span>
                       </div>
                     </TableCell>
                     <TableCell className="text-right text-green-600">{formatCurrency(calc.retirement401k)}</TableCell>
@@ -1023,15 +1023,15 @@ export default function TaxCalculatorPage() {
             Understanding the trade-offs between consulting and traditional employment
           </p>
         </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <Table>
+        <CardContent className="px-2 sm:px-6">
+          <div className="overflow-x-auto -mx-2 sm:mx-0">
+            <Table className="min-w-[600px]">
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[200px]">Factor</TableHead>
-                  <TableHead>Sole Prop / LLC</TableHead>
-                  <TableHead>W-2 Employee</TableHead>
-                  <TableHead className="text-right">Difference</TableHead>
+                  <TableHead className="w-[140px] sm:w-[200px] sticky left-0 bg-background z-10">Factor</TableHead>
+                  <TableHead className="whitespace-nowrap">Sole Prop</TableHead>
+                  <TableHead className="whitespace-nowrap">W-2</TableHead>
+                  <TableHead className="text-right whitespace-nowrap">Diff</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

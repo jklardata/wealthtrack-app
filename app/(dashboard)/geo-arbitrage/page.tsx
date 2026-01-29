@@ -52,6 +52,7 @@ import {
   type SpendingWeights,
 } from "@/lib/retirement-calculator";
 import type { NetWorthEntry } from "@/lib/types";
+import { ApplyLocationButton } from "@/components/scenarios/ApplyLocationButton";
 
 // ============================================================================
 // TYPES
@@ -515,11 +516,11 @@ export default function GeoArbitragePage() {
     <div className="space-y-6">
       {/* Header with Description */}
       <div>
-        <h1 className="text-3xl font-bold flex items-center gap-2">
-          <Globe className="h-7 w-7 text-primary" />
+        <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
+          <Globe className="h-6 w-6 sm:h-7 sm:w-7 text-primary flex-shrink-0" />
           Geographic Arbitrage
         </h1>
-        <p className="text-base text-muted-foreground mt-2">
+        <p className="text-sm sm:text-base text-muted-foreground mt-2">
           Compare cities to find where your money goes furthest. Geographic arbitrage means
           living in a lower cost-of-living area while earning income based on higher-cost markets.
         </p>
@@ -550,8 +551,8 @@ export default function GeoArbitragePage() {
 
       {/* Controls - Now includes Compare To at the top */}
       <Card>
-        <CardContent className="pt-6">
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <CardContent className="pt-4 sm:pt-6 px-3 sm:px-6">
+          <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {/* Baseline City */}
             <div className="space-y-2">
               <label className="text-sm font-medium flex items-center gap-1">
@@ -574,7 +575,7 @@ export default function GeoArbitragePage() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {CITIES.map((city) => (
+                  {[...CITIES].sort((a, b) => a.city_name.localeCompare(b.city_name)).map((city) => (
                     <SelectItem key={city.city_id} value={city.city_id}>
                       {city.city_name}, {city.country}
                     </SelectItem>
@@ -610,7 +611,7 @@ export default function GeoArbitragePage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="auto">Auto-select best FI city</SelectItem>
-                  {CITIES.filter((c) => c.city_id !== baselineCityId).map((city) => (
+                  {[...CITIES].filter((c) => c.city_id !== baselineCityId).sort((a, b) => a.city_name.localeCompare(b.city_name)).map((city) => (
                     <SelectItem key={city.city_id} value={city.city_id}>
                       {city.city_name}, {city.country}
                     </SelectItem>
@@ -668,7 +669,7 @@ export default function GeoArbitragePage() {
           </div>
 
           {/* Financial Inputs Row */}
-          <div className="grid gap-6 md:grid-cols-3 mt-6 pt-6 border-t">
+          <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 md:grid-cols-3 mt-4 sm:mt-6 pt-4 sm:pt-6 border-t">
             {/* Gross Income */}
             <div className="space-y-2">
               <label className="text-sm font-medium flex items-center gap-1">
@@ -773,7 +774,7 @@ export default function GeoArbitragePage() {
       {/* HERO METRICS - Top Strip */}
       {/* ============================================================ */}
       {compareAnalysis && baselineAnalysis && (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+        <div className="grid gap-3 sm:gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
           {/* 1. Years to FI (Delta vs Baseline) */}
           <Card className={`${
             compareAnalysis.deltaYears < -0.5
@@ -782,14 +783,14 @@ export default function GeoArbitragePage() {
                 ? "border-red-500/50 bg-red-50/50"
                 : ""
           }`}>
-            <CardContent className="pt-6">
+            <CardContent className="pt-4 sm:pt-6 px-3 sm:px-6">
               <div className="flex items-start justify-between">
-                <div>
-                  <div className="text-sm text-muted-foreground flex items-center gap-1">
-                    <Clock className="h-4 w-4" />
-                    Years to FI
+                <div className="min-w-0">
+                  <div className="text-xs sm:text-sm text-muted-foreground flex items-center gap-1">
+                    <Clock className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                    <span className="truncate">Years to FI</span>
                   </div>
-                  <div className={`text-3xl font-bold mt-1 ${
+                  <div className={`text-xl sm:text-3xl font-bold mt-1 ${
                     compareAnalysis.deltaYears < -0.5
                       ? "text-green-600"
                       : compareAnalysis.deltaYears > 0.5
@@ -805,9 +806,9 @@ export default function GeoArbitragePage() {
                       "N/A"
                     )}
                   </div>
-                  <div className="text-xs text-muted-foreground mt-1">
+                  <div className="text-xs text-muted-foreground mt-1 line-clamp-2">
                     {compareAnalysis.deltaYears < 0
-                      ? `Retire faster in ${compareAnalysis.city.city_name}`
+                      ? `Faster in ${compareAnalysis.city.city_name}`
                       : compareAnalysis.deltaYears > 0
                         ? `Slower in ${compareAnalysis.city.city_name}`
                         : "Same timeline"
@@ -815,9 +816,9 @@ export default function GeoArbitragePage() {
                   </div>
                 </div>
                 {compareAnalysis.deltaYears < 0 ? (
-                  <ArrowUpRight className="h-8 w-8 text-green-600" />
+                  <ArrowUpRight className="h-6 w-6 sm:h-8 sm:w-8 text-green-600 flex-shrink-0" />
                 ) : compareAnalysis.deltaYears > 0 ? (
-                  <ArrowDownRight className="h-8 w-8 text-red-500" />
+                  <ArrowDownRight className="h-6 w-6 sm:h-8 sm:w-8 text-red-500 flex-shrink-0" />
                 ) : null}
               </div>
             </CardContent>
@@ -825,34 +826,34 @@ export default function GeoArbitragePage() {
 
           {/* 2. Required Net Worth in Comparison City */}
           <Card>
-            <CardContent className="pt-6">
-              <div className="text-sm text-muted-foreground flex items-center gap-1">
-                <Target className="h-4 w-4" />
-                Required Net Worth
+            <CardContent className="pt-4 sm:pt-6 px-3 sm:px-6">
+              <div className="text-xs sm:text-sm text-muted-foreground flex items-center gap-1">
+                <Target className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                <span className="truncate">Required NW</span>
               </div>
-              <div className="text-3xl font-bold mt-1">
+              <div className="text-xl sm:text-3xl font-bold mt-1">
                 {formatCurrencyCompact(compareAnalysis.requiredNW)}
               </div>
               <div className={`text-xs mt-1 ${
                 compareAnalysis.deltaRequiredNW < 0 ? "text-green-600" : "text-red-500"
               }`}>
                 {compareAnalysis.deltaRequiredNW < 0 ? "−" : "+"}
-                {formatCurrencyCompact(Math.abs(compareAnalysis.deltaRequiredNW))} vs {baselineCity?.city_name}
+                {formatCurrencyCompact(Math.abs(compareAnalysis.deltaRequiredNW))}
               </div>
-              <div className="text-xs text-muted-foreground mt-1">
-                To retire in {compareAnalysis.city.city_name}
+              <div className="text-xs text-muted-foreground mt-1 truncate">
+                In {compareAnalysis.city.city_name}
               </div>
             </CardContent>
           </Card>
 
           {/* 3. Achievable Savings Rate in Comparison City */}
           <Card className={compareAnalysis.meetsSavingsTarget ? "border-green-500/50 bg-green-50/50" : ""}>
-            <CardContent className="pt-6">
-              <div className="text-sm text-muted-foreground flex items-center gap-1">
-                <TrendingUp className="h-4 w-4" />
-                Savings Rate
+            <CardContent className="pt-4 sm:pt-6 px-3 sm:px-6">
+              <div className="text-xs sm:text-sm text-muted-foreground flex items-center gap-1">
+                <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                <span className="truncate">Savings Rate</span>
               </div>
-              <div className={`text-3xl font-bold mt-1 ${
+              <div className={`text-xl sm:text-3xl font-bold mt-1 ${
                 compareAnalysis.savingsRate < 0
                   ? "text-red-500"
                   : compareAnalysis.meetsSavingsTarget
@@ -864,28 +865,25 @@ export default function GeoArbitragePage() {
                   : "Negative"
                 }
               </div>
-              <div className="text-xs text-muted-foreground mt-1">
+              <div className="text-xs text-muted-foreground mt-1 line-clamp-2">
                 {compareAnalysis.savingsRate < 0
-                  ? "Spending exceeds income"
+                  ? "Exceeds income"
                   : compareAnalysis.meetsSavingsTarget
-                    ? `Meets your ${formatPercent(targetSavingsRate)} target`
+                    ? `Meets ${formatPercent(targetSavingsRate)} target`
                     : `Below ${formatPercent(targetSavingsRate)} target`
                 }
-              </div>
-              <div className="text-xs text-muted-foreground">
-                In {compareAnalysis.city.city_name}
               </div>
             </CardContent>
           </Card>
 
           {/* 4. Housing Cost in Comparison City */}
           <Card>
-            <CardContent className="pt-6">
-              <div className="text-sm text-muted-foreground flex items-center gap-1">
-                <Home className="h-4 w-4" />
-                Housing Costs
+            <CardContent className="pt-4 sm:pt-6 px-3 sm:px-6">
+              <div className="text-xs sm:text-sm text-muted-foreground flex items-center gap-1">
+                <Home className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                <span className="truncate">Housing</span>
               </div>
-              <div className={`text-3xl font-bold mt-1 ${
+              <div className={`text-xl sm:text-3xl font-bold mt-1 ${
                 compareAnalysis.housingCostDelta < -0.1
                   ? "text-green-600"
                   : compareAnalysis.housingCostDelta > 0.1
@@ -895,25 +893,25 @@ export default function GeoArbitragePage() {
                 {compareAnalysis.housingCostDelta <= 0 ? "" : "+"}
                 {formatPercent(compareAnalysis.housingCostDelta)}
               </div>
-              <div className="text-xs text-muted-foreground mt-1">
-                {compareAnalysis.city.city_name} vs {baselineCity?.city_name}
+              <div className="text-xs text-muted-foreground mt-1 truncate">
+                vs {baselineCity?.city_name}
               </div>
               <div className="text-xs text-muted-foreground">
-                {compareAnalysis.housingCostDelta < 0 ? "Lower housing costs" : "Higher housing costs"}
+                {compareAnalysis.housingCostDelta < 0 ? "Lower" : "Higher"}
               </div>
             </CardContent>
           </Card>
 
           {/* 5. FI Efficiency Ratio - With Explanation */}
-          <Card>
-            <CardContent className="pt-6">
-              <div className="text-sm text-muted-foreground flex items-center gap-1">
-                <Zap className="h-4 w-4" />
-                FI Efficiency
+          <Card className="col-span-2 sm:col-span-1">
+            <CardContent className="pt-4 sm:pt-6 px-3 sm:px-6">
+              <div className="text-xs sm:text-sm text-muted-foreground flex items-center gap-1">
+                <Zap className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                <span>FI Efficiency</span>
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger>
-                      <Info className="h-3.5 w-3.5" />
+                      <Info className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                     </TooltipTrigger>
                     <TooltipContent className="max-w-xs">
                       <p className="text-xs">
@@ -931,25 +929,49 @@ export default function GeoArbitragePage() {
                   </Tooltip>
                 </TooltipProvider>
               </div>
-              <div className={`text-3xl font-bold mt-1 ${getFIEfficiencyColor(getFIEfficiencyLabel(compareAnalysis.fiEfficiencyRatio))}`}>
+              <div className={`text-xl sm:text-3xl font-bold mt-1 ${getFIEfficiencyColor(getFIEfficiencyLabel(compareAnalysis.fiEfficiencyRatio))}`}>
                 {getFIEfficiencyLabel(compareAnalysis.fiEfficiencyRatio)}
               </div>
               <div className="text-xs text-muted-foreground mt-1">
                 Ratio: {compareAnalysis.fiEfficiencyRatio.toFixed(2)}
-              </div>
-              <div className="text-xs text-muted-foreground">
-                In {compareAnalysis.city.city_name}
               </div>
             </CardContent>
           </Card>
         </div>
       )}
 
+      {/* Apply Location to My Plan CTA */}
+      {compareAnalysis && compareAnalysis.city.city_id !== baselineCityId && compareAnalysis.canAchieveFI && (
+        <Card className="border-primary/30 bg-primary/5">
+          <CardContent className="pt-6 pb-6">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div>
+                <h3 className="font-semibold text-lg">Ready to see the full picture?</h3>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Create a detailed financial plan for {compareAnalysis.city.city_name} and see exactly
+                  how your retirement timeline changes.
+                </p>
+              </div>
+              <ApplyLocationButton
+                cityId={compareAnalysis.city.city_id}
+                cityName={compareAnalysis.city.city_name}
+                baselineCityId={baselineCityId}
+                baselineAnnualSpend={baselineAnnualSpend}
+                grossIncome={grossIncome}
+                currentNetWorth={currentNetWorth}
+                variant="default"
+                size="lg"
+              />
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* ============================================================ */}
       {/* INTELLIGENT CALLOUTS */}
       {/* ============================================================ */}
       {callouts.length > 0 && (
-        <div className="grid gap-3 md:grid-cols-3">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {callouts.map((callout, i) => {
             const Icon = callout.icon;
             return (
@@ -970,7 +992,7 @@ export default function GeoArbitragePage() {
       )}
 
       {/* Summary Stats - Simplified */}
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-3 sm:gap-4 grid-cols-2">
         <Card>
           <CardContent className="pt-6">
             <div className="text-sm text-muted-foreground">Cities Analyzed</div>
@@ -1007,48 +1029,48 @@ export default function GeoArbitragePage() {
             Cities highlighted in green meet your target savings rate.
           </p>
         </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <Table>
+        <CardContent className="px-2 sm:px-6">
+          <div className="overflow-x-auto -mx-2 sm:mx-0">
+            <Table className="min-w-[650px]">
               <TableHeader>
                 <TableRow>
                   <TableHead
-                    className="cursor-pointer hover:bg-muted/50"
+                    className="cursor-pointer hover:bg-muted/50 sticky left-0 bg-background z-10"
                     onClick={() => handleSort("city")}
                   >
                     City <SortIndicator field="city" />
                   </TableHead>
                   <TableHead
-                    className="text-right cursor-pointer hover:bg-muted/50"
+                    className="text-right cursor-pointer hover:bg-muted/50 whitespace-nowrap"
                     onClick={() => handleSort("col")}
                   >
-                    COL Index <SortIndicator field="col" />
+                    COL <SortIndicator field="col" />
                   </TableHead>
                   <TableHead
-                    className="text-right cursor-pointer hover:bg-muted/50"
+                    className="text-right cursor-pointer hover:bg-muted/50 whitespace-nowrap"
                     onClick={() => handleSort("spend")}
                   >
-                    Annual Spend <SortIndicator field="spend" />
+                    Spend <SortIndicator field="spend" />
                   </TableHead>
                   <TableHead
-                    className="text-right cursor-pointer hover:bg-muted/50"
+                    className="text-right cursor-pointer hover:bg-muted/50 whitespace-nowrap"
                     onClick={() => handleSort("savingsRate")}
                   >
-                    Savings Rate <SortIndicator field="savingsRate" />
+                    Savings <SortIndicator field="savingsRate" />
                   </TableHead>
                   <TableHead
-                    className="text-right cursor-pointer hover:bg-muted/50"
+                    className="text-right cursor-pointer hover:bg-muted/50 whitespace-nowrap"
                     onClick={() => handleSort("yearsToFI")}
                   >
-                    Years to FI <SortIndicator field="yearsToFI" />
+                    Years <SortIndicator field="yearsToFI" />
                   </TableHead>
                   <TableHead
-                    className="text-right cursor-pointer hover:bg-muted/50"
+                    className="text-right cursor-pointer hover:bg-muted/50 whitespace-nowrap"
                     onClick={() => handleSort("delta")}
                   >
-                    vs Baseline <SortIndicator field="delta" />
+                    Delta <SortIndicator field="delta" />
                   </TableHead>
-                  <TableHead className="w-[50px]"></TableHead>
+                  <TableHead className="w-[40px]"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -1073,18 +1095,18 @@ export default function GeoArbitragePage() {
                         `}
                         onClick={() => setExpandedCity(isExpanded ? null : analysis.city.city_id)}
                       >
-                        <TableCell className="font-medium">
-                          <div className="flex items-center gap-2">
-                            {isBaseline && <MapPin className="h-4 w-4 text-primary" />}
+                        <TableCell className="font-medium sticky left-0 bg-background z-10">
+                          <div className="flex items-center gap-1 sm:gap-2">
+                            {isBaseline && <MapPin className="h-4 w-4 text-primary flex-shrink-0" />}
                             {analysis.meetsSavingsTarget && analysis.canAchieveFI && !isBaseline && (
-                              <CheckCircle className="h-4 w-4 text-green-600" />
+                              <CheckCircle className="h-4 w-4 text-green-600 flex-shrink-0" />
                             )}
                             {!analysis.canAchieveFI && (
-                              <AlertTriangle className="h-4 w-4 text-red-500" />
+                              <AlertTriangle className="h-4 w-4 text-red-500 flex-shrink-0" />
                             )}
-                            <div>
-                              <div>{analysis.city.city_name}</div>
-                              <div className="text-xs text-muted-foreground">
+                            <div className="min-w-0">
+                              <div className="text-xs sm:text-sm truncate">{analysis.city.city_name}</div>
+                              <div className="text-xs text-muted-foreground hidden sm:block">
                                 {analysis.city.country}
                               </div>
                             </div>
@@ -1159,9 +1181,9 @@ export default function GeoArbitragePage() {
                       {/* Expanded Row - Drill Down */}
                       {isExpanded && (
                         <TableRow className="bg-muted/30">
-                          <TableCell colSpan={7}>
-                            <div className="py-4 px-2 space-y-4">
-                              <div className="grid gap-4 md:grid-cols-3">
+                          <TableCell colSpan={7} className="p-2 sm:p-4">
+                            <div className="space-y-4">
+                              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                                 {/* Spend Breakdown */}
                                 <div>
                                   <h4 className="font-medium mb-2">Spending Breakdown (Estimated)</h4>

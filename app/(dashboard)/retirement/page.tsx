@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,7 +15,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Skeleton } from "@/components/ui/skeleton";
 import {
   Line,
   XAxis,
@@ -25,7 +26,7 @@ import {
   Area,
   ComposedChart,
 } from "recharts";
-import { TrendingUp, MapPin, Calculator, DollarSign, Globe, CheckCircle, Clock, ChevronDown, Plane, Building2, Landmark, PiggyBank, Lightbulb, ArrowRight } from "lucide-react";
+import { TrendingUp, MapPin, Calculator, DollarSign, Globe, CheckCircle, Clock, ChevronDown, Plane, Building2, Landmark, PiggyBank, Lightbulb, ArrowRight, Layers } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -42,7 +43,8 @@ import {
   type SpendingWeights,
   type RetirementParams,
 } from "@/lib/retirement-calculator";
-import type { NetWorthEntry } from "@/lib/types";
+import type { NetWorthEntry, Scenario } from "@/lib/types";
+import { InsightCallout } from "@/components/bridges/InsightCallout";
 
 function formatCurrency(value: number): string {
   return new Intl.NumberFormat("en-US", {
@@ -57,7 +59,16 @@ function formatPercent(value: number): string {
   return (value * 100).toFixed(1) + "%";
 }
 
-export default function RetirementPage() {
+function RetirementPageContent() {
+  // URL params for scenario support
+  const searchParams = useSearchParams();
+  const scenarioId = searchParams.get("scenario");
+
+  // Scenario state
+  const [activeScenario, setActiveScenario] = useState<Scenario | null>(null);
+  const [baselineScenario, setBaselineScenario] = useState<Scenario | null>(null);
+  const [loadingScenario, setLoadingScenario] = useState(!!scenarioId);
+
   // Net worth data from API
   const [netWorthEntries, setNetWorthEntries] = useState<NetWorthEntry[]>([]);
   const [loadingNetWorth, setLoadingNetWorth] = useState(true);
@@ -91,6 +102,50 @@ export default function RetirementPage() {
     }
     fetchNetWorth();
   }, []);
+
+  // Fetch scenario data if URL param present
+  useEffect(() => {
+    async function fetchScenarios() {
+      if (!scenarioId) {
+        setLoadingScenario(false);
+        return;
+      }
+
+      try {
+        // Fetch the active scenario
+        const scenarioRes = await fetch(`/api/scenarios/${scenarioId}`);
+        if (scenarioRes.ok) {
+          const { data: scenario } = await scenarioRes.json();
+          setActiveScenario(scenario);
+
+          // Pre-fill inputs from scenario
+          if (scenario) {
+            setSelectedCityId(scenario.location_city_id);
+            setCurrentSpend(Math.round(scenario.annual_expenses).toString());
+            setWithdrawalRate((scenario.withdrawal_rate * 100).toString());
+            setExpectedReturn((scenario.expected_return * 100).toString());
+            if (scenario.spending_weights) {
+              setWeights(scenario.spending_weights);
+            }
+          }
+        }
+
+        // Fetch baseline scenario for comparison
+        const baselineRes = await fetch("/api/scenarios?baseline=true");
+        if (baselineRes.ok) {
+          const { data: scenarios } = await baselineRes.json();
+          if (scenarios && scenarios.length > 0) {
+            setBaselineScenario(scenarios[0]);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching scenarios:", error);
+      } finally {
+        setLoadingScenario(false);
+      }
+    }
+    fetchScenarios();
+  }, [scenarioId]);
 
 
   // Get current net worth and annual savings from most recent entry
@@ -201,7 +256,7 @@ export default function RetirementPage() {
     phase: p.phase,
   })) || [];
 
-  if (loadingNetWorth) {
+  if (loadingNetWorth || loadingScenario) {
     return (
       <div className="space-y-6">
         <Skeleton className="h-8 w-64" />
@@ -213,18 +268,63 @@ export default function RetirementPage() {
     );
   }
 
+  // Calculate delta vs baseline if both scenarios exist
+  const scenarioDelta = activeScenario && baselineScenario ? {
+    years: (activeScenario.years_to_fi || 0) - (baselineScenario.years_to_fi || 0),
+    requiredNW: (activeScenario.required_net_worth || 0) - (baselineScenario.required_net_worth || 0),
+  } : null;
+
   return (
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold flex items-center gap-2">
-          <Calculator className="h-7 w-7 text-primary" />
+        <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
+          <Calculator className="h-6 w-6 sm:h-7 sm:w-7 text-primary flex-shrink-0" />
           Retirement Calculator
         </h1>
-        <p className="text-base text-muted-foreground mt-1">
+        <p className="text-sm sm:text-base text-muted-foreground mt-1">
           Plan your retirement with cost-of-living adjustments
         </p>
       </div>
+
+      {/* Scenario Banner */}
+      {activeScenario && (
+        <Card className="border-primary/30 bg-primary/5">
+          <CardContent className="pt-4 pb-4">
+            <div className="flex items-center justify-between flex-wrap gap-4">
+              <div className="flex items-center gap-3">
+                <Layers className="h-5 w-5 text-primary" />
+                <div>
+                  <p className="font-medium">
+                    Viewing: {activeScenario.name}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {activeScenario.location_city_name} • Created from Geographic Arbitrage
+                  </p>
+                </div>
+              </div>
+              {scenarioDelta && baselineScenario && isFinite(scenarioDelta.years) && (
+                <div className="text-right">
+                  <p className="text-sm text-muted-foreground">vs {baselineScenario.location_city_name} (Baseline)</p>
+                  <p className={`font-semibold ${scenarioDelta.years < 0 ? "text-green-600" : scenarioDelta.years > 0 ? "text-red-500" : ""}`}>
+                    {scenarioDelta.years < 0 ? "" : "+"}
+                    {scenarioDelta.years.toFixed(1)} years to FI
+                  </p>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Scenario Insight */}
+      {activeScenario && baselineScenario && scenarioDelta && isFinite(scenarioDelta.years) && scenarioDelta.years < -0.5 && (
+        <InsightCallout
+          insightText={`Moving to ${activeScenario.location_city_name} from ${baselineScenario.location_city_name} could save you ~${Math.abs(scenarioDelta.years).toFixed(0)} years on your path to financial independence.`}
+          deltaYearsToFI={scenarioDelta.years}
+          deltaRequiredNetWorth={scenarioDelta.requiredNW}
+        />
+      )}
 
       {/* Input Section - Retirement Location & Spending (moved to top) */}
       <Card>
@@ -239,8 +339,8 @@ export default function RetirementPage() {
             Moving to a lower cost-of-living city reduces your required nest egg.
           </p>
         </CardHeader>
-        <CardContent>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <CardContent className="px-3 sm:px-6">
+          <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="currentCity">Current City (Baseline)</Label>
@@ -249,7 +349,7 @@ export default function RetirementPage() {
                     <SelectValue placeholder="Select your current city" />
                   </SelectTrigger>
                   <SelectContent>
-                    {CITIES.map((city) => (
+                    {[...CITIES].sort((a, b) => a.city_name.localeCompare(b.city_name)).map((city) => (
                       <SelectItem key={city.city_id} value={city.city_id}>
                         {city.city_name}, {city.country}
                       </SelectItem>
@@ -270,7 +370,7 @@ export default function RetirementPage() {
                     <SelectValue placeholder="Select a city" />
                   </SelectTrigger>
                   <SelectContent>
-                    {CITIES.map((city) => (
+                    {[...CITIES].sort((a, b) => a.city_name.localeCompare(b.city_name)).map((city) => (
                       <SelectItem key={city.city_id} value={city.city_id}>
                         {city.city_name}, {city.country}
                       </SelectItem>
@@ -315,6 +415,11 @@ export default function RetirementPage() {
                               <> — <span className="font-semibold text-primary">you could retire now!</span></>
                             )}
                           </span>
+                          {netWorthSavings > 0 && (
+                            <p className="text-xs text-muted-foreground mt-1">
+                              Savings = Required NW in {currentCity?.city_name} ({formatCurrency(currentCityData.requiredNW)}) − Required NW in {selectedCity.city_name} ({formatCurrency(targetCityData.requiredNW)})
+                            </p>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -396,46 +501,60 @@ export default function RetirementPage() {
       </Card>
 
       {/* Dynamic Headline */}
-      {currentNetWorth > 0 && (
-        <Card className={citiesCanRetireNow.length > 0 ? "border-green-600/30 bg-green-600/5" : "border-primary/30 bg-primary/5"}>
-          <CardContent className="pt-6">
-            <div className="flex items-start gap-3">
-              {citiesCanRetireNow.length > 0 ? (
-                <>
-                  <CheckCircle className="h-6 w-6 text-green-600 mt-0.5" />
-                  <div>
-                    <p className="text-lg font-semibold text-green-600">
-                      You can retire today in {cheapestRetireNow?.city.city_name}!
-                    </p>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      With your {formatCurrency(currentNetWorth)} net worth, you could retire in{" "}
-                      <span className="font-medium">{citiesCanRetireNow.length} {citiesCanRetireNow.length === 1 ? "city" : "cities"}</span> right now.
-                      {citiesCanRetireNow.length > 1 && (
-                        <> Including: {citiesCanRetireNow.slice(0, 3).map(c => c.city.city_name).join(", ")}{citiesCanRetireNow.length > 3 && ` and ${citiesCanRetireNow.length - 3} more`}.</>
+      {currentNetWorth > 0 && (() => {
+        // Get the selected city's data for the headline
+        const selectedCityData = allCitiesComparison.find(c => c.city.city_id === selectedCityId);
+        const canRetireInSelected = selectedCityData?.canRetireNow || false;
+        const yearsToRetireInSelected = selectedCityData?.yearsToRetirement || Infinity;
+
+        return (
+          <Card className={canRetireInSelected ? "border-green-600/30 bg-green-600/5" : "border-primary/30 bg-primary/5"}>
+            <CardContent className="pt-6">
+              <div className="flex items-start gap-3">
+                {canRetireInSelected ? (
+                  <>
+                    <CheckCircle className="h-6 w-6 text-green-600 mt-0.5" />
+                    <div>
+                      <p className="text-lg font-semibold text-green-600">
+                        You can retire today in {selectedCity?.city_name}!
+                      </p>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        With your {formatCurrency(currentNetWorth)} net worth, you have enough to retire in {selectedCity?.city_name}.
+                        {citiesCanRetireNow.length > 1 && (
+                          <> You could also retire in {citiesCanRetireNow.length - 1} other {citiesCanRetireNow.length === 2 ? "city" : "cities"}.</>
+                        )}
+                      </p>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <Clock className="h-6 w-6 text-primary mt-0.5" />
+                    <div>
+                      <p className="text-lg font-semibold text-primary">
+                        {isFinite(yearsToRetireInSelected)
+                          ? `${yearsToRetireInSelected.toFixed(1)} years to retire in ${selectedCity?.city_name}`
+                          : `Keep saving to retire in ${selectedCity?.city_name}`}
+                      </p>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        Current net worth: {formatCurrency(currentNetWorth)} •
+                        Need {selectedCityData ? formatCurrency(selectedCityData.requiredNW) : "more savings"} to retire in {selectedCity?.city_name}.
+                        {citiesCanRetireNow.length > 0 && (
+                          <> You could retire now in {cheapestRetireNow?.city.city_name}!</>
+                        )}
+                      </p>
+                      {selectedCityData && (
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Required NW = Adjusted Annual Spending ({formatCurrency(selectedCityData.adjustedSpend)}) ÷ Withdrawal Rate ({withdrawalRate}%)
+                        </p>
                       )}
-                    </p>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <Clock className="h-6 w-6 text-primary mt-0.5" />
-                  <div>
-                    <p className="text-lg font-semibold text-primary">
-                      {nextMilestone && isFinite(nextMilestone.yearsToRetirement)
-                        ? `${nextMilestone.yearsToRetirement.toFixed(1)} years to retire in ${nextMilestone.city.city_name}`
-                        : "Keep saving to reach your retirement goal!"}
-                    </p>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      Current net worth: {formatCurrency(currentNetWorth)} •
-                      Need {nextMilestone ? formatCurrency(nextMilestone.requiredNW) : "more savings"} to retire in the most affordable city.
-                    </p>
-                  </div>
-                </>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-      )}
+                    </div>
+                  </>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        );
+      })()}
 
       {/* Tax Optimization Strategies */}
       <Card className="border-amber-500/20 bg-gradient-to-r from-amber-500/5 to-primary/5">
@@ -463,7 +582,7 @@ export default function RetirementPage() {
         <CardContent id="tax-strategies-content" className="hidden space-y-4">
           <div className="grid gap-4 md:grid-cols-2">
             {/* FEIE */}
-            <div className="p-4 rounded-lg bg-white/50 dark:bg-gray-900/50 border border-amber-500/10">
+            <div className="p-4 rounded-lg bg-amber-50/50 dark:bg-amber-950/20 border border-amber-500/20">
               <div className="flex items-start gap-3">
                 <div className="w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center flex-shrink-0">
                   <Plane className="h-5 w-5 text-amber-500" />
@@ -485,7 +604,7 @@ export default function RetirementPage() {
             </div>
 
             {/* S-Corp */}
-            <div className="p-4 rounded-lg bg-white/50 dark:bg-gray-900/50 border border-amber-500/10">
+            <div className="p-4 rounded-lg bg-amber-50/50 dark:bg-amber-950/20 border border-amber-500/20">
               <div className="flex items-start gap-3">
                 <div className="w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center flex-shrink-0">
                   <Building2 className="h-5 w-5 text-amber-500" />
@@ -507,7 +626,7 @@ export default function RetirementPage() {
             </div>
 
             {/* Solo 401k */}
-            <div className="p-4 rounded-lg bg-white/50 dark:bg-gray-900/50 border border-amber-500/10">
+            <div className="p-4 rounded-lg bg-amber-50/50 dark:bg-amber-950/20 border border-amber-500/20">
               <div className="flex items-start gap-3">
                 <div className="w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center flex-shrink-0">
                   <PiggyBank className="h-5 w-5 text-amber-500" />
@@ -529,7 +648,7 @@ export default function RetirementPage() {
             </div>
 
             {/* HSA */}
-            <div className="p-4 rounded-lg bg-white/50 dark:bg-gray-900/50 border border-amber-500/10">
+            <div className="p-4 rounded-lg bg-amber-50/50 dark:bg-amber-950/20 border border-amber-500/20">
               <div className="flex items-start gap-3">
                 <div className="w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center flex-shrink-0">
                   <DollarSign className="h-5 w-5 text-amber-500" />
@@ -600,7 +719,7 @@ export default function RetirementPage() {
       )}
 
       {/* Spending Weights & Cost Breakdown - Side by Side */}
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
         {/* Spending Category Weights */}
         <Card>
           <CardHeader>
@@ -721,23 +840,7 @@ export default function RetirementPage() {
       {results && errors.filter(e => !e.startsWith('Warning:')).length === 0 && (
         <>
           {/* Key Metrics */}
-          <div className="grid gap-4 md:grid-cols-5">
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
-                  Effective COL
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {(results.effectiveCOL * 100).toFixed(0)}%
-                </div>
-                <p className="text-xs text-muted-foreground mt-1">
-                  of NYC cost
-                </p>
-              </CardContent>
-            </Card>
-
+          <div className="grid gap-3 sm:gap-4 grid-cols-2 md:grid-cols-4">
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -765,7 +868,7 @@ export default function RetirementPage() {
                   {formatCurrency(safeWithdrawalAmount)}
                 </div>
                 <p className="text-xs text-muted-foreground mt-1">
-                  {withdrawalRate}% of {formatCurrency(currentNetWorth)}
+                  {withdrawalRate}% × Current Net Worth ({formatCurrency(currentNetWorth)})
                 </p>
               </CardContent>
             </Card>
@@ -781,7 +884,7 @@ export default function RetirementPage() {
                   {formatCurrency(results.requiredNetWorth)}
                 </div>
                 <p className="text-xs text-muted-foreground mt-1">
-                  at {withdrawalRate}% withdrawal
+                  To retire in {selectedCity?.city_name} at {withdrawalRate}% withdrawal
                 </p>
               </CardContent>
             </Card>
@@ -1026,18 +1129,18 @@ export default function RetirementPage() {
                 Based on your {formatCurrency(parseFloat(currentSpend))} annual spending in {currentCity?.city_name || "your current city"} • Current Net Worth: {formatCurrency(currentNetWorth)}
               </p>
             </CardHeader>
-            <CardContent>
-              <div className="overflow-x-auto">
-                <Table>
+            <CardContent className="px-2 sm:px-6">
+              <div className="overflow-x-auto -mx-2 sm:mx-0">
+                <Table className="min-w-[700px]">
                   <TableHeader>
                     <TableRow>
-                      <TableHead>City</TableHead>
-                      <TableHead className="text-right">Years to Retire</TableHead>
-                      <TableHead className="text-right">Net Worth</TableHead>
-                      <TableHead className="text-right">Safe Withdrawal</TableHead>
-                      <TableHead className="text-right">Required NW</TableHead>
-                      <TableHead className="text-right">Annual Cost</TableHead>
-                      <TableHead className="text-right">COL vs {currentCity?.city_name || "NYC"}</TableHead>
+                      <TableHead className="sticky left-0 bg-background z-10">City</TableHead>
+                      <TableHead className="text-right whitespace-nowrap">Years</TableHead>
+                      <TableHead className="text-right whitespace-nowrap">Net Worth</TableHead>
+                      <TableHead className="text-right whitespace-nowrap">Withdrawal</TableHead>
+                      <TableHead className="text-right whitespace-nowrap">Required</TableHead>
+                      <TableHead className="text-right whitespace-nowrap">Annual Cost</TableHead>
+                      <TableHead className="text-right whitespace-nowrap">COL</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -1052,11 +1155,13 @@ export default function RetirementPage() {
                             : ""
                         }
                       >
-                        <TableCell className="font-medium">
-                          <div className="flex items-center gap-2">
-                            {item.canRetireNow && <CheckCircle className="h-4 w-4 text-green-600" />}
-                            {item.city.city_name}
-                            <span className="text-xs text-muted-foreground">{item.city.country}</span>
+                        <TableCell className="font-medium sticky left-0 bg-background z-10">
+                          <div className="flex items-center gap-1 sm:gap-2">
+                            {item.canRetireNow && <CheckCircle className="h-4 w-4 text-green-600 flex-shrink-0" />}
+                            <div className="min-w-0">
+                              <span className="text-xs sm:text-sm">{item.city.city_name}</span>
+                              <span className="text-xs text-muted-foreground hidden sm:inline ml-1">{item.city.country}</span>
+                            </div>
                           </div>
                         </TableCell>
                         <TableCell className={`text-right font-medium ${item.canRetireNow ? "text-green-600" : ""}`}>
@@ -1091,5 +1196,25 @@ export default function RetirementPage() {
         </>
       )}
     </div>
+  );
+}
+
+export default function RetirementPage() {
+  return (
+    <Suspense fallback={
+      <div className="space-y-6">
+        <Skeleton className="h-8 w-64" />
+        <Skeleton className="h-4 w-96" />
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <Skeleton className="h-32" />
+          <Skeleton className="h-32" />
+          <Skeleton className="h-32" />
+          <Skeleton className="h-32" />
+        </div>
+        <Skeleton className="h-[400px]" />
+      </div>
+    }>
+      <RetirementPageContent />
+    </Suspense>
   );
 }
