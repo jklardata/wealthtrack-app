@@ -38,15 +38,15 @@ export function Newsletter() {
   };
 
   return (
-    <div className="mt-12 mb-8 p-6 rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/30 dark:to-cyan-950/30 border border-blue-100 dark:border-blue-900">
-      <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 text-sm font-medium mb-3">
+    <div className="mt-12 mb-8 p-6 rounded-xl bg-slate-100 border border-slate-200">
+      <div className="flex items-center gap-2 text-blue-600 text-sm font-medium mb-3">
         <Mail className="w-4 h-4" />
         Join the SoloFI Insider List
       </div>
-      <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+      <h3 className="text-lg font-bold text-slate-900 mb-2">
         Early access + tax optimization insights
       </h3>
-      <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+      <p className="text-sm text-slate-600 mb-4">
         Get notified about new features, tax strategies, and financial independence tips.
       </p>
 
@@ -57,7 +57,7 @@ export function Newsletter() {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Enter your email"
           required
-          className="flex-1 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+          className="flex-1 px-4 py-2 rounded-lg border border-slate-300 bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
         />
         <button
           type="submit"
@@ -69,12 +69,12 @@ export function Newsletter() {
       </form>
 
       {message && (
-        <p className={`mt-3 text-sm ${status === "success" ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}`}>
+        <p className={`mt-3 text-sm ${status === "success" ? "text-green-600" : "text-red-600"}`}>
           {message}
         </p>
       )}
 
-      <p className="text-xs text-slate-400 dark:text-slate-500 mt-4">
+      <p className="text-xs text-slate-500 mt-4">
         We respect your inbox. No spam. Unsubscribe anytime.
       </p>
     </div>
