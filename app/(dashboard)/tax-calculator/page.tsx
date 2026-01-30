@@ -331,15 +331,39 @@ export default function TaxCalculatorPage() {
     : TAX_CONSTANTS.standardDeductionMarried;
   const stateRate = STATE_TAX_RATES[stateCode]?.rate || 0;
 
-  // Calculate max SEP IRA (25% of net SE income, max $69k)
+  // Combined retirement limit: Solo 401(k) + SEP IRA share the $69k total limit
+  // Solo 401(k) = $23k employee deferral + employer profit-sharing (25% of net SE income)
+  // SEP IRA = employer contribution only (25% of net SE income)
+  // The employer portions share the same 25% limit, so effectively you pick one or the other
+  const maxEmployerContribution = Math.min(46000, netIncome * TAX_CONSTANTS.sepIraMaxPercent);
+  const maxSolo401k = 23000 + maxEmployerContribution; // $23k employee + employer portion
   const maxSepIra = Math.min(TAX_CONSTANTS.sepIraMaxDollar, netIncome * TAX_CONSTANTS.sepIraMaxPercent);
-  const effectiveSepIra = Math.min(sepIra, maxSepIra);
 
-  // Roth IRA income phase-out check
+  // If user enters both, cap the total at $69k and prioritize Solo 401(k)
+  const effectiveSolo401k = Math.min(retirement401k, maxSolo401k);
+  const remainingLimit = Math.max(0, TAX_CONSTANTS.sepIraMaxDollar - effectiveSolo401k);
+  const effectiveSepIra = Math.min(sepIra, maxSepIra, remainingLimit);
+  const totalRetirementContribution = effectiveSolo401k + effectiveSepIra;
+
+  // Roth IRA income phase-out calculation
   const rothPhaseout = filingStatus === "single"
     ? TAX_CONSTANTS.rothIncomePhaseoutSingle
     : TAX_CONSTANTS.rothIncomePhaseoutMarried;
   const isRothLimited = netIncome > rothPhaseout.start;
+
+  // Calculate effective Roth IRA contribution based on income phase-out
+  let effectiveRothIra = Math.min(rothIra, TAX_CONSTANTS.rothIraLimit);
+  if (netIncome >= rothPhaseout.end) {
+    // Income too high - no direct Roth IRA contribution allowed (backdoor Roth still possible)
+    effectiveRothIra = 0;
+  } else if (netIncome > rothPhaseout.start) {
+    // Partial phase-out: reduce contribution proportionally
+    const phaseoutRange = rothPhaseout.end - rothPhaseout.start;
+    const incomeOverStart = netIncome - rothPhaseout.start;
+    const reductionRatio = incomeOverStart / phaseoutRange;
+    const maxAllowed = TAX_CONSTANTS.rothIraLimit * (1 - reductionRatio);
+    effectiveRothIra = Math.min(rothIra, Math.max(0, maxAllowed));
+  }
 
   // Calculate for each business structure
   const calculations = useMemo(() => {
@@ -354,11 +378,8 @@ export default function TaxCalculatorPage() {
       const qbiBase = netIncome - seDeduction;
       const qbiDeduction = Math.min(qbiBase * TAX_CONSTANTS.qbiDeductionRate, qbiBase);
 
-      // Total retirement deductions (Solo 401k + SEP IRA)
-      const totalRetirementDeduction = retirement401k + effectiveSepIra;
-
       // Taxable income (includes tax loss harvesting deduction)
-      const taxableIncome = Math.max(0, netIncome - seDeduction - totalRetirementDeduction - hsa - standardDeduction - qbiDeduction - tlh);
+      const taxableIncome = Math.max(0, netIncome - seDeduction - totalRetirementContribution - hsa - standardDeduction - qbiDeduction - tlh);
 
       // Apply FEIE if eligible
       let feieExclusion = 0;
@@ -369,20 +390,21 @@ export default function TaxCalculatorPage() {
       }
 
       const federalTax = calculateFederalTax(adjustedTaxableIncome, filingStatus);
-      const stateTax = (netIncome - totalRetirementDeduction - hsa) * stateRate;
+      const stateTax = (netIncome - totalRetirementContribution - hsa) * stateRate;
       const totalTax = seTaxResult.total + federalTax + stateTax;
 
       // Roth IRA doesn't reduce taxes but adds to wealth (post-tax contribution)
-      const takeHomePay = gross - expenses - totalTax - totalRetirementDeduction - hsa - rothIra;
+      const takeHomePay = gross - expenses - totalTax - totalRetirementContribution - hsa - effectiveRothIra;
 
       // Calculate tax savings (estimate marginal rate at 32% for high earners)
       const marginalRate = 0.32;
-      const taxSavingsFrom401k = totalRetirementDeduction * marginalRate;
+      const taxSavingsFrom401k = totalRetirementContribution * marginalRate;
       const taxSavingsFromHSA = hsa * (marginalRate + 0.0765); // HSA also saves FICA
       const taxSavingsFromExpenses = expenses * marginalRate;
       const taxSavingsFromTLH = tlh * marginalRate;
       const qbiTaxSavings = qbiDeduction * marginalRate;
-      const totalTaxSavings = taxSavingsFrom401k + taxSavingsFromHSA + taxSavingsFromExpenses + qbiTaxSavings + taxSavingsFromTLH;
+      const taxSavingsFromFEIE = feieExclusion * marginalRate;
+      const totalTaxSavings = taxSavingsFrom401k + taxSavingsFromHSA + taxSavingsFromExpenses + qbiTaxSavings + taxSavingsFromTLH + taxSavingsFromFEIE;
 
       return {
         grossIncome: gross,
@@ -398,13 +420,13 @@ export default function TaxCalculatorPage() {
         takeHomePay,
         effectiveRate: totalTax / gross,
         qbiDeduction,
-        retirement401k: totalRetirementDeduction,
+        retirement401k: totalRetirementContribution,
         hsaContribution: hsa,
-        rothIraContribution: rothIra,
+        rothIraContribution: effectiveRothIra,
         sepIraContribution: effectiveSepIra,
         taxLossHarvesting: tlh,
         feieExclusion,
-        totalWealthBuild: takeHomePay + totalRetirementDeduction + hsa + rothIra,
+        totalWealthBuild: takeHomePay + totalRetirementContribution + hsa + effectiveRothIra,
         taxSavingsFrom401k,
         taxSavingsFromHSA,
         taxSavingsFromExpenses,
@@ -430,12 +452,9 @@ export default function TaxCalculatorPage() {
         ? Math.min(distributions * TAX_CONSTANTS.qbiDeductionRate, distributions)
         : 0;
 
-      // Total retirement deductions (Solo 401k + SEP IRA)
-      const totalRetirementDeduction = retirement401k + effectiveSepIra;
-
       // Employer portion of FICA is deductible
       const taxableIncome = Math.max(0,
-        salary + distributions - fica.employerSS - fica.employerMedicare - totalRetirementDeduction - hsa - standardDeduction - qbiDeduction - tlh
+        salary + distributions - fica.employerSS - fica.employerMedicare - totalRetirementContribution - hsa - standardDeduction - qbiDeduction - tlh
       );
 
       // Apply FEIE if eligible (only applies to earned income / salary)
@@ -447,20 +466,21 @@ export default function TaxCalculatorPage() {
       }
 
       const federalTax = calculateFederalTax(adjustedTaxableIncome, filingStatus);
-      const stateTax = (salary + distributions - totalRetirementDeduction - hsa) * stateRate;
+      const stateTax = (salary + distributions - totalRetirementContribution - hsa) * stateRate;
       const totalTax = fica.employeeSS + fica.employeeMedicare + fica.employerSS + fica.employerMedicare + federalTax + stateTax;
 
       // Roth IRA doesn't reduce taxes but adds to wealth
-      const takeHomePay = gross - expenses - totalTax - totalRetirementDeduction - hsa - rothIra;
+      const takeHomePay = gross - expenses - totalTax - totalRetirementContribution - hsa - effectiveRothIra;
 
       // Calculate tax savings
       const marginalRate = 0.32;
-      const taxSavingsFrom401k = totalRetirementDeduction * marginalRate;
+      const taxSavingsFrom401k = totalRetirementContribution * marginalRate;
       const taxSavingsFromHSA = hsa * (marginalRate + 0.0765);
       const taxSavingsFromExpenses = expenses * marginalRate;
       const taxSavingsFromTLH = tlh * marginalRate;
       const qbiTaxSavings = qbiDeduction * marginalRate;
-      const totalTaxSavings = taxSavingsFrom401k + taxSavingsFromHSA + taxSavingsFromExpenses + qbiTaxSavings + taxSavingsFromTLH;
+      const taxSavingsFromFEIE = feieExclusion * marginalRate;
+      const totalTaxSavings = taxSavingsFrom401k + taxSavingsFromHSA + taxSavingsFromExpenses + qbiTaxSavings + taxSavingsFromTLH + taxSavingsFromFEIE;
 
       return {
         grossIncome: gross,
@@ -476,13 +496,13 @@ export default function TaxCalculatorPage() {
         takeHomePay,
         effectiveRate: totalTax / gross,
         qbiDeduction,
-        retirement401k: totalRetirementDeduction,
+        retirement401k: totalRetirementContribution,
         hsaContribution: hsa,
-        rothIraContribution: rothIra,
+        rothIraContribution: effectiveRothIra,
         sepIraContribution: effectiveSepIra,
         taxLossHarvesting: tlh,
         feieExclusion,
-        totalWealthBuild: takeHomePay + totalRetirementDeduction + hsa + rothIra,
+        totalWealthBuild: takeHomePay + totalRetirementContribution + hsa + effectiveRothIra,
         taxSavingsFrom401k,
         taxSavingsFromHSA,
         taxSavingsFromExpenses,
@@ -517,7 +537,7 @@ export default function TaxCalculatorPage() {
       const totalTax = fica.employeeSS + fica.employeeMedicare + federalTax + stateTax;
 
       // Roth IRA doesn't reduce taxes but adds to wealth
-      const takeHomePay = salary - totalTax - w2_401k - hsa - rothIra;
+      const takeHomePay = salary - totalTax - w2_401k - hsa - effectiveRothIra;
 
       // Calculate tax savings (W-2 can't deduct business expenses, no QBI, no SEP IRA)
       const marginalRate = 0.32;
@@ -525,7 +545,8 @@ export default function TaxCalculatorPage() {
       const taxSavingsFromHSA = hsa * marginalRate; // W-2 HSA doesn't save FICA if through payroll, but we'll assume same
       const taxSavingsFromExpenses = 0; // W-2 can't deduct business expenses
       const taxSavingsFromTLH = tlh * marginalRate;
-      const totalTaxSavings = taxSavingsFrom401k + taxSavingsFromHSA + taxSavingsFromTLH;
+      const taxSavingsFromFEIE = feieExclusion * marginalRate;
+      const totalTaxSavings = taxSavingsFrom401k + taxSavingsFromHSA + taxSavingsFromTLH + taxSavingsFromFEIE;
 
       return {
         grossIncome: gross,
@@ -543,11 +564,11 @@ export default function TaxCalculatorPage() {
         qbiDeduction: 0,
         retirement401k: w2_401k,
         hsaContribution: hsa,
-        rothIraContribution: rothIra,
+        rothIraContribution: effectiveRothIra,
         sepIraContribution: 0, // W-2 can't use SEP IRA
         taxLossHarvesting: tlh,
         feieExclusion,
-        totalWealthBuild: takeHomePay + w2_401k + hsa + rothIra,
+        totalWealthBuild: takeHomePay + w2_401k + hsa + effectiveRothIra,
         taxSavingsFrom401k,
         taxSavingsFromHSA,
         taxSavingsFromExpenses,
@@ -558,7 +579,7 @@ export default function TaxCalculatorPage() {
     results.push(w2Employee);
 
     return results;
-  }, [gross, netIncome, expenses, filingStatus, stateRate, sCorpSalaryPercent, customSalary, retirement401k, hsa, rothIra, effectiveSepIra, tlh, useFEIE, daysAbroad, standardDeduction]);
+  }, [gross, netIncome, expenses, filingStatus, stateRate, sCorpSalaryPercent, customSalary, totalRetirementContribution, effectiveSolo401k, effectiveSepIra, hsa, effectiveRothIra, tlh, useFEIE, daysAbroad, standardDeduction]);
 
   // Calculate max Solo 401k for self-employed (employee $23k + employer 25% of net SE income, max $69k total)
   const maxSolo401k = Math.min(69000, 23000 + netIncome * 0.25);
@@ -821,8 +842,13 @@ export default function TaxCalculatorPage() {
                 />
               </div>
               <p className="text-xs text-muted-foreground">
-                2024 max: $23,000 employee + 25% employer (up to $69,000 total)
+                Your max: {formatCurrency(maxSolo401k)} ($23k employee + 25% employer)
               </p>
+              {retirement401k > maxSolo401k && (
+                <p className="text-xs text-amber-500">
+                  Contribution exceeds limit. Using {formatCurrency(effectiveSolo401k)}.
+                </p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -860,9 +886,14 @@ export default function TaxCalculatorPage() {
               <p className="text-xs text-muted-foreground">
                 2024 max: $7,000 ($8,000 if 50+). Post-tax, no current deduction.
               </p>
-              {isRothLimited && (
+              {netIncome >= rothPhaseout.end && (
+                <p className="text-xs text-red-500">
+                  Income exceeds {formatCurrency(rothPhaseout.end)} - no direct Roth IRA allowed. Use backdoor Roth.
+                </p>
+              )}
+              {isRothLimited && netIncome < rothPhaseout.end && (
                 <p className="text-xs text-amber-500">
-                  Income may limit direct contributions. Consider backdoor Roth.
+                  Income phase-out: max allowed is {formatCurrency(effectiveRothIra)}. Consider backdoor Roth.
                 </p>
               )}
             </div>
@@ -881,11 +912,11 @@ export default function TaxCalculatorPage() {
                 />
               </div>
               <p className="text-xs text-muted-foreground">
-                2024 max: 25% of net SE income, up to $69,000 (your max: {formatCurrency(maxSepIra)})
+                Max: 25% of net SE income (your max: {formatCurrency(maxSepIra)})
               </p>
               {retirement401k > 0 && sepIra > 0 && (
                 <p className="text-xs text-amber-500">
-                  Note: SEP + Solo 401k employer portions share the $69k limit.
+                  Combined Solo 401k + SEP IRA capped at $69k. Using {formatCurrency(effectiveSepIra)} for SEP.
                 </p>
               )}
             </div>
@@ -980,7 +1011,34 @@ export default function TaxCalculatorPage() {
               <span className="text-xs text-muted-foreground">QBI Deduction</span>
               <span className="text-sm font-medium text-green-600">{formatCurrency(calculations[0].qbiDeduction * 0.32)}</span>
             </div>
+            {calculations[0].feieExclusion > 0 && (
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-muted-foreground">FEIE</span>
+                <span className="text-sm font-medium text-green-600">{formatCurrency(calculations[0].feieExclusion * 0.32)}</span>
+              </div>
+            )}
           </div>
+
+          {/* Limit Warnings */}
+          {(retirement401k > effectiveSolo401k || sepIra > effectiveSepIra || rothIra > effectiveRothIra) && (
+            <div className="border-t pt-3">
+              <div className="flex items-center gap-2 mb-2">
+                <AlertTriangle className="h-4 w-4 text-red-500" />
+                <span className="text-sm font-medium text-red-600">Contribution Limits Exceeded</span>
+              </div>
+              <div className="text-xs text-muted-foreground space-y-1">
+                {retirement401k > effectiveSolo401k && (
+                  <p>Solo 401(k) capped at {formatCurrency(effectiveSolo401k)} (entered: {formatCurrency(retirement401k)})</p>
+                )}
+                {sepIra > effectiveSepIra && (
+                  <p>SEP IRA capped at {formatCurrency(effectiveSepIra)} (entered: {formatCurrency(sepIra)}). Combined 401k + SEP cannot exceed $69k.</p>
+                )}
+                {rothIra > effectiveRothIra && (
+                  <p>Roth IRA {effectiveRothIra === 0 ? "not allowed - income too high for direct contributions. Consider backdoor Roth." : `reduced to ${formatCurrency(effectiveRothIra)} due to income phase-out.`}</p>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Missing Opportunities */}
           {(retirement401k < maxSolo401k || hsa < (filingStatus === "married" ? 8300 : 4150) || tlh < TAX_CONSTANTS.capitalLossDeductionLimit || (!useFEIE && netIncome > 100000)) && (
