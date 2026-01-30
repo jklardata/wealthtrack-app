@@ -14,7 +14,6 @@ type BillingInterval = "monthly" | "yearly";
 
 interface PriceIds {
   pro: { monthly: string; yearly: string };
-  premium: { monthly: string; yearly: string };
 }
 
 function PricingContent() {
@@ -49,22 +48,18 @@ function PricingContent() {
     fetchData();
   }, []);
 
-  const getPriceId = (tier: "pro" | "premium"): string => {
+  const getPriceId = (tier: "pro"): string => {
     if (!priceIds) return "";
-    if (tier === "pro") {
-      return billingInterval === "monthly" ? priceIds.pro.monthly : priceIds.pro.yearly;
-    }
-    return billingInterval === "monthly" ? priceIds.premium.monthly : priceIds.premium.yearly;
+    return billingInterval === "monthly" ? priceIds.pro.monthly : priceIds.pro.yearly;
   };
 
   const tiers: Array<{
-    key: EntitlementTier;
+    key: "free" | "pro";
     tier: typeof PRICING_TIERS[keyof typeof PRICING_TIERS];
     popular?: boolean;
   }> = [
     { key: "free", tier: PRICING_TIERS.free },
     { key: "pro", tier: PRICING_TIERS.pro, popular: true },
-    { key: "premium", tier: PRICING_TIERS.premium },
   ];
 
   return (
@@ -97,13 +92,13 @@ function PricingContent() {
           >
             Yearly
             <span className="ml-2 text-xs bg-green-500/20 text-green-600 dark:text-green-400 px-2 py-0.5 rounded-full">
-              Save 17%
+              Save 28%
             </span>
           </Button>
         </div>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-3 max-w-5xl mx-auto">
+      <div className="grid gap-6 md:grid-cols-2 max-w-3xl mx-auto">
         {tiers.map(({ key, tier, popular }) => {
           const isCurrent = currentTier === key;
           const price = billingInterval === "monthly" ? tier.monthlyPrice : tier.yearlyPrice;
@@ -170,7 +165,7 @@ function PricingContent() {
                   </Button>
                 ) : (
                   <UpgradeButton
-                    priceId={getPriceId(key as "pro" | "premium")}
+                    priceId={getPriceId(key as "pro")}
                     className="w-full"
                     variant={popular ? "default" : "outline"}
                     disabled={isCurrent || isLoading}
