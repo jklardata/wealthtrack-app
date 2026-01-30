@@ -56,10 +56,10 @@ import {
   RefreshCw,
 } from "lucide-react";
 
-// 2024 Tax Constants
+// 2025 Tax Constants
 const TAX_CONSTANTS = {
   // Social Security
-  socialSecurityWageBase: 168600,
+  socialSecurityWageBase: 176100,
   socialSecurityRate: 0.062,
   medicareRate: 0.0145,
   additionalMedicareThreshold: 200000,
@@ -69,32 +69,37 @@ const TAX_CONSTANTS = {
   selfEmploymentTaxRate: 0.153, // 12.4% SS + 2.9% Medicare
   selfEmploymentDeduction: 0.5, // Deduct half of SE tax
 
-  // FEIE
-  feieExclusion2024: 126500,
+  // FEIE 2025
+  feieExclusion: 130000,
 
-  // Standard Deduction 2024
-  standardDeductionSingle: 14600,
-  standardDeductionMarried: 29200,
+  // Standard Deduction 2025
+  standardDeductionSingle: 15000,
+  standardDeductionMarried: 30000,
 
   // QBI Deduction
   qbiDeductionRate: 0.20,
-  qbiPhaseoutSingle: 191950,
-  qbiPhaseoutMarried: 383900,
+  qbiPhaseoutSingle: 197300,
+  qbiPhaseoutMarried: 394600,
 
-  // Roth IRA 2024
+  // Roth IRA 2025
   rothIraLimit: 7000,
   rothIraCatchUp: 1000, // Additional if age 50+
-  rothIncomePhaseoutSingle: { start: 146000, end: 161000 },
-  rothIncomePhaseoutMarried: { start: 230000, end: 240000 },
+  rothIncomePhaseoutSingle: { start: 150000, end: 165000 },
+  rothIncomePhaseoutMarried: { start: 236000, end: 246000 },
 
-  // SEP IRA 2024
+  // HSA 2025
+  hsaLimitSingle: 4300,
+  hsaLimitFamily: 8550,
+
+  // Solo 401k / SEP IRA 2025
+  solo401kEmployeeLimit: 23500,
   sepIraMaxPercent: 0.25,
-  sepIraMaxDollar: 69000,
+  sepIraMaxDollar: 70000,
 
   // Tax Loss Harvesting
   capitalLossDeductionLimit: 3000, // $3,000 against ordinary income ($1,500 if MFS)
 
-  // Federal Tax Brackets 2024 (Single)
+  // Federal Tax Brackets 2025 (Single)
   federalBracketsSingle: [
     { min: 0, max: 11600, rate: 0.10 },
     { min: 11600, max: 47150, rate: 0.12 },
@@ -105,7 +110,7 @@ const TAX_CONSTANTS = {
     { min: 609350, max: Infinity, rate: 0.37 },
   ],
 
-  // Federal Tax Brackets 2024 (Married Filing Jointly)
+  // Federal Tax Brackets 2025 (Married Filing Jointly)
   federalBracketsMarried: [
     { min: 0, max: 23200, rate: 0.10 },
     { min: 23200, max: 94300, rate: 0.12 },
@@ -254,8 +259,8 @@ export default function TaxCalculatorPage() {
   const [customSalary, setCustomSalary] = useState("");
 
   // Retirement & Benefits
-  const [solo401kContribution, setSolo401kContribution] = useState("23000");
-  const [hsaContribution, setHsaContribution] = useState("4150");
+  const [solo401kContribution, setSolo401kContribution] = useState("23500");
+  const [hsaContribution, setHsaContribution] = useState("4300");
   const [rothIraContribution, setRothIraContribution] = useState("0");
   const [sepIraContribution, setSepIraContribution] = useState("0");
   const [taxLossHarvesting, setTaxLossHarvesting] = useState("0");
@@ -336,8 +341,8 @@ export default function TaxCalculatorPage() {
   // Solo 401(k) = $23k employee deferral + employer profit-sharing (25% of net SE income)
   // SEP IRA = employer contribution only (25% of net SE income)
   // The employer portions share the same 25% limit, so effectively you pick one or the other
-  const maxEmployerContribution = Math.min(46000, netIncome * TAX_CONSTANTS.sepIraMaxPercent);
-  const maxSolo401k = 23000 + maxEmployerContribution; // $23k employee + employer portion
+  const maxEmployerContribution = Math.min(TAX_CONSTANTS.sepIraMaxDollar - TAX_CONSTANTS.solo401kEmployeeLimit, netIncome * TAX_CONSTANTS.sepIraMaxPercent);
+  const maxSolo401k = TAX_CONSTANTS.solo401kEmployeeLimit + maxEmployerContribution; // employee + employer portion
   const maxSepIra = Math.min(TAX_CONSTANTS.sepIraMaxDollar, netIncome * TAX_CONSTANTS.sepIraMaxPercent);
 
   // If user enters both, cap the total at $69k and prioritize Solo 401(k)
@@ -386,7 +391,7 @@ export default function TaxCalculatorPage() {
       let feieExclusion = 0;
       let adjustedTaxableIncome = taxableIncome;
       if (useFEIE1099 && parseInt(daysAbroad) >= 330) {
-        feieExclusion = Math.min(netIncome, TAX_CONSTANTS.feieExclusion2024);
+        feieExclusion = Math.min(netIncome, TAX_CONSTANTS.feieExclusion);
         adjustedTaxableIncome = Math.max(0, taxableIncome - feieExclusion);
       }
 
@@ -464,7 +469,7 @@ export default function TaxCalculatorPage() {
       let feieExclusion = 0;
       let adjustedTaxableIncome = taxableIncome;
       if (useFEIE1099 && parseInt(daysAbroad) >= 330) {
-        feieExclusion = Math.min(salary, TAX_CONSTANTS.feieExclusion2024);
+        feieExclusion = Math.min(salary, TAX_CONSTANTS.feieExclusion);
         adjustedTaxableIncome = Math.max(0, taxableIncome - feieExclusion);
       }
 
@@ -522,8 +527,8 @@ export default function TaxCalculatorPage() {
       const salary = netIncome; // Assume equivalent salary
       const fica = calculateFICA(salary);
 
-      // W-2 employees limited to $23k employee contribution (no employer match in this comparison)
-      const w2_401k = Math.min(retirement401k, 23000);
+      // W-2 employees limited to employee contribution (no employer match in this comparison)
+      const w2_401k = Math.min(retirement401k, TAX_CONSTANTS.solo401kEmployeeLimit);
 
       // W-2 can still do tax loss harvesting
       const taxableIncome = Math.max(0, salary - w2_401k - hsa - standardDeduction - tlh);
@@ -532,7 +537,7 @@ export default function TaxCalculatorPage() {
       let feieExclusion = 0;
       let adjustedTaxableIncome = taxableIncome;
       if (useFEIEW2 && parseInt(daysAbroad) >= 330) {
-        feieExclusion = Math.min(salary, TAX_CONSTANTS.feieExclusion2024);
+        feieExclusion = Math.min(salary, TAX_CONSTANTS.feieExclusion);
         adjustedTaxableIncome = Math.max(0, taxableIncome - feieExclusion);
       }
 
@@ -842,7 +847,7 @@ export default function TaxCalculatorPage() {
                   value={solo401kContribution}
                   onChange={(e) => setSolo401kContribution(e.target.value)}
                   className="pl-9"
-                  placeholder="23000"
+                  placeholder="23500"
                 />
               </div>
               <p className="text-xs text-muted-foreground">
@@ -865,11 +870,11 @@ export default function TaxCalculatorPage() {
                   value={hsaContribution}
                   onChange={(e) => setHsaContribution(e.target.value)}
                   className="pl-9"
-                  placeholder="4150"
+                  placeholder="4300"
                 />
               </div>
               <p className="text-xs text-muted-foreground">
-                2024 max: $4,150 individual / $8,300 family
+                2025 max: {formatCurrency(TAX_CONSTANTS.hsaLimitSingle)} individual / {formatCurrency(TAX_CONSTANTS.hsaLimitFamily)} family
               </p>
             </div>
 
@@ -888,7 +893,7 @@ export default function TaxCalculatorPage() {
                 />
               </div>
               <p className="text-xs text-muted-foreground">
-                2024 max: $7,000 ($8,000 if 50+). Post-tax, no current deduction.
+                2025 max: {formatCurrency(TAX_CONSTANTS.rothIraLimit)} ({formatCurrency(TAX_CONSTANTS.rothIraLimit + TAX_CONSTANTS.rothIraCatchUp)} if 50+). Post-tax, no current deduction.
               </p>
               {netIncome >= rothPhaseout.end && (
                 <p className="text-xs text-red-500">
@@ -993,7 +998,7 @@ export default function TaxCalculatorPage() {
                     placeholder="330"
                   />
                   <p className="text-xs text-muted-foreground">
-                    Need 330+ days to qualify. Excludes up to {formatCurrency(TAX_CONSTANTS.feieExclusion2024)} in 2024.
+                    Need 330+ days to qualify. Excludes up to {formatCurrency(TAX_CONSTANTS.feieExclusion)} in 2025.
                   </p>
                 </div>
               )}
@@ -1071,7 +1076,7 @@ export default function TaxCalculatorPage() {
           )}
 
           {/* Missing Opportunities */}
-          {(retirement401k < maxSolo401k || hsa < (filingStatus === "married" ? 8300 : 4150) || tlh < TAX_CONSTANTS.capitalLossDeductionLimit || ((!useFEIE1099 || !useFEIEW2) && netIncome > 100000)) && (
+          {(retirement401k < maxSolo401k || hsa < (filingStatus === "married" ? TAX_CONSTANTS.hsaLimitFamily : TAX_CONSTANTS.hsaLimitSingle) || tlh < TAX_CONSTANTS.capitalLossDeductionLimit || ((!useFEIE1099 || !useFEIEW2) && netIncome > 100000)) && (
             <div className="border-t pt-3">
               <div className="flex items-center gap-2 mb-2">
                 <AlertTriangle className="h-4 w-4 text-amber-500" />
@@ -1084,10 +1089,10 @@ export default function TaxCalculatorPage() {
                     <span className="font-medium text-amber-600">+{formatCurrency((maxSolo401k - retirement401k) * 0.32)}</span>
                   </div>
                 )}
-                {hsa < (filingStatus === "married" ? 8300 : 4150) && (
+                {hsa < (filingStatus === "married" ? TAX_CONSTANTS.hsaLimitFamily : TAX_CONSTANTS.hsaLimitSingle) && (
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground">Max HSA</span>
-                    <span className="font-medium text-amber-600">+{formatCurrency(((filingStatus === "married" ? 8300 : 4150) - hsa) * 0.3965)}</span>
+                    <span className="font-medium text-amber-600">+{formatCurrency(((filingStatus === "married" ? TAX_CONSTANTS.hsaLimitFamily : TAX_CONSTANTS.hsaLimitSingle) - hsa) * 0.3965)}</span>
                   </div>
                 )}
                 {tlh < TAX_CONSTANTS.capitalLossDeductionLimit && (
@@ -1099,13 +1104,13 @@ export default function TaxCalculatorPage() {
                 {!useFEIE1099 && netIncome > 100000 && (
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground">FEIE for 1099</span>
-                    <span className="font-medium text-violet-600">+{formatCurrency(Math.min(netIncome, TAX_CONSTANTS.feieExclusion2024) * 0.18)}</span>
+                    <span className="font-medium text-violet-600">+{formatCurrency(Math.min(netIncome, TAX_CONSTANTS.feieExclusion) * 0.18)}</span>
                   </div>
                 )}
                 {!useFEIEW2 && netIncome > 100000 && (
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground">FEIE for W-2</span>
-                    <span className="font-medium text-violet-600">+{formatCurrency(Math.min(netIncome, TAX_CONSTANTS.feieExclusion2024) * 0.18)}</span>
+                    <span className="font-medium text-violet-600">+{formatCurrency(Math.min(netIncome, TAX_CONSTANTS.feieExclusion) * 0.18)}</span>
                   </div>
                 )}
               </div>
@@ -1245,13 +1250,13 @@ export default function TaxCalculatorPage() {
                   <TableCell>
                     <div>
                       <span className="text-primary font-medium">{formatCurrency(calculations[0].retirement401k)}</span>
-                      <p className="text-xs text-muted-foreground">Max: $69,000 combined limit</p>
+                      <p className="text-xs text-muted-foreground">Max: {formatCurrency(TAX_CONSTANTS.sepIraMaxDollar)} combined limit</p>
                     </div>
                   </TableCell>
                   <TableCell>
                     <div>
                       <span className="font-medium">{formatCurrency(calculations[2].retirement401k)}</span>
-                      <p className="text-xs text-muted-foreground">Max: $23,000 (employee only)</p>
+                      <p className="text-xs text-muted-foreground">Max: {formatCurrency(TAX_CONSTANTS.solo401kEmployeeLimit)} (employee only)</p>
                     </div>
                   </TableCell>
                   <TableCell className="text-right">
@@ -1284,7 +1289,7 @@ export default function TaxCalculatorPage() {
                     <TableCell>
                       <div>
                         <span className="text-green-600 font-medium">{formatCurrency(calculations[0].feieExclusion)}</span>
-                        <p className="text-xs text-muted-foreground">Max: {formatCurrency(TAX_CONSTANTS.feieExclusion2024)}</p>
+                        <p className="text-xs text-muted-foreground">Max: {formatCurrency(TAX_CONSTANTS.feieExclusion)}</p>
                       </div>
                     </TableCell>
                     <TableCell>
@@ -1543,12 +1548,12 @@ export default function TaxCalculatorPage() {
             </div>
 
             <div className="space-y-2 text-sm">
-              <p className="font-medium">2024 Quarterly Due Dates:</p>
+              <p className="font-medium">2025 Quarterly Due Dates:</p>
               <div className="grid grid-cols-2 gap-2 text-muted-foreground">
-                <div>Q1: April 15, 2024</div>
-                <div>Q2: June 17, 2024</div>
-                <div>Q3: September 16, 2024</div>
-                <div>Q4: January 15, 2025</div>
+                <div>Q1: April 15, 2025</div>
+                <div>Q2: June 16, 2025</div>
+                <div>Q3: September 15, 2025</div>
+                <div>Q4: January 15, 2026</div>
               </div>
             </div>
 
@@ -1596,14 +1601,14 @@ export default function TaxCalculatorPage() {
             )}
 
             {/* Solo 401k Recommendation */}
-            {retirement401k < 23000 && netIncome > 100000 && (
+            {retirement401k < TAX_CONSTANTS.solo401kEmployeeLimit && netIncome > 100000 && (
               <div className="p-4 rounded-lg bg-cyan-500/5 border border-cyan-500/20">
                 <div className="flex items-start gap-3">
                   <PiggyBank className="h-5 w-5 text-cyan-500 mt-0.5" />
                   <div>
                     <p className="font-medium">Max Out Solo 401(k)</p>
                     <p className="text-sm text-muted-foreground mt-1">
-                      You could contribute up to {formatCurrency(Math.min(69000, 23000 + netIncome * 0.25))} and reduce
+                      You could contribute up to {formatCurrency(Math.min(TAX_CONSTANTS.sepIraMaxDollar, TAX_CONSTANTS.solo401kEmployeeLimit + netIncome * 0.25))} and reduce
                       your taxable income significantly.
                     </p>
                   </div>
@@ -1619,7 +1624,7 @@ export default function TaxCalculatorPage() {
                   <div>
                     <p className="font-medium">Consider Living Abroad</p>
                     <p className="text-sm text-muted-foreground mt-1">
-                      The Foreign Earned Income Exclusion could exclude {formatCurrency(TAX_CONSTANTS.feieExclusion2024)} of
+                      The Foreign Earned Income Exclusion could exclude {formatCurrency(TAX_CONSTANTS.feieExclusion)} of
                       your income from federal taxes if you live abroad 330+ days.
                     </p>
                   </div>
@@ -1628,14 +1633,14 @@ export default function TaxCalculatorPage() {
             )}
 
             {/* HSA Recommendation */}
-            {hsa < 4150 && (
+            {hsa < TAX_CONSTANTS.hsaLimitSingle && (
               <div className="p-4 rounded-lg bg-emerald-500/5 border border-emerald-500/20">
                 <div className="flex items-start gap-3">
                   <DollarSign className="h-5 w-5 text-emerald-500 mt-0.5" />
                   <div>
                     <p className="font-medium">Max Out HSA</p>
                     <p className="text-sm text-muted-foreground mt-1">
-                      HSA offers triple tax advantage. Consider maxing at {formatCurrency(filingStatus === "married" ? 8300 : 4150)}.
+                      HSA offers triple tax advantage. Consider maxing at {formatCurrency(filingStatus === "married" ? TAX_CONSTANTS.hsaLimitFamily : TAX_CONSTANTS.hsaLimitSingle)}.
                     </p>
                   </div>
                 </div>
