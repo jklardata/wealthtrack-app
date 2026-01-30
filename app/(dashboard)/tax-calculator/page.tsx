@@ -581,9 +581,6 @@ export default function TaxCalculatorPage() {
     return results;
   }, [gross, netIncome, expenses, filingStatus, stateRate, sCorpSalaryPercent, customSalary, totalRetirementContribution, effectiveSolo401k, effectiveSepIra, hsa, effectiveRothIra, tlh, useFEIE, daysAbroad, standardDeduction]);
 
-  // Calculate max Solo 401k for self-employed (employee $23k + employer 25% of net SE income, max $69k total)
-  const maxSolo401k = Math.min(69000, 23000 + netIncome * 0.25);
-
   // Tradeoffs data for Sole Prop vs W-2
   const tradeoffsData = useMemo(() => {
     const soleProp = calculations[0];
