@@ -948,110 +948,110 @@ export default function TaxCalculatorPage() {
       </div>
 
       {/* Total Tax Savings Highlight */}
-      <Card className="border-green-200 dark:border-green-800 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30">
+      <Card className="border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/40">
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
-            <PiggyBank className="h-5 w-5 text-green-600" />
-            Total Tax Savings
+            <PiggyBank className="h-5 w-5 text-green-600 dark:text-green-400" />
+            <span className="text-foreground">Total Tax Savings</span>
           </CardTitle>
-          <CardDescription>Your tax savings from deductions and tax-advantaged accounts</CardDescription>
+          <CardDescription className="text-green-700 dark:text-green-300">Your tax savings from deductions and tax-advantaged accounts</CardDescription>
         </CardHeader>
         <CardContent>
           {/* Main Savings Amount */}
           <div className="text-center mb-6">
-            <p className="text-4xl font-bold text-green-600">{formatCurrency(calculations[0].totalTaxSavings)}</p>
-            <p className="text-sm text-muted-foreground mt-1">estimated annual tax savings (Sole Prop)</p>
+            <p className="text-4xl font-bold text-green-600 dark:text-green-400">{formatCurrency(calculations[0].totalTaxSavings)}</p>
+            <p className="text-sm text-green-700 dark:text-green-300 mt-1">estimated annual tax savings (Sole Prop)</p>
           </div>
 
           {/* Savings Breakdown */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div className="p-3 rounded-lg bg-white/60 dark:bg-white/5 border border-green-100 dark:border-green-900">
+            <div className="p-3 rounded-lg bg-white dark:bg-green-800/50 border border-green-200 dark:border-green-600 shadow-sm">
               <div className="flex items-center gap-2 mb-1">
-                <PiggyBank className="h-4 w-4 text-green-600" />
-                <span className="text-xs font-medium text-muted-foreground">401(k)/SEP</span>
+                <PiggyBank className="h-4 w-4 text-green-600 dark:text-green-400" />
+                <span className="text-xs font-medium text-green-800 dark:text-green-200">401(k)/SEP</span>
               </div>
-              <p className="text-lg font-semibold text-green-600">{formatCurrency(calculations[0].taxSavingsFrom401k)}</p>
-              <p className="text-xs text-muted-foreground">{formatCurrency(calculations[0].retirement401k)} contributed</p>
+              <p className="text-lg font-semibold text-green-600 dark:text-green-400">{formatCurrency(calculations[0].taxSavingsFrom401k)}</p>
+              <p className="text-xs text-green-700 dark:text-green-300">{formatCurrency(calculations[0].retirement401k)} contributed</p>
             </div>
-            <div className="p-3 rounded-lg bg-white/60 dark:bg-white/5 border border-green-100 dark:border-green-900">
+            <div className="p-3 rounded-lg bg-white dark:bg-green-800/50 border border-green-200 dark:border-green-600 shadow-sm">
               <div className="flex items-center gap-2 mb-1">
-                <DollarSign className="h-4 w-4 text-emerald-600" />
-                <span className="text-xs font-medium text-muted-foreground">HSA</span>
+                <DollarSign className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                <span className="text-xs font-medium text-green-800 dark:text-green-200">HSA</span>
               </div>
-              <p className="text-lg font-semibold text-emerald-600">{formatCurrency(calculations[0].taxSavingsFromHSA)}</p>
-              <p className="text-xs text-muted-foreground">{formatCurrency(calculations[0].hsaContribution)} contributed</p>
+              <p className="text-lg font-semibold text-emerald-600 dark:text-emerald-400">{formatCurrency(calculations[0].taxSavingsFromHSA)}</p>
+              <p className="text-xs text-green-700 dark:text-green-300">{formatCurrency(calculations[0].hsaContribution)} contributed</p>
             </div>
-            <div className="p-3 rounded-lg bg-white/60 dark:bg-white/5 border border-green-100 dark:border-green-900">
+            <div className="p-3 rounded-lg bg-white dark:bg-green-800/50 border border-green-200 dark:border-green-600 shadow-sm">
               <div className="flex items-center gap-2 mb-1">
-                <Briefcase className="h-4 w-4 text-teal-600" />
-                <span className="text-xs font-medium text-muted-foreground">Business Expenses</span>
+                <Briefcase className="h-4 w-4 text-teal-600 dark:text-teal-400" />
+                <span className="text-xs font-medium text-green-800 dark:text-green-200">Business Expenses</span>
               </div>
-              <p className="text-lg font-semibold text-teal-600">{formatCurrency(calculations[0].taxSavingsFromExpenses)}</p>
-              <p className="text-xs text-muted-foreground">{formatCurrency(expenses)} deducted</p>
+              <p className="text-lg font-semibold text-teal-600 dark:text-teal-400">{formatCurrency(calculations[0].taxSavingsFromExpenses)}</p>
+              <p className="text-xs text-green-700 dark:text-green-300">{formatCurrency(expenses)} deducted</p>
             </div>
-            <div className="p-3 rounded-lg bg-white/60 dark:bg-white/5 border border-green-100 dark:border-green-900">
+            <div className="p-3 rounded-lg bg-white dark:bg-green-800/50 border border-green-200 dark:border-green-600 shadow-sm">
               <div className="flex items-center gap-2 mb-1">
-                <Receipt className="h-4 w-4 text-cyan-600" />
-                <span className="text-xs font-medium text-muted-foreground">QBI Deduction</span>
+                <Receipt className="h-4 w-4 text-cyan-600 dark:text-cyan-400" />
+                <span className="text-xs font-medium text-green-800 dark:text-green-200">QBI Deduction</span>
               </div>
-              <p className="text-lg font-semibold text-cyan-600">{formatCurrency(calculations[0].qbiDeduction * 0.32)}</p>
-              <p className="text-xs text-muted-foreground">{formatCurrency(calculations[0].qbiDeduction)} deducted</p>
+              <p className="text-lg font-semibold text-cyan-600 dark:text-cyan-400">{formatCurrency(calculations[0].qbiDeduction * 0.32)}</p>
+              <p className="text-xs text-green-700 dark:text-green-300">{formatCurrency(calculations[0].qbiDeduction)} deducted</p>
             </div>
           </div>
 
           {/* Missing Opportunities */}
           {(retirement401k < maxSolo401k || hsa < (filingStatus === "married" ? 8300 : 4150) || tlh < TAX_CONSTANTS.capitalLossDeductionLimit || (!useFEIE && netIncome > 100000)) && (
-            <div className="border-t border-green-200 dark:border-green-800 pt-4">
+            <div className="border-t border-green-300 dark:border-green-600 pt-4">
               <div className="flex items-center gap-2 mb-3">
-                <AlertTriangle className="h-4 w-4 text-amber-500" />
-                <span className="text-sm font-medium">Missed Tax Saving Opportunities</span>
+                <AlertTriangle className="h-4 w-4 text-amber-500 dark:text-amber-400" />
+                <span className="text-sm font-medium text-foreground">Missed Tax Saving Opportunities</span>
               </div>
               <div className="grid gap-2">
                 {retirement401k < maxSolo401k && (
-                  <div className="flex items-center justify-between p-2 rounded bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800">
+                  <div className="flex items-center justify-between p-3 rounded-lg bg-amber-50 dark:bg-amber-900/50 border border-amber-300 dark:border-amber-600">
                     <div className="flex items-center gap-2">
-                      <PiggyBank className="h-4 w-4 text-amber-600" />
-                      <span className="text-sm">Max out Solo 401(k)</span>
+                      <PiggyBank className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                      <span className="text-sm text-amber-900 dark:text-amber-100">Max out Solo 401(k)</span>
                     </div>
                     <div className="text-right">
-                      <span className="text-sm font-medium text-amber-600">+{formatCurrency((maxSolo401k - retirement401k) * 0.32)}</span>
-                      <p className="text-xs text-muted-foreground">contribute {formatCurrency(maxSolo401k - retirement401k)} more</p>
+                      <span className="text-sm font-medium text-amber-600 dark:text-amber-400">+{formatCurrency((maxSolo401k - retirement401k) * 0.32)}</span>
+                      <p className="text-xs text-amber-700 dark:text-amber-300">contribute {formatCurrency(maxSolo401k - retirement401k)} more</p>
                     </div>
                   </div>
                 )}
                 {hsa < (filingStatus === "married" ? 8300 : 4150) && (
-                  <div className="flex items-center justify-between p-2 rounded bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800">
+                  <div className="flex items-center justify-between p-3 rounded-lg bg-amber-50 dark:bg-amber-900/50 border border-amber-300 dark:border-amber-600">
                     <div className="flex items-center gap-2">
-                      <DollarSign className="h-4 w-4 text-amber-600" />
-                      <span className="text-sm">Max out HSA</span>
+                      <DollarSign className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                      <span className="text-sm text-amber-900 dark:text-amber-100">Max out HSA</span>
                     </div>
                     <div className="text-right">
-                      <span className="text-sm font-medium text-amber-600">+{formatCurrency(((filingStatus === "married" ? 8300 : 4150) - hsa) * 0.3965)}</span>
-                      <p className="text-xs text-muted-foreground">contribute {formatCurrency((filingStatus === "married" ? 8300 : 4150) - hsa)} more</p>
+                      <span className="text-sm font-medium text-amber-600 dark:text-amber-400">+{formatCurrency(((filingStatus === "married" ? 8300 : 4150) - hsa) * 0.3965)}</span>
+                      <p className="text-xs text-amber-700 dark:text-amber-300">contribute {formatCurrency((filingStatus === "married" ? 8300 : 4150) - hsa)} more</p>
                     </div>
                   </div>
                 )}
                 {tlh < TAX_CONSTANTS.capitalLossDeductionLimit && (
-                  <div className="flex items-center justify-between p-2 rounded bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800">
+                  <div className="flex items-center justify-between p-3 rounded-lg bg-amber-50 dark:bg-amber-900/50 border border-amber-300 dark:border-amber-600">
                     <div className="flex items-center gap-2">
-                      <TrendingUp className="h-4 w-4 text-amber-600" />
-                      <span className="text-sm">Tax Loss Harvesting</span>
+                      <TrendingUp className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                      <span className="text-sm text-amber-900 dark:text-amber-100">Tax Loss Harvesting</span>
                     </div>
                     <div className="text-right">
-                      <span className="text-sm font-medium text-amber-600">+{formatCurrency((TAX_CONSTANTS.capitalLossDeductionLimit - tlh) * 0.32)}</span>
-                      <p className="text-xs text-muted-foreground">harvest {formatCurrency(TAX_CONSTANTS.capitalLossDeductionLimit - tlh)} more</p>
+                      <span className="text-sm font-medium text-amber-600 dark:text-amber-400">+{formatCurrency((TAX_CONSTANTS.capitalLossDeductionLimit - tlh) * 0.32)}</span>
+                      <p className="text-xs text-amber-700 dark:text-amber-300">harvest {formatCurrency(TAX_CONSTANTS.capitalLossDeductionLimit - tlh)} more</p>
                     </div>
                   </div>
                 )}
                 {!useFEIE && netIncome > 100000 && (
-                  <div className="flex items-center justify-between p-2 rounded bg-violet-50 dark:bg-violet-950/30 border border-violet-200 dark:border-violet-800">
+                  <div className="flex items-center justify-between p-3 rounded-lg bg-violet-50 dark:bg-violet-900/50 border border-violet-300 dark:border-violet-600">
                     <div className="flex items-center gap-2">
-                      <Plane className="h-4 w-4 text-violet-600" />
-                      <span className="text-sm">Foreign Earned Income Exclusion</span>
+                      <Plane className="h-4 w-4 text-violet-600 dark:text-violet-400" />
+                      <span className="text-sm text-violet-900 dark:text-violet-100">Foreign Earned Income Exclusion</span>
                     </div>
                     <div className="text-right">
-                      <span className="text-sm font-medium text-violet-600">+{formatCurrency(Math.min(netIncome, TAX_CONSTANTS.feieExclusion2024) * 0.32)}</span>
-                      <p className="text-xs text-muted-foreground">live abroad 330+ days</p>
+                      <span className="text-sm font-medium text-violet-600 dark:text-violet-400">+{formatCurrency(Math.min(netIncome, TAX_CONSTANTS.feieExclusion2024) * 0.32)}</span>
+                      <p className="text-xs text-violet-700 dark:text-violet-300">live abroad 330+ days</p>
                     </div>
                   </div>
                 )}
