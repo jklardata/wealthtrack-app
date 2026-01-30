@@ -61,4 +61,20 @@ export const PRICING_TIERS = {
       'Premium tools',
     ],
   },
+  // Legacy tier - maps to Pro for existing subscribers
+  premium: {
+    name: 'Pro',
+    monthlyPrice: 29,
+    yearlyPrice: 249,
+    description: 'Full access to all premium tools',
+    features: [
+      'Everything in Free',
+      'Scenario modeling',
+      'Advanced tax engine',
+      'Retirement optimization',
+      'Projections & alerts',
+      'Saved plans',
+      'Premium tools',
+    ],
+  },
 } as const;
