@@ -1014,10 +1014,16 @@ export default function TaxCalculatorPage() {
               <span className="text-xs text-muted-foreground">QBI Deduction</span>
               <span className="text-sm font-medium text-green-600">{formatCurrency(calculations[0].qbiDeduction * 0.32)}</span>
             </div>
+            {calculations[0].taxLossHarvesting > 0 && (
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-muted-foreground">Tax Loss Harvesting</span>
+                <span className="text-sm font-medium text-green-600">{formatCurrency(calculations[0].taxSavingsFromTLH)}</span>
+              </div>
+            )}
             {calculations[0].feieExclusion > 0 && (
               <div className="flex items-center justify-between">
                 <span className="text-xs text-muted-foreground">FEIE</span>
-                <span className="text-sm font-medium text-green-600">{formatCurrency(calculations[0].feieExclusion * 0.32)}</span>
+                <span className="text-sm font-medium text-green-600">{formatCurrency(calculations[0].feieExclusion * 0.18)}</span>
               </div>
             )}
           </div>
