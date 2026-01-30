@@ -260,8 +260,9 @@ export default function TaxCalculatorPage() {
   const [sepIraContribution, setSepIraContribution] = useState("0");
   const [taxLossHarvesting, setTaxLossHarvesting] = useState("0");
 
-  // FEIE
-  const [useFEIE, setUseFEIE] = useState(false);
+  // FEIE - separate toggles for 1099 and W-2
+  const [useFEIE1099, setUseFEIE1099] = useState(false);
+  const [useFEIEW2, setUseFEIEW2] = useState(false);
   const [daysAbroad, setDaysAbroad] = useState("330");
 
   // UI State
@@ -384,7 +385,7 @@ export default function TaxCalculatorPage() {
       // Apply FEIE if eligible
       let feieExclusion = 0;
       let adjustedTaxableIncome = taxableIncome;
-      if (useFEIE && parseInt(daysAbroad) >= 330) {
+      if (useFEIE1099 && parseInt(daysAbroad) >= 330) {
         feieExclusion = Math.min(netIncome, TAX_CONSTANTS.feieExclusion2024);
         adjustedTaxableIncome = Math.max(0, taxableIncome - feieExclusion);
       }
@@ -462,7 +463,7 @@ export default function TaxCalculatorPage() {
       // Apply FEIE if eligible (only applies to earned income / salary)
       let feieExclusion = 0;
       let adjustedTaxableIncome = taxableIncome;
-      if (useFEIE && parseInt(daysAbroad) >= 330) {
+      if (useFEIE1099 && parseInt(daysAbroad) >= 330) {
         feieExclusion = Math.min(salary, TAX_CONSTANTS.feieExclusion2024);
         adjustedTaxableIncome = Math.max(0, taxableIncome - feieExclusion);
       }
@@ -530,7 +531,7 @@ export default function TaxCalculatorPage() {
       // FEIE for W-2 employees working abroad
       let feieExclusion = 0;
       let adjustedTaxableIncome = taxableIncome;
-      if (useFEIE && parseInt(daysAbroad) >= 330) {
+      if (useFEIEW2 && parseInt(daysAbroad) >= 330) {
         feieExclusion = Math.min(salary, TAX_CONSTANTS.feieExclusion2024);
         adjustedTaxableIncome = Math.max(0, taxableIncome - feieExclusion);
       }
@@ -585,7 +586,7 @@ export default function TaxCalculatorPage() {
     results.push(w2Employee);
 
     return results;
-  }, [gross, netIncome, expenses, filingStatus, stateRate, sCorpSalaryPercent, customSalary, totalRetirementContribution, effectiveSolo401k, effectiveSepIra, hsa, effectiveRothIra, tlh, useFEIE, daysAbroad, standardDeduction]);
+  }, [gross, netIncome, expenses, filingStatus, stateRate, sCorpSalaryPercent, customSalary, totalRetirementContribution, effectiveSolo401k, effectiveSepIra, hsa, effectiveRothIra, tlh, useFEIE1099, useFEIEW2, daysAbroad, standardDeduction]);
 
   // Tradeoffs data for Sole Prop vs W-2
   const tradeoffsData = useMemo(() => {
@@ -943,25 +944,45 @@ export default function TaxCalculatorPage() {
               </p>
             </div>
 
-            <div className="pt-2 border-t">
+            <div className="pt-2 border-t space-y-3">
+              <div className="flex items-center gap-2 text-sm font-medium">
+                <Plane className="h-4 w-4" />
+                Foreign Earned Income Exclusion (FEIE)
+              </div>
+
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
-                  <Label htmlFor="feie" className="flex items-center gap-2">
-                    <Plane className="h-4 w-4" />
-                    Use FEIE
+                  <Label htmlFor="feie1099" className="text-sm">
+                    Apply to 1099 / Self-Employed
                   </Label>
                   <p className="text-xs text-muted-foreground">
-                    Foreign Earned Income Exclusion
+                    Sole Prop & S-Corp income
                   </p>
                 </div>
                 <Switch
-                  id="feie"
-                  checked={useFEIE}
-                  onCheckedChange={setUseFEIE}
+                  id="feie1099"
+                  checked={useFEIE1099}
+                  onCheckedChange={setUseFEIE1099}
                 />
               </div>
 
-              {useFEIE && (
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <Label htmlFor="feieW2" className="text-sm">
+                    Apply to W-2 Income
+                  </Label>
+                  <p className="text-xs text-muted-foreground">
+                    Traditional employment
+                  </p>
+                </div>
+                <Switch
+                  id="feieW2"
+                  checked={useFEIEW2}
+                  onCheckedChange={setUseFEIEW2}
+                />
+              </div>
+
+              {(useFEIE1099 || useFEIEW2) && (
                 <div className="mt-3 space-y-2">
                   <Label htmlFor="daysAbroad">Days Living Abroad</Label>
                   <Input
@@ -1050,7 +1071,7 @@ export default function TaxCalculatorPage() {
           )}
 
           {/* Missing Opportunities */}
-          {(retirement401k < maxSolo401k || hsa < (filingStatus === "married" ? 8300 : 4150) || tlh < TAX_CONSTANTS.capitalLossDeductionLimit || (!useFEIE && netIncome > 100000)) && (
+          {(retirement401k < maxSolo401k || hsa < (filingStatus === "married" ? 8300 : 4150) || tlh < TAX_CONSTANTS.capitalLossDeductionLimit || ((!useFEIE1099 || !useFEIEW2) && netIncome > 100000)) && (
             <div className="border-t pt-3">
               <div className="flex items-center gap-2 mb-2">
                 <AlertTriangle className="h-4 w-4 text-amber-500" />
@@ -1075,9 +1096,15 @@ export default function TaxCalculatorPage() {
                     <span className="font-medium text-amber-600">+{formatCurrency((TAX_CONSTANTS.capitalLossDeductionLimit - tlh) * 0.32)}</span>
                   </div>
                 )}
-                {!useFEIE && netIncome > 100000 && (
+                {!useFEIE1099 && netIncome > 100000 && (
                   <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">FEIE (live abroad)</span>
+                    <span className="text-muted-foreground">FEIE for 1099</span>
+                    <span className="font-medium text-violet-600">+{formatCurrency(Math.min(netIncome, TAX_CONSTANTS.feieExclusion2024) * 0.18)}</span>
+                  </div>
+                )}
+                {!useFEIEW2 && netIncome > 100000 && (
+                  <div className="flex items-center justify-between">
+                    <span className="text-muted-foreground">FEIE for W-2</span>
                     <span className="font-medium text-violet-600">+{formatCurrency(Math.min(netIncome, TAX_CONSTANTS.feieExclusion2024) * 0.18)}</span>
                   </div>
                 )}
@@ -1585,7 +1612,7 @@ export default function TaxCalculatorPage() {
             )}
 
             {/* FEIE Recommendation */}
-            {!useFEIE && netIncome > 100000 && (
+            {!useFEIE1099 && !useFEIEW2 && netIncome > 100000 && (
               <div className="p-4 rounded-lg bg-violet-500/5 border border-violet-500/20">
                 <div className="flex items-start gap-3">
                   <Plane className="h-5 w-5 text-violet-500 mt-0.5" />
