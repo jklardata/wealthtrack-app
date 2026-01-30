@@ -403,7 +403,9 @@ export default function TaxCalculatorPage() {
       const taxSavingsFromExpenses = expenses * marginalRate;
       const taxSavingsFromTLH = tlh * marginalRate;
       const qbiTaxSavings = qbiDeduction * marginalRate;
-      const taxSavingsFromFEIE = feieExclusion * marginalRate;
+      // FEIE excludes income from bottom brackets, so effective rate is lower (~18-20%)
+      const feieEffectiveRate = 0.18;
+      const taxSavingsFromFEIE = feieExclusion * feieEffectiveRate;
       const totalTaxSavings = taxSavingsFrom401k + taxSavingsFromHSA + taxSavingsFromExpenses + qbiTaxSavings + taxSavingsFromTLH + taxSavingsFromFEIE;
 
       return {
@@ -479,7 +481,9 @@ export default function TaxCalculatorPage() {
       const taxSavingsFromExpenses = expenses * marginalRate;
       const taxSavingsFromTLH = tlh * marginalRate;
       const qbiTaxSavings = qbiDeduction * marginalRate;
-      const taxSavingsFromFEIE = feieExclusion * marginalRate;
+      // FEIE excludes income from bottom brackets, so effective rate is lower (~18-20%)
+      const feieEffectiveRate = 0.18;
+      const taxSavingsFromFEIE = feieExclusion * feieEffectiveRate;
       const totalTaxSavings = taxSavingsFrom401k + taxSavingsFromHSA + taxSavingsFromExpenses + qbiTaxSavings + taxSavingsFromTLH + taxSavingsFromFEIE;
 
       return {
@@ -545,7 +549,9 @@ export default function TaxCalculatorPage() {
       const taxSavingsFromHSA = hsa * marginalRate; // W-2 HSA doesn't save FICA if through payroll, but we'll assume same
       const taxSavingsFromExpenses = 0; // W-2 can't deduct business expenses
       const taxSavingsFromTLH = tlh * marginalRate;
-      const taxSavingsFromFEIE = feieExclusion * marginalRate;
+      // FEIE excludes income from bottom brackets, so effective rate is lower (~18-20%)
+      const feieEffectiveRate = 0.18;
+      const taxSavingsFromFEIE = feieExclusion * feieEffectiveRate;
       const totalTaxSavings = taxSavingsFrom401k + taxSavingsFromHSA + taxSavingsFromTLH + taxSavingsFromFEIE;
 
       return {
@@ -1066,7 +1072,7 @@ export default function TaxCalculatorPage() {
                 {!useFEIE && netIncome > 100000 && (
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground">FEIE (live abroad)</span>
-                    <span className="font-medium text-violet-600">+{formatCurrency(Math.min(netIncome, TAX_CONSTANTS.feieExclusion2024) * 0.32)}</span>
+                    <span className="font-medium text-violet-600">+{formatCurrency(Math.min(netIncome, TAX_CONSTANTS.feieExclusion2024) * 0.18)}</span>
                   </div>
                 )}
               </div>
@@ -1202,11 +1208,11 @@ export default function TaxCalculatorPage() {
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className="font-medium">401(k) Contribution</TableCell>
+                  <TableCell className="font-medium">401(k) + SEP IRA</TableCell>
                   <TableCell>
                     <div>
                       <span className="text-primary font-medium">{formatCurrency(calculations[0].retirement401k)}</span>
-                      <p className="text-xs text-muted-foreground">Max: {formatCurrency(maxSolo401k)} (Solo 401k)</p>
+                      <p className="text-xs text-muted-foreground">Max: $69,000 combined limit</p>
                     </div>
                   </TableCell>
                   <TableCell>
@@ -1221,6 +1227,44 @@ export default function TaxCalculatorPage() {
                     </span>
                   </TableCell>
                 </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">Tax Loss Harvesting</TableCell>
+                  <TableCell>
+                    <div>
+                      <span className="text-green-600 font-medium">{formatCurrency(calculations[0].taxLossHarvesting)}</span>
+                      <p className="text-xs text-muted-foreground">Max: $3,000/year deduction</p>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div>
+                      <span className="font-medium">{formatCurrency(calculations[2].taxLossHarvesting)}</span>
+                      <p className="text-xs text-muted-foreground">Same limit applies</p>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <span className="text-muted-foreground">$0</span>
+                  </TableCell>
+                </TableRow>
+                {(calculations[0].feieExclusion > 0 || calculations[2].feieExclusion > 0) && (
+                  <TableRow>
+                    <TableCell className="font-medium">FEIE Exclusion</TableCell>
+                    <TableCell>
+                      <div>
+                        <span className="text-green-600 font-medium">{formatCurrency(calculations[0].feieExclusion)}</span>
+                        <p className="text-xs text-muted-foreground">Max: {formatCurrency(TAX_CONSTANTS.feieExclusion2024)}</p>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div>
+                        <span className="font-medium">{formatCurrency(calculations[2].feieExclusion)}</span>
+                        <p className="text-xs text-muted-foreground">Same exclusion available</p>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <span className="text-muted-foreground">$0</span>
+                    </TableCell>
+                  </TableRow>
+                )}
                 <TableRow>
                   <TableCell className="font-medium">Business Expenses</TableCell>
                   <TableCell>
@@ -1258,7 +1302,7 @@ export default function TaxCalculatorPage() {
                   <TableCell className="font-medium">
                     <div>
                       Total Tax Savings
-                      <p className="text-xs text-muted-foreground">From 401k, HSA, expenses, QBI</p>
+                      <p className="text-xs text-muted-foreground">From 401k, HSA, expenses, QBI, TLH, FEIE</p>
                     </div>
                   </TableCell>
                   <TableCell>
