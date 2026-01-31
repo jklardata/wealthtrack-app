@@ -3,9 +3,26 @@ import type { SheetRow, CreditCardSheetRow, CreditCardStatus, ConsultingIncomeSh
 
 const SERVICE_ACCOUNT_EMAIL = 'wealthtrack-sheets@wealth-tracker-485215.iam.gserviceaccount.com';
 
+// Parse service account credentials, handling escaped newlines in private_key
+function parseServiceAccountCredentials() {
+  const rawKey = process.env.GOOGLE_SERVICE_ACCOUNT_KEY || '{}';
+
+  // Handle case where newlines in private_key are escaped as \\n or literal \n
+  const fixedKey = rawKey.replace(/\\n/g, '\n');
+
+  try {
+    return JSON.parse(fixedKey);
+  } catch {
+    // If still failing, try to fix common issues with the private_key field
+    // Sometimes the key is double-escaped
+    const doubleFixedKey = rawKey.replace(/\\\\n/g, '\n');
+    return JSON.parse(doubleFixedKey);
+  }
+}
+
 // Initialize Google Sheets API with service account (read-only)
 function getGoogleSheetsClient() {
-  const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY || '{}');
+  const credentials = parseServiceAccountCredentials();
 
   const auth = new google.auth.GoogleAuth({
     credentials,
@@ -17,7 +34,7 @@ function getGoogleSheetsClient() {
 
 // Initialize Google Sheets API with full access for creating sheets
 function getGoogleSheetsClientFull() {
-  const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_KEY || '{}');
+  const credentials = parseServiceAccountCredentials();
 
   const auth = new google.auth.GoogleAuth({
     credentials,
