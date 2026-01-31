@@ -3,20 +3,50 @@ import type { SheetRow, CreditCardSheetRow, CreditCardStatus, ConsultingIncomeSh
 
 const SERVICE_ACCOUNT_EMAIL = 'wealthtrack-sheets@wealth-tracker-485215.iam.gserviceaccount.com';
 
-// Parse service account credentials, handling escaped newlines in private_key
+// Parse service account credentials, handling various encoding issues
 function parseServiceAccountCredentials() {
   const rawKey = process.env.GOOGLE_SERVICE_ACCOUNT_KEY || '{}';
 
-  // Handle case where newlines in private_key are escaped as \\n or literal \n
-  const fixedKey = rawKey.replace(/\\n/g, '\n');
+  // Try 1: Check if it's base64 encoded (recommended for Vercel)
+  if (!rawKey.startsWith('{')) {
+    try {
+      const decoded = Buffer.from(rawKey, 'base64').toString('utf-8');
+      return JSON.parse(decoded);
+    } catch {
+      // Not valid base64, continue with other methods
+    }
+  }
 
+  // Try 2: Parse directly (works if newlines are properly escaped)
   try {
+    return JSON.parse(rawKey);
+  } catch {
+    // Continue to fallback methods
+  }
+
+  // Try 3: Replace escaped newlines
+  try {
+    const fixedKey = rawKey.replace(/\\n/g, '\n');
     return JSON.parse(fixedKey);
   } catch {
-    // If still failing, try to fix common issues with the private_key field
-    // Sometimes the key is double-escaped
+    // Continue
+  }
+
+  // Try 4: Handle double-escaped newlines
+  try {
     const doubleFixedKey = rawKey.replace(/\\\\n/g, '\n');
     return JSON.parse(doubleFixedKey);
+  } catch {
+    // Continue
+  }
+
+  // Try 5: Remove actual newlines/carriage returns and parse
+  try {
+    const cleanedKey = rawKey.replace(/[\r\n]+/g, '\\n');
+    return JSON.parse(cleanedKey);
+  } catch (e) {
+    console.error('Failed to parse GOOGLE_SERVICE_ACCOUNT_KEY:', e);
+    throw new Error('Invalid GOOGLE_SERVICE_ACCOUNT_KEY format. Try base64 encoding the JSON.');
   }
 }
 
