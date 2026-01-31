@@ -28,7 +28,8 @@ export async function POST(request: NextRequest) {
   const corsHeaders = getCorsHeaders(origin);
 
   try {
-    const { email } = await request.json();
+    const body = await request.json();
+    const { email, source, metadata } = body;
 
     if (!email || typeof email !== 'string') {
       return NextResponse.json(
@@ -62,14 +63,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Insert new subscriber
+    // Insert new subscriber with optional source and metadata
+    const insertData: Record<string, unknown> = {
+      email: email.toLowerCase(),
+      source: source || 'landing_page',
+      subscribed_at: new Date().toISOString(),
+    };
+
+    // Add metadata if provided (requires metadata column in table)
+    if (metadata && typeof metadata === 'object') {
+      insertData.metadata = metadata;
+    }
+
     const { error } = await supabase
       .from('newsletter_subscribers')
-      .insert({
-        email: email.toLowerCase(),
-        source: 'landing_page',
-        subscribed_at: new Date().toISOString(),
-      });
+      .insert(insertData);
 
     if (error) {
       console.error('Newsletter signup error:', error);

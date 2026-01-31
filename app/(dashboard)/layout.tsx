@@ -17,6 +17,7 @@ import {
   Globe,
   Sparkles,
   Lightbulb,
+  Sunrise,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -31,6 +32,7 @@ const navItems = [
   { href: "/credit-cards", label: "Credit Cards", icon: CreditCard },
   { href: "/portfolio-optimizer", label: "Portfolio Optimizer", icon: PieChart },
   { href: "/retirement", label: "Retirement Calculator", icon: Calculator },
+  { href: "/early-retirement", label: "Early Retirement", icon: Sunrise },
   { href: "/tax-calculator", label: "Tax Calculator", icon: Receipt },
   { href: "/tax-optimization", label: "Tax Optimization", icon: Lightbulb },
   { href: "/geo-arbitrage", label: "Geo Arbitrage", icon: Globe },
