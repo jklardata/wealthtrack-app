@@ -8,6 +8,8 @@ export const metadata = {
   description: "Model tax strategies, portfolio allocation, and retirement outcomes before making irreversible financial decisions. Built for independent consultants and high earners.",
 };
 
+// Force deployment refresh
+
 const VARIANT = "landing_21_decision_engine";
 
 export default function Landing21() {
