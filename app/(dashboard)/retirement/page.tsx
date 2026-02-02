@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { ProFeatureGate } from "@/components/pro-feature-gate";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
@@ -276,13 +277,25 @@ function RetirementPageContent() {
   } : null;
 
   return (
-    <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
-      <div className="max-w-7xl mx-auto space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-2xl sm:text-3xl font-medium text-slate-900 flex items-center gap-2">
-          <Calculator className="h-6 w-6 sm:h-7 sm:w-7 text-emerald-600 flex-shrink-0" />
-          Retirement Calculator
+    <ProFeatureGate
+      featureName="Retirement Calculator"
+      description="Plan your retirement with location-based cost-of-living adjustments and scenario comparisons."
+      benefits={[
+        "Location-based retirement planning",
+        "Cost-of-living adjusted expenses",
+        "Multiple scenario comparisons",
+        "Withdrawal rate optimization",
+        "Years to FI calculations",
+        "Geographic arbitrage insights"
+      ]}
+    >
+      <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
+        <div className="max-w-7xl mx-auto space-y-6">
+        {/* Header */}
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-medium text-slate-900 flex items-center gap-2">
+            <Calculator className="h-6 w-6 sm:h-7 sm:w-7 text-emerald-600 flex-shrink-0" />
+            Retirement Calculator
         </h1>
         <p className="text-sm sm:text-base text-slate-500 mt-1">
           Plan your retirement with cost-of-living adjustments
@@ -1208,6 +1221,7 @@ function RetirementPageContent() {
       </div>
       </div>
     </div>
+    </ProFeatureGate>
   );
 }
 

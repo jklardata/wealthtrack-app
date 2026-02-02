@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
+import { ProFeatureGate } from "@/components/pro-feature-gate";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Select,
@@ -244,10 +245,22 @@ export default function ComparePage() {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold flex items-center gap-2">
+    <ProFeatureGate
+      featureName="Scenario Comparison"
+      description="Compare multiple retirement scenarios side-by-side with location-based adjustments."
+      benefits={[
+        "Side-by-side scenario comparison",
+        "Location impact analysis",
+        "Years to FI delta calculations",
+        "Required net worth comparisons",
+        "Cost-of-living adjustments",
+        "Savings rate optimization"
+      ]}
+    >
+      <div className="space-y-6">
+        {/* Header */}
+        <div>
+          <h1 className="text-3xl font-bold flex items-center gap-2">
           <GitCompare className="h-7 w-7 text-primary" />
           Move vs Stay Comparison
         </h1>
@@ -428,5 +441,6 @@ export default function ComparePage() {
         </CardContent>
       </Card>
     </div>
+    </ProFeatureGate>
   );
 }

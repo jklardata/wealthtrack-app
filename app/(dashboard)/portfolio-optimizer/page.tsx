@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { ProFeatureGate } from "@/components/pro-feature-gate";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -1152,8 +1153,20 @@ export default function PortfolioOptimizerPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <ProFeatureGate
+      featureName="Portfolio Optimizer"
+      description="AI-powered portfolio optimization with market valuation insights and factor tilts."
+      benefits={[
+        "Risk assessment questionnaire",
+        "Personalized portfolio recommendations",
+        "Market valuation analysis (CAPE ratio)",
+        "Factor tilt recommendations (value, small-cap)",
+        "Rebalancing trade suggestions",
+        "Expected returns and volatility analysis"
+      ]}
+    >
+      <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
+        <div className="max-w-7xl mx-auto space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
@@ -1476,5 +1489,6 @@ export default function PortfolioOptimizerPage() {
       )}
       </div>
     </div>
+    </ProFeatureGate>
   );
 }

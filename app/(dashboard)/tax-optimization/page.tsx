@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
+import { ProFeatureGate } from "@/components/pro-feature-gate";
 import {
   Card,
   CardContent,
@@ -1385,7 +1386,19 @@ export default function TaxOptimizationPage() {
 
   // Dashboard with data
   return (
-    <div className="space-y-6">
+    <ProFeatureGate
+      featureName="Tax Optimization"
+      description="Advanced tax planning tools for self-employed professionals and consultants."
+      benefits={[
+        "Tax health dashboard",
+        "Deduction efficiency analyzer",
+        "Business structure comparison (LLC vs S-Corp)",
+        "Quarterly estimated tax calculator",
+        "Capital gains strategy simulator",
+        "Self-employment tax optimization"
+      ]}
+    >
+      <div className="space-y-6">
       {/* Header */}
       <div>
         <h1 className="text-2xl sm:text-3xl font-medium text-slate-900 flex items-center gap-2">
@@ -1433,5 +1446,6 @@ export default function TaxOptimizationPage() {
         />
       </div>
     </div>
+    </ProFeatureGate>
   );
 }
