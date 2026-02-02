@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getStripe } from '@/lib/stripe';
 import { createServerSupabaseClient } from '@/lib/supabase';
-import { getTierFromMetadata } from '@/lib/stripe-config';
+import { getTierFromMetadata, getTierFromPriceId } from '@/lib/stripe-config';
 import type Stripe from 'stripe';
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -52,11 +52,23 @@ export async function POST(request: NextRequest) {
         const subscription = await stripe.subscriptions.retrieve(subscriptionId);
         const priceId = subscription.items.data[0]?.price.id;
 
-        // Get product metadata to determine tier
-        const product = await stripe.products.retrieve(
-          subscription.items.data[0]?.price.product as string
-        );
-        const tier = getTierFromMetadata(product.metadata);
+        // Try to get tier from price ID first, fallback to product metadata
+        let tier = getTierFromPriceId(priceId);
+
+        // If not found in price config, try product metadata
+        if (tier === 'free') {
+          const product = await stripe.products.retrieve(
+            subscription.items.data[0]?.price.product as string
+          );
+          tier = getTierFromMetadata(product.metadata);
+        }
+
+        console.log('Webhook: Processing checkout.session.completed', {
+          subscriptionId,
+          priceId,
+          tier,
+          customerId
+        });
 
         // Update subscription in database
         // Get current_period_end from the first subscription item
@@ -115,11 +127,25 @@ export async function POST(request: NextRequest) {
           ? subscription.customer
           : subscription.customer.id;
 
-        // Get product metadata to determine tier (in case of plan change)
-        const product = await stripe.products.retrieve(
-          subscription.items.data[0]?.price.product as string
-        );
-        const tier = getTierFromMetadata(product.metadata);
+        // Try to get tier from price ID first, fallback to product metadata
+        const priceId = subscription.items.data[0]?.price.id;
+        let tier = getTierFromPriceId(priceId);
+
+        // If not found in price config, try product metadata
+        if (tier === 'free') {
+          const product = await stripe.products.retrieve(
+            subscription.items.data[0]?.price.product as string
+          );
+          tier = getTierFromMetadata(product.metadata);
+        }
+
+        console.log('Webhook: Processing customer.subscription.updated', {
+          subscriptionId: subscription.id,
+          priceId,
+          tier,
+          customerId,
+          status: subscription.status
+        });
 
         // Get current_period_end from the first subscription item
         const periodEndUpdatedTimestamp = subscription.items.data[0]?.current_period_end;

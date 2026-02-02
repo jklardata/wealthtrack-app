@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
           quantity: 1,
         },
       ],
-      success_url: `${appUrl}/upgrade?success=true&tier=${tier}`,
+      success_url: `${appUrl}/dashboard?success=true&tier=${tier}`,
       cancel_url: `${appUrl}/upgrade?canceled=true`,
       subscription_data: {
         metadata: {
