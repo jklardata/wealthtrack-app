@@ -2,7 +2,8 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { ProFeatureGate } from "@/components/pro-feature-gate";
+import { useSubscription } from "@/hooks/use-subscription";
+import { LockedModule } from "@/components/locked-module";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
@@ -62,6 +63,8 @@ function formatPercent(value: number): string {
 }
 
 function RetirementPageContent() {
+  const { isPro, isLoading: subscriptionLoading } = useSubscription();
+
   // URL params for scenario support
   const searchParams = useSearchParams();
   const scenarioId = searchParams.get("scenario");
@@ -258,7 +261,7 @@ function RetirementPageContent() {
     phase: p.phase,
   })) || [];
 
-  if (loadingNetWorth || loadingScenario) {
+  if (loadingNetWorth || loadingScenario || subscriptionLoading) {
     return (
       <div className="space-y-6">
         <Skeleton className="h-8 w-64" />
@@ -277,20 +280,8 @@ function RetirementPageContent() {
   } : null;
 
   return (
-    <ProFeatureGate
-      featureName="Retirement Calculator"
-      description="Plan your retirement with location-based cost-of-living adjustments and scenario comparisons."
-      benefits={[
-        "Location-based retirement planning",
-        "Cost-of-living adjusted expenses",
-        "Multiple scenario comparisons",
-        "Withdrawal rate optimization",
-        "Years to FI calculations",
-        "Geographic arbitrage insights"
-      ]}
-    >
-      <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
-        <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div>
           <h1 className="text-2xl sm:text-3xl font-medium text-slate-900 flex items-center gap-2">
@@ -572,29 +563,30 @@ function RetirementPageContent() {
       })()}
 
       {/* Tax Optimization Strategies */}
-      <Card className="border-amber-500/20 bg-gradient-to-r from-amber-500/5 to-primary/5">
-        <CardHeader
-          className="cursor-pointer select-none"
-          onClick={() => {
-            const el = document.getElementById('tax-strategies-content');
-            if (el) el.classList.toggle('hidden');
-            const chevron = document.getElementById('tax-strategies-chevron');
-            if (chevron) chevron.classList.toggle('rotate-180');
-          }}
-        >
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              <Landmark className="h-5 w-5 text-amber-500" />
-              <CardTitle className="text-lg">Tax Optimization Strategies</CardTitle>
-              <span className="text-xs text-slate-500 bg-muted px-2 py-0.5 rounded">For US Taxpayers</span>
+      {isPro ? (
+        <Card className="border-amber-500/20 bg-gradient-to-r from-amber-500/5 to-primary/5">
+          <CardHeader
+            className="cursor-pointer select-none"
+            onClick={() => {
+              const el = document.getElementById('tax-strategies-content');
+              if (el) el.classList.toggle('hidden');
+              const chevron = document.getElementById('tax-strategies-chevron');
+              if (chevron) chevron.classList.toggle('rotate-180');
+            }}
+          >
+            <div className="flex justify-between items-center">
+              <div className="flex items-center gap-2">
+                <Landmark className="h-5 w-5 text-amber-500" />
+                <CardTitle className="text-lg">Tax Optimization Strategies</CardTitle>
+                <span className="text-xs text-slate-500 bg-muted px-2 py-0.5 rounded">For US Taxpayers</span>
+              </div>
+              <ChevronDown id="tax-strategies-chevron" className="h-5 w-5 text-slate-500 transition-transform" />
             </div>
-            <ChevronDown id="tax-strategies-chevron" className="h-5 w-5 text-slate-500 transition-transform" />
-          </div>
-          <p className="text-sm text-slate-500">
-            Strategies to reduce your tax burden during accumulation and retirement
-          </p>
-        </CardHeader>
-        <CardContent id="tax-strategies-content" className="hidden space-y-4">
+            <p className="text-sm text-slate-500">
+              Strategies to reduce your tax burden during accumulation and retirement
+            </p>
+          </CardHeader>
+          <CardContent id="tax-strategies-content" className="hidden space-y-4">
           <div className="grid gap-4 md:grid-cols-2">
             {/* FEIE */}
             <div className="p-4 rounded-lg bg-amber-50/50 dark:bg-amber-950/20 border border-amber-500/20">
@@ -715,6 +707,14 @@ function RetirementPageContent() {
           </div>
         </CardContent>
       </Card>
+      ) : (
+        <LockedModule
+          title="Tax Optimization Strategies"
+          description="Advanced tax strategies for US taxpayers"
+          icon={<Landmark className="h-5 w-5 text-amber-500" />}
+          benefits={["FEIE (Foreign Earned Income Exclusion)", "S-Corp election strategies", "Solo 401(k) optimization", "HSA triple tax advantage"]}
+        />
+      )}
 
       {/* No data warning */}
       {netWorthEntries.length === 0 && (
@@ -734,9 +734,10 @@ function RetirementPageContent() {
       )}
 
       {/* Spending Weights & Cost Breakdown - Side by Side */}
-      <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
-        {/* Spending Category Weights */}
-        <Card className="bg-white border-slate-200 shadow-sm">
+      {isPro ? (
+        <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
+          {/* Spending Category Weights */}
+          <Card className="bg-white border-slate-200 shadow-sm">
           <CardHeader>
             <div className="flex justify-between items-center">
               <CardTitle className="text-lg font-medium text-slate-900">Spending Category Weights</CardTitle>
@@ -831,7 +832,15 @@ function RetirementPageContent() {
             </CardContent>
           </Card>
         )}
-      </div>
+        </div>
+      ) : (
+        <LockedModule
+          title="Spending Analysis & Cost Breakdown"
+          description="Customize spending weights and see detailed cost breakdown by category"
+          icon={<Calculator className="h-5 w-5 text-emerald-600" />}
+          benefits={["Adjust spending category weights", "Detailed cost breakdown by city", "Monthly vs annual spending analysis"]}
+        />
+      )}
 
       {/* Validation Errors and Warnings */}
       {errors.length > 0 && (
@@ -853,6 +862,7 @@ function RetirementPageContent() {
 
       {/* Results Section */}
       {results && errors.filter(e => !e.startsWith('Warning:')).length === 0 && (
+        isPro ? (
         <>
           {/* Key Metrics */}
           <div className="grid gap-3 sm:gap-4 grid-cols-2 md:grid-cols-4">
@@ -1209,6 +1219,28 @@ function RetirementPageContent() {
             </CardContent>
           </Card>
         </>
+        ) : (
+          <>
+            <LockedModule
+              title="Key Metrics"
+              description="View adjusted spending, safe withdrawal, required net worth, and years to retirement"
+              icon={<Calculator className="h-5 w-5 text-emerald-600" />}
+              benefits={["Adjusted spending by location", "Safe withdrawal calculations", "Required net worth", "Years to retirement"]}
+            />
+            <LockedModule
+              title="Net Worth Projection"
+              description="Interactive chart showing your path to retirement with city thresholds"
+              icon={<TrendingUp className="h-5 w-5 text-emerald-600" />}
+              benefits={["Retirement timeline projection", "Multiple city thresholds", "Interactive tooltips"]}
+            />
+            <LockedModule
+              title="All Cities Comparison"
+              description="Compare retirement requirements across all available cities"
+              icon={<Globe className="h-5 w-5 text-emerald-600" />}
+              benefits={["Compare all cities", "Years to retirement by location", "Cost-of-living multipliers"]}
+            />
+          </>
+        )
       )}
 
       {/* Feedback Widget */}
@@ -1221,7 +1253,6 @@ function RetirementPageContent() {
       </div>
       </div>
     </div>
-    </ProFeatureGate>
   );
 }
 

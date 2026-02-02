@@ -2,7 +2,8 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { ProFeatureGate } from "@/components/pro-feature-gate";
+import { useSubscription } from "@/hooks/use-subscription";
+import { LockedModule } from "@/components/locked-module";
 import {
   Card,
   CardContent,
@@ -1296,6 +1297,7 @@ function TaxReturnRawData({
 // ============================================
 
 export default function TaxOptimizationPage() {
+  const { isPro, isLoading: subscriptionLoading } = useSubscription();
   const [taxReturns, setTaxReturns] = useState<TaxReturn[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -1328,7 +1330,7 @@ export default function TaxOptimizationPage() {
   }, [taxReturns]);
 
   // Loading state
-  if (loading) {
+  if (loading || subscriptionLoading) {
     return (
       <div className="space-y-6">
         <div>
@@ -1386,19 +1388,7 @@ export default function TaxOptimizationPage() {
 
   // Dashboard with data
   return (
-    <ProFeatureGate
-      featureName="Tax Optimization"
-      description="Advanced tax planning tools for self-employed professionals and consultants."
-      benefits={[
-        "Tax health dashboard",
-        "Deduction efficiency analyzer",
-        "Business structure comparison (LLC vs S-Corp)",
-        "Quarterly estimated tax calculator",
-        "Capital gains strategy simulator",
-        "Self-employment tax optimization"
-      ]}
-    >
-      <div className="space-y-6">
+    <div className="space-y-6">
       {/* Header */}
       <div>
         <h1 className="text-2xl sm:text-3xl font-medium text-slate-900 flex items-center gap-2">
@@ -1420,19 +1410,54 @@ export default function TaxOptimizationPage() {
       </div>
 
       {/* Module 1: Tax Health Dashboard */}
-      <TaxHealthDashboard taxReturns={taxReturns} />
+      {isPro ? (
+        <TaxHealthDashboard taxReturns={taxReturns} />
+      ) : (
+        <LockedModule
+          title="Tax Health Dashboard"
+          description="Overview of your tax situation and trends"
+          icon={<Calculator className="h-5 w-5 text-emerald-600" />}
+          benefits={["Effective tax rate analysis", "Year-over-year comparisons", "Tax health metrics"]}
+        />
+      )}
 
       {/* Module Grid for remaining modules */}
-      <div className="grid gap-6 lg:grid-cols-2">
-        {/* Module 2: Deduction Efficiency Analyzer */}
-        <DeductionEfficiencyAnalyzer taxReturn={mostRecentReturn!} />
+      {isPro ? (
+        <div className="grid gap-6 lg:grid-cols-2">
+          {/* Module 2: Deduction Efficiency Analyzer */}
+          <DeductionEfficiencyAnalyzer taxReturn={mostRecentReturn!} />
 
-        {/* Module 3: Self-Employment Tax Optimization */}
-        <SelfEmploymentOptimization taxReturn={mostRecentReturn!} />
-      </div>
+          {/* Module 3: Self-Employment Tax Optimization */}
+          <SelfEmploymentOptimization taxReturn={mostRecentReturn!} />
+        </div>
+      ) : (
+        <div className="grid gap-6 lg:grid-cols-2">
+          <LockedModule
+            title="Deduction Efficiency Analyzer"
+            description="Analyze your deduction ratios and opportunities"
+            icon={<Percent className="h-5 w-5 text-emerald-600" />}
+            benefits={["Business expense ratios", "Deduction benchmarking", "Optimization opportunities"]}
+          />
+          <LockedModule
+            title="Self-Employment Tax Optimization"
+            description="S-Corp vs LLC comparison and savings calculator"
+            icon={<Building2 className="h-5 w-5 text-emerald-600" />}
+            benefits={["S-Corp savings calculator", "Reasonable salary estimates", "Tax structure comparison"]}
+          />
+        </div>
+      )}
 
       {/* Module 4: Quarterly Tax Estimator (full width) */}
-      <QuarterlyTaxEstimator taxReturn={mostRecentReturn!} />
+      {isPro ? (
+        <QuarterlyTaxEstimator taxReturn={mostRecentReturn!} />
+      ) : (
+        <LockedModule
+          title="Quarterly Tax Estimator"
+          description="Calculate estimated quarterly tax payments"
+          icon={<Calendar className="h-5 w-5 text-emerald-600" />}
+          benefits={["Quarterly payment calculator", "Safe harbor calculations", "Payment timeline"]}
+        />
+      )}
 
       {/* Module 5: Raw Tax Return Data (All Years) */}
       <TaxReturnRawData taxReturns={taxReturns} />
@@ -1446,6 +1471,5 @@ export default function TaxOptimizationPage() {
         />
       </div>
     </div>
-    </ProFeatureGate>
   );
 }

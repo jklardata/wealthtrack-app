@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { ProFeatureGate } from "@/components/pro-feature-gate";
+import { useSubscription } from "@/hooks/use-subscription";
+import { LockedModule } from "@/components/locked-module";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -920,6 +921,7 @@ function TaxLocationStrategyCard({
 
 // Main Page Component
 export default function PortfolioOptimizerPage() {
+  const { isPro, isLoading: subscriptionLoading } = useSubscription();
   const [loading, setLoading] = useState(true);
   const [optimizing, setOptimizing] = useState(false);
   const [questions, setQuestions] = useState<RiskQuestion[]>([]);
@@ -1082,7 +1084,7 @@ export default function PortfolioOptimizerPage() {
     }
   };
 
-  if (loading) {
+  if (loading || subscriptionLoading) {
     return (
       <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
         <div className="max-w-7xl mx-auto space-y-6">
@@ -1153,20 +1155,8 @@ export default function PortfolioOptimizerPage() {
   };
 
   return (
-    <ProFeatureGate
-      featureName="Portfolio Optimizer"
-      description="AI-powered portfolio optimization with market valuation insights and factor tilts."
-      benefits={[
-        "Risk assessment questionnaire",
-        "Personalized portfolio recommendations",
-        "Market valuation analysis (CAPE ratio)",
-        "Factor tilt recommendations (value, small-cap)",
-        "Rebalancing trade suggestions",
-        "Expected returns and volatility analysis"
-      ]}
-    >
-      <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
-        <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
@@ -1331,7 +1321,8 @@ export default function PortfolioOptimizerPage() {
           </Card>
 
           {/* Key Metrics */}
-          <Card className="bg-white border-slate-200 shadow-sm">
+          {isPro ? (
+            <Card className="bg-white border-slate-200 shadow-sm">
               <CardHeader>
                 <CardTitle className="font-medium text-slate-900">Expected Performance</CardTitle>
                 <CardDescription>
@@ -1369,95 +1360,139 @@ export default function PortfolioOptimizerPage() {
                 </div>
               </CardContent>
             </Card>
+          ) : (
+            <LockedModule
+              title="Expected Performance"
+              description="Based on historical market data and Modern Portfolio Theory"
+              icon={<TrendingUp className="h-5 w-5 text-emerald-600" />}
+              benefits={["Expected Return", "Volatility Analysis", "Sharpe Ratio Calculation"]}
+            />
+          )}
 
           {/* Rebalancing Actions */}
-          <Card className="bg-white border-slate-200 shadow-sm">
-            <CardHeader>
-              <CardTitle className="font-medium text-slate-900">Rebalancing Actions</CardTitle>
-              <CardDescription>
-                Specific trades to align your portfolio with the recommended allocation
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <RebalancingTrades
-                trades={optimization.rebalancing_trades}
-                totalValue={optimization.total_portfolio_value}
-              />
+          {isPro ? (
+            <Card className="bg-white border-slate-200 shadow-sm">
+              <CardHeader>
+                <CardTitle className="font-medium text-slate-900">Rebalancing Actions</CardTitle>
+                <CardDescription>
+                  Specific trades to align your portfolio with the recommended allocation
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <RebalancingTrades
+                  trades={optimization.rebalancing_trades}
+                  totalValue={optimization.total_portfolio_value}
+                />
 
-              {optimization.rebalancing_trades.length > 0 && (
-                <div className="mt-6 flex justify-end">
-                  {savedOptimization?.applied ? (
-                    <div className="flex items-center gap-2 text-green-600">
-                      <CheckCircle2 className="h-5 w-5" />
-                      <span>Marked as applied on {new Date(savedOptimization.applied_date!).toLocaleDateString()}</span>
-                    </div>
-                  ) : (
-                    <Button onClick={markAsApplied} variant="outline">
-                      <CheckCircle2 className="h-4 w-4 mr-2" />
-                      Mark as Applied
-                    </Button>
-                  )}
-                </div>
-              )}
-            </CardContent>
-          </Card>
+                {optimization.rebalancing_trades.length > 0 && (
+                  <div className="mt-6 flex justify-end">
+                    {savedOptimization?.applied ? (
+                      <div className="flex items-center gap-2 text-green-600">
+                        <CheckCircle2 className="h-5 w-5" />
+                        <span>Marked as applied on {new Date(savedOptimization.applied_date!).toLocaleDateString()}</span>
+                      </div>
+                    ) : (
+                      <Button onClick={markAsApplied} variant="outline">
+                        <CheckCircle2 className="h-4 w-4 mr-2" />
+                        Mark as Applied
+                      </Button>
+                    )}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          ) : (
+            <LockedModule
+              title="Rebalancing Actions"
+              description="Specific trades to align your portfolio with the recommended allocation"
+              icon={<RefreshCw className="h-5 w-5 text-emerald-600" />}
+              benefits={["Buy/Sell recommendations", "Tax impact estimates", "Track applied changes"]}
+            />
+          )}
 
           {/* Stock Breakdown */}
           {optimization.stock_breakdown && optimization.total_portfolio_value > 0 && (
-            <StockBreakdownCard
-              breakdown={optimization.stock_breakdown}
-              totalPortfolioValue={optimization.total_portfolio_value}
-              stockAllocation={optimization.recommended_allocation.stocks}
-            />
+            isPro ? (
+              <StockBreakdownCard
+                breakdown={optimization.stock_breakdown}
+                totalPortfolioValue={optimization.total_portfolio_value}
+                stockAllocation={optimization.recommended_allocation.stocks}
+              />
+            ) : (
+              <LockedModule
+                title="Stock Allocation Breakdown"
+                description="Detailed breakdown of core holdings and factor tilts"
+                icon={<TrendingUp className="h-5 w-5 text-emerald-600" />}
+                benefits={["Core holdings (VTI, VXUS)", "Factor tilt recommendations", "Specific ticker suggestions"]}
+              />
+            )
           )}
 
           {/* Tax Location Strategy */}
           {optimization.total_portfolio_value > 0 && (
-            <TaxLocationStrategyCard
-              allocation={optimization.recommended_allocation}
-              totalValue={optimization.total_portfolio_value}
-            />
+            isPro ? (
+              <TaxLocationStrategyCard
+                allocation={optimization.recommended_allocation}
+                totalValue={optimization.total_portfolio_value}
+              />
+            ) : (
+              <LockedModule
+                title="Tax Location Strategy"
+                description="Optimize where you hold each asset class to minimize taxes"
+                icon={<Landmark className="h-5 w-5 text-emerald-600" />}
+                benefits={["Tax-advantaged vs taxable allocation", "Estimated annual tax savings", "Asset placement rules"]}
+              />
+            )
           )}
 
           {/* Allocation Difference Chart */}
-          <Card className="bg-white border-slate-200 shadow-sm">
-            <CardHeader>
-              <CardTitle className="font-medium text-slate-900">Allocation Difference</CardTitle>
-              <CardDescription>
-                How much you need to adjust each asset class
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart
-                  data={Object.keys(optimization.current_allocation).map((key) => ({
-                    name: CATEGORY_LABELS[key as keyof Allocation],
-                    current: optimization.current_allocation[key as keyof Allocation] * 100,
-                    recommended: optimization.recommended_allocation[key as keyof Allocation] * 100,
-                    difference:
-                      (optimization.recommended_allocation[key as keyof Allocation] -
-                        optimization.current_allocation[key as keyof Allocation]) *
-                      100,
-                  }))}
-                  margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-                  <XAxis dataKey="name" className="text-xs" />
-                  <YAxis unit="%" className="text-xs" />
-                  <Tooltip
-                    formatter={(value) => `${Number(value).toFixed(1)}%`}
-                    contentStyle={{
-                      backgroundColor: "hsl(var(--card))",
-                      border: "1px solid hsl(var(--border))",
-                    }}
-                  />
-                  <Legend />
-                  <Bar dataKey="current" name="Current" fill="#6b7280" />
-                  <Bar dataKey="recommended" name="Recommended" fill="#a3e635" />
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
+          {isPro ? (
+            <Card className="bg-white border-slate-200 shadow-sm">
+              <CardHeader>
+                <CardTitle className="font-medium text-slate-900">Allocation Difference</CardTitle>
+                <CardDescription>
+                  How much you need to adjust each asset class
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart
+                    data={Object.keys(optimization.current_allocation).map((key) => ({
+                      name: CATEGORY_LABELS[key as keyof Allocation],
+                      current: optimization.current_allocation[key as keyof Allocation] * 100,
+                      recommended: optimization.recommended_allocation[key as keyof Allocation] * 100,
+                      difference:
+                        (optimization.recommended_allocation[key as keyof Allocation] -
+                          optimization.current_allocation[key as keyof Allocation]) *
+                        100,
+                    }))}
+                    margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+                    <XAxis dataKey="name" className="text-xs" />
+                    <YAxis unit="%" className="text-xs" />
+                    <Tooltip
+                      formatter={(value) => `${Number(value).toFixed(1)}%`}
+                      contentStyle={{
+                        backgroundColor: "hsl(var(--card))",
+                        border: "1px solid hsl(var(--border))",
+                      }}
+                    />
+                    <Legend />
+                    <Bar dataKey="current" name="Current" fill="#6b7280" />
+                    <Bar dataKey="recommended" name="Recommended" fill="#a3e635" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          ) : (
+            <LockedModule
+              title="Allocation Difference"
+              description="Visual comparison of current vs recommended allocation"
+              icon={<Gauge className="h-5 w-5 text-emerald-600" />}
+              benefits={["Bar chart comparison", "Exact percentage differences", "Visual rebalancing guide"]}
+            />
+          )}
 
           {/* Feedback Widget */}
           <div className="flex justify-center">
@@ -1489,6 +1524,5 @@ export default function PortfolioOptimizerPage() {
       )}
       </div>
     </div>
-    </ProFeatureGate>
   );
 }

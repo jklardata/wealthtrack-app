@@ -2,7 +2,8 @@
 
 import { useEffect, useState, useMemo, useCallback } from "react";
 import Link from "next/link";
-import { ProFeatureGate } from "@/components/pro-feature-gate";
+import { useSubscription } from "@/hooks/use-subscription";
+import { LockedModule } from "@/components/locked-module";
 import {
   Card,
   CardContent,
@@ -98,6 +99,8 @@ import { FeedbackWidget } from "@/components/feedback-widget";
 // ============================================================================
 
 export default function EarlyRetirementPage() {
+  const { isPro, isLoading: subscriptionLoading } = useSubscription();
+
   // -------------------------------------------------------------------------
   // State: User Inputs
   // -------------------------------------------------------------------------
@@ -263,7 +266,7 @@ export default function EarlyRetirementPage() {
   // -------------------------------------------------------------------------
   // Render
   // -------------------------------------------------------------------------
-  if (loading) {
+  if (loading || subscriptionLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
@@ -272,21 +275,9 @@ export default function EarlyRetirementPage() {
   }
 
   return (
-    <ProFeatureGate
-      featureName="Early Retirement Calculator"
-      description="Plan your path to financial independence with advanced retirement modeling and semi-retirement strategies."
-      benefits={[
-        "Detailed FI timeline projections",
-        "Semi-retirement bridge planning",
-        "Roth conversion ladder optimizer",
-        "Geographic flexibility analysis",
-        "Withdrawal stress testing",
-        "Multiple lifestyle scenarios"
-      ]}
-    >
-      <TooltipProvider>
-      <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
-        <div className="max-w-7xl mx-auto space-y-6">
+    <TooltipProvider>
+    <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div>
           <h1 className="text-2xl sm:text-3xl font-medium text-slate-900 flex items-center gap-2">
@@ -423,7 +414,16 @@ export default function EarlyRetirementPage() {
         </Card>
 
         {/* Freedom Milestones - Right under filters */}
-        <FreedomMilestonesModule milestones={milestones} />
+        {isPro ? (
+          <FreedomMilestonesModule milestones={milestones} />
+        ) : (
+          <LockedModule
+            title="Freedom Milestones"
+            description="Track your progress through FI stages"
+            icon={<Target className="h-5 w-5 text-emerald-600" />}
+            benefits={["FI stage tracking", "Milestone progress", "Freedom levels"]}
+          />
+        )}
 
         {/* FI Readiness + Lifestyle Budget side by side */}
         <div className="grid gap-6 lg:grid-cols-2">
@@ -433,38 +433,74 @@ export default function EarlyRetirementPage() {
             expenses={annualExpenses}
             withdrawalRate={withdrawalRate}
           />
-          <LifestyleBudgetModule
-            budgets={lifestyleBudgets}
-            selectedMode={lifestyleMode}
-            setSelectedMode={setLifestyleMode}
-            withdrawalRate={withdrawalRate}
-          />
+          {isPro ? (
+            <LifestyleBudgetModule
+              budgets={lifestyleBudgets}
+              selectedMode={lifestyleMode}
+              setSelectedMode={setLifestyleMode}
+              withdrawalRate={withdrawalRate}
+            />
+          ) : (
+            <LockedModule
+              title="Lifestyle Budget"
+              description="Model different spending scenarios"
+              icon={<Coffee className="h-5 w-5 text-emerald-600" />}
+              benefits={["Lean/Base/Fat FI budgets", "Lifestyle comparisons", "Spending scenarios"]}
+            />
+          )}
         </div>
 
         {/* Withdrawal Stress Simulator - Full width */}
-        <WithdrawalStressSimulator simulation={withdrawalSimulation} />
+        {isPro ? (
+          <WithdrawalStressSimulator simulation={withdrawalSimulation} />
+        ) : (
+          <LockedModule
+            title="Withdrawal Stress Simulator"
+            description="Monte Carlo simulation of withdrawal scenarios"
+            icon={<Zap className="h-5 w-5 text-emerald-600" />}
+            benefits={["Monte Carlo simulations", "Success probability", "Worst-case scenarios"]}
+          />
+        )}
 
         {/* Semi-Retirement Bridge */}
-        <SemiRetirementBridgeModule
-          bridge={semiRetirementBridge}
-          semiRetirementIncome={semiRetirementIncome}
-          setSemiRetirementIncome={setSemiRetirementIncome}
-          semiRetirementYears={semiRetirementYears}
-          setSemiRetirementYears={setSemiRetirementYears}
-        />
+        {isPro ? (
+          <SemiRetirementBridgeModule
+            bridge={semiRetirementBridge}
+            semiRetirementIncome={semiRetirementIncome}
+            setSemiRetirementIncome={setSemiRetirementIncome}
+            semiRetirementYears={semiRetirementYears}
+            setSemiRetirementYears={setSemiRetirementYears}
+          />
+        ) : (
+          <LockedModule
+            title="Semi-Retirement Bridge"
+            description="Plan a gradual transition to full retirement"
+            icon={<Clock className="h-5 w-5 text-emerald-600" />}
+            benefits={["Bridge strategy planning", "Part-time income modeling", "Gradual FI transition"]}
+          />
+        )}
 
         {/* Roth Conversion Ladder */}
-        <RothConversionLadderModule
-          currentAge={currentAge}
-          targetRetirementAge={targetRetirementAge}
-          traditionalBalance={traditionalBalance}
-          setTraditionalBalance={setTraditionalBalance}
-          currentMarginalRate={currentMarginalRate}
-          setCurrentMarginalRate={setCurrentMarginalRate}
-          retirementMarginalRate={retirementMarginalRate}
-          setRetirementMarginalRate={setRetirementMarginalRate}
-          annualExpenses={annualExpenses}
-        />
+        {isPro ? (
+          <RothConversionLadderModule
+            currentAge={currentAge}
+            targetRetirementAge={targetRetirementAge}
+            traditionalBalance={traditionalBalance}
+            setTraditionalBalance={setTraditionalBalance}
+            currentMarginalRate={currentMarginalRate}
+            setCurrentMarginalRate={setCurrentMarginalRate}
+            retirementMarginalRate={retirementMarginalRate}
+            setRetirementMarginalRate={setRetirementMarginalRate}
+            annualExpenses={annualExpenses}
+          />
+        ) : (
+          <LockedModule
+            title="Roth Conversion Ladder"
+            description="Optimize your Roth conversion strategy"
+            icon={<Wallet className="h-5 w-5 text-emerald-600" />}
+            benefits={["Tax-optimized conversions", "5-year rule planning", "Marginal rate optimization"]}
+          />
+        )}
 
         {/* Module 6: Geo-Arbitrage Link */}
         <GeoArbitrageLink
@@ -474,7 +510,16 @@ export default function EarlyRetirementPage() {
         />
 
         {/* Module 7: Burn Rate Clock */}
-        <BurnRateClockModule burnRate={burnRate} />
+        {isPro ? (
+          <BurnRateClockModule burnRate={burnRate} />
+        ) : (
+          <LockedModule
+            title="Burn Rate Clock"
+            description="Track your spending rate and runway"
+            icon={<Flame className="h-5 w-5 text-emerald-600" />}
+            benefits={["Real-time burn rate", "Portfolio runway", "Emergency fund analysis"]}
+          />
+        )}
 
         {/* Feedback Widget */}
         <div className="flex justify-center">
@@ -501,7 +546,6 @@ export default function EarlyRetirementPage() {
         </div>
       </div>
     </TooltipProvider>
-    </ProFeatureGate>
   );
 }
 
