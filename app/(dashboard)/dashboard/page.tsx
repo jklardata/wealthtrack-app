@@ -569,22 +569,50 @@ export default function DashboardPage() {
             </p>
           </div>
 
-          {/* Empty State */}
-          <Card className="bg-white border-slate-200 border-t-2 border-t-emerald-500">
+          {/* Empty State - Enhanced */}
+          <Card className="bg-white border-slate-200 border-t-4 border-t-emerald-500">
             <CardContent className="py-12 sm:py-16">
-              <div className="flex flex-col items-center justify-center text-center max-w-md mx-auto">
-                <div className="w-16 h-16 rounded-xl bg-emerald-50 flex items-center justify-center mb-6">
-                  <TrendingUp className="h-8 w-8 text-emerald-600" />
+              <div className="flex flex-col items-center justify-center text-center max-w-2xl mx-auto">
+                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-emerald-50 to-emerald-100 flex items-center justify-center mb-6 shadow-sm">
+                  <TrendingUp className="h-10 w-10 text-emerald-600" />
                 </div>
-                <h2 className="text-xl font-medium text-slate-900 mb-2">Get Started with Your Financial Data</h2>
-                <p className="text-slate-500 mb-6">
-                  Add your first entry to start tracking your net worth and unlock powerful financial insights.
+                <h2 className="text-2xl font-semibold text-slate-900 mb-3">Start Your Financial Journey</h2>
+                <p className="text-base text-slate-600 mb-8 max-w-lg leading-relaxed">
+                  Add your first net worth entry to unlock powerful insights and start making data-driven financial decisions.
+                  Track your progress over time and see exactly where you stand.
                 </p>
-                <div className="space-y-4 w-full">
-                  <Link href="/net-worth">
-                    <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
-                      <Plus className="h-4 w-4 mr-2" />
-                      Add Data Manually
+
+                {/* Benefits Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 w-full">
+                  <div className="p-4 rounded-lg bg-slate-50 border border-slate-200">
+                    <div className="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center mb-3 mx-auto">
+                      <TrendingUpIcon className="h-5 w-5 text-emerald-600" />
+                    </div>
+                    <h3 className="font-medium text-slate-900 text-sm mb-1">Track Growth</h3>
+                    <p className="text-xs text-slate-500">See your wealth momentum and monthly changes</p>
+                  </div>
+                  <div className="p-4 rounded-lg bg-slate-50 border border-slate-200">
+                    <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mb-3 mx-auto">
+                      <Target className="h-5 w-5 text-blue-600" />
+                    </div>
+                    <h3 className="font-medium text-slate-900 text-sm mb-1">Set Goals</h3>
+                    <p className="text-xs text-slate-500">Plan for financial independence and retirement</p>
+                  </div>
+                  <div className="p-4 rounded-lg bg-slate-50 border border-slate-200">
+                    <div className="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center mb-3 mx-auto">
+                      <Sparkles className="h-5 w-5 text-amber-600" />
+                    </div>
+                    <h3 className="font-medium text-slate-900 text-sm mb-1">Get Insights</h3>
+                    <p className="text-xs text-slate-500">Optimize taxes, portfolio, and spending</p>
+                  </div>
+                </div>
+
+                {/* CTAs */}
+                <div className="space-y-4 w-full max-w-md">
+                  <Link href="/net-worth" className="block">
+                    <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white h-12 text-base">
+                      <Plus className="h-5 w-5 mr-2" />
+                      Add Your First Entry
                     </Button>
                   </Link>
                   <div className="relative">
@@ -592,22 +620,98 @@ export default function DashboardPage() {
                       <span className="w-full border-t border-slate-200" />
                     </div>
                     <div className="relative flex justify-center text-xs uppercase">
-                      <span className="bg-white px-2 text-slate-500">Or</span>
+                      <span className="bg-white px-3 text-slate-500 font-medium">Or use Google Sheets</span>
                     </div>
                   </div>
-                  <Link href="/settings">
-                    <Button variant="outline" className="w-full border-emerald-200 text-emerald-700 hover:bg-emerald-50">
-                      <DollarSign className="h-4 w-4 mr-2" />
-                      Connect Google Sheets Template
+                  <Link href="/settings" className="block">
+                    <Button variant="outline" className="w-full border-slate-300 text-slate-700 hover:bg-slate-50 h-11">
+                      <FileText className="h-4 w-4 mr-2" />
+                      Connect Sheets Template
                     </Button>
                   </Link>
                 </div>
-                <p className="text-xs text-slate-500 mt-6">
-                  Use our Google Sheets template to easily import your financial data.
-                </p>
+
+                {/* Helper Text */}
+                <div className="mt-8 p-4 rounded-lg bg-emerald-50 border border-emerald-100 max-w-lg">
+                  <p className="text-sm text-emerald-900 font-medium mb-2">💡 Getting Started Tips:</p>
+                  <ul className="text-xs text-emerald-800 space-y-1 text-left">
+                    <li>• Track stocks, bonds, cash, real estate, and debts</li>
+                    <li>• Add entries monthly to see trends over time</li>
+                    <li>• Include credit card points value for complete picture</li>
+                    <li>• Sync with Google Sheets for easy bulk imports</li>
+                  </ul>
+                </div>
               </div>
             </CardContent>
           </Card>
+
+          {/* Feature Preview Cards */}
+          <div className="grid gap-4 md:grid-cols-3">
+            <Card className="bg-gradient-to-br from-purple-50 to-white border-purple-200">
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center">
+                    <Calculator className="h-5 w-5 text-purple-600" />
+                  </div>
+                  <CardTitle className="text-base">Pro Tools</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-slate-600 mb-3">Unlock advanced calculators and optimizers</p>
+                <ul className="text-xs text-slate-500 space-y-1 mb-4">
+                  <li>✓ Portfolio optimization</li>
+                  <li>✓ Tax savings calculator</li>
+                  <li>✓ Retirement planning</li>
+                </ul>
+                <Link href="/pricing">
+                  <Button variant="outline" size="sm" className="w-full border-purple-200 text-purple-700 hover:bg-purple-50">
+                    <Sparkles className="h-3 w-3 mr-1" />
+                    View Pro Features
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-br from-blue-50 to-white border-blue-200">
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
+                    <BookOpen className="h-5 w-5 text-blue-600" />
+                  </div>
+                  <CardTitle className="text-base">Learn</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-slate-600 mb-4">Financial guides for self-employed professionals</p>
+                <Link href="/blog">
+                  <Button variant="outline" size="sm" className="w-full border-blue-200 text-blue-700 hover:bg-blue-50">
+                    <ArrowRight className="h-3 w-3 mr-1" />
+                    Read Articles
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-br from-amber-50 to-white border-amber-200">
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center">
+                    <Globe className="h-5 w-5 text-amber-600" />
+                  </div>
+                  <CardTitle className="text-base">Explore</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-slate-600 mb-4">Free tools to optimize your finances</p>
+                <Link href="/tools/tax-savings">
+                  <Button variant="outline" size="sm" className="w-full border-amber-200 text-amber-700 hover:bg-amber-50">
+                    <Calculator className="h-3 w-3 mr-1" />
+                    Try Free Tools
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     );
@@ -1524,6 +1628,139 @@ export default function DashboardPage() {
           </Link>
         </Card>
       </div>
+
+      {/* Upgrade CTA & Next Steps - For users with some data */}
+      {entries.length >= 2 && (
+        <div className="grid gap-4 md:grid-cols-2">
+          {/* Unlock Pro Features Card */}
+          <Card className="bg-gradient-to-br from-purple-50 via-white to-purple-50 border-2 border-purple-200 shadow-sm">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="flex items-center gap-2 text-slate-900">
+                  <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center">
+                    <Sparkles className="h-5 w-5 text-purple-600" />
+                  </div>
+                  Unlock Pro Features
+                </CardTitle>
+                <span className="text-xs font-medium bg-purple-100 text-purple-700 px-2 py-1 rounded-full">
+                  Pro
+                </span>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-sm text-slate-600">
+                Get advanced tools to optimize your portfolio, plan retirement, and maximize tax savings.
+              </p>
+              <div className="space-y-2">
+                <div className="flex items-start gap-2">
+                  <div className="mt-0.5">
+                    <div className="w-5 h-5 rounded-full bg-purple-100 flex items-center justify-center">
+                      <span className="text-purple-600 text-xs">✓</span>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-slate-900">Portfolio Optimizer</p>
+                    <p className="text-xs text-slate-500">Modern Portfolio Theory analysis & rebalancing</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2">
+                  <div className="mt-0.5">
+                    <div className="w-5 h-5 rounded-full bg-purple-100 flex items-center justify-center">
+                      <span className="text-purple-600 text-xs">✓</span>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-slate-900">Retirement Calculator</p>
+                    <p className="text-xs text-slate-500">Model FIRE scenarios, geo arbitrage & semi-retirement</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2">
+                  <div className="mt-0.5">
+                    <div className="w-5 h-5 rounded-full bg-purple-100 flex items-center justify-center">
+                      <span className="text-purple-600 text-xs">✓</span>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-slate-900">Tax Optimization</p>
+                    <p className="text-xs text-slate-500">S-Corp analysis, deduction efficiency & quarterly estimates</p>
+                  </div>
+                </div>
+              </div>
+              <Link href="/pricing" className="block">
+                <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white">
+                  <Sparkles className="h-4 w-4 mr-2" />
+                  Upgrade to Pro
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+
+          {/* Next Steps Card */}
+          <Card className="bg-gradient-to-br from-emerald-50 via-white to-emerald-50 border-2 border-emerald-200 shadow-sm">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-slate-900">
+                <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center">
+                  <Target className="h-5 w-5 text-emerald-600" />
+                </div>
+                Recommended Next Steps
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <p className="text-sm text-slate-600 mb-4">
+                Make the most of your financial data with these actions
+              </p>
+              <Link href="/net-worth" className="block">
+                <div className="p-3 rounded-lg bg-white border border-slate-200 hover:border-emerald-300 hover:shadow-md transition-all group">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center">
+                        <Plus className="h-4 w-4 text-emerald-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-slate-900">Add Monthly Entry</p>
+                        <p className="text-xs text-slate-500">Track your progress over time</p>
+                      </div>
+                    </div>
+                    <ArrowRight className="h-4 w-4 text-slate-400 group-hover:text-emerald-600 transition-colors" />
+                  </div>
+                </div>
+              </Link>
+              <Link href="/settings" className="block">
+                <div className="p-3 rounded-lg bg-white border border-slate-200 hover:border-emerald-300 hover:shadow-md transition-all group">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
+                        <FileText className="h-4 w-4 text-blue-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-slate-900">Connect Google Sheets</p>
+                        <p className="text-xs text-slate-500">Automate data sync</p>
+                      </div>
+                    </div>
+                    <ArrowRight className="h-4 w-4 text-slate-400 group-hover:text-emerald-600 transition-colors" />
+                  </div>
+                </div>
+              </Link>
+              <Link href="/blog" className="block">
+                <div className="p-3 rounded-lg bg-white border border-slate-200 hover:border-emerald-300 hover:shadow-md transition-all group">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-amber-50 rounded-lg flex items-center justify-center">
+                        <BookOpen className="h-4 w-4 text-amber-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-slate-900">Learn Tax Strategies</p>
+                        <p className="text-xs text-slate-500">Read guides for self-employed</p>
+                      </div>
+                    </div>
+                    <ArrowRight className="h-4 w-4 text-slate-400 group-hover:text-emerald-600 transition-colors" />
+                  </div>
+                </div>
+              </Link>
+            </CardContent>
+          </Card>
+        </div>
+      )}
 
       {/* Articles Section */}
       <Card className="bg-white border-slate-200 shadow-sm">
