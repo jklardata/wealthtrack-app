@@ -911,9 +911,14 @@ export default function DashboardPage() {
               </div>
               Growth Trends
             </CardTitle>
-            <p className="text-xs text-slate-500 mt-2">
-              Track your wealth growth across different time periods. These metrics show absolute dollar changes and percentage growth.
-            </p>
+            <div className="text-xs text-slate-600 mt-2 space-y-1.5">
+              <p>
+                Month-over-month growth is the heartbeat of your financial health. A consistent upward trend—even if modest—compounds into substantial wealth over time.
+              </p>
+              <p className="text-slate-500">
+                For self-employed professionals, volatile income makes monthly tracking essential. You'll quickly spot if irregular earnings are translating into actual wealth accumulation or just covering expenses.
+              </p>
+            </div>
           </CardHeader>
           <CardContent className="pt-3">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 mb-3">
@@ -1006,9 +1011,14 @@ export default function DashboardPage() {
         <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <CardTitle className="text-slate-900">Net Worth Over Time</CardTitle>
-            <p className="text-xs text-slate-500 mt-1">
-              Visualize your total net worth (solid line) and individual asset categories (dashed lines). Click any legend item to hide/show that category. Click a data point to edit that entry.
-            </p>
+            <div className="text-xs text-slate-600 mt-1 space-y-1.5">
+              <p>
+                This chart tells your wealth story. The trend matters more than the absolute number—you're looking for that upward slope that shows consistent progress, even through market volatility.
+              </p>
+              <p className="text-slate-500">
+                Visualize your total net worth (solid line) and individual asset categories (dashed lines). Click any legend item to hide/show that category. Click a data point to edit that entry.
+              </p>
+            </div>
           </div>
           <div className="flex items-center gap-2 w-full sm:w-auto">
             {/* Chart-specific date range */}
@@ -1188,6 +1198,14 @@ export default function DashboardPage() {
         <Card className="bg-white border-slate-200 shadow-sm">
           <CardHeader>
             <CardTitle className="text-slate-900">Asset Allocation</CardTitle>
+            <div className="text-xs text-slate-600 mt-1 space-y-1.5">
+              <p>
+                Diversification isn't just a buzzword—it's your protection against concentrated risk. As a business owner, your income already depends on one source. Your investments shouldn't.
+              </p>
+              <p className="text-slate-500">
+                A balanced mix of stocks, bonds, and alternative assets smooths the ride and positions you for long-term growth regardless of market conditions.
+              </p>
+            </div>
           </CardHeader>
           <CardContent>
             {allocationData.length > 0 ? (
@@ -1351,9 +1369,14 @@ export default function DashboardPage() {
                 <TrendingUpIcon className="h-5 w-5 text-emerald-600" />
                 Net Worth Momentum
               </CardTitle>
-              <p className="text-xs text-slate-500 mt-1">
-                Understand what's driving your wealth growth: market returns vs. new contributions.
-              </p>
+              <div className="text-xs text-slate-600 mt-1 space-y-1.5">
+                <p>
+                  This is where you separate luck from strategy. Are you building wealth through disciplined saving, or are you relying solely on market performance?
+                </p>
+                <p className="text-slate-500">
+                  The most successful self-employed professionals control what they can control: their savings rate. Market returns are the bonus, not the plan.
+                </p>
+              </div>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -1379,8 +1402,10 @@ export default function DashboardPage() {
                   <p className="text-xs text-slate-500 mt-1">New money you added (or withdrew) from your portfolio in the last year</p>
                 </div>
                 <div className="mt-3 p-3 rounded-lg bg-emerald-50 border border-emerald-100">
-                  <p className="text-xs text-emerald-900">
-                    <strong>💡 Understanding Momentum:</strong> If your 12-month change is higher than net contributions, your investments are growing through market returns. If it's lower, market performance has offset some of your contributions.
+                  <p className="text-xs text-emerald-900 space-y-1">
+                    <span className="block font-semibold">💡 Reading Your Momentum:</span>
+                    <span className="block">If your 12-month change exceeds net contributions, congratulations—your money is working for you through market gains. This is compound growth in action.</span>
+                    <span className="block mt-1">If it's lower, market volatility has temporarily reduced returns. Stay the course. Consistent contributions during downturns are how wealth is built.</span>
                   </p>
                 </div>
               </div>
@@ -1399,9 +1424,17 @@ export default function DashboardPage() {
                   <Flame className="h-5 w-5 text-orange-500" />
                   Financial Independence Progress
                 </CardTitle>
-                <p className="text-sm text-slate-500 mt-1">
-                  {getFIScoreLabel(fiMetrics.fiScore)}
-                </p>
+                <div className="text-xs text-slate-600 mt-1 space-y-1.5">
+                  <p className="text-sm font-medium text-slate-700">
+                    {getFIScoreLabel(fiMetrics.fiScore)}
+                  </p>
+                  <p>
+                    Financial independence means your assets generate enough passive income to cover your living expenses—work becomes optional. For entrepreneurs, it's the ultimate exit strategy.
+                  </p>
+                  <p className="text-slate-500">
+                    The key metric: 25x your annual spending. Once you hit that number at a 4% safe withdrawal rate, you're financially free.
+                  </p>
+                </div>
               </div>
               <Link href="/upgrade">
                 <Button variant="ghost" size="sm" className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50">
