@@ -414,41 +414,40 @@ export default function EarlyRetirementPage() {
         </Card>
 
         {/* Freedom Milestones - Right under filters */}
-        {isPro ? (
-          <FreedomMilestonesModule milestones={milestones} />
-        ) : (
-          <LockedModule
-            title="Freedom Milestones"
-            description="Track your progress through FI stages"
-            icon={<Target className="h-5 w-5 text-emerald-600" />}
-            benefits={["FI stage tracking", "Milestone progress", "Freedom levels"]}
-          />
-        )}
+        <FreedomMilestonesModule milestones={milestones} />
 
         {/* FI Readiness + Lifestyle Budget side by side */}
-        <div className="grid gap-6 lg:grid-cols-2">
-          <FIReadinessDashboard
-            readiness={fiReadiness}
-            portfolio={currentPortfolio}
-            expenses={annualExpenses}
-            withdrawalRate={withdrawalRate}
-          />
-          {isPro ? (
+        {isPro ? (
+          <div className="grid gap-6 lg:grid-cols-2">
+            <FIReadinessDashboard
+              readiness={fiReadiness}
+              portfolio={currentPortfolio}
+              expenses={annualExpenses}
+              withdrawalRate={withdrawalRate}
+            />
             <LifestyleBudgetModule
               budgets={lifestyleBudgets}
               selectedMode={lifestyleMode}
               setSelectedMode={setLifestyleMode}
               withdrawalRate={withdrawalRate}
             />
-          ) : (
+          </div>
+        ) : (
+          <div className="grid gap-6 lg:grid-cols-2">
+            <LockedModule
+              title="FI Readiness"
+              description="Comprehensive FI readiness assessment"
+              icon={<Target className="h-5 w-5 text-emerald-600" />}
+              benefits={["FI stage tracking", "Readiness metrics", "Progress tracking"]}
+            />
             <LockedModule
               title="Lifestyle Budget"
               description="Model different spending scenarios"
               icon={<Coffee className="h-5 w-5 text-emerald-600" />}
               benefits={["Lean/Base/Fat FI budgets", "Lifestyle comparisons", "Spending scenarios"]}
             />
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Withdrawal Stress Simulator - Full width */}
         {isPro ? (
@@ -503,11 +502,20 @@ export default function EarlyRetirementPage() {
         )}
 
         {/* Module 6: Geo-Arbitrage Link */}
-        <GeoArbitrageLink
-          costOfLivingMultiplier={costOfLivingMultiplier}
-          setCostOfLivingMultiplier={setCostOfLivingMultiplier}
-          requiredPortfolio={fiReadiness.requiredPortfolio}
-        />
+        {isPro ? (
+          <GeoArbitrageLink
+            costOfLivingMultiplier={costOfLivingMultiplier}
+            setCostOfLivingMultiplier={setCostOfLivingMultiplier}
+            requiredPortfolio={fiReadiness.requiredPortfolio}
+          />
+        ) : (
+          <LockedModule
+            title="Geographic Flexibility"
+            description="Explore cost-of-living arbitrage opportunities"
+            icon={<MapPin className="h-5 w-5 text-emerald-600" />}
+            benefits={["Location-based FI planning", "Cost-of-living adjustments", "Geo-arbitrage calculator"]}
+          />
+        )}
 
         {/* Module 7: Burn Rate Clock */}
         {isPro ? (
