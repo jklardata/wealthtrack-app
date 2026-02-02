@@ -71,33 +71,14 @@ export default function OverlookedDeductionsArticle() {
             </div>
           </div>
 
-          <p className="text-slate-600 leading-relaxed">
-            Most consultants know about the home office deduction, but many miss additional expenses you can claim:
-          </p>
-
-          <ul className="space-y-3 ml-4">
-            <li className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-emerald-600 flex-shrink-0 mt-0.5" />
-              <div>
-                <strong className="text-slate-900">Internet and phone</strong>
-                <p className="text-slate-600">Business-use percentage of your internet and cell phone bills</p>
-              </div>
-            </li>
-            <li className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-emerald-600 flex-shrink-0 mt-0.5" />
-              <div>
-                <strong className="text-slate-900">Office furniture and equipment</strong>
-                <p className="text-slate-600">Desks, chairs, monitors, standing desk converters</p>
-              </div>
-            </li>
-            <li className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-emerald-600 flex-shrink-0 mt-0.5" />
-              <div>
-                <strong className="text-slate-900">Repairs and maintenance</strong>
-                <p className="text-slate-600">Portion of home repairs that benefit your office space</p>
-              </div>
-            </li>
-          </ul>
+          <div className="space-y-3">
+            <p className="text-slate-600 leading-relaxed">
+              Most consultants know about the home office deduction, but they stop at the simplified $5/square foot method and leave thousands on the table. The real opportunity is in the additional expenses you can layer on top. Your internet and cell phone bills qualify for business-use percentage deductions—if you use your phone 60% for business, that's 60% of the monthly bill you can write off. Same goes for your internet connection, which is essentially 100% deductible if you work from home.
+            </p>
+            <p className="text-slate-600 leading-relaxed">
+              Then there's office furniture and equipment. That ergonomic chair you bought for $800? Fully deductible. The standing desk converter, the dual monitors, the noise-canceling headphones—all legitimate business expenses. Most consultants don't realize you can even deduct a portion of home repairs that benefit your office space. If you repaint your house or replace the HVAC system, you can deduct the percentage that corresponds to your home office square footage.
+            </p>
+          </div>
 
           <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-5">
             <h4 className="font-semibold mb-2 text-emerald-900 flex items-center gap-2">
@@ -157,23 +138,8 @@ export default function OverlookedDeductionsArticle() {
           </div>
 
           <p className="text-slate-600 leading-relaxed">
-            If you work from coworking spaces or coffee shops, these are fully deductible:
+            If you work from coworking spaces or coffee shops, these are fully deductible. Monthly coworking memberships at places like WeWork or Industrious qualify, along with day passes when you need a change of scenery. Even the $200-400/month you might spend on a dedicated desk is a write-off. Here's the part most people miss: coffee and light snacks while working are deductible too, as long as you're actually working and not just socializing. That $5 latte and croissant while you're grinding on a client proposal? Legitimate business expense. Over a year, consultants who work from coffee shops 2-3 times a week can easily deduct $1,500-2,000 in combined workspace and refreshment costs.
           </p>
-
-          <ul className="space-y-2 ml-4">
-            <li className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-purple-600 flex-shrink-0 mt-0.5" />
-              <span className="text-slate-600">Monthly coworking memberships</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-purple-600 flex-shrink-0 mt-0.5" />
-              <span className="text-slate-600">Day passes at coworking spaces</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-purple-600 flex-shrink-0 mt-0.5" />
-              <span className="text-slate-600">Coffee and light snacks while working</span>
-            </li>
-          </ul>
         </section>
 
         {/* Deduction 4 */}
@@ -188,7 +154,7 @@ export default function OverlookedDeductionsArticle() {
           </div>
 
           <p className="text-slate-600 leading-relaxed">
-            You don't need a separate business vehicle to deduct car expenses. Track business mileage for:
+            You don't need a separate business vehicle to deduct car expenses—your personal car works fine as long as you track business mileage. The 2026 standard mileage rate is $0.70 per mile, which adds up faster than most consultants realize. Every trip to meet a client, drive to your coworking space, run to the bank for a deposit, or pick up office supplies counts. If you're driving to client meetings twice a week and making occasional supply runs, you could easily hit 5,000 business miles per year—that's a $3,500 deduction right there. The key is consistent tracking, which takes 30 seconds per trip with apps like MileIQ or Stride.
           </p>
 
           <div className="grid md:grid-cols-2 gap-4">
@@ -227,27 +193,11 @@ export default function OverlookedDeductionsArticle() {
           </div>
 
           <p className="text-slate-600 leading-relaxed">
-            Anything that improves your skills in your current field is deductible:
+            Anything that improves your skills in your current field is deductible, and this is where consultants who invest in themselves create massive tax advantages. Online courses and certifications—whether it's a $500 Udemy course or a $2,000 professional certification—are fully deductible. Conference tickets and registration fees qualify too, including that $1,500 industry conference you've been eyeing. Even books, ebooks, and audiobooks count as long as they're relevant to your business. That Audible subscription? Deductible if you're listening to business books.
           </p>
-
-          <ul className="space-y-2 ml-4">
-            <li className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-pink-600 flex-shrink-0 mt-0.5" />
-              <span className="text-slate-600">Online courses and certifications</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-pink-600 flex-shrink-0 mt-0.5" />
-              <span className="text-slate-600">Conference tickets and registration fees</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-pink-600 flex-shrink-0 mt-0.5" />
-              <span className="text-slate-600">Books, ebooks, and audiobooks</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-pink-600 flex-shrink-0 mt-0.5" />
-              <span className="text-slate-600">Professional memberships and subscriptions</span>
-            </li>
-          </ul>
+          <p className="text-slate-600 leading-relaxed">
+            Professional memberships and subscriptions are often forgotten but add up quickly. Your $500/year industry association membership, your $30/month New York Times subscription for market research, your $200 LinkedIn Premium account—all legitimate deductions. The IRS draws the line at education that qualifies you for a new field, but anything that makes you better at what you already do is fair game. Consultants who actively invest in professional development can easily deduct $3,000-5,000 annually in this category alone.
+          </p>
         </section>
 
         {/* Image break */}
@@ -271,7 +221,7 @@ export default function OverlookedDeductionsArticle() {
           </div>
 
           <p className="text-slate-600 leading-relaxed">
-            All the apps and software you use for business are fully deductible:
+            All the apps and software you use for business are fully deductible, and in 2026, this category has exploded. Your CRM tools like HubSpot or Salesforce, design software subscriptions to Adobe Creative Cloud or Figma, project management tools like Asana or Monday—every monthly subscription adds up to real deductions. Don't forget cloud storage (Dropbox, Google Workspace), password managers, email marketing platforms, and even AI tools like ChatGPT Plus if you use them for business. Most consultants carry 10-15 software subscriptions, which translates to $2,000-4,000 in annual deductions. The key is that these are ordinary and necessary for your business—if you use it regularly for work, it's deductible.
           </p>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -306,27 +256,11 @@ export default function OverlookedDeductionsArticle() {
           </div>
 
           <p className="text-slate-600 leading-relaxed">
-            Everything you spend to promote your services is deductible:
+            Everything you spend to promote your services is deductible, and this is where aggressive marketing pays double dividends—once in new business, and again in tax savings. Website hosting and domain renewals are the baseline ($100-300/year), but the real deductions come from active promotion. Social media ads and promoted posts, whether you're spending $500/month on LinkedIn ads or $100 on Facebook, are fully deductible. Business cards and promotional materials qualify too, along with email marketing tools like Mailchimp or ConvertKit.
           </p>
-
-          <ul className="space-y-2 ml-4">
-            <li className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-indigo-600 flex-shrink-0 mt-0.5" />
-              <span className="text-slate-600">Website hosting and domain renewals</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-indigo-600 flex-shrink-0 mt-0.5" />
-              <span className="text-slate-600">Social media ads and promoted posts</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-indigo-600 flex-shrink-0 mt-0.5" />
-              <span className="text-slate-600">Business cards and promotional materials</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-indigo-600 flex-shrink-0 mt-0.5" />
-              <span className="text-slate-600">Email marketing tools (Mailchimp, ConvertKit)</span>
-            </li>
-          </ul>
+          <p className="text-slate-600 leading-relaxed">
+            Even less obvious marketing expenses count: your professional headshots ($500), the videographer you hired for testimonial videos ($2,000), the freelance writer who optimized your website copy ($1,500). If the purpose is attracting clients or promoting your brand, it's a legitimate deduction. Consultants who actively market themselves can deduct $5,000-10,000+ annually in this category, turning client acquisition costs into tax benefits.
+          </p>
         </section>
 
         {/* Deduction 8 */}
@@ -341,7 +275,7 @@ export default function OverlookedDeductionsArticle() {
           </div>
 
           <p className="text-slate-600 leading-relaxed">
-            When traveling for business, these expenses are fully deductible:
+            When traveling for business, these expenses are fully deductible, and the definition of "business travel" is broader than most consultants think. Flying to meet a client or attend a conference? Every dollar—flights, trains, rental cars, Uber rides, parking, tolls—is deductible. Your hotel or Airbnb stays are fully deductible, and meals while traveling get the 50% deduction (unlike meals at home, which aren't deductible unless with clients). Even wifi charges at the hotel and your phone bill while on the road count. A single week-long business trip can generate $2,000-3,000 in deductions, and if you travel regularly for client work, this category becomes one of your largest tax benefits.
           </p>
 
           <div className="grid md:grid-cols-2 gap-4">
@@ -394,7 +328,7 @@ export default function OverlookedDeductionsArticle() {
           </div>
 
           <p className="text-slate-600 leading-relaxed">
-            Self-employed individuals can deduct 100% of health insurance premiums as an above-the-line deduction.
+            Self-employed individuals can deduct 100% of health insurance premiums as an above-the-line deduction, which is one of the most valuable tax breaks available. This isn't a business expense deduction—it goes on line 17 of Schedule 1, which means it reduces both your income tax and your self-employment tax. Medical, dental, and vision insurance premiums qualify, along with long-term care insurance and premiums for your spouse and dependents. If you're paying $800/month for family health coverage, that's a $9,600 annual deduction that saves you roughly $3,400 in combined taxes at a 35% effective rate. This deduction alone can make the difference between self-employment being financially viable or not.
           </p>
 
           <div className="rounded-xl border border-red-200 bg-red-50 p-5">
@@ -429,27 +363,11 @@ export default function OverlookedDeductionsArticle() {
           </div>
 
           <p className="text-slate-600 leading-relaxed">
-            Money you pay to contractors and freelancers is fully deductible:
+            Money you pay to contractors and freelancers is fully deductible, and this is the secret to scaling your consulting business without the overhead of employees. Hiring a graphic designer for $2,000 to refresh your website? Deductible. Paying a web developer $5,000 to build a client portal? Deductible. Virtual assistants who handle admin work, bookkeepers who manage your financials, content writers who create your marketing materials—every dollar you pay them reduces your taxable income.
           </p>
-
-          <ul className="space-y-2 ml-4">
-            <li className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-orange-600 flex-shrink-0 mt-0.5" />
-              <span className="text-slate-600">Graphic designers and web developers</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-orange-600 flex-shrink-0 mt-0.5" />
-              <span className="text-slate-600">Virtual assistants and bookkeepers</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-orange-600 flex-shrink-0 mt-0.5" />
-              <span className="text-slate-600">Content writers and editors</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-orange-600 flex-shrink-0 mt-0.5" />
-              <span className="text-slate-600">Legal and accounting professionals</span>
-            </li>
-          </ul>
+          <p className="text-slate-600 leading-relaxed">
+            Even professional services like your CPA ($2,000-4,000 annually) and business attorney ($500-2,000) are fully deductible. The only catch is the 1099-NEC requirement—if you pay any contractor more than $600 in a year, you need to file the form by January 31st. But the tax benefit is immediate and significant. Consultants who outsource strategically can deduct $10,000-30,000+ annually in contract labor, effectively getting a 30-40% discount on every hire when you factor in tax savings.
+          </p>
 
           <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
             <p className="text-sm text-slate-600">
@@ -480,52 +398,32 @@ export default function OverlookedDeductionsArticle() {
         {/* Best Practices */}
         <section className="space-y-4">
           <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Best Practices for Tracking Deductions</h2>
-          <div className="space-y-3">
-            <div className="p-4 rounded-lg bg-slate-50 border border-slate-200">
-              <h4 className="font-semibold text-slate-900 mb-2">1. Use Separate Bank Accounts</h4>
-              <p className="text-sm text-slate-600">Keep business and personal expenses separate for easier tracking</p>
-            </div>
-            <div className="p-4 rounded-lg bg-slate-50 border border-slate-200">
-              <h4 className="font-semibold text-slate-900 mb-2">2. Save All Receipts</h4>
-              <p className="text-sm text-slate-600">Use apps like Expensify or QuickBooks to digitally store receipts</p>
-            </div>
-            <div className="p-4 rounded-lg bg-slate-50 border border-slate-200">
-              <h4 className="font-semibold text-slate-900 mb-2">3. Track Mileage Automatically</h4>
-              <p className="text-sm text-slate-600">Use MileIQ or Stride to automatically log business miles</p>
-            </div>
-            <div className="p-4 rounded-lg bg-slate-50 border border-slate-200">
-              <h4 className="font-semibold text-slate-900 mb-2">4. Document Business Purpose</h4>
-              <p className="text-sm text-slate-600">Note who you met with and what you discussed for meals and travel</p>
-            </div>
+          <div className="space-y-4">
+            <p className="text-slate-600 leading-relaxed">
+              The difference between consultants who capture every deduction and those who leave money on the table comes down to systems, not knowledge. First, use separate bank accounts—keep business and personal expenses completely separate. This single habit eliminates 90% of bookkeeping headaches and makes tax time painless. When everything business-related flows through one account, your CPA can categorize expenses in minutes instead of hours.
+            </p>
+            <p className="text-slate-600 leading-relaxed">
+              Second, digitize and categorize receipts immediately. Apps like Expensify or QuickBooks let you snap a photo of every receipt and auto-categorize it. The IRS accepts digital records, and you'll never lose a receipt in a crumpled pile again. For mileage, use automatic tracking apps like MileIQ or Stride—they run in the background and log every trip, which you can then categorize as business or personal with a single swipe. Manual mileage logs are a nightmare; automated tracking takes zero effort.
+            </p>
+            <p className="text-slate-600 leading-relaxed">
+              Finally, document business purpose for meals and travel. The IRS wants to know who you met with and what you discussed, so get in the habit of writing it on the receipt or in the app description. "Lunch with Sarah - discussed Q1 marketing strategy" is perfect documentation. These practices sound tedious, but they become automatic within a month and can mean the difference between a $5,000 tax bill and a $500 refund.
+            </p>
           </div>
         </section>
 
         {/* Key Takeaways */}
         <section className="space-y-4">
           <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Key Takeaways</h2>
-          <div className="rounded-xl border border-amber-500/30 bg-amber-50 p-6">
-            <ul className="space-y-3">
-              <li className="flex items-start gap-3">
-                <span className="text-amber-600 font-bold">1.</span>
-                <span className="text-slate-700">Track ALL business expenses—the small ones add up</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-amber-600 font-bold">2.</span>
-                <span className="text-slate-700">Use technology to automate expense tracking</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-amber-600 font-bold">3.</span>
-                <span className="text-slate-700">When in doubt, ask your CPA—it's better than missing deductions</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-amber-600 font-bold">4.</span>
-                <span className="text-slate-700">Keep receipts and documentation for at least 3 years</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-amber-600 font-bold">5.</span>
-                <span className="text-slate-700">These deductions can save you $5,000-$10,000+ annually</span>
-              </li>
-            </ul>
+          <div className="rounded-xl border border-amber-500/30 bg-amber-50 p-6 space-y-3">
+            <p className="text-slate-700 leading-relaxed">
+              Track ALL business expenses—the small ones add up faster than you think. That $12 domain renewal or $30 monthly app subscription seems insignificant until you realize you're carrying 15 subscriptions and making dozens of small purchases. Over a year, the "little" expenses can represent $5,000-10,000 in deductions.
+            </p>
+            <p className="text-slate-700 leading-relaxed">
+              Use technology to automate expense tracking. Manual spreadsheets and shoebox receipts are a recipe for missed deductions and tax-time chaos. Modern accounting software and automatic mileage trackers do the heavy lifting for you, capturing every deductible expense with minimal effort. When in doubt, ask your CPA—paying $200 for a tax planning session is infinitely better than missing $5,000 in legitimate deductions.
+            </p>
+            <p className="text-slate-700 leading-relaxed">
+              Keep receipts and documentation for at least 3 years (7 years is safer). The IRS can audit returns within 3 years, and having organized records turns a potential nightmare into a non-event. Combined, these 10 deduction categories can save you $5,000-$10,000+ annually in taxes—money that stays in your business instead of going to the IRS.
+            </p>
           </div>
         </section>
 
