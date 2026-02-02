@@ -75,7 +75,15 @@ export default function ThirtyPercentRuleArticle() {
           <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Why 30%? Breaking Down the Math</h2>
 
           <p className="text-slate-600 leading-relaxed">
-            When you're self-employed, you face a three-headed tax monster:
+            When you're self-employed, you're not just paying income tax—you're facing a three-headed tax monster that employees never see. The first blow comes from self-employment tax, a brutal 15.3% that covers both the employer and employee portions of Social Security and Medicare. When you're a W-2 employee, your company quietly pays half of this for you. As a consultant, you pay the full freight.
+          </p>
+
+          <p className="text-slate-600 leading-relaxed">
+            But that's just the appetizer. On top of self-employment tax, you're still on the hook for regular federal income tax. Most consultants earning between $75,000 and $250,000 find themselves in the 22-24% marginal bracket—and that's before we even talk about state taxes. If you're in California or New York, add another 6-13% to the pile. Even "tax-friendly" states like Colorado still take their 4-5% cut.
+          </p>
+
+          <p className="text-slate-600 leading-relaxed">
+            Do the math: 15% self-employment tax + 12-15% effective federal tax + 4-8% average state tax = 31-38% total effective rate for most consultants. We say 30% because it's a round number that works for most situations, and it's better to slightly over-save than come up short in April.
           </p>
 
           <div className="grid md:grid-cols-3 gap-4">
@@ -176,6 +184,10 @@ export default function ThirtyPercentRuleArticle() {
         <section className="space-y-4">
           <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">How to Implement the 30% Rule</h2>
 
+          <p className="text-slate-600 leading-relaxed">
+            The mechanics are simple, but execution requires discipline. Most consultants who fail at this don't have a system problem—they have a psychology problem. Watching money sit in an account without touching it is harder than it sounds when cash flow is lumpy and expenses are constant. Here's how to make it automatic and painless.
+          </p>
+
           <div className="space-y-4">
             <div className="flex gap-4">
               <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -183,7 +195,7 @@ export default function ThirtyPercentRuleArticle() {
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-slate-900 mb-2">Open a Separate Savings Account</h3>
-                <p className="text-slate-600">Don't keep tax money in your checking account. Open a dedicated high-yield savings account labeled "Tax Savings."</p>
+                <p className="text-slate-600">The cardinal sin is keeping tax money in your operating account. It feels like you have more cash than you actually do, and you'll inevitably spend it. Open a dedicated high-yield savings account—literally label it "Tax Savings" so there's no confusion. Banks like Marcus, Ally, or American Express offer 4-5% interest right now, which means your tax money can earn $2,000+ per year while waiting for the IRS. That's found money.</p>
                 <div className="mt-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
                   <p className="text-sm text-blue-900">
                     <strong>Pro tip:</strong> Look for accounts offering 4-5% interest. Your tax money can earn interest while waiting!
@@ -198,7 +210,7 @@ export default function ThirtyPercentRuleArticle() {
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-slate-900 mb-2">Transfer 30% Every Time You Get Paid</h3>
-                <p className="text-slate-600 mb-3">The moment a client payment hits your account, immediately transfer 30% to your tax savings.</p>
+                <p className="text-slate-600 mb-3">This is where discipline meets automation. The moment a $10,000 client payment hits your account, $3,000 goes straight to tax savings—no exceptions, no delays. The longer that money sits in your checking account, the more likely you'll find a "reason" to use it. Treat this transfer like a non-negotiable business expense, because that's exactly what it is. You can do this manually, but I've seen too many consultants forget or "borrow" from their tax savings. Automation removes the temptation entirely.</p>
                 <div className="grid md:grid-cols-2 gap-3">
                   <div className="p-3 bg-slate-50 rounded-lg border border-slate-200">
                     <p className="text-sm font-medium text-slate-900">Manual Method</p>
@@ -218,7 +230,7 @@ export default function ThirtyPercentRuleArticle() {
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-slate-900 mb-2">Make Quarterly Estimated Payments</h3>
-                <p className="text-slate-600 mb-3">Use your tax savings to pay quarterly estimates (due April 15, June 15, Sept 15, Jan 15).</p>
+                <p className="text-slate-600 mb-3">The IRS doesn't wait until April to collect—they expect quarterly payments throughout the year. Miss these deadlines and you'll face underpayment penalties even if you pay the full amount in April. Your tax savings account funds these quarterly payments (due April 15, June 15, September 15, and January 15). Start with 100% of last year's total tax bill divided by four, or use the safe harbor method: pay 110% of last year's tax if you earned over $150,000, or 100% if under. This protects you from penalties even if your income spikes mid-year.</p>
                 <div className="rounded-xl border border-slate-200 bg-white p-4">
                   <h4 className="font-semibold mb-3 text-slate-900">2026 Quarterly Deadlines</h4>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-center text-sm">
@@ -260,8 +272,15 @@ export default function ThirtyPercentRuleArticle() {
           <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Should You Adjust the 30% Rule?</h2>
 
           <p className="text-slate-600 leading-relaxed">
-            While 30% works for most consultants, you might need to adjust based on your situation:
+            The 30% rule is a starting point, not gospel. Think of it as the baseline that works for a consultant earning $100,000-$150,000 in a moderate-tax state like Colorado or Georgia. But your situation might call for adjustments.
           </p>
+
+          <p className="text-slate-600 leading-relaxed">
+            If you're in California, New York, or New Jersey, you're looking at state taxes in the 6-13% range—significantly higher than the national average. In these states, bump your savings rate to 35-40%. The pain of over-saving by $5,000 is nothing compared to the panic of owing $15,000 you don't have. High earners above $200,000 face even steeper marginal rates and additional Medicare tax (0.9%), pushing some consultants into the 40-45% effective range.
+          </p>
+
+          <p className="text-slate-600 leading-relaxed">
+            On the flip side, if you're in Texas, Florida, or Washington—states with zero income tax—you can drop to 25%. And if you're aggressively maximizing deductions through a Solo 401(k) ($69,000 max in 2025), HSA ($8,550 for families), and home office expenses, your effective rate could fall to 20-25%. The key is to review your actual tax return from last year: divide your total tax by your gross income to find your effective rate, then add 5% as a buffer. That's your personalized savings percentage.</p>
 
           <div className="grid md:grid-cols-2 gap-4">
             <div className="rounded-xl border border-green-200 bg-green-50 p-5">
