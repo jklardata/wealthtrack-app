@@ -24,6 +24,8 @@ export function useSubscription() {
         const response = await fetch("/api/stripe/subscription");
         const data = await response.json();
 
+        console.log('useSubscription - fetched data:', data);
+
         setSubscription({
           entitlement_tier: data.entitlement_tier || "free",
           status: data.status || "active",

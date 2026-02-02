@@ -24,7 +24,10 @@ export function ProFeatureGate({
     "Regular feature updates"
   ]
 }: ProFeatureGateProps) {
-  const { isPro, isLoading } = useSubscription();
+  const { isPro, isLoading, entitlement_tier } = useSubscription();
+
+  // Debug logging
+  console.log('ProFeatureGate:', { featureName, isPro, isLoading, entitlement_tier });
 
   // Show loading state
   if (isLoading) {
