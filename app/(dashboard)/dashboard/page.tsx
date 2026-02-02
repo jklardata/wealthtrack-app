@@ -904,6 +904,9 @@ export default function DashboardPage() {
               </div>
               Growth Trends
             </CardTitle>
+            <p className="text-xs text-slate-500 mt-2">
+              Track your wealth growth across different time periods. These metrics show absolute dollar changes and percentage growth.
+            </p>
           </CardHeader>
           <CardContent className="pt-3">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 mb-3">
@@ -994,7 +997,12 @@ export default function DashboardPage() {
       {/* Net Worth Chart */}
       <Card className="bg-white border-slate-200 shadow-sm">
         <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <CardTitle className="text-slate-900">Net Worth Over Time</CardTitle>
+          <div>
+            <CardTitle className="text-slate-900">Net Worth Over Time</CardTitle>
+            <p className="text-xs text-slate-500 mt-1">
+              Visualize your total net worth (solid line) and individual asset categories (dashed lines). Click any legend item to hide/show that category. Click a data point to edit that entry.
+            </p>
+          </div>
           <div className="flex items-center gap-2 w-full sm:w-auto">
             {/* Chart-specific date range */}
             <div className="flex bg-slate-100 rounded-lg p-1 flex-1 sm:flex-initial">
@@ -1336,6 +1344,9 @@ export default function DashboardPage() {
                 <TrendingUpIcon className="h-5 w-5 text-emerald-600" />
                 Net Worth Momentum
               </CardTitle>
+              <p className="text-xs text-slate-500 mt-1">
+                Understand what's driving your wealth growth: market returns vs. new contributions.
+              </p>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -1344,21 +1355,26 @@ export default function DashboardPage() {
                   <p className="text-xl font-semibold text-emerald-600">
                     {formatVelocity(momentumMetrics.velocity)}
                   </p>
-                  <p className="text-xs text-slate-500 mt-1">Monthly growth</p>
+                  <p className="text-xs text-slate-500 mt-1">Your average monthly net worth increase based on recent trend</p>
                 </div>
                 <div className="p-3 rounded-lg bg-slate-50">
                   <p className="text-sm text-slate-500 mb-1">12-Month Change</p>
                   <p className="text-xl font-semibold text-slate-900">
                     {formatCurrency(momentumMetrics.contribution12mo.totalChange)}
                   </p>
-                  <p className="text-xs text-slate-500 mt-1">Total growth</p>
+                  <p className="text-xs text-slate-500 mt-1">Total net worth change over the last 12 months</p>
                 </div>
                 <div className="p-3 rounded-lg bg-slate-50">
                   <p className="text-sm text-slate-500 mb-1">Net Contributions</p>
                   <p className="text-xl font-semibold text-blue-600">
                     {formatCurrency(momentumMetrics.contribution12mo.netContributions)}
                   </p>
-                  <p className="text-xs text-slate-500 mt-1">Savings</p>
+                  <p className="text-xs text-slate-500 mt-1">New money you added (or withdrew) from your portfolio in the last year</p>
+                </div>
+                <div className="mt-3 p-3 rounded-lg bg-emerald-50 border border-emerald-100">
+                  <p className="text-xs text-emerald-900">
+                    <strong>💡 Understanding Momentum:</strong> If your 12-month change is higher than net contributions, your investments are growing through market returns. If it's lower, market performance has offset some of your contributions.
+                  </p>
                 </div>
               </div>
             </CardContent>
