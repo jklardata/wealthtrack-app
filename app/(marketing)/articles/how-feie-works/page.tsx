@@ -78,7 +78,7 @@ export default function FEIEArticle() {
         <section className="space-y-4">
           <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">What Qualifies as "Foreign Earned Income"?</h2>
           <p className="text-slate-600 leading-relaxed">
-            FEIE applies only to income earned from personal services performed in a foreign country:
+            The FEIE applies only to income earned from personal services performed in a foreign country—"earned" is the critical word here. This means money you exchange for your time, labor, or expertise while physically present abroad. Consulting fees, freelance income, salary from a foreign employer, and self-employment income all qualify as long as you performed the work outside the US. What doesn't qualify: passive income. Investment dividends, interest, rental income, capital gains, pensions, Social Security, and US government wages are all excluded from FEIE benefits. The IRS draws a clear line—if you didn't actively work for it abroad, it doesn't count.
           </p>
           <div className="grid md:grid-cols-2 gap-4">
             <div className="rounded-xl border border-emerald-200 bg-emerald-600/10 p-5">
@@ -194,52 +194,19 @@ export default function FEIEArticle() {
             2. Bona Fide Residence Test
           </h3>
           <p className="text-slate-600 leading-relaxed">
-            Be a bona fide resident of a foreign country for an uninterrupted period that includes an entire tax year.
+            The Bona Fide Residence Test requires you to be a bona fide resident of a foreign country for an uninterrupted period that includes an entire tax year (January 1 - December 31). This test is more flexible than the physical presence test because you can spend time in the US without losing qualification—there's no strict day count. The key is establishing actual residency: you need a visa or work permit, local ties (apartment lease, bank account, gym membership), and the intention to remain there indefinitely, not just temporarily. You can't be a "bona fide resident" of a country while staying in tourist hotels and hopping around every few months. Once established for a full calendar year, you qualify for FEIE even if you visit the US for several weeks annually, making this the preferred test for digital nomads with a stable home base abroad.
           </p>
-          <ul className="space-y-3 ml-4">
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-slate-600">More flexible than physical presence test</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-slate-600">Can spend time in the US without losing qualification</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-slate-600">Requires establishing actual residency (visa, local ties, etc.)</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-slate-600">Must be resident for full calendar year to qualify</span>
-            </li>
-          </ul>
         </section>
 
         {/* Section 3 */}
         <section className="space-y-4">
           <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Foreign Housing Exclusion</h2>
           <p className="text-slate-600 leading-relaxed">
-            In addition to the income exclusion, you can exclude certain housing expenses:
+            In addition to the $130,000 income exclusion, you can exclude certain housing expenses through the Foreign Housing Exclusion. Qualifying expenses include rent, utilities, property insurance, repairs, and even furniture rental—basically, the cost of maintaining a home abroad. The calculation works by subtracting a base amount ($20,800 in 2026, which is roughly 16% of the FEIE limit) from your total housing expenses. Anything above that base up to the location-specific maximum can be excluded.
           </p>
-          <ul className="space-y-3 ml-4">
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-cyan-500 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-slate-600">Rent, utilities, property insurance</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-cyan-500 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-slate-600">Repairs and furniture rental</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-cyan-500 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-slate-600">Base amount ($20,800 in 2026) is subtracted</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-cyan-500 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-slate-600">Maximum varies by location—higher in expensive cities</span>
-            </li>
-          </ul>
+          <p className="text-slate-600 leading-relaxed">
+            The maximum varies dramatically by location—expensive cities like Tokyo, London, or Singapore have caps around $40,000-50,000, while cheaper locations might max out at $25,000-30,000. The IRS publishes annual limits by city. If you're paying $3,500/month ($42,000/year) in rent in Tokyo, you'd subtract the $20,800 base, leaving $21,200 in additional housing exclusion. Combined with the $130,000 FEIE, you could potentially exclude up to $150,000+ in total income from US taxes, which translates to $45,000-60,000 in tax savings depending on your bracket.
+          </p>
         </section>
 
         {/* Section 4 */}
