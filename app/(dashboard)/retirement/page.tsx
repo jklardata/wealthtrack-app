@@ -43,6 +43,7 @@ import {
   type SpendingWeights,
   type RetirementParams,
 } from "@/lib/retirement-calculator";
+import { FeedbackWidget } from "@/components/feedback-widget";
 import type { NetWorthEntry, Scenario } from "@/lib/types";
 import { InsightCallout } from "@/components/bridges/InsightCallout";
 
@@ -1196,6 +1197,15 @@ function RetirementPageContent() {
           </Card>
         </>
       )}
+
+      {/* Feedback Widget */}
+      <div className="flex justify-center mt-6">
+        <FeedbackWidget
+          pageName="retirement-calculator"
+          variant="inline"
+          triggerText="Missing something? Let us know"
+        />
+      </div>
       </div>
     </div>
   );

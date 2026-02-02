@@ -307,12 +307,29 @@ export async function createTemplateSpreadsheet(userEmail: string): Promise<{
       spreadsheetUrl: `https://docs.google.com/spreadsheets/d/${spreadsheetId}`,
     };
   } catch (error: unknown) {
-    const err = error as { message?: string };
-    console.error('Error creating template spreadsheet:', err);
+    const err = error as { message?: string; code?: number; errors?: Array<{ reason?: string; message?: string }> };
+    console.error('Error creating template spreadsheet:', JSON.stringify(err, null, 2));
+
+    // Provide more helpful error messages
+    let errorMessage = err.message || 'Failed to create spreadsheet';
+
+    if (err.code === 403) {
+      if (errorMessage.includes('Drive API') || errorMessage.includes('drive')) {
+        errorMessage = 'Google Drive API is not enabled. Please enable it at: https://console.cloud.google.com/apis/library/drive.googleapis.com?project=wealth-tracker-485215';
+      } else if (errorMessage.includes('Sheets API') || errorMessage.includes('sheets')) {
+        errorMessage = 'Google Sheets API is not enabled. Please enable it at: https://console.cloud.google.com/apis/library/sheets.googleapis.com?project=wealth-tracker-485215';
+      }
+    }
+
+    if (err.errors && err.errors.length > 0) {
+      const reasons = err.errors.map(e => e.message || e.reason).join('; ');
+      errorMessage = `${errorMessage} (${reasons})`;
+    }
+
     return {
       spreadsheetId: '',
       spreadsheetUrl: '',
-      error: err.message || 'Failed to create spreadsheet',
+      error: errorMessage,
     };
   }
 }

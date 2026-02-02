@@ -39,6 +39,7 @@ import {
   PiggyBank,
   Wallet,
 } from "lucide-react";
+import { FeedbackWidget } from "@/components/feedback-widget";
 import {
   Table,
   TableBody,
@@ -1444,6 +1445,15 @@ export default function PortfolioOptimizerPage() {
               </ResponsiveContainer>
             </CardContent>
           </Card>
+
+          {/* Feedback Widget */}
+          <div className="flex justify-center">
+            <FeedbackWidget
+              pageName="portfolio-optimizer"
+              variant="inline"
+              triggerText="How could this be more useful?"
+            />
+          </div>
 
           {/* Disclaimer */}
           <Card className="border-amber-200 bg-amber-50/50">

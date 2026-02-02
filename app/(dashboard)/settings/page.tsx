@@ -398,7 +398,7 @@ export default function SettingsPage() {
                 </p>
               )}
             </div>
-            <Link href="/pricing">
+            <Link href="/upgrade">
               <Button variant={subscription?.entitlement_tier === "free" ? "default" : "outline"}>
                 {subscription?.entitlement_tier === "free" ? "Upgrade" : "Manage Plan"}
               </Button>

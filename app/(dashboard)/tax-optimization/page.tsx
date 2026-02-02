@@ -34,6 +34,7 @@ import {
   AlertTriangle,
   FileText,
 } from "lucide-react";
+import { FeedbackWidget } from "@/components/feedback-widget";
 import type { TaxReturn } from "@/lib/types";
 
 // ============================================
@@ -1422,6 +1423,15 @@ export default function TaxOptimizationPage() {
 
       {/* Module 5: Raw Tax Return Data (All Years) */}
       <TaxReturnRawData taxReturns={taxReturns} />
+
+      {/* Feedback Widget */}
+      <div className="flex justify-center">
+        <FeedbackWidget
+          pageName="tax-optimization"
+          variant="inline"
+          triggerText="Missing something? Let us know"
+        />
+      </div>
     </div>
   );
 }

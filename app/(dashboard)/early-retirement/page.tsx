@@ -90,6 +90,7 @@ import {
   type BurnRateResult,
   type FIMilestone,
 } from "@/lib/early-retirement-calculator";
+import { FeedbackWidget } from "@/components/feedback-widget";
 
 // ============================================================================
 // COMPONENT
@@ -461,6 +462,15 @@ export default function EarlyRetirementPage() {
 
         {/* Module 7: Burn Rate Clock */}
         <BurnRateClockModule burnRate={burnRate} />
+
+        {/* Feedback Widget */}
+        <div className="flex justify-center">
+          <FeedbackWidget
+            pageName="early-retirement"
+            variant="inline"
+            triggerText="Missing something? Let us know"
+          />
+        </div>
 
         {/* Disclaimer */}
         <Card className="bg-amber-50/50 border-amber-200">

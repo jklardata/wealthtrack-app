@@ -55,6 +55,7 @@ import {
   FileText,
   RefreshCw,
 } from "lucide-react";
+import { FeedbackWidget } from "@/components/feedback-widget";
 
 // 2025 Tax Constants
 const TAX_CONSTANTS = {
@@ -1664,6 +1665,15 @@ export default function TaxCalculatorPage() {
             )}
           </CardContent>
         </Card>
+      </div>
+
+      {/* Feedback Widget */}
+      <div className="flex justify-center">
+        <FeedbackWidget
+          pageName="tax-calculator"
+          variant="inline"
+          triggerText="How could this be more useful?"
+        />
       </div>
 
       {/* Disclaimer */}
