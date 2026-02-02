@@ -20,6 +20,7 @@ function PricingContent() {
   const searchParams = useSearchParams();
   const [currentTier, setCurrentTier] = useState<EntitlementTier>("free");
   const [isLoading, setIsLoading] = useState(true);
+  const [isCanceling, setIsCanceling] = useState(false);
   const [billingInterval, setBillingInterval] = useState<BillingInterval>("monthly");
   const [priceIds, setPriceIds] = useState<PriceIds | null>(null);
   const canceled = searchParams.get("canceled");
@@ -51,6 +52,49 @@ function PricingContent() {
   const getPriceId = (tier: "pro"): string => {
     if (!priceIds) return "";
     return billingInterval === "monthly" ? priceIds.pro.monthly : priceIds.pro.yearly;
+  };
+
+  const handleCancelSubscription = async () => {
+    // Ask if they want immediate downgrade (for testing) or cancel at period end
+    const immediateDowngrade = confirm(
+      "Do you want to downgrade to Free immediately?\n\n" +
+      "Click OK to downgrade NOW (for testing)\n" +
+      "Click Cancel to downgrade at the end of your billing period"
+    );
+
+    if (immediateDowngrade === null) {
+      return; // User clicked cancel on the dialog
+    }
+
+    try {
+      setIsCanceling(true);
+      const endpoint = immediateDowngrade
+        ? "/api/stripe/downgrade-now"
+        : "/api/stripe/cancel-subscription";
+
+      const response = await fetch(endpoint, {
+        method: "POST",
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        if (immediateDowngrade) {
+          alert("Your subscription has been downgraded to Free immediately. Refreshing...");
+        } else {
+          alert("Your subscription will be canceled at the end of your billing period.");
+        }
+        // Refresh the page to update subscription status
+        window.location.reload();
+      } else {
+        alert(data.error || "Failed to cancel subscription");
+      }
+    } catch (error) {
+      console.error("Error canceling subscription:", error);
+      alert("Failed to cancel subscription. Please try again.");
+    } finally {
+      setIsCanceling(false);
+    }
   };
 
   const tiers: Array<{
@@ -156,13 +200,24 @@ function PricingContent() {
 
               <CardFooter>
                 {key === "free" ? (
-                  <Button
-                    className="w-full"
-                    variant="outline"
-                    disabled={isCurrent || isLoading}
-                  >
-                    {isCurrent ? "Current Plan" : "Free Forever"}
-                  </Button>
+                  isCurrent ? (
+                    <Button
+                      className="w-full"
+                      variant="outline"
+                      disabled={true}
+                    >
+                      Current Plan
+                    </Button>
+                  ) : (
+                    <Button
+                      className="w-full"
+                      variant="destructive"
+                      onClick={handleCancelSubscription}
+                      disabled={isLoading || isCanceling}
+                    >
+                      {isCanceling ? "Canceling..." : "Cancel Pro & Downgrade"}
+                    </Button>
+                  )
                 ) : (
                   <UpgradeButton
                     priceId={getPriceId(key as "pro")}
