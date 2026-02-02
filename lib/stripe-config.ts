@@ -44,7 +44,6 @@ export const PRICING_TIERS = {
     features: [
       'Net worth tracking',
       'Basic tax calculator',
-      'Credit card tracking',
       'Geographic arbitrage explorer',
       'Educational resources',
       'Community access',
@@ -57,6 +56,7 @@ export const PRICING_TIERS = {
     description: 'Advanced tools for serious planners',
     features: [
       'Everything in Free',
+      'Credit card tracking & optimization',
       'Early retirement calculator',
       'Advanced tax optimization',
       'Portfolio optimizer with AI',
@@ -76,6 +76,7 @@ export const PRICING_TIERS = {
     description: 'Advanced tools for serious planners',
     features: [
       'Everything in Free',
+      'Credit card tracking & optimization',
       'Early retirement calculator',
       'Advanced tax optimization',
       'Portfolio optimizer with AI',

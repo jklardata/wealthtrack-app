@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { ProFeatureGate } from "@/components/pro-feature-gate";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -680,9 +681,21 @@ export default function CreditCardsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
-      <div className="max-w-7xl mx-auto space-y-6">
-      {/* Sync Message */}
+    <ProFeatureGate
+      featureName="Credit Card Tracking"
+      description="Track signup bonuses, annual fees, and optimize your credit card strategy."
+      benefits={[
+        "Track unlimited credit cards",
+        "Signup bonus progress tracking",
+        "Annual fee reminders",
+        "Spending requirement monitoring",
+        "Google Sheets sync",
+        "Bonus value calculations"
+      ]}
+    >
+      <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
+        <div className="max-w-7xl mx-auto space-y-6">
+        {/* Sync Message */}
       {syncMessage && (
         <div
           className={cn(
@@ -831,5 +844,6 @@ export default function CreditCardsPage() {
       )}
     </div>
     </div>
+    </ProFeatureGate>
   );
 }
