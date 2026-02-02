@@ -1027,7 +1027,8 @@ export default function TaxCalculatorPage() {
       </div>
 
       {/* Total Tax Savings Highlight */}
-      <Card>
+      {isPro ? (
+        <Card>
         <CardHeader className="pb-2">
           <CardTitle className="text-lg flex items-center gap-2">
             <PiggyBank className="h-5 w-5 text-green-600" />
@@ -1684,6 +1685,20 @@ export default function TaxCalculatorPage() {
           </CardContent>
         </Card>
       </div>
+      ) : (
+        <LockedModule
+          title="Tax Analysis & Results"
+          description="Advanced tax calculations, strategy comparisons, and personalized recommendations"
+          icon={<Calculator className="h-5 w-5 text-emerald-600" />}
+          benefits={[
+            "Strategy comparison (Sole Prop vs S-Corp)",
+            "Total wealth build analysis",
+            "Tax breakdown visualizations",
+            "Quarterly tax estimates",
+            "Personalized recommendations"
+          ]}
+        />
+      )}
 
       {/* Feedback Widget */}
       <div className="flex justify-center">
