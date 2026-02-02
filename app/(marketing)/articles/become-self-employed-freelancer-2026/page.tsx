@@ -55,52 +55,21 @@ export default function BecomeFreelancerArticle() {
         {/* Section 1 */}
         <section className="space-y-4">
           <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Step 1: Validate Your Skills and Market</h2>
-          <p className="text-slate-600 leading-relaxed">
-            Before quitting your job, make sure there's demand for your services.
-          </p>
-
-          <h3 className="text-lg font-semibold mt-4 text-slate-900">Questions to Answer</h3>
-          <ul className="space-y-3 ml-4">
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-pink-500 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-slate-600">What specific problems can you solve?</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-pink-500 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-slate-600">Who has these problems and will pay to solve them?</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-pink-500 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-slate-600">What makes you different from other freelancers?</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-pink-500 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-slate-600">What's the going rate for these services?</span>
-            </li>
-          </ul>
-
-          <h3 className="text-lg font-semibold mt-6 text-slate-900">Market Research</h3>
-          <ul className="space-y-3 ml-4">
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-slate-600">Look at freelance platforms (Upwork, Toptal) for demand signals</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-slate-600">Talk to potential clients about their pain points</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-slate-600">Network with other freelancers in your space</span>
-            </li>
-          </ul>
+          <div className="space-y-3">
+            <p className="text-slate-600 leading-relaxed">
+              Before quitting your job, make sure there's actual demand for your services—not just the idea of demand. Start by answering four critical questions: What specific problems can you solve? (Not "I'm a good writer," but "I help SaaS companies convert free trial users into paying customers through email sequences.") Who has these problems and will pay to solve them? (B2B companies with $1M+ revenue, not broke startups.) What makes you different from the 10,000 other freelancers offering similar services? (Your specific industry experience, unique approach, or proven track record.) And what's the actual going rate? (Don't guess—research what clients are paying on Upwork, Toptal, and in job postings.)
+            </p>
+            <p className="text-slate-600 leading-relaxed">
+              Market research means getting concrete data, not just browsing websites. Look at freelance platforms like Upwork and Toptal to see what projects are being posted, how much they pay, and how competitive they are. Talk to potential clients—not to sell, but to understand their pain points and budgets. Network with other freelancers in your space to learn what's working, what rates are realistic, and what mistakes to avoid. If you can't find evidence that people will pay for your specific service, you don't have a viable freelance business—you have a hobby. Validate first, quit second.
+            </p>
+          </div>
         </section>
 
         {/* Section 2 */}
         <section className="space-y-4">
           <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Step 2: Start While Employed</h2>
           <p className="text-slate-600 leading-relaxed">
-            The safest path is to start freelancing on the side before going full-time.
+            The safest path is to start freelancing on the side before going full-time. This isn't just about risk management—it's about validation. Working with real clients while you still have a paycheck proves your business model works, builds your portfolio, and exposes problems you can fix before your livelihood depends on it. Most successful freelancers spend 6-12 months building on the side, landing their first few clients, refining their processes, and saving cash before making the leap. Quitting cold turkey with no clients and no savings is how people end up back in corporate jobs six months later with regret and debt.
           </p>
 
           <div className="rounded-xl border border-emerald-200 bg-emerald-600/10 p-6">
@@ -213,6 +182,9 @@ export default function BecomeFreelancerArticle() {
               </div>
             </div>
           </div>
+          <p className="text-slate-600 leading-relaxed mt-4">
+            Most freelancers start as sole proprietors because it's simple and free—you can literally start invoicing clients tomorrow with zero paperwork. Once you're earning $50-80K annually or have significant assets to protect, form an LLC for liability protection ($150-900 in annual costs depending on state). At $80-100K+, the S-Corp election becomes worth the additional complexity because the self-employment tax savings ($10-15K annually) far exceed the extra accounting costs ($2-3K/year). Don't over-engineer this—start simple and upgrade your structure as your income grows.
+          </p>
         </section>
 
         {/* Section 4 */}
