@@ -14,7 +14,7 @@ export default function BecomeFreelancerArticle() {
       {/* Back Button */}
       <div className="mb-6">
         <Link href="/blog">
-          <Button variant="ghost" size="sm" className="gap-2 text-white/60 hover:text-white hover:bg-white/10">
+          <Button variant="ghost" size="sm" className="gap-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100">
             <ArrowLeft className="h-4 w-4" />
             Back to Blog
           </Button>
@@ -31,8 +31,8 @@ export default function BecomeFreelancerArticle() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
         <div className="absolute bottom-6 left-6 right-6">
           <span className="text-sm font-medium text-white bg-pink-500 px-3 py-1 rounded-full">Getting Started</span>
-          <h1 className="text-3xl md:text-4xl font-medium text-slate-900 mt-3">How to Become a Self-Employed Freelancer in 2026</h1>
-          <div className="flex items-center gap-4 mt-3 text-white/60 text-sm">
+          <h1 className="text-3xl md:text-4xl font-medium text-white mt-3">How to Become a Self-Employed Freelancer in 2026</h1>
+          <div className="flex items-center gap-4 mt-3 text-white/70 text-sm">
             <span className="flex items-center gap-1">
               <Calendar className="h-4 w-4" />
               January 2026
@@ -48,58 +48,58 @@ export default function BecomeFreelancerArticle() {
       {/* Article Content */}
       <div className="space-y-8">
         {/* Intro */}
-        <p className="text-xl text-white/70 leading-relaxed">
+        <p className="text-xl text-slate-600 leading-relaxed">
           Ready to leave the 9-to-5 behind? This comprehensive guide covers everything you need to know about starting your freelance or consulting business in 2026.
         </p>
 
         {/* Section 1 */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-bold border-b border-white/10 pb-2">Step 1: Validate Your Skills and Market</h2>
-          <p className="text-white/70 leading-relaxed">
+          <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Step 1: Validate Your Skills and Market</h2>
+          <p className="text-slate-600 leading-relaxed">
             Before quitting your job, make sure there's demand for your services.
           </p>
 
-          <h3 className="text-lg font-semibold mt-4 text-white">Questions to Answer</h3>
+          <h3 className="text-lg font-semibold mt-4 text-slate-900">Questions to Answer</h3>
           <ul className="space-y-3 ml-4">
             <li className="flex items-start gap-3">
               <span className="w-2 h-2 bg-pink-500 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-white/70">What specific problems can you solve?</span>
+              <span className="text-slate-600">What specific problems can you solve?</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="w-2 h-2 bg-pink-500 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-white/70">Who has these problems and will pay to solve them?</span>
+              <span className="text-slate-600">Who has these problems and will pay to solve them?</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="w-2 h-2 bg-pink-500 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-white/70">What makes you different from other freelancers?</span>
+              <span className="text-slate-600">What makes you different from other freelancers?</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="w-2 h-2 bg-pink-500 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-white/70">What's the going rate for these services?</span>
+              <span className="text-slate-600">What's the going rate for these services?</span>
             </li>
           </ul>
 
-          <h3 className="text-lg font-semibold mt-6 text-white">Market Research</h3>
+          <h3 className="text-lg font-semibold mt-6 text-slate-900">Market Research</h3>
           <ul className="space-y-3 ml-4">
             <li className="flex items-start gap-3">
               <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-white/70">Look at freelance platforms (Upwork, Toptal) for demand signals</span>
+              <span className="text-slate-600">Look at freelance platforms (Upwork, Toptal) for demand signals</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-white/70">Talk to potential clients about their pain points</span>
+              <span className="text-slate-600">Talk to potential clients about their pain points</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-white/70">Network with other freelancers in your space</span>
+              <span className="text-slate-600">Network with other freelancers in your space</span>
             </li>
           </ul>
         </section>
 
         {/* Section 2 */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-bold border-b border-white/10 pb-2">Step 2: Start While Employed</h2>
-          <p className="text-white/70 leading-relaxed">
+          <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Step 2: Start While Employed</h2>
+          <p className="text-slate-600 leading-relaxed">
             The safest path is to start freelancing on the side before going full-time.
           </p>
 
@@ -111,23 +111,23 @@ export default function BecomeFreelancerArticle() {
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
                 <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                <span className="text-white/80">3-6 months of expenses saved</span>
+                <span className="text-slate-700">3-6 months of expenses saved</span>
               </li>
               <li className="flex items-start gap-3">
                 <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                <span className="text-white/80">At least one paying client</span>
+                <span className="text-slate-700">At least one paying client</span>
               </li>
               <li className="flex items-start gap-3">
                 <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                <span className="text-white/80">Health insurance plan identified</span>
+                <span className="text-slate-700">Health insurance plan identified</span>
               </li>
               <li className="flex items-start gap-3">
                 <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                <span className="text-white/80">Basic business structure chosen</span>
+                <span className="text-slate-700">Basic business structure chosen</span>
               </li>
               <li className="flex items-start gap-3">
                 <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
-                <span className="text-white/80">Pipeline of potential clients</span>
+                <span className="text-slate-700">Pipeline of potential clients</span>
               </li>
             </ul>
           </div>
@@ -144,13 +144,13 @@ export default function BecomeFreelancerArticle() {
 
         {/* Section 3 */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-bold border-b border-white/10 pb-2">Step 3: Choose Your Business Structure</h2>
-          <p className="text-white/70 leading-relaxed">
+          <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Step 3: Choose Your Business Structure</h2>
+          <p className="text-slate-600 leading-relaxed">
             Your legal structure affects taxes, liability, and complexity.
           </p>
 
           <div className="grid gap-4">
-            <div className="rounded-xl border border-white/10 bg-white/5 p-5">
+            <div className="rounded-xl border border-slate-200 bg-white/5 p-5">
               <div className="flex items-center gap-2 mb-3">
                 <Building className="h-5 w-5 text-white/40" />
                 <h4 className="font-medium text-slate-900">Sole Proprietorship</h4>
@@ -158,20 +158,20 @@ export default function BecomeFreelancerArticle() {
               <div className="grid md:grid-cols-3 gap-4 text-sm">
                 <div>
                   <p className="font-medium text-emerald-600">Pros</p>
-                  <p className="text-white/60">Simplest, no setup required, low cost</p>
+                  <p className="text-slate-500">Simplest, no setup required, low cost</p>
                 </div>
                 <div>
                   <p className="font-medium text-red-400">Cons</p>
-                  <p className="text-white/60">No liability protection, higher SE tax</p>
+                  <p className="text-slate-500">No liability protection, higher SE tax</p>
                 </div>
                 <div>
                   <p className="font-medium text-slate-600">Best for</p>
-                  <p className="text-white/60">Just starting out, income under $80K</p>
+                  <p className="text-slate-500">Just starting out, income under $80K</p>
                 </div>
               </div>
             </div>
 
-            <div className="rounded-xl border border-white/10 bg-white/5 p-5">
+            <div className="rounded-xl border border-slate-200 bg-white/5 p-5">
               <div className="flex items-center gap-2 mb-3">
                 <Building className="h-5 w-5 text-slate-600" />
                 <h4 className="font-medium text-slate-900">Single-Member LLC</h4>
@@ -179,15 +179,15 @@ export default function BecomeFreelancerArticle() {
               <div className="grid md:grid-cols-3 gap-4 text-sm">
                 <div>
                   <p className="font-medium text-emerald-600">Pros</p>
-                  <p className="text-white/60">Liability protection, professional appearance</p>
+                  <p className="text-slate-500">Liability protection, professional appearance</p>
                 </div>
                 <div>
                   <p className="font-medium text-red-400">Cons</p>
-                  <p className="text-white/60">State fees, some paperwork</p>
+                  <p className="text-slate-500">State fees, some paperwork</p>
                 </div>
                 <div>
                   <p className="font-medium text-slate-600">Best for</p>
-                  <p className="text-white/60">Moderate income, want liability protection</p>
+                  <p className="text-slate-500">Moderate income, want liability protection</p>
                 </div>
               </div>
             </div>
@@ -200,15 +200,15 @@ export default function BecomeFreelancerArticle() {
               <div className="grid md:grid-cols-3 gap-4 text-sm">
                 <div>
                   <p className="font-medium text-emerald-600">Pros</p>
-                  <p className="text-white/60">Significant tax savings on SE tax</p>
+                  <p className="text-slate-500">Significant tax savings on SE tax</p>
                 </div>
                 <div>
                   <p className="font-medium text-red-400">Cons</p>
-                  <p className="text-white/60">Payroll complexity, compliance requirements</p>
+                  <p className="text-slate-500">Payroll complexity, compliance requirements</p>
                 </div>
                 <div>
                   <p className="font-medium text-slate-600">Best for</p>
-                  <p className="text-white/60">Consistent income over $80-100K</p>
+                  <p className="text-slate-500">Consistent income over $80-100K</p>
                 </div>
               </div>
             </div>
@@ -217,42 +217,42 @@ export default function BecomeFreelancerArticle() {
 
         {/* Section 4 */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-bold border-b border-white/10 pb-2">Step 4: Set Up Your Business</h2>
+          <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Step 4: Set Up Your Business</h2>
           <h3 className="text-lg font-medium text-slate-900">Essential Steps</h3>
           <ol className="space-y-3 ml-4">
             <li className="flex items-start gap-3">
               <span className="w-6 h-6 bg-amber-500 text-black rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">1</span>
               <div>
-                <strong className="text-white">Get an EIN</strong>
-                <p className="text-white/60">Free from IRS, takes 5 minutes online</p>
+                <strong className="text-slate-900">Get an EIN</strong>
+                <p className="text-slate-500">Free from IRS, takes 5 minutes online</p>
               </div>
             </li>
             <li className="flex items-start gap-3">
               <span className="w-6 h-6 bg-amber-500 text-black rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">2</span>
               <div>
-                <strong className="text-white">Open a business bank account</strong>
-                <p className="text-white/60">Keep personal and business separate</p>
+                <strong className="text-slate-900">Open a business bank account</strong>
+                <p className="text-slate-500">Keep personal and business separate</p>
               </div>
             </li>
             <li className="flex items-start gap-3">
               <span className="w-6 h-6 bg-amber-500 text-black rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">3</span>
               <div>
-                <strong className="text-white">Set up invoicing</strong>
-                <p className="text-white/60">Use software like Wave, Freshbooks, or Bonsai</p>
+                <strong className="text-slate-900">Set up invoicing</strong>
+                <p className="text-slate-500">Use software like Wave, Freshbooks, or Bonsai</p>
               </div>
             </li>
             <li className="flex items-start gap-3">
               <span className="w-6 h-6 bg-amber-500 text-black rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">4</span>
               <div>
-                <strong className="text-white">Track expenses</strong>
-                <p className="text-white/60">From day one, categorize everything</p>
+                <strong className="text-slate-900">Track expenses</strong>
+                <p className="text-slate-500">From day one, categorize everything</p>
               </div>
             </li>
             <li className="flex items-start gap-3">
               <span className="w-6 h-6 bg-amber-500 text-black rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">5</span>
               <div>
-                <strong className="text-white">Get contracts</strong>
-                <p className="text-white/60">Never work without a signed agreement</p>
+                <strong className="text-slate-900">Get contracts</strong>
+                <p className="text-slate-500">Never work without a signed agreement</p>
               </div>
             </li>
           </ol>
@@ -260,12 +260,12 @@ export default function BecomeFreelancerArticle() {
 
         {/* Section 5 */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-bold border-b border-white/10 pb-2">Step 5: Find Clients</h2>
-          <p className="text-white/70 leading-relaxed">
+          <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Step 5: Find Clients</h2>
+          <p className="text-slate-600 leading-relaxed">
             The most important skill in freelancing is business development.
           </p>
 
-          <h3 className="text-lg font-semibold mt-4 flex items-center gap-2 text-white">
+          <h3 className="text-lg font-semibold mt-4 flex items-center gap-2 text-slate-900">
             <Users className="h-5 w-5 text-slate-600" />
             Client Acquisition Channels
           </h3>
@@ -273,81 +273,81 @@ export default function BecomeFreelancerArticle() {
             <li className="flex items-start gap-3">
               <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
               <div>
-                <strong className="text-white">Your network</strong>
-                <p className="text-white/60">Tell everyone you're freelancing</p>
+                <strong className="text-slate-900">Your network</strong>
+                <p className="text-slate-500">Tell everyone you're freelancing</p>
               </div>
             </li>
             <li className="flex items-start gap-3">
               <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
               <div>
-                <strong className="text-white">LinkedIn</strong>
-                <p className="text-white/60">Optimize profile, post content, reach out</p>
+                <strong className="text-slate-900">LinkedIn</strong>
+                <p className="text-slate-500">Optimize profile, post content, reach out</p>
               </div>
             </li>
             <li className="flex items-start gap-3">
               <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
               <div>
-                <strong className="text-white">Referrals</strong>
-                <p className="text-white/60">Ask happy clients to refer others</p>
+                <strong className="text-slate-900">Referrals</strong>
+                <p className="text-slate-500">Ask happy clients to refer others</p>
               </div>
             </li>
             <li className="flex items-start gap-3">
               <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
               <div>
-                <strong className="text-white">Freelance platforms</strong>
-                <p className="text-white/60">Upwork, Toptal, Contra</p>
+                <strong className="text-slate-900">Freelance platforms</strong>
+                <p className="text-slate-500">Upwork, Toptal, Contra</p>
               </div>
             </li>
           </ul>
 
-          <h3 className="text-lg font-semibold mt-6 flex items-center gap-2 text-white">
+          <h3 className="text-lg font-semibold mt-6 flex items-center gap-2 text-slate-900">
             <DollarSign className="h-5 w-5 text-emerald-600" />
             Pricing Strategies
           </h3>
           <div className="grid md:grid-cols-2 gap-4">
-            <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+            <div className="rounded-xl border border-slate-200 bg-white/5 p-4">
               <h4 className="font-medium text-slate-900">Hourly</h4>
-              <p className="text-sm text-white/60">Simple but limits income</p>
+              <p className="text-sm text-slate-500">Simple but limits income</p>
             </div>
-            <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+            <div className="rounded-xl border border-slate-200 bg-white/5 p-4">
               <h4 className="font-medium text-slate-900">Project-based</h4>
-              <p className="text-sm text-white/60">Better margins, requires scoping skill</p>
+              <p className="text-sm text-slate-500">Better margins, requires scoping skill</p>
             </div>
-            <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+            <div className="rounded-xl border border-slate-200 bg-white/5 p-4">
               <h4 className="font-medium text-slate-900">Retainer</h4>
-              <p className="text-sm text-white/60">Predictable income, recurring revenue</p>
+              <p className="text-sm text-slate-500">Predictable income, recurring revenue</p>
             </div>
             <div className="rounded-xl border border-emerald-200 bg-emerald-600/10 p-4">
               <h4 className="font-semibold text-emerald-600">Value-based</h4>
-              <p className="text-sm text-white/60">Price based on value delivered, not time</p>
+              <p className="text-sm text-slate-500">Price based on value delivered, not time</p>
             </div>
           </div>
         </section>
 
         {/* Section 6 */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-bold border-b border-white/10 pb-2">Step 6: Set Up Your Financial Systems</h2>
+          <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Step 6: Set Up Your Financial Systems</h2>
 
           <div className="grid md:grid-cols-3 gap-4">
-            <div className="rounded-xl border border-white/10 bg-white/5 p-5">
-              <h4 className="font-semibold mb-3 text-white">Banking</h4>
-              <ul className="space-y-2 text-sm text-white/60">
+            <div className="rounded-xl border border-slate-200 bg-white/5 p-5">
+              <h4 className="font-semibold mb-3 text-slate-900">Banking</h4>
+              <ul className="space-y-2 text-sm text-slate-500">
                 <li>Business checking (Mercury, Relay)</li>
                 <li>High-yield savings for taxes (25-30%)</li>
                 <li>Separate business credit card</li>
               </ul>
             </div>
-            <div className="rounded-xl border border-white/10 bg-white/5 p-5">
-              <h4 className="font-semibold mb-3 text-white">Retirement</h4>
-              <ul className="space-y-2 text-sm text-white/60">
+            <div className="rounded-xl border border-slate-200 bg-white/5 p-5">
+              <h4 className="font-semibold mb-3 text-slate-900">Retirement</h4>
+              <ul className="space-y-2 text-sm text-slate-500">
                 <li>Solo 401(k) - highest limits</li>
                 <li>SEP-IRA as simpler alternative</li>
                 <li>Backdoor Roth IRA</li>
               </ul>
             </div>
-            <div className="rounded-xl border border-white/10 bg-white/5 p-5">
-              <h4 className="font-semibold mb-3 text-white">Insurance</h4>
-              <ul className="space-y-2 text-sm text-white/60">
+            <div className="rounded-xl border border-slate-200 bg-white/5 p-5">
+              <h4 className="font-semibold mb-3 text-slate-900">Insurance</h4>
+              <ul className="space-y-2 text-sm text-slate-500">
                 <li>Health: Marketplace or spouse's plan</li>
                 <li>Professional liability (E&O)</li>
                 <li>Disability insurance</li>
@@ -358,62 +358,62 @@ export default function BecomeFreelancerArticle() {
 
         {/* Section 7 */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-bold border-b border-white/10 pb-2">Step 7: Build Systems for Scale</h2>
-          <p className="text-white/70 leading-relaxed">
+          <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Step 7: Build Systems for Scale</h2>
+          <p className="text-slate-600 leading-relaxed">
             As you grow, invest in systems that save time:
           </p>
           <ul className="space-y-3 ml-4">
             <li className="flex items-start gap-3">
               <span className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-white/70">Templated proposals and contracts</span>
+              <span className="text-slate-600">Templated proposals and contracts</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-white/70">Automated invoicing and payment reminders</span>
+              <span className="text-slate-600">Automated invoicing and payment reminders</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-white/70">Project management tools (Notion, Asana)</span>
+              <span className="text-slate-600">Project management tools (Notion, Asana)</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-white/70">Time tracking for hourly work</span>
+              <span className="text-slate-600">Time tracking for hourly work</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-white/70">Regular financial reviews (monthly)</span>
+              <span className="text-slate-600">Regular financial reviews (monthly)</span>
             </li>
           </ul>
         </section>
 
         {/* Common Mistakes */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-bold border-b border-white/10 pb-2">Common Mistakes to Avoid</h2>
+          <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Common Mistakes to Avoid</h2>
           <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-6">
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
                 <AlertTriangle className="h-5 w-5 text-red-400 flex-shrink-0 mt-0.5" />
-                <span className="text-white/80">Underpricing your services</span>
+                <span className="text-slate-700">Underpricing your services</span>
               </li>
               <li className="flex items-start gap-3">
                 <AlertTriangle className="h-5 w-5 text-red-400 flex-shrink-0 mt-0.5" />
-                <span className="text-white/80">Not saving for taxes</span>
+                <span className="text-slate-700">Not saving for taxes</span>
               </li>
               <li className="flex items-start gap-3">
                 <AlertTriangle className="h-5 w-5 text-red-400 flex-shrink-0 mt-0.5" />
-                <span className="text-white/80">Working without contracts</span>
+                <span className="text-slate-700">Working without contracts</span>
               </li>
               <li className="flex items-start gap-3">
                 <AlertTriangle className="h-5 w-5 text-red-400 flex-shrink-0 mt-0.5" />
-                <span className="text-white/80">Neglecting business development when busy</span>
+                <span className="text-slate-700">Neglecting business development when busy</span>
               </li>
               <li className="flex items-start gap-3">
                 <AlertTriangle className="h-5 w-5 text-red-400 flex-shrink-0 mt-0.5" />
-                <span className="text-white/80">Mixing personal and business finances</span>
+                <span className="text-slate-700">Mixing personal and business finances</span>
               </li>
               <li className="flex items-start gap-3">
                 <AlertTriangle className="h-5 w-5 text-red-400 flex-shrink-0 mt-0.5" />
-                <span className="text-white/80">Not setting boundaries with clients</span>
+                <span className="text-slate-700">Not setting boundaries with clients</span>
               </li>
             </ul>
           </div>
@@ -421,47 +421,47 @@ export default function BecomeFreelancerArticle() {
 
         {/* Key Takeaways */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-bold border-b border-white/10 pb-2">Key Takeaways</h2>
+          <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Key Takeaways</h2>
           <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-6">
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
                 <span className="text-amber-400 font-bold">1.</span>
-                <span className="text-white/80">Start freelancing while employed to reduce risk</span>
+                <span className="text-slate-700">Start freelancing while employed to reduce risk</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-amber-400 font-bold">2.</span>
-                <span className="text-white/80">Choose the right business structure for your situation</span>
+                <span className="text-slate-700">Choose the right business structure for your situation</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-amber-400 font-bold">3.</span>
-                <span className="text-white/80">Separate personal and business finances from day one</span>
+                <span className="text-slate-700">Separate personal and business finances from day one</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-amber-400 font-bold">4.</span>
-                <span className="text-white/80">Business development is the #1 skill to develop</span>
+                <span className="text-slate-700">Business development is the #1 skill to develop</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-amber-400 font-bold">5.</span>
-                <span className="text-white/80">Set aside 25-30% for taxes</span>
+                <span className="text-slate-700">Set aside 25-30% for taxes</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-amber-400 font-bold">6.</span>
-                <span className="text-white/80">Invest in retirement accounts early (Solo 401k)</span>
+                <span className="text-slate-700">Invest in retirement accounts early (Solo 401k)</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-amber-400 font-bold">7.</span>
-                <span className="text-white/80">Build systems and processes as you grow</span>
+                <span className="text-slate-700">Build systems and processes as you grow</span>
               </li>
             </ul>
           </div>
         </section>
 
         {/* CTA */}
-        <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-pink-500/20 to-purple-500/20 p-8 text-center">
+        <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-pink-500/20 to-purple-500/20 p-8 text-center">
           <h3 className="text-xl font-bold mb-3">Ready to get started?</h3>
-          <p className="text-white/60 mb-6">Download our free First Year Freelance Checklist.</p>
+          <p className="text-slate-500 mb-6">Download our free First Year Freelance Checklist.</p>
           <Link href="/tools/freelance-checklist">
-            <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
+            <Button className="bg-emerald-600 hover:bg-emerald-700 text-slate-900">
               <Briefcase className="mr-2 h-4 w-4" />
               Get Checklist
             </Button>

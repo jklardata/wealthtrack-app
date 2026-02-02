@@ -14,7 +14,7 @@ export default function FEIEArticle() {
       {/* Back Button */}
       <div className="mb-6">
         <Link href="/blog">
-          <Button variant="ghost" size="sm" className="gap-2 text-white/60 hover:text-white hover:bg-white/10">
+          <Button variant="ghost" size="sm" className="gap-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100">
             <ArrowLeft className="h-4 w-4" />
             Back to Blog
           </Button>
@@ -31,8 +31,8 @@ export default function FEIEArticle() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
         <div className="absolute bottom-6 left-6 right-6">
           <span className="text-sm font-medium text-white bg-cyan-500 px-3 py-1 rounded-full">Tax Planning</span>
-          <h1 className="text-3xl md:text-4xl font-medium text-slate-900 mt-3">How the Foreign Earned Income Exclusion (FEIE) Works</h1>
-          <div className="flex items-center gap-4 mt-3 text-white/60 text-sm">
+          <h1 className="text-3xl md:text-4xl font-medium text-white mt-3">How the Foreign Earned Income Exclusion (FEIE) Works</h1>
+          <div className="flex items-center gap-4 mt-3 text-white/70 text-sm">
             <span className="flex items-center gap-1">
               <Calendar className="h-4 w-4" />
               January 2026
@@ -48,7 +48,7 @@ export default function FEIEArticle() {
       {/* Article Content */}
       <div className="space-y-8">
         {/* Intro */}
-        <p className="text-xl text-white/70 leading-relaxed">
+        <p className="text-xl text-slate-600 leading-relaxed">
           The Foreign Earned Income Exclusion allows US citizens and residents working abroad to exclude up to $130,000 (2026) of foreign earned income from US federal taxes. Here's everything you need to know.
         </p>
 
@@ -59,25 +59,25 @@ export default function FEIEArticle() {
             2026 FEIE Limits
           </h4>
           <div className="grid md:grid-cols-3 gap-4">
-            <div className="text-center p-4 bg-white/5 rounded-xl border border-white/10">
+            <div className="text-center p-4 bg-white/5 rounded-xl border border-slate-200">
               <p className="text-2xl font-bold text-cyan-400">$130,000</p>
-              <p className="text-xs text-white/60">Maximum Exclusion</p>
+              <p className="text-xs text-slate-500">Maximum Exclusion</p>
             </div>
-            <div className="text-center p-4 bg-white/5 rounded-xl border border-white/10">
+            <div className="text-center p-4 bg-white/5 rounded-xl border border-slate-200">
               <p className="text-2xl font-bold text-cyan-400">$20,800</p>
-              <p className="text-xs text-white/60">Housing Exclusion Base</p>
+              <p className="text-xs text-slate-500">Housing Exclusion Base</p>
             </div>
-            <div className="text-center p-4 bg-white/5 rounded-xl border border-white/10">
+            <div className="text-center p-4 bg-white/5 rounded-xl border border-slate-200">
               <p className="text-2xl font-bold text-cyan-400">~$40,000+</p>
-              <p className="text-xs text-white/60">Housing Max (varies by location)</p>
+              <p className="text-xs text-slate-500">Housing Max (varies by location)</p>
             </div>
           </div>
         </div>
 
         {/* Section 1 */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-bold border-b border-white/10 pb-2">What Qualifies as "Foreign Earned Income"?</h2>
-          <p className="text-white/70 leading-relaxed">
+          <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">What Qualifies as "Foreign Earned Income"?</h2>
+          <p className="text-slate-600 leading-relaxed">
             FEIE applies only to income earned from personal services performed in a foreign country:
           </p>
           <div className="grid md:grid-cols-2 gap-4">
@@ -89,19 +89,19 @@ export default function FEIEArticle() {
               <ul className="space-y-3">
                 <li className="flex items-center gap-2 text-sm">
                   <span className="w-2 h-2 bg-emerald-600 rounded-full flex-shrink-0" />
-                  <span className="text-white/70">Consulting fees earned abroad</span>
+                  <span className="text-slate-600">Consulting fees earned abroad</span>
                 </li>
                 <li className="flex items-center gap-2 text-sm">
                   <span className="w-2 h-2 bg-emerald-600 rounded-full flex-shrink-0" />
-                  <span className="text-white/70">Freelance income for work done abroad</span>
+                  <span className="text-slate-600">Freelance income for work done abroad</span>
                 </li>
                 <li className="flex items-center gap-2 text-sm">
                   <span className="w-2 h-2 bg-emerald-600 rounded-full flex-shrink-0" />
-                  <span className="text-white/70">Salary from foreign employer</span>
+                  <span className="text-slate-600">Salary from foreign employer</span>
                 </li>
                 <li className="flex items-center gap-2 text-sm">
                   <span className="w-2 h-2 bg-emerald-600 rounded-full flex-shrink-0" />
-                  <span className="text-white/70">Self-employment income earned abroad</span>
+                  <span className="text-slate-600">Self-employment income earned abroad</span>
                 </li>
               </ul>
             </div>
@@ -113,23 +113,23 @@ export default function FEIEArticle() {
               <ul className="space-y-3">
                 <li className="flex items-center gap-2 text-sm">
                   <span className="w-2 h-2 bg-red-500 rounded-full flex-shrink-0" />
-                  <span className="text-white/70">Investment income (dividends, interest)</span>
+                  <span className="text-slate-600">Investment income (dividends, interest)</span>
                 </li>
                 <li className="flex items-center gap-2 text-sm">
                   <span className="w-2 h-2 bg-red-500 rounded-full flex-shrink-0" />
-                  <span className="text-white/70">Rental income</span>
+                  <span className="text-slate-600">Rental income</span>
                 </li>
                 <li className="flex items-center gap-2 text-sm">
                   <span className="w-2 h-2 bg-red-500 rounded-full flex-shrink-0" />
-                  <span className="text-white/70">Capital gains</span>
+                  <span className="text-slate-600">Capital gains</span>
                 </li>
                 <li className="flex items-center gap-2 text-sm">
                   <span className="w-2 h-2 bg-red-500 rounded-full flex-shrink-0" />
-                  <span className="text-white/70">Pension or Social Security</span>
+                  <span className="text-slate-600">Pension or Social Security</span>
                 </li>
                 <li className="flex items-center gap-2 text-sm">
                   <span className="w-2 h-2 bg-red-500 rounded-full flex-shrink-0" />
-                  <span className="text-white/70">US government employee wages</span>
+                  <span className="text-slate-600">US government employee wages</span>
                 </li>
               </ul>
             </div>
@@ -147,36 +147,36 @@ export default function FEIEArticle() {
 
         {/* Section 2 */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-bold border-b border-white/10 pb-2">Qualification Tests</h2>
-          <p className="text-white/70 leading-relaxed">
+          <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Qualification Tests</h2>
+          <p className="text-slate-600 leading-relaxed">
             You must meet one of two tests to qualify for FEIE:
           </p>
 
-          <h3 className="text-lg font-semibold mt-6 flex items-center gap-2 text-white">
+          <h3 className="text-lg font-semibold mt-6 flex items-center gap-2 text-slate-900">
             <Globe className="h-5 w-5 text-slate-600" />
             1. Physical Presence Test
           </h3>
-          <p className="text-white/70 leading-relaxed">
-            Be physically present in a foreign country for at least <strong className="text-white">330 full days</strong> during any 12-month period.
+          <p className="text-slate-600 leading-relaxed">
+            Be physically present in a foreign country for at least <strong className="text-slate-900">330 full days</strong> during any 12-month period.
           </p>
-          <div className="rounded-xl border border-white/10 bg-white/5 p-6 space-y-3">
+          <div className="rounded-xl border border-slate-200 bg-white/5 p-6 space-y-3">
             <h4 className="font-medium text-slate-900">Key Requirements</h4>
             <ul className="space-y-2 text-sm">
               <li className="flex items-start gap-2">
                 <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
-                <span className="text-white/70">Days don't need to be consecutive</span>
+                <span className="text-slate-600">Days don't need to be consecutive</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
-                <span className="text-white/70">The 12-month period can start on any day</span>
+                <span className="text-slate-600">The 12-month period can start on any day</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
-                <span className="text-white/70">Parts of days don't count—you need 330 full 24-hour periods</span>
+                <span className="text-slate-600">Parts of days don't count—you need 330 full 24-hour periods</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
-                <span className="text-white/70">Days in international waters/airspace don't count</span>
+                <span className="text-slate-600">Days in international waters/airspace don't count</span>
               </li>
             </ul>
           </div>
@@ -185,191 +185,191 @@ export default function FEIEArticle() {
             <AlertTriangle className="h-5 w-5 text-yellow-500 flex-shrink-0 mt-0.5" />
             <div>
               <h4 className="font-semibold text-emerald-600">Important</h4>
-              <p className="text-sm text-white/60">Days spent in the US count against you. A two-week Christmas visit home could disqualify you if you're close to the 330-day threshold.</p>
+              <p className="text-sm text-slate-500">Days spent in the US count against you. A two-week Christmas visit home could disqualify you if you're close to the 330-day threshold.</p>
             </div>
           </div>
 
-          <h3 className="text-lg font-semibold mt-6 flex items-center gap-2 text-white">
+          <h3 className="text-lg font-semibold mt-6 flex items-center gap-2 text-slate-900">
             <Globe className="h-5 w-5 text-emerald-600" />
             2. Bona Fide Residence Test
           </h3>
-          <p className="text-white/70 leading-relaxed">
+          <p className="text-slate-600 leading-relaxed">
             Be a bona fide resident of a foreign country for an uninterrupted period that includes an entire tax year.
           </p>
           <ul className="space-y-3 ml-4">
             <li className="flex items-start gap-3">
               <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-white/70">More flexible than physical presence test</span>
+              <span className="text-slate-600">More flexible than physical presence test</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-white/70">Can spend time in the US without losing qualification</span>
+              <span className="text-slate-600">Can spend time in the US without losing qualification</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-white/70">Requires establishing actual residency (visa, local ties, etc.)</span>
+              <span className="text-slate-600">Requires establishing actual residency (visa, local ties, etc.)</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-white/70">Must be resident for full calendar year to qualify</span>
+              <span className="text-slate-600">Must be resident for full calendar year to qualify</span>
             </li>
           </ul>
         </section>
 
         {/* Section 3 */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-bold border-b border-white/10 pb-2">Foreign Housing Exclusion</h2>
-          <p className="text-white/70 leading-relaxed">
+          <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Foreign Housing Exclusion</h2>
+          <p className="text-slate-600 leading-relaxed">
             In addition to the income exclusion, you can exclude certain housing expenses:
           </p>
           <ul className="space-y-3 ml-4">
             <li className="flex items-start gap-3">
               <span className="w-2 h-2 bg-cyan-500 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-white/70">Rent, utilities, property insurance</span>
+              <span className="text-slate-600">Rent, utilities, property insurance</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="w-2 h-2 bg-cyan-500 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-white/70">Repairs and furniture rental</span>
+              <span className="text-slate-600">Repairs and furniture rental</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="w-2 h-2 bg-cyan-500 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-white/70">Base amount ($20,800 in 2026) is subtracted</span>
+              <span className="text-slate-600">Base amount ($20,800 in 2026) is subtracted</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="w-2 h-2 bg-cyan-500 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-white/70">Maximum varies by location—higher in expensive cities</span>
+              <span className="text-slate-600">Maximum varies by location—higher in expensive cities</span>
             </li>
           </ul>
         </section>
 
         {/* Section 4 */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-bold border-b border-white/10 pb-2">How to Claim FEIE</h2>
+          <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">How to Claim FEIE</h2>
           <ol className="space-y-3 ml-4">
             <li className="flex items-start gap-3">
               <span className="w-6 h-6 bg-amber-500 text-black rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">1</span>
-              <span className="text-white/70">File Form 2555 with your tax return</span>
+              <span className="text-slate-600">File Form 2555 with your tax return</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="w-6 h-6 bg-amber-500 text-black rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">2</span>
-              <span className="text-white/70">Document your qualification (physical presence or bona fide residence)</span>
+              <span className="text-slate-600">Document your qualification (physical presence or bona fide residence)</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="w-6 h-6 bg-amber-500 text-black rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">3</span>
-              <span className="text-white/70">Calculate your foreign earned income and housing expenses</span>
+              <span className="text-slate-600">Calculate your foreign earned income and housing expenses</span>
             </li>
             <li className="flex items-start gap-3">
               <span className="w-6 h-6 bg-amber-500 text-black rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">4</span>
-              <span className="text-white/70">File by the deadline (automatic 2-month extension for taxpayers abroad)</span>
+              <span className="text-slate-600">File by the deadline (automatic 2-month extension for taxpayers abroad)</span>
             </li>
           </ol>
         </section>
 
         {/* Section 5 */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-bold border-b border-white/10 pb-2">FEIE vs. Foreign Tax Credit</h2>
-          <p className="text-white/70 leading-relaxed">
+          <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">FEIE vs. Foreign Tax Credit</h2>
+          <p className="text-slate-600 leading-relaxed">
             You can't use both FEIE and Foreign Tax Credit on the same income. Consider:
           </p>
           <div className="grid md:grid-cols-2 gap-4">
-            <div className="rounded-xl border border-white/10 bg-white/5 p-5">
-              <h4 className="font-semibold mb-2 text-white">FEIE</h4>
-              <p className="text-sm text-white/60">Better if you're in a <strong className="text-white">low/no tax country</strong></p>
+            <div className="rounded-xl border border-slate-200 bg-white/5 p-5">
+              <h4 className="font-semibold mb-2 text-slate-900">FEIE</h4>
+              <p className="text-sm text-slate-500">Better if you're in a <strong className="text-slate-900">low/no tax country</strong></p>
             </div>
-            <div className="rounded-xl border border-white/10 bg-white/5 p-5">
-              <h4 className="font-semibold mb-2 text-white">Foreign Tax Credit (FTC)</h4>
-              <p className="text-sm text-white/60">Better if you pay <strong className="text-white">significant foreign taxes</strong></p>
+            <div className="rounded-xl border border-slate-200 bg-white/5 p-5">
+              <h4 className="font-semibold mb-2 text-slate-900">Foreign Tax Credit (FTC)</h4>
+              <p className="text-sm text-slate-500">Better if you pay <strong className="text-slate-900">significant foreign taxes</strong></p>
             </div>
           </div>
           <div className="rounded-xl border border-slate-200 bg-yellow-500/10 p-4 flex gap-3">
             <AlertTriangle className="h-5 w-5 text-yellow-500 flex-shrink-0 mt-0.5" />
             <div>
               <h4 className="font-semibold text-emerald-600">5-Year Rule</h4>
-              <p className="text-sm text-white/60">You can revoke FEIE election, but there's a 5-year waiting period to re-elect. Choose carefully.</p>
+              <p className="text-sm text-slate-500">You can revoke FEIE election, but there's a 5-year waiting period to re-elect. Choose carefully.</p>
             </div>
           </div>
         </section>
 
         {/* Section 6 */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-bold border-b border-white/10 pb-2">Self-Employment Tax Trap</h2>
-          <p className="text-white/70 leading-relaxed">
-            FEIE does <strong className="text-white">NOT</strong> exclude you from self-employment tax. Even if you exclude $130,000 of income from income tax, you still owe 15.3% SE tax on that amount.
+          <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Self-Employment Tax Trap</h2>
+          <p className="text-slate-600 leading-relaxed">
+            FEIE does <strong className="text-slate-900">NOT</strong> exclude you from self-employment tax. Even if you exclude $130,000 of income from income tax, you still owe 15.3% SE tax on that amount.
           </p>
           <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-6">
             <h4 className="font-semibold text-red-400 mb-2">Example</h4>
-            <p className="text-white/70">
-              On $130,000 of excluded income, you'd still owe approximately <strong className="text-white">$18,400</strong> in self-employment tax. This is why many digital nomads consider S-Corp election even while abroad.
+            <p className="text-slate-600">
+              On $130,000 of excluded income, you'd still owe approximately <strong className="text-slate-900">$18,400</strong> in self-employment tax. This is why many digital nomads consider S-Corp election even while abroad.
             </p>
           </div>
         </section>
 
         {/* Section 7 */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-bold border-b border-white/10 pb-2">Common Mistakes to Avoid</h2>
+          <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Common Mistakes to Avoid</h2>
           <ul className="space-y-3 ml-4">
             <li className="flex items-start gap-3">
               <X className="h-5 w-5 text-red-400 flex-shrink-0 mt-0.5" />
-              <span className="text-white/70">Forgetting to track days in/out of foreign countries</span>
+              <span className="text-slate-600">Forgetting to track days in/out of foreign countries</span>
             </li>
             <li className="flex items-start gap-3">
               <X className="h-5 w-5 text-red-400 flex-shrink-0 mt-0.5" />
-              <span className="text-white/70">Assuming investment income qualifies (it doesn't)</span>
+              <span className="text-slate-600">Assuming investment income qualifies (it doesn't)</span>
             </li>
             <li className="flex items-start gap-3">
               <X className="h-5 w-5 text-red-400 flex-shrink-0 mt-0.5" />
-              <span className="text-white/70">Missing the filing deadline</span>
+              <span className="text-slate-600">Missing the filing deadline</span>
             </li>
             <li className="flex items-start gap-3">
               <X className="h-5 w-5 text-red-400 flex-shrink-0 mt-0.5" />
-              <span className="text-white/70">Not considering the self-employment tax implications</span>
+              <span className="text-slate-600">Not considering the self-employment tax implications</span>
             </li>
             <li className="flex items-start gap-3">
               <X className="h-5 w-5 text-red-400 flex-shrink-0 mt-0.5" />
-              <span className="text-white/70">Revoking FEIE without understanding the 5-year rule</span>
+              <span className="text-slate-600">Revoking FEIE without understanding the 5-year rule</span>
             </li>
           </ul>
         </section>
 
         {/* Key Takeaways */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-bold border-b border-white/10 pb-2">Key Takeaways</h2>
+          <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Key Takeaways</h2>
           <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-6">
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
                 <span className="text-amber-400 font-bold">1.</span>
-                <span className="text-white/80">FEIE can exclude up to $130,000 of foreign earned income (2026)</span>
+                <span className="text-slate-700">FEIE can exclude up to $130,000 of foreign earned income (2026)</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-amber-400 font-bold">2.</span>
-                <span className="text-white/80">You must meet either the Physical Presence or Bona Fide Residence test</span>
+                <span className="text-slate-700">You must meet either the Physical Presence or Bona Fide Residence test</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-amber-400 font-bold">3.</span>
-                <span className="text-white/80">Investment income, capital gains, and passive income don't qualify</span>
+                <span className="text-slate-700">Investment income, capital gains, and passive income don't qualify</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-amber-400 font-bold">4.</span>
-                <span className="text-white/80">Self-employment tax still applies to excluded income</span>
+                <span className="text-slate-700">Self-employment tax still applies to excluded income</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-amber-400 font-bold">5.</span>
-                <span className="text-white/80">Keep meticulous records of your days in each country</span>
+                <span className="text-slate-700">Keep meticulous records of your days in each country</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-amber-400 font-bold">6.</span>
-                <span className="text-white/80">Consult a tax professional familiar with expat taxation</span>
+                <span className="text-slate-700">Consult a tax professional familiar with expat taxation</span>
               </li>
             </ul>
           </div>
         </section>
 
         {/* CTA */}
-        <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 p-8 text-center">
+        <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 p-8 text-center">
           <h3 className="text-xl font-bold mb-3">Planning to work abroad?</h3>
-          <p className="text-white/60 mb-6">Use our Tax Savings Calculator to estimate your potential savings.</p>
+          <p className="text-slate-500 mb-6">Use our Tax Savings Calculator to estimate your potential savings.</p>
           <Link href="/tools/tax-savings">
-            <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
+            <Button className="bg-emerald-600 hover:bg-emerald-700 text-slate-900">
               <Calculator className="mr-2 h-4 w-4" />
               Calculate Savings
             </Button>

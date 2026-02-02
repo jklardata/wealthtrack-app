@@ -14,7 +14,7 @@ export default function WhyTrackNetWorthArticle() {
       {/* Back Button */}
       <div className="mb-6">
         <Link href="/blog">
-          <Button variant="ghost" size="sm" className="gap-2 text-slate-500 hover:text-white hover:bg-slate-100">
+          <Button variant="ghost" size="sm" className="gap-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100">
             <ArrowLeft className="h-4 w-4" />
             Back to Blog
           </Button>
@@ -31,8 +31,8 @@ export default function WhyTrackNetWorthArticle() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
         <div className="absolute bottom-6 left-6 right-6">
           <span className="text-sm font-medium text-white bg-emerald-600 px-3 py-1 rounded-full">Wealth Building</span>
-          <h1 className="text-3xl md:text-4xl font-medium text-slate-900 mt-3">Why Tracking Your Net Worth Over Time is Useful</h1>
-          <div className="flex items-center gap-4 mt-3 text-slate-500 text-sm">
+          <h1 className="text-3xl md:text-4xl font-medium text-white mt-3">Why Tracking Your Net Worth Over Time is Useful</h1>
+          <div className="flex items-center gap-4 mt-3 text-white/70 text-sm">
             <span className="flex items-center gap-1">
               <Calendar className="h-4 w-4" />
               January 2026
@@ -125,7 +125,7 @@ export default function WhyTrackNetWorthArticle() {
             <h4 className="font-semibold text-emerald-600">Real Example</h4>
           </div>
           <p className="text-slate-600">
-            A consultant tracking net worth noticed their cash allocation was 40% of total assets—too high. By moving excess cash to index funds, they increased their return rate by ~4% annually, adding <strong className="text-white">$20K+</strong> to their net worth over 3 years.
+            A consultant tracking net worth noticed their cash allocation was 40% of total assets—too high. By moving excess cash to index funds, they increased their return rate by ~4% annually, adding <strong className="text-slate-900">$20K+</strong> to their net worth over 3 years.
           </p>
         </div>
 
@@ -152,12 +152,12 @@ export default function WhyTrackNetWorthArticle() {
             </li>
           </ul>
 
-          <h3 className="text-lg font-semibold mt-6 text-white">2. Debt Visibility</h3>
+          <h3 className="text-lg font-semibold mt-6 text-slate-900">2. Debt Visibility</h3>
           <p className="text-slate-600 leading-relaxed">
             Seeing your debts as part of the net worth calculation changes your relationship with borrowing. That $30K car loan looks different when you see it reducing your net worth every month.
           </p>
 
-          <h3 className="text-lg font-semibold mt-6 text-white">3. Long-Term Trend Analysis</h3>
+          <h3 className="text-lg font-semibold mt-6 text-slate-900">3. Long-Term Trend Analysis</h3>
           <p className="text-slate-600 leading-relaxed">
             With historical data, you can answer questions like:
           </p>
@@ -320,7 +320,7 @@ export default function WhyTrackNetWorthArticle() {
           <h3 className="text-xl font-bold mb-3">Ready to start tracking?</h3>
           <p className="text-slate-500 mb-6">Take our quiz to see how well you're tracking your finances.</p>
           <Link href="/tools/net-worth-quiz">
-            <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
+            <Button className="bg-emerald-600 hover:bg-emerald-700 text-slate-900">
               <PiggyBank className="mr-2 h-4 w-4" />
               Take the Quiz
             </Button>
