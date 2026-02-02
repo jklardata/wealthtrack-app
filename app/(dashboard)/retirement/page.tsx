@@ -275,37 +275,38 @@ function RetirementPageContent() {
   } : null;
 
   return (
-    <div className="space-y-6">
+    <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
-          <Calculator className="h-6 w-6 sm:h-7 sm:w-7 text-primary flex-shrink-0" />
+        <h1 className="text-2xl sm:text-3xl font-medium text-slate-900 flex items-center gap-2">
+          <Calculator className="h-6 w-6 sm:h-7 sm:w-7 text-emerald-600 flex-shrink-0" />
           Retirement Calculator
         </h1>
-        <p className="text-sm sm:text-base text-muted-foreground mt-1">
+        <p className="text-sm sm:text-base text-slate-500 mt-1">
           Plan your retirement with cost-of-living adjustments
         </p>
       </div>
 
       {/* Scenario Banner */}
       {activeScenario && (
-        <Card className="border-primary/30 bg-primary/5">
+        <Card className="border-emerald-200 bg-emerald-50/50">
           <CardContent className="pt-4 pb-4">
             <div className="flex items-center justify-between flex-wrap gap-4">
               <div className="flex items-center gap-3">
-                <Layers className="h-5 w-5 text-primary" />
+                <Layers className="h-5 w-5 text-emerald-600" />
                 <div>
                   <p className="font-medium">
                     Viewing: {activeScenario.name}
                   </p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-slate-500">
                     {activeScenario.location_city_name} • Created from Geographic Arbitrage
                   </p>
                 </div>
               </div>
               {scenarioDelta && baselineScenario && isFinite(scenarioDelta.years) && (
                 <div className="text-right">
-                  <p className="text-sm text-muted-foreground">vs {baselineScenario.location_city_name} (Baseline)</p>
+                  <p className="text-sm text-slate-500">vs {baselineScenario.location_city_name} (Baseline)</p>
                   <p className={`font-semibold ${scenarioDelta.years < 0 ? "text-green-600" : scenarioDelta.years > 0 ? "text-red-500" : ""}`}>
                     {scenarioDelta.years < 0 ? "" : "+"}
                     {scenarioDelta.years.toFixed(1)} years to FI
@@ -327,13 +328,13 @@ function RetirementPageContent() {
       )}
 
       {/* Input Section - Retirement Location & Spending (moved to top) */}
-      <Card>
+      <Card className="bg-white border-slate-200 shadow-sm">
         <CardHeader>
-          <CardTitle className="text-lg flex items-center gap-2">
-            <MapPin className="h-5 w-5 text-primary" />
+          <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
+            <MapPin className="h-5 w-5 text-emerald-600" />
             Retirement Location & Spending
           </CardTitle>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-slate-500">
             You can retire when your safe withdrawal amount covers your annual spending. For example, with a 4% withdrawal rate,
             you need 25x your annual expenses saved (e.g., {formatCurrency(parseFloat(currentSpend) || 60000)} spending requires {formatCurrency((parseFloat(currentSpend) || 60000) * 25)}).
             Moving to a lower cost-of-living city reduces your required nest egg.
@@ -357,7 +358,7 @@ function RetirementPageContent() {
                   </SelectContent>
                 </Select>
                 {currentCity && (
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-slate-500">
                     Your spending is anchored to this city&apos;s cost of living
                   </p>
                 )}
@@ -378,7 +379,7 @@ function RetirementPageContent() {
                   </SelectContent>
                 </Select>
                 {selectedCity && currentCity && (
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-slate-500">
                     {((calculateEffectiveCOL(selectedCity, weights) / calculateEffectiveCOL(currentCity, weights)) * 100).toFixed(0)}% of {currentCity.city_name}&apos;s cost • Confidence: {selectedCity.confidence}
                   </p>
                 )}
@@ -403,7 +404,7 @@ function RetirementPageContent() {
                         <Plane className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
                         <div className="text-sm">
                           <span className="font-medium text-primary">Geo-Arbitrage: </span>
-                          <span className="text-muted-foreground">
+                          <span className="text-slate-500">
                             Moving to {selectedCity.city_name}
                             {netWorthSavings > 0 && (
                               <> saves <span className="font-semibold text-primary">{formatCurrency(netWorthSavings)}</span></>
@@ -416,7 +417,7 @@ function RetirementPageContent() {
                             )}
                           </span>
                           {netWorthSavings > 0 && (
-                            <p className="text-xs text-muted-foreground mt-1">
+                            <p className="text-xs text-slate-500 mt-1">
                               Savings = Required NW in {currentCity?.city_name} ({formatCurrency(currentCityData.requiredNW)}) − Required NW in {selectedCity.city_name} ({formatCurrency(targetCityData.requiredNW)})
                             </p>
                           )}
@@ -432,7 +433,7 @@ function RetirementPageContent() {
               <div className="space-y-2">
                 <Label htmlFor="currentSpend">Current Annual Spending</Label>
                 <div className="relative">
-                  <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
                   <Input
                     id="currentSpend"
                     type="number"
@@ -454,7 +455,7 @@ function RetirementPageContent() {
                   onChange={(e) => setWithdrawalRate(e.target.value)}
                   placeholder="4.0"
                 />
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-slate-500">
                   The 4% rule suggests withdrawing 4% of your portfolio annually
                 </p>
               </div>
@@ -469,7 +470,7 @@ function RetirementPageContent() {
                   onChange={(e) => setExpectedReturn(e.target.value)}
                   placeholder="5.0"
                 />
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-slate-500">
                   Annual return after inflation (historically ~7% for stocks, ~3% inflation)
                 </p>
               </div>
@@ -477,21 +478,21 @@ function RetirementPageContent() {
 
             {latestEntry && (
               <div className="space-y-4">
-                <div className="p-4 rounded-lg bg-muted/50 space-y-3">
-                  <h4 className="text-sm font-medium">Your Financial Snapshot</h4>
+                <div className="p-4 rounded-lg bg-slate-50 border border-slate-200 space-y-3">
+                  <h4 className="text-sm font-medium text-slate-900">Your Financial Snapshot</h4>
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Current Net Worth</span>
-                    <span className="font-medium">{formatCurrency(currentNetWorth)}</span>
+                    <span className="text-slate-500">Current Net Worth</span>
+                    <span className="font-medium text-slate-900">{formatCurrency(currentNetWorth)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Annual Savings</span>
-                    <span className={`font-medium ${annualSavings >= 0 ? 'text-green-600' : 'text-red-500'}`}>
+                    <span className="text-slate-500">Annual Savings</span>
+                    <span className={`font-medium ${annualSavings >= 0 ? 'text-emerald-600' : 'text-red-500'}`}>
                       {formatCurrency(annualSavings)}
                     </span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Safe Withdrawal ({withdrawalRate}%)</span>
-                    <span className="font-medium text-purple-500">{formatCurrency(safeWithdrawalAmount)}/yr</span>
+                    <span className="text-slate-500">Safe Withdrawal ({withdrawalRate}%)</span>
+                    <span className="font-medium text-purple-600">{formatCurrency(safeWithdrawalAmount)}/yr</span>
                   </div>
                 </div>
               </div>
@@ -508,17 +509,17 @@ function RetirementPageContent() {
         const yearsToRetireInSelected = selectedCityData?.yearsToRetirement || Infinity;
 
         return (
-          <Card className={canRetireInSelected ? "border-green-600/30 bg-green-600/5" : "border-primary/30 bg-primary/5"}>
+          <Card className={canRetireInSelected ? "border-emerald-200 bg-emerald-50/50" : "border-emerald-200 bg-emerald-50/30"}>
             <CardContent className="pt-6">
               <div className="flex items-start gap-3">
                 {canRetireInSelected ? (
                   <>
-                    <CheckCircle className="h-6 w-6 text-green-600 mt-0.5" />
+                    <CheckCircle className="h-6 w-6 text-emerald-600 mt-0.5" />
                     <div>
-                      <p className="text-lg font-semibold text-green-600">
+                      <p className="text-lg font-semibold text-emerald-600">
                         You can retire today in {selectedCity?.city_name}!
                       </p>
-                      <p className="text-sm text-muted-foreground mt-1">
+                      <p className="text-sm text-slate-500 mt-1">
                         With your {formatCurrency(currentNetWorth)} net worth, you have enough to retire in {selectedCity?.city_name}.
                         {citiesCanRetireNow.length > 1 && (
                           <> You could also retire in {citiesCanRetireNow.length - 1} other {citiesCanRetireNow.length === 2 ? "city" : "cities"}.</>
@@ -528,14 +529,14 @@ function RetirementPageContent() {
                   </>
                 ) : (
                   <>
-                    <Clock className="h-6 w-6 text-primary mt-0.5" />
+                    <Clock className="h-6 w-6 text-emerald-600 mt-0.5" />
                     <div>
-                      <p className="text-lg font-semibold text-primary">
+                      <p className="text-lg font-semibold text-emerald-600">
                         {isFinite(yearsToRetireInSelected)
                           ? `${yearsToRetireInSelected.toFixed(1)} years to retire in ${selectedCity?.city_name}`
                           : `Keep saving to retire in ${selectedCity?.city_name}`}
                       </p>
-                      <p className="text-sm text-muted-foreground mt-1">
+                      <p className="text-sm text-slate-500 mt-1">
                         Current net worth: {formatCurrency(currentNetWorth)} •
                         Need {selectedCityData ? formatCurrency(selectedCityData.requiredNW) : "more savings"} to retire in {selectedCity?.city_name}.
                         {citiesCanRetireNow.length > 0 && (
@@ -543,7 +544,7 @@ function RetirementPageContent() {
                         )}
                       </p>
                       {selectedCityData && (
-                        <p className="text-xs text-muted-foreground mt-1">
+                        <p className="text-xs text-slate-500 mt-1">
                           Required NW = Adjusted Annual Spending ({formatCurrency(selectedCityData.adjustedSpend)}) ÷ Withdrawal Rate ({withdrawalRate}%)
                         </p>
                       )}
@@ -571,11 +572,11 @@ function RetirementPageContent() {
             <div className="flex items-center gap-2">
               <Landmark className="h-5 w-5 text-amber-500" />
               <CardTitle className="text-lg">Tax Optimization Strategies</CardTitle>
-              <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded">For US Taxpayers</span>
+              <span className="text-xs text-slate-500 bg-muted px-2 py-0.5 rounded">For US Taxpayers</span>
             </div>
-            <ChevronDown id="tax-strategies-chevron" className="h-5 w-5 text-muted-foreground transition-transform" />
+            <ChevronDown id="tax-strategies-chevron" className="h-5 w-5 text-slate-500 transition-transform" />
           </div>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-slate-500">
             Strategies to reduce your tax burden during accumulation and retirement
           </p>
         </CardHeader>
@@ -592,11 +593,11 @@ function RetirementPageContent() {
                     Foreign Earned Income Exclusion (FEIE)
                     <span className="text-xs text-green-600 bg-green-600/10 px-2 py-0.5 rounded">Up to $126,500 tax-free (2024)</span>
                   </h4>
-                  <p className="text-sm text-muted-foreground mt-1">
+                  <p className="text-sm text-slate-500 mt-1">
                     Live abroad for 330+ days/year to exclude foreign earned income from US taxes.
                     Combine with geo-arbitrage for maximum impact.
                   </p>
-                  <div className="mt-2 text-xs text-muted-foreground">
+                  <div className="mt-2 text-xs text-slate-500">
                     <span className="font-medium">Best for:</span> Consultants, remote workers living abroad
                   </div>
                 </div>
@@ -614,11 +615,11 @@ function RetirementPageContent() {
                     S-Corp Election
                     <span className="text-xs text-green-600 bg-green-600/10 px-2 py-0.5 rounded">Save 15.3% SE tax</span>
                   </h4>
-                  <p className="text-sm text-muted-foreground mt-1">
+                  <p className="text-sm text-slate-500 mt-1">
                     Pay yourself a reasonable salary and take remaining profits as distributions
                     to avoid self-employment tax on distributions.
                   </p>
-                  <div className="mt-2 text-xs text-muted-foreground">
+                  <div className="mt-2 text-xs text-slate-500">
                     <span className="font-medium">Best for:</span> Consultants earning $80k+/year with profits over salary
                   </div>
                 </div>
@@ -636,11 +637,11 @@ function RetirementPageContent() {
                     Solo 401(k)
                     <span className="text-xs text-green-600 bg-green-600/10 px-2 py-0.5 rounded">Up to $69,000/year (2024)</span>
                   </h4>
-                  <p className="text-sm text-muted-foreground mt-1">
+                  <p className="text-sm text-slate-500 mt-1">
                     Contribute as both employee ($23,000) and employer (25% of compensation).
                     Mega backdoor Roth available with some plans.
                   </p>
-                  <div className="mt-2 text-xs text-muted-foreground">
+                  <div className="mt-2 text-xs text-slate-500">
                     <span className="font-medium">Best for:</span> Self-employed with no employees
                   </div>
                 </div>
@@ -658,11 +659,11 @@ function RetirementPageContent() {
                     Health Savings Account (HSA)
                     <span className="text-xs text-green-600 bg-green-600/10 px-2 py-0.5 rounded">Triple tax advantage</span>
                   </h4>
-                  <p className="text-sm text-muted-foreground mt-1">
+                  <p className="text-sm text-slate-500 mt-1">
                     Contribute $4,150 (individual) or $8,300 (family) in 2024.
                     Tax-free contributions, growth, and qualified withdrawals.
                   </p>
-                  <div className="mt-2 text-xs text-muted-foreground">
+                  <div className="mt-2 text-xs text-slate-500">
                     <span className="font-medium">Best for:</span> Anyone with HDHP, invest and pay medical out-of-pocket
                   </div>
                 </div>
@@ -678,7 +679,7 @@ function RetirementPageContent() {
                 <p className="font-medium text-amber-700 dark:text-amber-300">
                   Optimal Strategy Stack for Consultants
                 </p>
-                <div className="mt-2 space-y-2 text-sm text-muted-foreground">
+                <div className="mt-2 space-y-2 text-sm text-slate-500">
                   <div className="flex items-center gap-2">
                     <ArrowRight className="h-4 w-4 text-amber-500" />
                     <span><span className="font-medium">S-Corp + Solo 401(k):</span> Reduce SE taxes while maximizing retirement contributions</span>
@@ -692,7 +693,7 @@ function RetirementPageContent() {
                     <span><span className="font-medium">HSA Stealth IRA:</span> Max HSA, invest aggressively, pay medical out-of-pocket, reimburse later</span>
                   </div>
                 </div>
-                <p className="text-xs text-muted-foreground mt-3 pt-3 border-t border-amber-500/20">
+                <p className="text-xs text-slate-500 mt-3 pt-3 border-t border-amber-500/20">
                   Consult a tax professional for your specific situation. Tax laws change annually.
                 </p>
               </div>
@@ -703,13 +704,13 @@ function RetirementPageContent() {
 
       {/* No data warning */}
       {netWorthEntries.length === 0 && (
-        <Card className="border-primary/20 bg-primary/5">
+        <Card className="border-emerald-200 bg-emerald-50/50">
           <CardContent className="pt-6">
             <div className="flex items-start gap-3">
-              <TrendingUp className="h-5 w-5 text-primary mt-0.5" />
+              <TrendingUp className="h-5 w-5 text-emerald-600 mt-0.5" />
               <div>
-                <p className="font-medium text-primary">No Net Worth Data</p>
-                <p className="text-sm text-muted-foreground mt-1">
+                <p className="font-medium text-emerald-600">No Net Worth Data</p>
+                <p className="text-sm text-slate-500 mt-1">
                   Add net worth entries to see personalized calculations based on your current financial situation and savings rate.
                 </p>
               </div>
@@ -721,10 +722,10 @@ function RetirementPageContent() {
       {/* Spending Weights & Cost Breakdown - Side by Side */}
       <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
         {/* Spending Category Weights */}
-        <Card>
+        <Card className="bg-white border-slate-200 shadow-sm">
           <CardHeader>
             <div className="flex justify-between items-center">
-              <CardTitle className="text-lg">Spending Category Weights</CardTitle>
+              <CardTitle className="text-lg font-medium text-slate-900">Spending Category Weights</CardTitle>
               <Button
                 variant="outline"
                 size="sm"
@@ -756,7 +757,7 @@ function RetirementPageContent() {
 
             <div className="pt-4 border-t">
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Total Weight</span>
+                <span className="text-slate-500">Total Weight</span>
                 <span className={`font-medium ${Math.abs(totalWeights - 1.0) > 0.05 ? 'text-red-500' : 'text-green-600'}`}>
                   {(totalWeights * 100).toFixed(0)}%
                 </span>
@@ -772,9 +773,9 @@ function RetirementPageContent() {
 
         {/* Cost Breakdown */}
         {selectedCity && results && errors.length === 0 && (
-          <Card>
+          <Card className="bg-white border-slate-200 shadow-sm">
             <CardHeader>
-              <CardTitle className="text-lg">
+              <CardTitle className="text-lg font-medium text-slate-900">
                 Cost Breakdown in {selectedCity.city_name}
               </CardTitle>
             </CardHeader>
@@ -793,10 +794,10 @@ function RetirementPageContent() {
                     <div key={category.label} className="flex justify-between items-center text-sm">
                       <div className="flex items-center gap-2">
                         <span className="font-medium">{category.label}</span>
-                        <span className="text-muted-foreground">({(category.weight * 100).toFixed(0)}%)</span>
+                        <span className="text-slate-500">({(category.weight * 100).toFixed(0)}%)</span>
                       </div>
                       <div className="flex items-center gap-3">
-                        <span className="text-muted-foreground">Index: {category.index}</span>
+                        <span className="text-slate-500">Index: {category.index}</span>
                         <span className="font-medium">{formatCurrency(monthlyCost)}/mo</span>
                       </div>
                     </div>
@@ -841,67 +842,67 @@ function RetirementPageContent() {
         <>
           {/* Key Metrics */}
           <div className="grid gap-3 sm:gap-4 grid-cols-2 md:grid-cols-4">
-            <Card>
+            <Card className="bg-white border-slate-200 shadow-sm">
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
+                <CardTitle className="text-sm font-medium text-slate-500">
                   Adjusted Spending
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-primary">
+                <div className="text-2xl font-bold text-emerald-600">
                   {formatCurrency(results.adjustedSpend)}
                 </div>
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="text-xs text-slate-500 mt-1">
                   {formatCurrency(results.monthlySpend)}/month
                 </p>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="bg-white border-slate-200 shadow-sm">
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
+                <CardTitle className="text-sm font-medium text-slate-500">
                   Safe Withdrawal
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-purple-500">
+                <div className="text-2xl font-bold text-purple-600">
                   {formatCurrency(safeWithdrawalAmount)}
                 </div>
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="text-xs text-slate-500 mt-1">
                   {withdrawalRate}% × Current Net Worth ({formatCurrency(currentNetWorth)})
                 </p>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="bg-white border-slate-200 shadow-sm">
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
+                <CardTitle className="text-sm font-medium text-slate-500">
                   Required Net Worth
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-green-600">
+                <div className="text-2xl font-bold text-emerald-600">
                   {formatCurrency(results.requiredNetWorth)}
                 </div>
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="text-xs text-slate-500 mt-1">
                   To retire in {selectedCity?.city_name} at {withdrawalRate}% withdrawal
                 </p>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="bg-white border-slate-200 shadow-sm">
               <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
+                <CardTitle className="text-sm font-medium text-slate-500">
                   Years to Retirement
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-blue-500">
+                <div className="text-2xl font-bold text-blue-600">
                   {isFinite(results.yearsToRetirement)
                     ? results.yearsToRetirement.toFixed(1)
                     : "∞"}
                 </div>
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="text-xs text-slate-500 mt-1">
                   {isFinite(results.yearsToRetirement)
                     ? `Gap: ${formatCurrency(results.savingsGap)}`
                     : "Goal not reachable"}
@@ -911,13 +912,13 @@ function RetirementPageContent() {
           </div>
 
           {/* Projection Chart */}
-          <Card className="overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-primary/5 to-green-500/5 border-b">
-              <CardTitle className="text-lg flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-primary" />
+          <Card className="bg-white border-slate-200 shadow-sm overflow-hidden">
+            <CardHeader className="bg-gradient-to-r from-emerald-50 to-blue-50 border-b border-slate-200">
+              <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
+                <TrendingUp className="h-5 w-5 text-emerald-600" />
                 Net Worth Projection
               </CardTitle>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-slate-500">
                 Based on {formatPercent(parseFloat(expectedReturn) / 100)} annual return and {formatCurrency(annualSavings)}/year savings
               </p>
             </CardHeader>
@@ -927,10 +928,10 @@ function RetirementPageContent() {
                 <div className="flex flex-wrap gap-4 text-sm">
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-1 bg-primary rounded"></div>
-                    <span className="text-muted-foreground">Your Net Worth Projection</span>
+                    <span className="text-slate-500">Your Net Worth Projection</span>
                   </div>
                 </div>
-                <div className="text-xs text-muted-foreground">
+                <div className="text-xs text-slate-500">
                   <span className="font-medium">City Retirement Thresholds:</span> Horizontal lines show required net worth for each city
                 </div>
                 <div className="flex flex-wrap gap-3 text-xs">
@@ -942,7 +943,7 @@ function RetirementPageContent() {
                           className="w-3 h-0.5"
                           style={{ backgroundColor: colors[idx], borderTop: `2px dashed ${colors[idx]}` }}
                         />
-                        <span className="text-muted-foreground">
+                        <span className="text-slate-500">
                           {item.city.city_name} ({formatCurrency(item.requiredNW)})
                         </span>
                       </div>
@@ -1036,15 +1037,15 @@ function RetirementPageContent() {
                                 {nextCity && (
                                   <div className="flex justify-between items-center text-xs">
                                     <span className="text-gray-500 dark:text-gray-400">Next: {nextCity.city.city_name}</span>
-                                    <span className="text-muted-foreground">{formatCurrency(nextCity.requiredNW - netWorth)} away</span>
+                                    <span className="text-slate-500">{formatCurrency(nextCity.requiredNW - netWorth)} away</span>
                                   </div>
                                 )}
 
                                 {/* Progress bar to selected city */}
                                 <div className="mt-2 pt-2 border-t border-gray-100 dark:border-gray-800">
                                   <div className="flex justify-between text-xs mb-1">
-                                    <span className="text-muted-foreground">Progress to {selectedCity?.city_name}</span>
-                                    <span className={percentToGoal >= 100 ? 'text-green-600' : 'text-muted-foreground'}>
+                                    <span className="text-slate-500">Progress to {selectedCity?.city_name}</span>
+                                    <span className={percentToGoal >= 100 ? 'text-green-600' : 'text-slate-500'}>
                                       {percentToGoal.toFixed(0)}%
                                     </span>
                                   </div>
@@ -1111,7 +1112,7 @@ function RetirementPageContent() {
                   </ComposedChart>
                 </ResponsiveContainer>
               ) : (
-                <div className="h-[400px] flex items-center justify-center text-muted-foreground">
+                <div className="h-[400px] flex items-center justify-center text-slate-500">
                   No projection data available
                 </div>
               )}
@@ -1119,13 +1120,13 @@ function RetirementPageContent() {
           </Card>
 
           {/* All Cities Comparison */}
-          <Card>
+          <Card className="bg-white border-slate-200 shadow-sm">
             <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Globe className="h-5 w-5 text-primary" />
+              <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
+                <Globe className="h-5 w-5 text-emerald-600" />
                 All Cities Comparison
               </CardTitle>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-slate-500">
                 Based on your {formatCurrency(parseFloat(currentSpend))} annual spending in {currentCity?.city_name || "your current city"} • Current Net Worth: {formatCurrency(currentNetWorth)}
               </p>
             </CardHeader>
@@ -1160,7 +1161,7 @@ function RetirementPageContent() {
                             {item.canRetireNow && <CheckCircle className="h-4 w-4 text-green-600 flex-shrink-0" />}
                             <div className="min-w-0">
                               <span className="text-xs sm:text-sm">{item.city.city_name}</span>
-                              <span className="text-xs text-muted-foreground hidden sm:inline ml-1">{item.city.country}</span>
+                              <span className="text-xs text-slate-500 hidden sm:inline ml-1">{item.city.country}</span>
                             </div>
                           </div>
                         </TableCell>
@@ -1174,7 +1175,7 @@ function RetirementPageContent() {
                         <TableCell className="text-right">
                           {formatCurrency(currentNetWorth)}
                         </TableCell>
-                        <TableCell className={`text-right ${item.withdrawalAmount >= item.adjustedSpend ? "text-green-600" : "text-muted-foreground"}`}>
+                        <TableCell className={`text-right ${item.withdrawalAmount >= item.adjustedSpend ? "text-green-600" : "text-slate-500"}`}>
                           {formatCurrency(item.withdrawalAmount)}
                         </TableCell>
                         <TableCell className="text-right">
@@ -1195,6 +1196,7 @@ function RetirementPageContent() {
           </Card>
         </>
       )}
+      </div>
     </div>
   );
 }

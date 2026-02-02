@@ -646,26 +646,26 @@ export default function TaxCalculatorPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
-          <Calculator className="h-6 w-6 sm:h-7 sm:w-7 text-primary flex-shrink-0" />
+        <h1 className="text-2xl sm:text-3xl font-medium text-slate-900 flex items-center gap-2">
+          <Calculator className="h-6 w-6 sm:h-7 sm:w-7 text-emerald-600 flex-shrink-0" />
           <span className="leading-tight">Tax-Optimized Take-Home Calculator</span>
         </h1>
-        <p className="text-sm sm:text-base text-muted-foreground mt-1">
+        <p className="text-sm sm:text-base text-slate-500 mt-1">
           Compare tax strategies for consultants and solo practitioners
         </p>
       </div>
 
       {/* Key Insight Card */}
       {sCorpSavings > 1000 && (
-        <Card className="border-primary/30 bg-primary/5">
+        <Card className="border-primary/30 bg-emerald-600/5">
           <CardContent className="pt-6">
             <div className="flex items-start gap-3">
-              <CheckCircle className="h-6 w-6 text-primary mt-0.5" />
+              <CheckCircle className="h-6 w-6 text-emerald-600 mt-0.5" />
               <div>
-                <p className="text-lg font-semibold text-primary">
+                <p className="text-lg font-semibold text-emerald-600">
                   S-Corp could save you {formatCurrency(sCorpSavings)}/year
                 </p>
-                <p className="text-sm text-muted-foreground mt-1">
+                <p className="text-sm text-slate-500 mt-1">
                   By paying yourself a {formatCurrency(calculations[1].salary)} salary and taking {formatCurrency(calculations[1].distributions)} as distributions,
                   you avoid {formatCurrency(calculations[0].seTax - calculations[1].ficaEmployee - calculations[1].ficaEmployer)} in self-employment taxes.
                 </p>
@@ -681,7 +681,7 @@ export default function TaxCalculatorPage() {
         <Card>
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
-              <Briefcase className="h-5 w-5 text-primary" />
+              <Briefcase className="h-5 w-5 text-emerald-600" />
               Income & Business
             </CardTitle>
           </CardHeader>
@@ -712,7 +712,7 @@ export default function TaxCalculatorPage() {
             <div className="space-y-2">
               <Label htmlFor="grossIncome">Gross Consulting Income</Label>
               <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
                 <Input
                   id="grossIncome"
                   type="number"
@@ -727,7 +727,7 @@ export default function TaxCalculatorPage() {
             <div className="space-y-2">
               <Label htmlFor="expenses">Business Expenses</Label>
               <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
                 <Input
                   id="expenses"
                   type="number"
@@ -737,7 +737,7 @@ export default function TaxCalculatorPage() {
                   placeholder="10000"
                 />
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-slate-500">
                 Net business income: {formatCurrency(netIncome)}
               </p>
             </div>
@@ -775,7 +775,7 @@ export default function TaxCalculatorPage() {
         <Card>
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
-              <Building2 className="h-5 w-5 text-primary" />
+              <Building2 className="h-5 w-5 text-emerald-600" />
               S-Corp Strategy
             </CardTitle>
           </CardHeader>
@@ -792,7 +792,7 @@ export default function TaxCalculatorPage() {
                 max={70}
                 step={5}
               />
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-slate-500">
                 Salary: {formatCurrency(netIncome * (sCorpSalaryPercent / 100))} •
                 Distributions: {formatCurrency(netIncome * (1 - sCorpSalaryPercent / 100))}
               </p>
@@ -801,7 +801,7 @@ export default function TaxCalculatorPage() {
             <div className="space-y-2">
               <Label htmlFor="customSalary">Or Custom Salary Amount</Label>
               <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
                 <Input
                   id="customSalary"
                   type="number"
@@ -818,7 +818,7 @@ export default function TaxCalculatorPage() {
                 <Info className="h-4 w-4" />
                 Reasonable Salary Guidelines
               </p>
-              <ul className="text-xs text-muted-foreground space-y-1">
+              <ul className="text-xs text-slate-500 space-y-1">
                 <li>• Must be "reasonable" for your industry/role</li>
                 <li>• IRS scrutinizes salaries below 40% of net income</li>
                 <li>• Consider similar W-2 positions as benchmark</li>
@@ -832,7 +832,7 @@ export default function TaxCalculatorPage() {
         <Card>
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
-              <PiggyBank className="h-5 w-5 text-primary" />
+              <PiggyBank className="h-5 w-5 text-emerald-600" />
               Tax-Advantaged Accounts
             </CardTitle>
           </CardHeader>
@@ -840,7 +840,7 @@ export default function TaxCalculatorPage() {
             <div className="space-y-2">
               <Label htmlFor="solo401k">Solo 401(k) Contribution</Label>
               <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
                 <Input
                   id="solo401k"
                   type="number"
@@ -850,7 +850,7 @@ export default function TaxCalculatorPage() {
                   placeholder="23500"
                 />
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-slate-500">
                 Your max: {formatCurrency(maxSolo401k)} ($23k employee + 25% employer)
               </p>
               {retirement401k > maxSolo401k && (
@@ -863,7 +863,7 @@ export default function TaxCalculatorPage() {
             <div className="space-y-2">
               <Label htmlFor="hsa">HSA Contribution</Label>
               <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
                 <Input
                   id="hsa"
                   type="number"
@@ -873,7 +873,7 @@ export default function TaxCalculatorPage() {
                   placeholder="4300"
                 />
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-slate-500">
                 2025 max: {formatCurrency(TAX_CONSTANTS.hsaLimitSingle)} individual / {formatCurrency(TAX_CONSTANTS.hsaLimitFamily)} family
               </p>
             </div>
@@ -881,7 +881,7 @@ export default function TaxCalculatorPage() {
             <div className="space-y-2">
               <Label htmlFor="rothIra">Roth IRA Contribution</Label>
               <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
                 <Input
                   id="rothIra"
                   type="number"
@@ -892,7 +892,7 @@ export default function TaxCalculatorPage() {
                   max={TAX_CONSTANTS.rothIraLimit}
                 />
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-slate-500">
                 2025 max: {formatCurrency(TAX_CONSTANTS.rothIraLimit)} ({formatCurrency(TAX_CONSTANTS.rothIraLimit + TAX_CONSTANTS.rothIraCatchUp)} if 50+). Post-tax, no current deduction.
               </p>
               {netIncome >= rothPhaseout.end && (
@@ -910,7 +910,7 @@ export default function TaxCalculatorPage() {
             <div className="space-y-2">
               <Label htmlFor="sepIra">SEP IRA Contribution</Label>
               <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
                 <Input
                   id="sepIra"
                   type="number"
@@ -920,7 +920,7 @@ export default function TaxCalculatorPage() {
                   placeholder="0"
                 />
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-slate-500">
                 Max: 25% of net SE income (your max: {formatCurrency(maxSepIra)})
               </p>
               {retirement401k > 0 && sepIra > 0 && (
@@ -933,7 +933,7 @@ export default function TaxCalculatorPage() {
             <div className="space-y-2">
               <Label htmlFor="tlh">Tax Loss Harvesting</Label>
               <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
                 <Input
                   id="tlh"
                   type="number"
@@ -944,7 +944,7 @@ export default function TaxCalculatorPage() {
                   max={TAX_CONSTANTS.capitalLossDeductionLimit}
                 />
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-slate-500">
                 Deduct up to $3,000 of net capital losses against ordinary income.
               </p>
             </div>
@@ -960,7 +960,7 @@ export default function TaxCalculatorPage() {
                   <Label htmlFor="feie1099" className="text-sm">
                     Apply to 1099 / Self-Employed
                   </Label>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-slate-500">
                     Sole Prop & S-Corp income
                   </p>
                 </div>
@@ -976,7 +976,7 @@ export default function TaxCalculatorPage() {
                   <Label htmlFor="feieW2" className="text-sm">
                     Apply to W-2 Income
                   </Label>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-slate-500">
                     Traditional employment
                   </p>
                 </div>
@@ -997,7 +997,7 @@ export default function TaxCalculatorPage() {
                     onChange={(e) => setDaysAbroad(e.target.value)}
                     placeholder="330"
                   />
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-slate-500">
                     Need 330+ days to qualify. Excludes up to {formatCurrency(TAX_CONSTANTS.feieExclusion)} in 2025.
                   </p>
                 </div>
@@ -1018,37 +1018,37 @@ export default function TaxCalculatorPage() {
         <CardContent className="space-y-4">
           {/* Main Savings Amount */}
           <div className="flex items-center justify-between">
-            <span className="text-sm text-muted-foreground">Estimated annual savings (Sole Prop)</span>
+            <span className="text-sm text-slate-500">Estimated annual savings (Sole Prop)</span>
             <span className="text-2xl font-bold text-green-600">{formatCurrency(calculations[0].totalTaxSavings)}</span>
           </div>
 
           {/* Savings Breakdown */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-muted-foreground">401(k)/SEP</span>
+              <span className="text-xs text-slate-500">401(k)/SEP</span>
               <span className="text-sm font-medium text-green-600">{formatCurrency(calculations[0].taxSavingsFrom401k)}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-xs text-muted-foreground">HSA</span>
+              <span className="text-xs text-slate-500">HSA</span>
               <span className="text-sm font-medium text-green-600">{formatCurrency(calculations[0].taxSavingsFromHSA)}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-xs text-muted-foreground">Business Expenses</span>
+              <span className="text-xs text-slate-500">Business Expenses</span>
               <span className="text-sm font-medium text-green-600">{formatCurrency(calculations[0].taxSavingsFromExpenses)}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-xs text-muted-foreground">QBI Deduction</span>
+              <span className="text-xs text-slate-500">QBI Deduction</span>
               <span className="text-sm font-medium text-green-600">{formatCurrency(calculations[0].qbiDeduction * 0.32)}</span>
             </div>
             {calculations[0].taxLossHarvesting > 0 && (
               <div className="flex items-center justify-between">
-                <span className="text-xs text-muted-foreground">Tax Loss Harvesting</span>
+                <span className="text-xs text-slate-500">Tax Loss Harvesting</span>
                 <span className="text-sm font-medium text-green-600">{formatCurrency(calculations[0].taxSavingsFromTLH)}</span>
               </div>
             )}
             {calculations[0].feieExclusion > 0 && (
               <div className="flex items-center justify-between">
-                <span className="text-xs text-muted-foreground">FEIE</span>
+                <span className="text-xs text-slate-500">FEIE</span>
                 <span className="text-sm font-medium text-green-600">{formatCurrency(calculations[0].feieExclusion * 0.18)}</span>
               </div>
             )}
@@ -1061,7 +1061,7 @@ export default function TaxCalculatorPage() {
                 <AlertTriangle className="h-4 w-4 text-red-500" />
                 <span className="text-sm font-medium text-red-600">Contribution Limits Exceeded</span>
               </div>
-              <div className="text-xs text-muted-foreground space-y-1">
+              <div className="text-xs text-slate-500 space-y-1">
                 {retirement401k > effectiveSolo401k && (
                   <p>Solo 401(k) capped at {formatCurrency(effectiveSolo401k)} (entered: {formatCurrency(retirement401k)})</p>
                 )}
@@ -1085,31 +1085,31 @@ export default function TaxCalculatorPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-1 text-sm">
                 {retirement401k < maxSolo401k && (
                   <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Max Solo 401(k)</span>
+                    <span className="text-slate-500">Max Solo 401(k)</span>
                     <span className="font-medium text-amber-600">+{formatCurrency((maxSolo401k - retirement401k) * 0.32)}</span>
                   </div>
                 )}
                 {hsa < (filingStatus === "married" ? TAX_CONSTANTS.hsaLimitFamily : TAX_CONSTANTS.hsaLimitSingle) && (
                   <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Max HSA</span>
+                    <span className="text-slate-500">Max HSA</span>
                     <span className="font-medium text-amber-600">+{formatCurrency(((filingStatus === "married" ? TAX_CONSTANTS.hsaLimitFamily : TAX_CONSTANTS.hsaLimitSingle) - hsa) * 0.3965)}</span>
                   </div>
                 )}
                 {tlh < TAX_CONSTANTS.capitalLossDeductionLimit && (
                   <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Tax Loss Harvesting</span>
+                    <span className="text-slate-500">Tax Loss Harvesting</span>
                     <span className="font-medium text-amber-600">+{formatCurrency((TAX_CONSTANTS.capitalLossDeductionLimit - tlh) * 0.32)}</span>
                   </div>
                 )}
                 {!useFEIE1099 && netIncome > 100000 && (
                   <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">FEIE for 1099</span>
+                    <span className="text-slate-500">FEIE for 1099</span>
                     <span className="font-medium text-violet-600">+{formatCurrency(Math.min(netIncome, TAX_CONSTANTS.feieExclusion) * 0.18)}</span>
                   </div>
                 )}
                 {!useFEIEW2 && netIncome > 100000 && (
                   <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">FEIE for W-2</span>
+                    <span className="text-slate-500">FEIE for W-2</span>
                     <span className="font-medium text-violet-600">+{formatCurrency(Math.min(netIncome, TAX_CONSTANTS.feieExclusion) * 0.18)}</span>
                   </div>
                 )}
@@ -1123,10 +1123,10 @@ export default function TaxCalculatorPage() {
       <Card>
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
-            <TrendingUp className="h-5 w-5 text-primary" />
+            <TrendingUp className="h-5 w-5 text-emerald-600" />
             Strategy Comparison
           </CardTitle>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-slate-500">
             Side-by-side comparison of different business structures
           </p>
         </CardHeader>
@@ -1150,12 +1150,12 @@ export default function TaxCalculatorPage() {
                 {calculations.map((calc) => (
                   <TableRow
                     key={calc.structure}
-                    className={calc.structure === bestStrategy.structure ? "bg-primary/10" : ""}
+                    className={calc.structure === bestStrategy.structure ? "bg-emerald-600/10" : ""}
                   >
                     <TableCell className="font-medium sticky left-0 bg-background z-10">
                       <div className="flex items-center gap-1 sm:gap-2">
                         {calc.structure === bestStrategy.structure && (
-                          <CheckCircle className="h-4 w-4 text-primary flex-shrink-0" />
+                          <CheckCircle className="h-4 w-4 text-emerald-600 flex-shrink-0" />
                         )}
                         <span className="text-xs sm:text-sm">{calc.structure}</span>
                       </div>
@@ -1172,7 +1172,7 @@ export default function TaxCalculatorPage() {
                     <TableCell className="text-right">
                       {formatCurrency(calc.takeHomePay)}
                     </TableCell>
-                    <TableCell className="text-right font-bold text-primary">
+                    <TableCell className="text-right font-bold text-emerald-600">
                       {formatCurrency(calc.totalWealthBuild)}
                     </TableCell>
                     <TableCell className="text-right">{formatPercent(calc.effectiveRate)}</TableCell>
@@ -1188,10 +1188,10 @@ export default function TaxCalculatorPage() {
       <Card>
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
-            <Info className="h-5 w-5 text-primary" />
+            <Info className="h-5 w-5 text-emerald-600" />
             Key Tradeoffs: Self-Employed vs W-2
           </CardTitle>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-slate-500">
             Understanding the trade-offs between consulting and traditional employment
           </p>
         </CardHeader>
@@ -1212,13 +1212,13 @@ export default function TaxCalculatorPage() {
                   <TableCell>
                     <div>
                       <span className="text-pink-500 font-medium">{formatCurrency(calculations[0].seTax)}</span>
-                      <p className="text-xs text-muted-foreground">15.3% SE tax (both halves)</p>
+                      <p className="text-xs text-slate-500">15.3% SE tax (both halves)</p>
                     </div>
                   </TableCell>
                   <TableCell>
                     <div>
                       <span className="text-cyan-500 font-medium">{formatCurrency(calculations[2].ficaEmployee)}</span>
-                      <p className="text-xs text-muted-foreground">7.65% FICA (employee only)</p>
+                      <p className="text-xs text-slate-500">7.65% FICA (employee only)</p>
                     </div>
                   </TableCell>
                   <TableCell className="text-right">
@@ -1232,13 +1232,13 @@ export default function TaxCalculatorPage() {
                   <TableCell>
                     <div>
                       <span className="text-green-600 font-medium">{formatCurrency(calculations[0].qbiDeduction)}</span>
-                      <p className="text-xs text-muted-foreground">20% of qualified business income</p>
+                      <p className="text-xs text-slate-500">20% of qualified business income</p>
                     </div>
                   </TableCell>
                   <TableCell>
                     <div>
-                      <span className="text-muted-foreground">$0</span>
-                      <p className="text-xs text-muted-foreground">Not available for W-2 wages</p>
+                      <span className="text-slate-500">$0</span>
+                      <p className="text-xs text-slate-500">Not available for W-2 wages</p>
                     </div>
                   </TableCell>
                   <TableCell className="text-right">
@@ -1249,14 +1249,14 @@ export default function TaxCalculatorPage() {
                   <TableCell className="font-medium">401(k) + SEP IRA</TableCell>
                   <TableCell>
                     <div>
-                      <span className="text-primary font-medium">{formatCurrency(calculations[0].retirement401k)}</span>
-                      <p className="text-xs text-muted-foreground">Max: {formatCurrency(TAX_CONSTANTS.sepIraMaxDollar)} combined limit</p>
+                      <span className="text-emerald-600 font-medium">{formatCurrency(calculations[0].retirement401k)}</span>
+                      <p className="text-xs text-slate-500">Max: {formatCurrency(TAX_CONSTANTS.sepIraMaxDollar)} combined limit</p>
                     </div>
                   </TableCell>
                   <TableCell>
                     <div>
                       <span className="font-medium">{formatCurrency(calculations[2].retirement401k)}</span>
-                      <p className="text-xs text-muted-foreground">Max: {formatCurrency(TAX_CONSTANTS.solo401kEmployeeLimit)} (employee only)</p>
+                      <p className="text-xs text-slate-500">Max: {formatCurrency(TAX_CONSTANTS.solo401kEmployeeLimit)} (employee only)</p>
                     </div>
                   </TableCell>
                   <TableCell className="text-right">
@@ -1270,17 +1270,17 @@ export default function TaxCalculatorPage() {
                   <TableCell>
                     <div>
                       <span className="text-green-600 font-medium">{formatCurrency(calculations[0].taxLossHarvesting)}</span>
-                      <p className="text-xs text-muted-foreground">Max: $3,000/year deduction</p>
+                      <p className="text-xs text-slate-500">Max: $3,000/year deduction</p>
                     </div>
                   </TableCell>
                   <TableCell>
                     <div>
                       <span className="font-medium">{formatCurrency(calculations[2].taxLossHarvesting)}</span>
-                      <p className="text-xs text-muted-foreground">Same limit applies</p>
+                      <p className="text-xs text-slate-500">Same limit applies</p>
                     </div>
                   </TableCell>
                   <TableCell className="text-right">
-                    <span className="text-muted-foreground">$0</span>
+                    <span className="text-slate-500">$0</span>
                   </TableCell>
                 </TableRow>
                 {(calculations[0].feieExclusion > 0 || calculations[2].feieExclusion > 0) && (
@@ -1289,17 +1289,17 @@ export default function TaxCalculatorPage() {
                     <TableCell>
                       <div>
                         <span className="text-green-600 font-medium">{formatCurrency(calculations[0].feieExclusion)}</span>
-                        <p className="text-xs text-muted-foreground">Max: {formatCurrency(TAX_CONSTANTS.feieExclusion)}</p>
+                        <p className="text-xs text-slate-500">Max: {formatCurrency(TAX_CONSTANTS.feieExclusion)}</p>
                       </div>
                     </TableCell>
                     <TableCell>
                       <div>
                         <span className="font-medium">{formatCurrency(calculations[2].feieExclusion)}</span>
-                        <p className="text-xs text-muted-foreground">Same exclusion available</p>
+                        <p className="text-xs text-slate-500">Same exclusion available</p>
                       </div>
                     </TableCell>
                     <TableCell className="text-right">
-                      <span className="text-muted-foreground">$0</span>
+                      <span className="text-slate-500">$0</span>
                     </TableCell>
                   </TableRow>
                 )}
@@ -1308,13 +1308,13 @@ export default function TaxCalculatorPage() {
                   <TableCell>
                     <div>
                       <span className="text-green-600 font-medium">{formatCurrency(expenses)}</span>
-                      <p className="text-xs text-muted-foreground">Fully deductible above-the-line</p>
+                      <p className="text-xs text-slate-500">Fully deductible above-the-line</p>
                     </div>
                   </TableCell>
                   <TableCell>
                     <div>
-                      <span className="text-muted-foreground">$0</span>
-                      <p className="text-xs text-muted-foreground">Unreimbursed expenses not deductible</p>
+                      <span className="text-slate-500">$0</span>
+                      <p className="text-xs text-slate-500">Unreimbursed expenses not deductible</p>
                     </div>
                   </TableCell>
                   <TableCell className="text-right">
@@ -1340,7 +1340,7 @@ export default function TaxCalculatorPage() {
                   <TableCell className="font-medium">
                     <div>
                       Total Tax Savings
-                      <p className="text-xs text-muted-foreground">From 401k, HSA, expenses, QBI, TLH, FEIE</p>
+                      <p className="text-xs text-slate-500">From 401k, HSA, expenses, QBI, TLH, FEIE</p>
                     </div>
                   </TableCell>
                   <TableCell>
@@ -1373,11 +1373,11 @@ export default function TaxCalculatorPage() {
                   <TableCell className="font-bold">
                     <div>
                       Total Wealth Build
-                      <p className="text-xs font-normal text-muted-foreground">Take-home + 401k + HSA</p>
+                      <p className="text-xs font-normal text-slate-500">Take-home + 401k + HSA</p>
                     </div>
                   </TableCell>
                   <TableCell>
-                    <span className="text-primary font-bold">{formatCurrency(calculations[0].totalWealthBuild)}</span>
+                    <span className="text-emerald-600 font-bold">{formatCurrency(calculations[0].totalWealthBuild)}</span>
                   </TableCell>
                   <TableCell>
                     <span className="font-bold">{formatCurrency(calculations[2].totalWealthBuild)}</span>
@@ -1400,11 +1400,11 @@ export default function TaxCalculatorPage() {
                   <CheckCircle className="h-5 w-5 text-green-600 mt-0.5" />
                   <div>
                     <p className="font-medium text-green-600">Self-employment wins by {formatCurrency(tradeoffsData.totalWealthDiff)} in total wealth</p>
-                    <p className="text-sm text-muted-foreground mt-1">
+                    <p className="text-sm text-slate-500 mt-1">
                       Self-employed can contribute {formatCurrency(calculations[0].retirement401k)} to Solo 401k vs W-2&apos;s {formatCurrency(calculations[2].retirement401k)} limit,
                       plus deduct {formatCurrency(expenses)} in business expenses and get {formatCurrency(calculations[0].qbiDeduction)} QBI deduction.
                       {tradeoffsData.takeHomeDiff < 0 && (
-                        <span className="block mt-1 text-primary">
+                        <span className="block mt-1 text-emerald-600">
                           Note: Take-home is {formatCurrency(Math.abs(tradeoffsData.takeHomeDiff))} lower because more goes to tax-advantaged retirement savings.
                         </span>
                       )}
@@ -1416,7 +1416,7 @@ export default function TaxCalculatorPage() {
                   <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5" />
                   <div>
                     <p className="font-medium text-amber-500">W-2 wins by {formatCurrency(Math.abs(tradeoffsData.totalWealthDiff))} in total wealth</p>
-                    <p className="text-sm text-muted-foreground mt-1">
+                    <p className="text-sm text-slate-500 mt-1">
                       At your income level, the SE tax burden ({formatCurrency(calculations[0].seTax)}) outweighs the
                       self-employment benefits. Consider S-Corp election to save {formatCurrency(sCorpSavings)} by
                       avoiding SE tax on distributions.
@@ -1435,7 +1435,7 @@ export default function TaxCalculatorPage() {
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">Total Wealth Build Comparison</CardTitle>
-            <p className="text-sm text-muted-foreground">Take-home + 401k + HSA contributions</p>
+            <p className="text-sm text-slate-500">Take-home + 401k + HSA contributions</p>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
@@ -1481,7 +1481,7 @@ export default function TaxCalculatorPage() {
             <CardTitle className="text-lg">
               Tax Breakdown (Sole Prop / LLC)
             </CardTitle>
-            <p className="text-sm text-muted-foreground">Where your gross income goes</p>
+            <p className="text-sm text-slate-500">Where your gross income goes</p>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
@@ -1529,27 +1529,27 @@ export default function TaxCalculatorPage() {
         <Card>
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
-              <Receipt className="h-5 w-5 text-primary" />
+              <Receipt className="h-5 w-5 text-emerald-600" />
               Quarterly Estimated Taxes
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="p-4 rounded-lg bg-muted/50">
-                <p className="text-sm text-muted-foreground">Federal + SE Tax</p>
+                <p className="text-sm text-slate-500">Federal + SE Tax</p>
                 <p className="text-2xl font-bold">{formatCurrency(quarterlyTax)}</p>
-                <p className="text-xs text-muted-foreground">per quarter</p>
+                <p className="text-xs text-slate-500">per quarter</p>
               </div>
               <div className="p-4 rounded-lg bg-muted/50">
-                <p className="text-sm text-muted-foreground">State Tax</p>
+                <p className="text-sm text-slate-500">State Tax</p>
                 <p className="text-2xl font-bold">{formatCurrency(bestStrategy.stateTax / 4)}</p>
-                <p className="text-xs text-muted-foreground">per quarter</p>
+                <p className="text-xs text-slate-500">per quarter</p>
               </div>
             </div>
 
             <div className="space-y-2 text-sm">
               <p className="font-medium">2025 Quarterly Due Dates:</p>
-              <div className="grid grid-cols-2 gap-2 text-muted-foreground">
+              <div className="grid grid-cols-2 gap-2 text-slate-500">
                 <div>Q1: April 15, 2025</div>
                 <div>Q2: June 16, 2025</div>
                 <div>Q3: September 15, 2025</div>
@@ -1562,7 +1562,7 @@ export default function TaxCalculatorPage() {
                 <AlertTriangle className="h-4 w-4 text-amber-500 mt-0.5" />
                 <div>
                   <p className="font-medium text-amber-500">Avoid Underpayment Penalty</p>
-                  <p className="text-muted-foreground text-xs mt-1">
+                  <p className="text-slate-500 text-xs mt-1">
                     Pay at least 90% of current year tax or 100% of prior year tax (110% if AGI &gt; $150k).
                   </p>
                 </div>
@@ -1575,23 +1575,23 @@ export default function TaxCalculatorPage() {
         <Card>
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
-              <Landmark className="h-5 w-5 text-primary" />
+              <Landmark className="h-5 w-5 text-emerald-600" />
               Recommendations
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             {/* S-Corp Recommendation */}
             {sCorpSavings > 5000 && (
-              <div className="p-4 rounded-lg bg-primary/5 border border-primary/20">
+              <div className="p-4 rounded-lg bg-emerald-600/5 border border-primary/20">
                 <div className="flex items-start gap-3">
-                  <Building2 className="h-5 w-5 text-primary mt-0.5" />
+                  <Building2 className="h-5 w-5 text-emerald-600 mt-0.5" />
                   <div>
                     <p className="font-medium">Consider S-Corp Election</p>
-                    <p className="text-sm text-muted-foreground mt-1">
+                    <p className="text-sm text-slate-500 mt-1">
                       With {formatCurrency(gross)} gross income, S-Corp could save you {formatCurrency(sCorpSavings)}/year
                       by avoiding self-employment tax on distributions.
                     </p>
-                    <div className="flex items-center gap-1 text-xs text-primary mt-2">
+                    <div className="flex items-center gap-1 text-xs text-emerald-600 mt-2">
                       <ArrowRight className="h-3 w-3" />
                       File Form 2553 by March 15th
                     </div>
@@ -1607,7 +1607,7 @@ export default function TaxCalculatorPage() {
                   <PiggyBank className="h-5 w-5 text-cyan-500 mt-0.5" />
                   <div>
                     <p className="font-medium">Max Out Solo 401(k)</p>
-                    <p className="text-sm text-muted-foreground mt-1">
+                    <p className="text-sm text-slate-500 mt-1">
                       You could contribute up to {formatCurrency(Math.min(TAX_CONSTANTS.sepIraMaxDollar, TAX_CONSTANTS.solo401kEmployeeLimit + netIncome * 0.25))} and reduce
                       your taxable income significantly.
                     </p>
@@ -1623,7 +1623,7 @@ export default function TaxCalculatorPage() {
                   <Plane className="h-5 w-5 text-violet-500 mt-0.5" />
                   <div>
                     <p className="font-medium">Consider Living Abroad</p>
-                    <p className="text-sm text-muted-foreground mt-1">
+                    <p className="text-sm text-slate-500 mt-1">
                       The Foreign Earned Income Exclusion could exclude {formatCurrency(TAX_CONSTANTS.feieExclusion)} of
                       your income from federal taxes if you live abroad 330+ days.
                     </p>
@@ -1639,7 +1639,7 @@ export default function TaxCalculatorPage() {
                   <DollarSign className="h-5 w-5 text-emerald-500 mt-0.5" />
                   <div>
                     <p className="font-medium">Max Out HSA</p>
-                    <p className="text-sm text-muted-foreground mt-1">
+                    <p className="text-sm text-slate-500 mt-1">
                       HSA offers triple tax advantage. Consider maxing at {formatCurrency(filingStatus === "married" ? TAX_CONSTANTS.hsaLimitFamily : TAX_CONSTANTS.hsaLimitSingle)}.
                     </p>
                   </div>
@@ -1654,7 +1654,7 @@ export default function TaxCalculatorPage() {
                   <Landmark className="h-5 w-5 text-rose-500 mt-0.5" />
                   <div>
                     <p className="font-medium">High State Tax</p>
-                    <p className="text-sm text-muted-foreground mt-1">
+                    <p className="text-sm text-slate-500 mt-1">
                       You&apos;re paying {formatCurrency(bestStrategy.stateTax)} in state taxes.
                       Moving to a no-income-tax state could save you significantly.
                     </p>
@@ -1669,7 +1669,7 @@ export default function TaxCalculatorPage() {
       {/* Disclaimer */}
       <Card className="border-muted">
         <CardContent className="pt-6">
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-slate-500">
             <strong>Disclaimer:</strong> This calculator provides estimates for educational purposes only.
             Tax laws are complex and change frequently. Consult a qualified tax professional or CPA
             before making any tax decisions. This tool does not account for all deductions, credits,

@@ -271,26 +271,27 @@ export default function EarlyRetirementPage() {
 
   return (
     <TooltipProvider>
-      <div className="space-y-6">
+      <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
+        <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
-            <Rocket className="h-7 w-7 text-primary" />
+          <h1 className="text-2xl sm:text-3xl font-medium text-slate-900 flex items-center gap-2">
+            <Rocket className="h-7 w-7 text-emerald-600" />
             Early Retirement Control Center
           </h1>
-          <p className="text-muted-foreground mt-1">
+          <p className="text-slate-500 mt-1">
             Your decision dashboard for financial independence - not predictions,
             but clarity
           </p>
         </div>
 
         {/* Input Panel */}
-        <Card className="border-muted">
+        <Card className="bg-white border-slate-200 shadow-sm">
           <CardContent className="pt-4 pb-3">
             {/* Row 1: Core inputs */}
             <div className="grid grid-cols-3 md:grid-cols-6 gap-3 mb-4">
               <div>
-                <Label className="text-xs text-muted-foreground">Age</Label>
+                <Label className="text-xs text-slate-500">Age</Label>
                 <Input
                   type="number"
                   value={currentAge}
@@ -299,7 +300,7 @@ export default function EarlyRetirementPage() {
                 />
               </div>
               <div>
-                <Label className="text-xs text-muted-foreground">Retire At</Label>
+                <Label className="text-xs text-slate-500">Retire At</Label>
                 <Input
                   type="number"
                   value={targetRetirementAge}
@@ -308,7 +309,7 @@ export default function EarlyRetirementPage() {
                 />
               </div>
               <div>
-                <Label className="text-xs text-muted-foreground">Portfolio</Label>
+                <Label className="text-xs text-slate-500">Portfolio</Label>
                 <Input
                   type="number"
                   value={currentPortfolio}
@@ -317,7 +318,7 @@ export default function EarlyRetirementPage() {
                 />
               </div>
               <div>
-                <Label className="text-xs text-muted-foreground">Income</Label>
+                <Label className="text-xs text-slate-500">Income</Label>
                 <Input
                   type="number"
                   value={annualIncome}
@@ -326,7 +327,7 @@ export default function EarlyRetirementPage() {
                 />
               </div>
               <div>
-                <Label className="text-xs text-muted-foreground">Expenses</Label>
+                <Label className="text-xs text-slate-500">Expenses</Label>
                 <Input
                   type="number"
                   value={annualExpenses}
@@ -335,7 +336,7 @@ export default function EarlyRetirementPage() {
                 />
               </div>
               <div>
-                <Label className="text-xs text-muted-foreground">Savings</Label>
+                <Label className="text-xs text-slate-500">Savings</Label>
                 <Input
                   type="number"
                   value={annualSavings}
@@ -348,7 +349,7 @@ export default function EarlyRetirementPage() {
             {/* Row 2: Sliders */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div>
-                <div className="flex justify-between text-xs text-muted-foreground mb-1">
+                <div className="flex justify-between text-xs text-slate-500 mb-1">
                   <span>Withdrawal Rate</span>
                   <span className="font-medium text-foreground">{withdrawalRate}%</span>
                 </div>
@@ -362,7 +363,7 @@ export default function EarlyRetirementPage() {
                 />
               </div>
               <div>
-                <div className="flex justify-between text-xs text-muted-foreground mb-1">
+                <div className="flex justify-between text-xs text-slate-500 mb-1">
                   <span>Expected Return</span>
                   <span className="font-medium text-foreground">{expectedReturn}%</span>
                 </div>
@@ -376,7 +377,7 @@ export default function EarlyRetirementPage() {
                 />
               </div>
               <div>
-                <div className="flex justify-between text-xs text-muted-foreground mb-1">
+                <div className="flex justify-between text-xs text-slate-500 mb-1">
                   <span>Volatility</span>
                   <span className="font-medium text-foreground">{volatility}%</span>
                 </div>
@@ -390,7 +391,7 @@ export default function EarlyRetirementPage() {
                 />
               </div>
               <div>
-                <div className="flex justify-between text-xs text-muted-foreground mb-1">
+                <div className="flex justify-between text-xs text-slate-500 mb-1">
                   <span>Bridge Income</span>
                   <span className="font-medium text-foreground">${(semiRetirementIncome/1000).toFixed(0)}k</span>
                 </div>
@@ -462,10 +463,10 @@ export default function EarlyRetirementPage() {
         <BurnRateClockModule burnRate={burnRate} />
 
         {/* Disclaimer */}
-        <Card className="border-muted bg-muted/30">
+        <Card className="bg-amber-50/50 border-amber-200">
           <CardContent className="pt-4 pb-4">
-            <p className="text-xs text-muted-foreground">
-              <strong>Important:</strong> These projections are for educational
+            <p className="text-xs text-slate-600">
+              <strong className="text-slate-900">Important:</strong> These projections are for educational
               purposes only and should not be considered financial advice. All
               calculations involve simplifying assumptions. Market returns are
               unpredictable, and past performance does not guarantee future
@@ -474,6 +475,7 @@ export default function EarlyRetirementPage() {
             </p>
           </CardContent>
         </Card>
+        </div>
       </div>
     </TooltipProvider>
   );
@@ -507,10 +509,10 @@ function FIReadinessDashboard({
   const currentIndex = getStageIndex(readiness.stage);
 
   return (
-    <Card>
+    <Card className="bg-white border-slate-200 shadow-sm">
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg flex items-center gap-2">
-          <Target className="h-5 w-5 text-primary" />
+        <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
+          <Target className="h-5 w-5 text-emerald-600" />
           FI Readiness
         </CardTitle>
       </CardHeader>
@@ -522,12 +524,12 @@ function FIReadinessDashboard({
               <div
                 key={s.stage}
                 className={`flex flex-col items-center ${
-                  i <= currentIndex ? "text-primary" : "text-muted-foreground"
+                  i <= currentIndex ? "text-emerald-600" : "text-slate-500"
                 }`}
               >
                 <div
                   className={`w-2.5 h-2.5 rounded-full ${
-                    i <= currentIndex ? "bg-primary" : "bg-muted"
+                    i <= currentIndex ? "bg-emerald-600" : "bg-muted"
                   } ${i === currentIndex ? "ring-2 ring-primary ring-offset-1" : ""}`}
                 />
                 <span className="text-[10px] mt-1">{s.label}</span>
@@ -563,7 +565,7 @@ function FIReadinessDashboard({
             <span className="font-semibold" style={{ color: readiness.progressColor }}>
               {readiness.stageLabel}
             </span>
-            <span className="text-sm text-muted-foreground ml-2">
+            <span className="text-sm text-slate-500 ml-2">
               {readiness.stageDescription}
             </span>
           </div>
@@ -573,24 +575,24 @@ function FIReadinessDashboard({
         <div className="grid grid-cols-2 gap-2">
           <div className="text-center p-2 rounded bg-muted/30">
             <p className="text-xl font-bold">{formatPercent(readiness.fiCoveragePercent, 0)}</p>
-            <p className="text-xs text-muted-foreground">Coverage</p>
+            <p className="text-xs text-slate-500">Coverage</p>
           </div>
           <div className="text-center p-2 rounded bg-muted/30">
             <p className="text-xl font-bold">{formatYears(readiness.yearsToFI)}</p>
-            <p className="text-xs text-muted-foreground">Years to FI</p>
+            <p className="text-xs text-slate-500">Years to FI</p>
           </div>
           <div className="text-center p-2 rounded bg-muted/30">
             <p className="text-xl font-bold">{formatCurrency(readiness.requiredPortfolio)}</p>
-            <p className="text-xs text-muted-foreground">FI Number</p>
+            <p className="text-xs text-slate-500">FI Number</p>
           </div>
           <div className="text-center p-2 rounded bg-muted/30">
             <p className="text-xl font-bold">{formatCurrency(readiness.monthlySpend)}</p>
-            <p className="text-xs text-muted-foreground">Safe Monthly</p>
+            <p className="text-xs text-slate-500">Safe Monthly</p>
           </div>
         </div>
 
         {/* Formula with actual numbers */}
-        <div className="text-xs text-muted-foreground space-y-1 pt-2 border-t">
+        <div className="text-xs text-slate-500 space-y-1 pt-2 border-t">
           <p><strong className="text-foreground">FI Number:</strong> {formatCurrency(expenses)} ÷ {withdrawalRate}% = <strong className="text-foreground">{formatCurrency(readiness.requiredPortfolio)}</strong></p>
           <p><strong className="text-foreground">Coverage:</strong> {formatCurrency(portfolio)} ÷ {formatCurrency(readiness.requiredPortfolio)} = <strong className="text-foreground">{formatPercent(readiness.fiCoveragePercent, 0)}</strong></p>
         </div>
@@ -619,10 +621,10 @@ function WithdrawalStressSimulator({
   const chartData = simulation.projections;
 
   return (
-    <Card>
+    <Card className="bg-white border-slate-200 shadow-sm">
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg flex items-center gap-2">
-          <Shield className="h-5 w-5 text-primary" />
+        <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
+          <Shield className="h-5 w-5 text-emerald-600" />
           Withdrawal Stress Test (Monte Carlo)
         </CardTitle>
         <CardDescription>
@@ -631,7 +633,7 @@ function WithdrawalStressSimulator({
       </CardHeader>
       <CardContent className="space-y-4">
         {/* How it works - no background */}
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-slate-500">
           Simulates 1,000 different market return sequences using your expected return ± volatility.
           Green = 75th percentile (optimistic), Blue = median, Red = 10th percentile (worst case).
         </p>
@@ -645,25 +647,25 @@ function WithdrawalStressSimulator({
             >
               {formatPercent(simulation.successProbability, 0)}
             </p>
-            <p className="text-[10px] text-muted-foreground">Success Rate</p>
+            <p className="text-[10px] text-slate-500">Success Rate</p>
           </div>
           <div className="text-center p-2 rounded-lg bg-muted/50">
             <p className="text-2xl font-bold text-blue-600">
               {formatCurrency(simulation.medianEndingBalance)}
             </p>
-            <p className="text-[10px] text-muted-foreground">Median Balance</p>
+            <p className="text-[10px] text-slate-500">Median Balance</p>
           </div>
           <div className="text-center p-2 rounded-lg bg-muted/50">
             <p className="text-2xl font-bold text-green-600">
               {formatCurrency(simulation.percentile75Balance)}
             </p>
-            <p className="text-[10px] text-muted-foreground">75th Percentile</p>
+            <p className="text-[10px] text-slate-500">75th Percentile</p>
           </div>
           <div className="text-center p-2 rounded-lg bg-muted/50">
             <p className="text-2xl font-bold text-red-600">
               {formatCurrency(simulation.percentile25Balance)}
             </p>
-            <p className="text-[10px] text-muted-foreground">25th Percentile</p>
+            <p className="text-[10px] text-slate-500">25th Percentile</p>
           </div>
         </div>
 
@@ -737,12 +739,12 @@ function WithdrawalStressSimulator({
               {simulation.riskLevel === "low" ? "Low Risk" : simulation.riskLevel === "moderate" ? "Moderate Risk" : simulation.riskLevel === "high" ? "High Risk" : "Very High Risk"}
             </div>
             {simulation.yearsUntilDepletion && (
-              <span className="text-xs text-muted-foreground">
+              <span className="text-xs text-slate-500">
                 Depletion at ~{simulation.yearsUntilDepletion} years in worst case
               </span>
             )}
           </div>
-          <p className="text-[10px] text-muted-foreground">
+          <p className="text-[10px] text-slate-500">
             {simulation.assumptions[0]}
           </p>
         </div>
@@ -776,10 +778,10 @@ function LifestyleBudgetModule({
   };
 
   return (
-    <Card>
+    <Card className="bg-white border-slate-200 shadow-sm">
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg flex items-center gap-2">
-          <DollarSign className="h-5 w-5 text-primary" />
+        <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
+          <DollarSign className="h-5 w-5 text-emerald-600" />
           Retirement Lifestyle Budget
         </CardTitle>
         <CardDescription>
@@ -795,7 +797,7 @@ function LifestyleBudgetModule({
               onClick={() => setSelectedMode(mode)}
               className={`p-3 rounded-lg border-2 transition-all ${
                 selectedMode === mode
-                  ? "border-primary bg-primary/5"
+                  ? "border-primary bg-emerald-600/5"
                   : "border-muted hover:border-muted-foreground/30"
               }`}
             >
@@ -806,7 +808,7 @@ function LifestyleBudgetModule({
               <p className="text-xl font-bold mt-1">
                 {formatCurrency(budgets[mode].requiredPortfolio)}
               </p>
-              <p className="text-xs text-muted-foreground">required</p>
+              <p className="text-xs text-slate-500">required</p>
             </button>
           ))}
         </div>
@@ -850,7 +852,7 @@ function LifestyleBudgetModule({
                   style={{ backgroundColor: cat.color }}
                 />
                 <span>{cat.name}</span>
-                <span className="text-muted-foreground ml-auto">
+                <span className="text-slate-500 ml-auto">
                   {formatCurrency(cat.annual / 12)}
                 </span>
               </div>
@@ -859,7 +861,7 @@ function LifestyleBudgetModule({
         </div>
 
         {/* Formula with actual numbers */}
-        <div className="text-xs text-muted-foreground space-y-1 pt-3 border-t">
+        <div className="text-xs text-slate-500 space-y-1 pt-3 border-t">
           <p><strong className="text-foreground">Annual Spending:</strong> {formatCurrency(currentBudget.totalAnnual)} ({currentBudget.modeLabel} lifestyle)</p>
           <p><strong className="text-foreground">Required Portfolio:</strong> {formatCurrency(currentBudget.totalAnnual)} ÷ {withdrawalRate}% = <strong className="text-foreground">{formatCurrency(currentBudget.requiredPortfolio)}</strong></p>
           <p><strong className="text-foreground">Monthly Budget:</strong> {formatCurrency(currentBudget.totalAnnual)} ÷ 12 = <strong className="text-foreground">{formatCurrency(currentBudget.totalMonthly)}/mo</strong></p>
@@ -886,10 +888,10 @@ function CoastFICalculator({
   );
 
   return (
-    <Card>
+    <Card className="bg-white border-slate-200 shadow-sm">
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg flex items-center gap-2">
-          <TrendingUp className="h-5 w-5 text-primary" />
+        <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
+          <TrendingUp className="h-5 w-5 text-emerald-600" />
           Coast FI
         </CardTitle>
         <CardDescription>
@@ -898,7 +900,7 @@ function CoastFICalculator({
       </CardHeader>
       <CardContent className="space-y-3">
         {/* Formula - no background */}
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-slate-500">
           <strong className="text-foreground">Coast FI:</strong> When your portfolio, growing at expected returns with no contributions, will reach your FI number by retirement age.
         </p>
 
@@ -922,7 +924,7 @@ function CoastFICalculator({
                   ? "You've reached Coast FI!"
                   : `${formatYears(coastFI.yearsUntilCoastFI)} until Coast FI`}
               </p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-slate-500">
                 {coastFI.isCoastFI
                   ? "Your portfolio will grow to FI without additional savings"
                   : `At age ${coastFI.coastFIAge}, you can stop saving`}
@@ -935,19 +937,19 @@ function CoastFICalculator({
         <div className="grid grid-cols-3 gap-4">
           <div className="text-center">
             <p className="text-2xl font-bold">{coastFI.currentCoastFIAge}</p>
-            <p className="text-xs text-muted-foreground">Retire at (if stop saving)</p>
+            <p className="text-xs text-slate-500">Retire at (if stop saving)</p>
           </div>
           <div className="text-center">
             <p className="text-2xl font-bold">
               {formatCurrency(coastFI.minimumIncomeToCoast)}
             </p>
-            <p className="text-xs text-muted-foreground">Min income to coast</p>
+            <p className="text-xs text-slate-500">Min income to coast</p>
           </div>
           <div className="text-center">
             <p className="text-2xl font-bold">
               {formatCurrency(coastFI.portfolioAtRetirement)}
             </p>
-            <p className="text-xs text-muted-foreground">Projected at retirement</p>
+            <p className="text-xs text-slate-500">Projected at retirement</p>
           </div>
         </div>
 
@@ -1011,10 +1013,10 @@ function SemiRetirementBridgeModule({
   };
 
   return (
-    <Card>
+    <Card className="bg-white border-slate-200 shadow-sm">
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg flex items-center gap-2">
-          <ArrowRight className="h-5 w-5 text-primary" />
+        <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
+          <ArrowRight className="h-5 w-5 text-emerald-600" />
           Semi-Retirement Bridge
         </CardTitle>
         <CardDescription>
@@ -1023,7 +1025,7 @@ function SemiRetirementBridgeModule({
       </CardHeader>
       <CardContent className="space-y-3">
         {/* How it helps - no background */}
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-slate-500">
           <strong className="text-foreground">How it helps:</strong> Part-time income reduces portfolio withdrawals, protecting against sequence-of-returns risk.
         </p>
 
@@ -1095,19 +1097,19 @@ function SemiRetirementBridgeModule({
             <p className="text-xl font-bold text-green-600">
               {formatCurrency(bridge.portfolioSavings)}
             </p>
-            <p className="text-xs text-muted-foreground">Less portfolio needed</p>
+            <p className="text-xs text-slate-500">Less portfolio needed</p>
           </div>
           <div className="text-center p-3 rounded-lg bg-blue-500/10">
             <p className="text-xl font-bold text-blue-600">
               {bridge.sequenceRiskMitigationYears} yrs
             </p>
-            <p className="text-xs text-muted-foreground">Sequence risk reduced</p>
+            <p className="text-xs text-slate-500">Sequence risk reduced</p>
           </div>
           <div className="text-center p-3 rounded-lg bg-purple-500/10">
             <p className="text-xl font-bold text-purple-600">
               {formatPercent(bridge.withdrawalOffsetPercent, 0)}
             </p>
-            <p className="text-xs text-muted-foreground">Expenses covered</p>
+            <p className="text-xs text-slate-500">Expenses covered</p>
           </div>
         </div>
       </CardContent>
@@ -1141,10 +1143,10 @@ function GeoArbitrageLink({
   const currentSavings = baselinePortfolio - requiredPortfolio;
 
   return (
-    <Card>
+    <Card className="bg-white border-slate-200 shadow-sm">
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg flex items-center gap-2">
-          <MapPin className="h-5 w-5 text-primary" />
+        <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
+          <MapPin className="h-5 w-5 text-emerald-600" />
           Geographic Flexibility
         </CardTitle>
         <CardDescription>
@@ -1153,7 +1155,7 @@ function GeoArbitrageLink({
       </CardHeader>
       <CardContent className="space-y-4">
         {/* How it works - no background */}
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-slate-500">
           <strong className="text-foreground">How it works:</strong> FI Number = Annual Expenses / Withdrawal Rate.
           Move to a 60% COL area → expenses drop 40% → portfolio requirement drops 40%.
         </p>
@@ -1172,7 +1174,7 @@ function GeoArbitrageLink({
             step={5}
           />
           {costOfLivingMultiplier !== 1.0 && (
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-slate-500">
               {costOfLivingMultiplier < 1.0
                 ? `Saves ${formatCurrency(Math.abs(currentSavings))} vs baseline`
                 : `Costs ${formatCurrency(Math.abs(currentSavings))} more than baseline`}
@@ -1189,12 +1191,12 @@ function GeoArbitrageLink({
                   onClick={() => setCostOfLivingMultiplier(s.multiplier)}
                   className={`p-2 rounded-lg border transition-all ${
                     Math.abs(costOfLivingMultiplier - s.multiplier) < 0.05
-                      ? "border-primary bg-primary/5"
+                      ? "border-primary bg-emerald-600/5"
                       : "border-muted hover:border-muted-foreground/30"
                   }`}
                 >
                   <p className="text-xs font-medium">{s.label}</p>
-                  <p className="text-[10px] text-muted-foreground">{s.multiplier}x</p>
+                  <p className="text-[10px] text-slate-500">{s.multiplier}x</p>
                   <p
                     className="text-sm font-bold"
                     style={{ color: s.color }}
@@ -1220,7 +1222,7 @@ function GeoArbitrageLink({
           </Button>
         </Link>
 
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-slate-500">
           <Info className="h-3 w-3 inline mr-1" />
           Formula: <code className="bg-muted px-1 rounded">Required Portfolio = (Annual Expenses × COL Multiplier) / Withdrawal Rate</code>
         </p>
@@ -1235,10 +1237,10 @@ function GeoArbitrageLink({
 
 function BurnRateClockModule({ burnRate }: { burnRate: BurnRateResult }) {
   return (
-    <Card>
+    <Card className="bg-white border-slate-200 shadow-sm">
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg flex items-center gap-2">
-          <Flame className="h-5 w-5 text-primary" />
+        <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
+          <Flame className="h-5 w-5 text-emerald-600" />
           Burn Rate Clock
         </CardTitle>
         <CardDescription>
@@ -1248,14 +1250,14 @@ function BurnRateClockModule({ burnRate }: { burnRate: BurnRateResult }) {
       <CardContent>
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-muted-foreground">Portfolio lasts</p>
+            <p className="text-sm text-slate-500">Portfolio lasts</p>
             <div className="flex items-baseline gap-2">
               <span className="text-4xl font-bold">
                 {burnRate.yearsRemaining >= 100 ? "100+" : burnRate.yearsRemaining.toFixed(1)}
               </span>
-              <span className="text-xl text-muted-foreground">years</span>
+              <span className="text-xl text-slate-500">years</span>
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-slate-500">
               Range: {burnRate.yearsRemainingPessimistic.toFixed(0)} - {burnRate.yearsRemainingOptimistic.toFixed(0)} years
             </p>
           </div>
@@ -1263,13 +1265,13 @@ function BurnRateClockModule({ burnRate }: { burnRate: BurnRateResult }) {
           <div className="text-right">
             <div className="space-y-1">
               <div>
-                <p className="text-xs text-muted-foreground">Monthly Burn</p>
+                <p className="text-xs text-slate-500">Monthly Burn</p>
                 <p className="text-lg font-semibold">
                   {formatCurrency(burnRate.monthlyBurnRate)}
                 </p>
               </div>
               <div>
-                <p className="text-xs text-muted-foreground">Annual Burn</p>
+                <p className="text-xs text-slate-500">Annual Burn</p>
                 <p className="text-lg font-semibold">
                   {formatCurrency(burnRate.annualBurnRate)}
                 </p>
@@ -1307,10 +1309,10 @@ function FreedomMilestonesModule({ milestones }: { milestones: FIMilestone[] }) 
   };
 
   return (
-    <Card>
+    <Card className="bg-white border-slate-200 shadow-sm">
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg flex items-center gap-2">
-          <Sparkles className="h-5 w-5 text-primary" />
+        <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
+          <Sparkles className="h-5 w-5 text-emerald-600" />
           Freedom Milestones
         </CardTitle>
         <CardDescription>
@@ -1326,24 +1328,24 @@ function FreedomMilestonesModule({ milestones }: { milestones: FIMilestone[] }) 
                 <div
                   className={`p-3 rounded-lg border cursor-help transition-all hover:shadow-md ${
                     milestone.isAchieved
-                      ? "bg-green-500/10 border-green-500/30"
-                      : "bg-muted/30 border-muted"
+                      ? "bg-emerald-50 border-emerald-200"
+                      : "bg-slate-50 border-slate-200"
                   }`}
                 >
                   {/* Icon & Status */}
                   <div className="flex items-center justify-between mb-2">
                     <div
                       className={`p-1.5 rounded-full ${
-                        milestone.isAchieved ? "bg-green-500/20" : "bg-muted"
+                        milestone.isAchieved ? "bg-emerald-100" : "bg-slate-100"
                       }`}
                     >
                       {milestone.isAchieved ? (
-                        <CheckCircle className="h-3 w-3 text-green-500" />
+                        <CheckCircle className="h-3 w-3 text-emerald-600" />
                       ) : (
                         milestoneIcons[milestone.name] || <Target className="h-3 w-3" />
                       )}
                     </div>
-                    <span className="text-[10px] text-muted-foreground">
+                    <span className="text-[10px] text-slate-500">
                       {milestone.progress.toFixed(0)}%
                     </span>
                   </div>
@@ -1357,7 +1359,7 @@ function FreedomMilestonesModule({ milestones }: { milestones: FIMilestone[] }) 
                   </p>
 
                   {/* Status */}
-                  <p className={`text-xs ${milestone.isAchieved ? "text-green-600" : "text-muted-foreground"}`}>
+                  <p className={`text-xs ${milestone.isAchieved ? "text-emerald-600" : "text-slate-500"}`}>
                     {milestone.isAchieved
                       ? "Achieved!"
                       : milestone.yearsAway
@@ -1369,7 +1371,7 @@ function FreedomMilestonesModule({ milestones }: { milestones: FIMilestone[] }) 
                   <div className="mt-2 h-1 bg-muted rounded-full overflow-hidden">
                     <div
                       className={`h-full rounded-full transition-all ${
-                        milestone.isAchieved ? "bg-green-500" : "bg-primary"
+                        milestone.isAchieved ? "bg-emerald-500" : "bg-emerald-500"
                       }`}
                       style={{ width: `${Math.min(milestone.progress, 100)}%` }}
                     />
@@ -1378,7 +1380,7 @@ function FreedomMilestonesModule({ milestones }: { milestones: FIMilestone[] }) 
               </TooltipTrigger>
               <TooltipContent className="max-w-xs">
                 <p className="font-medium">{milestone.name}</p>
-                <p className="text-xs text-muted-foreground mb-1">{milestone.description}</p>
+                <p className="text-xs text-slate-500 mb-1">{milestone.description}</p>
                 <p className="text-xs italic">&ldquo;{milestone.lifestyleImplication}&rdquo;</p>
               </TooltipContent>
             </Tooltip>
@@ -1522,10 +1524,10 @@ function RothConversionLadderModule({
   ];
 
   return (
-    <Card>
+    <Card className="bg-white border-slate-200 shadow-sm">
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg flex items-center gap-2">
-          <RefreshCcw className="h-5 w-5 text-primary" />
+        <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
+          <RefreshCcw className="h-5 w-5 text-emerald-600" />
           Roth Conversion Ladder
         </CardTitle>
         <CardDescription>
@@ -1534,7 +1536,7 @@ function RothConversionLadderModule({
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Explanation */}
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-slate-500">
           <strong className="text-foreground">Strategy:</strong> Convert Traditional IRA/401k to Roth during low-income early retirement years.
           After 5 years, withdraw conversions tax and penalty-free—even before age 59½.
         </p>
@@ -1542,7 +1544,7 @@ function RothConversionLadderModule({
         {/* Inputs */}
         <div className="grid grid-cols-3 gap-3">
           <div>
-            <Label className="text-xs text-muted-foreground">Traditional Balance</Label>
+            <Label className="text-xs text-slate-500">Traditional Balance</Label>
             <Input
               type="number"
               value={traditionalBalance}
@@ -1551,7 +1553,7 @@ function RothConversionLadderModule({
             />
           </div>
           <div>
-            <Label className="text-xs text-muted-foreground">Current Tax Rate</Label>
+            <Label className="text-xs text-slate-500">Current Tax Rate</Label>
             <Select
               value={currentMarginalRate.toString()}
               onValueChange={(v) => setCurrentMarginalRate(parseInt(v))}
@@ -1569,7 +1571,7 @@ function RothConversionLadderModule({
             </Select>
           </div>
           <div>
-            <Label className="text-xs text-muted-foreground">Retirement Tax Rate</Label>
+            <Label className="text-xs text-slate-500">Retirement Tax Rate</Label>
             <Select
               value={retirementMarginalRate.toString()}
               onValueChange={(v) => setRetirementMarginalRate(parseInt(v))}
@@ -1594,25 +1596,25 @@ function RothConversionLadderModule({
             <p className="text-xl font-bold text-blue-600">
               {formatCurrency(ladder.optimalConversionAmount)}
             </p>
-            <p className="text-[10px] text-muted-foreground">Convert Per Year</p>
+            <p className="text-[10px] text-slate-500">Convert Per Year</p>
           </div>
           <div className="text-center p-3 rounded-lg bg-green-500/10">
             <p className="text-xl font-bold text-green-600">
               {formatCurrency(ladder.taxSavingsVsLater)}
             </p>
-            <p className="text-[10px] text-muted-foreground">Tax Savings</p>
+            <p className="text-[10px] text-slate-500">Tax Savings</p>
           </div>
           <div className="text-center p-3 rounded-lg bg-purple-500/10">
             <p className="text-xl font-bold text-purple-600">
               {ladder.canAccessFundsAge.toFixed(0)}
             </p>
-            <p className="text-[10px] text-muted-foreground">First Access Age</p>
+            <p className="text-[10px] text-slate-500">First Access Age</p>
           </div>
           <div className="text-center p-3 rounded-lg bg-amber-500/10">
             <p className="text-xl font-bold text-amber-600">
               {formatCurrency(ladder.totalTaxPaid)}
             </p>
-            <p className="text-[10px] text-muted-foreground">Total Tax on Conversions</p>
+            <p className="text-[10px] text-slate-500">Total Tax on Conversions</p>
           </div>
         </div>
 
@@ -1637,7 +1639,7 @@ function RothConversionLadderModule({
                           <span className="text-[10px] font-medium">
                             {conv.age}
                           </span>
-                          <span className="text-[8px] text-muted-foreground">
+                          <span className="text-[8px] text-slate-500">
                             ${(conv.conversionAmount / 1000).toFixed(0)}k
                           </span>
                         </div>
@@ -1655,7 +1657,7 @@ function RothConversionLadderModule({
                 </div>
               </div>
               {/* Legend */}
-              <div className="flex justify-between text-[10px] text-muted-foreground mt-1">
+              <div className="flex justify-between text-[10px] text-slate-500 mt-1">
                 <span className="flex items-center gap-1">
                   <div className="w-2 h-2 rounded bg-red-400/40" />
                   Locked (5-year rule)
@@ -1675,7 +1677,7 @@ function RothConversionLadderModule({
             <Info className="h-3 w-3" />
             How the Roth Conversion Ladder Works
           </p>
-          <ol className="text-xs text-muted-foreground space-y-1 ml-4">
+          <ol className="text-xs text-slate-500 space-y-1 ml-4">
             <li>1. Retire early and enter a low-income year</li>
             <li>2. Convert Traditional IRA → Roth IRA (pay tax at low rate)</li>
             <li>3. Wait 5 years for conversions to become accessible</li>
@@ -1727,12 +1729,12 @@ function MetricCard({
 }) {
   return (
     <div className="p-3 rounded-lg bg-muted/50">
-      <div className="flex items-center gap-2 text-muted-foreground mb-1">
+      <div className="flex items-center gap-2 text-slate-500 mb-1">
         {icon}
         <span className="text-xs">{label}</span>
       </div>
       <p className="text-xl font-bold">{value}</p>
-      <p className="text-xs text-muted-foreground">{subtext}</p>
+      <p className="text-xs text-slate-500">{subtext}</p>
     </div>
   );
 }

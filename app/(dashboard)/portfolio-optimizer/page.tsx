@@ -158,24 +158,24 @@ function RiskQuestionnaire({
   const progress = ((currentQuestion + 1) / questions.length) * 100;
 
   return (
-    <Card>
+    <Card className="bg-white border-slate-200 shadow-sm">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Target className="h-5 w-5 text-primary" />
+        <CardTitle className="flex items-center gap-2 font-medium text-slate-900">
+          <Target className="h-5 w-5 text-emerald-600" />
           Risk Assessment
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-slate-500">
           Question {currentQuestion + 1} of {questions.length}
         </CardDescription>
-        <div className="w-full bg-muted rounded-full h-2 mt-2">
+        <div className="w-full bg-slate-100 rounded-full h-2 mt-2">
           <div
-            className="bg-primary h-2 rounded-full transition-all duration-300"
+            className="bg-emerald-600 h-2 rounded-full transition-all duration-300"
             style={{ width: `${progress}%` }}
           />
         </div>
       </CardHeader>
       <CardContent className="space-y-6">
-        <h3 className="text-lg font-medium">{question.question}</h3>
+        <h3 className="text-lg font-medium text-slate-900">{question.question}</h3>
 
         <div className="space-y-3">
           {question.options.map((option) => (
@@ -185,8 +185,8 @@ function RiskQuestionnaire({
               className={cn(
                 "w-full text-left p-4 rounded-lg border-2 transition-all",
                 selectedAnswer === option.score
-                  ? "border-primary bg-primary/10"
-                  : "border-border hover:border-primary/50 hover:bg-muted/50"
+                  ? "border-emerald-600 bg-emerald-50"
+                  : "border-slate-200 hover:border-emerald-300 hover:bg-slate-50"
               )}
             >
               {option.text}
@@ -199,6 +199,7 @@ function RiskQuestionnaire({
             variant="outline"
             onClick={handleBack}
             disabled={currentQuestion === 0}
+            className="border-slate-200 text-slate-700 hover:bg-slate-100"
           >
             <ChevronLeft className="h-4 w-4 mr-1" />
             Back
@@ -206,7 +207,7 @@ function RiskQuestionnaire({
           <Button
             onClick={handleNext}
             disabled={selectedAnswer === null}
-            className="bg-primary hover:bg-primary/90"
+            className="bg-emerald-600 hover:bg-emerald-700 text-white"
           >
             {currentQuestion === questions.length - 1 ? "Complete" : "Next"}
             <ChevronRight className="h-4 w-4 ml-1" />
@@ -291,7 +292,7 @@ function AllocationChart({
                       </div>
                       <div className="text-lg font-bold mt-1">{item.value.toFixed(1)}%</div>
                       {item.amount !== undefined && (
-                        <div className="text-sm text-muted-foreground">
+                        <div className="text-sm text-slate-500">
                           {formatCurrency(item.amount)}
                         </div>
                       )}
@@ -308,7 +309,7 @@ function AllocationChart({
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div className="text-center">
             <div className="text-2xl font-bold">{totalPercent.toFixed(0)}%</div>
-            <div className="text-xs text-muted-foreground">Total</div>
+            <div className="text-xs text-slate-500">Total</div>
           </div>
         </div>
       </div>
@@ -332,7 +333,7 @@ function AllocationChart({
                 {item.value.toFixed(1)}%
               </span>
               {item.amount !== undefined && (
-                <span className="text-xs text-muted-foreground w-20 text-right">
+                <span className="text-xs text-slate-500 w-20 text-right">
                   {formatCurrency(item.amount)}
                 </span>
               )}
@@ -345,7 +346,7 @@ function AllocationChart({
       {totalValue !== undefined && totalValue > 0 && (
         <div className="pt-2 border-t">
           <div className="flex justify-between items-center">
-            <span className="text-sm text-muted-foreground">Total Value</span>
+            <span className="text-sm text-slate-500">Total Value</span>
             <span className="font-bold">{formatCurrency(totalValue)}</span>
           </div>
         </div>
@@ -394,7 +395,7 @@ function RebalancingTrades({
                 </div>
                 <div className="text-right">
                   <div className="font-medium">{formatCurrency(trade.amount)}</div>
-                  <div className="text-xs text-muted-foreground">
+                  <div className="text-xs text-slate-500">
                     {trade.percentage.toFixed(1)}% of portfolio
                   </div>
                 </div>
@@ -406,7 +407,7 @@ function RebalancingTrades({
 
       {sells.length > 0 && buys.length > 0 && (
         <div className="flex justify-center">
-          <ArrowRight className="h-6 w-6 text-muted-foreground" />
+          <ArrowRight className="h-6 w-6 text-slate-500" />
         </div>
       )}
 
@@ -428,7 +429,7 @@ function RebalancingTrades({
                 </div>
                 <div className="text-right">
                   <div className="font-medium">{formatCurrency(trade.amount)}</div>
-                  <div className="text-xs text-muted-foreground">
+                  <div className="text-xs text-slate-500">
                     {trade.percentage.toFixed(1)}% of portfolio
                   </div>
                 </div>
@@ -492,7 +493,7 @@ function MarketValuationCard({ valuation }: { valuation: MarketValuation }) {
         <div className="flex items-center justify-between">
           <div>
             <div className="text-3xl font-bold">{valuation.cape.toFixed(1)}</div>
-            <div className="text-sm text-muted-foreground">CAPE Ratio</div>
+            <div className="text-sm text-slate-500">CAPE Ratio</div>
           </div>
           <div className={cn("px-3 py-1 rounded-full text-sm font-medium", getValuationColor())}>
             {getValuationLabel()}
@@ -500,11 +501,11 @@ function MarketValuationCard({ valuation }: { valuation: MarketValuation }) {
         </div>
         <div className="mt-4 pt-4 border-t space-y-2">
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Historical Average</span>
+            <span className="text-slate-500">Historical Average</span>
             <span>{valuation.historicalAvg}</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Deviation</span>
+            <span className="text-slate-500">Deviation</span>
             <span className={percentFromAvg > 0 ? "text-red-500" : "text-green-600"}>
               {percentFromAvg > 0 ? "+" : ""}{percentFromAvg.toFixed(0)}%
             </span>
@@ -545,7 +546,7 @@ function AllocationBreakdownCard({
       <CardContent>
         <div className="space-y-4">
           {/* Header Row */}
-          <div className="grid grid-cols-4 text-sm font-medium text-muted-foreground">
+          <div className="grid grid-cols-4 text-sm font-medium text-slate-500">
             <div></div>
             <div className="text-right">Stocks</div>
             <div className="text-right">Bonds</div>
@@ -563,7 +564,7 @@ function AllocationBreakdownCard({
           {/* Market Adjustment */}
           {marketAdjustment && (
             <div className="grid grid-cols-4 text-sm">
-              <div className="text-muted-foreground">Market Adj (CAPE)</div>
+              <div className="text-slate-500">Market Adj (CAPE)</div>
               <div className={cn("text-right", marketAdjustment.stocks < 0 ? "text-red-500" : marketAdjustment.stocks > 0 ? "text-green-600" : "")}>
                 {formatAdj(marketAdjustment.stocks)}
               </div>
@@ -582,7 +583,7 @@ function AllocationBreakdownCard({
           {/* Final Recommendation */}
           <div className="grid grid-cols-4 text-sm font-bold">
             <div>Final</div>
-            <div className="text-right text-primary">{formatPct(finalAllocation.stocks)}</div>
+            <div className="text-right text-emerald-600">{formatPct(finalAllocation.stocks)}</div>
             <div className="text-right text-blue-500">{formatPct(finalAllocation.bonds)}</div>
             <div className="text-right text-green-600">{formatPct(finalAllocation.cash)}</div>
           </div>
@@ -590,7 +591,7 @@ function AllocationBreakdownCard({
 
         {/* Rationale */}
         {marketAdjustment && (
-          <div className="mt-4 p-3 bg-muted/50 rounded-lg text-sm text-muted-foreground">
+          <div className="mt-4 p-3 bg-muted/50 rounded-lg text-sm text-slate-500">
             <p><strong>Rationale:</strong> {marketAdjustment.reason}</p>
           </div>
         )}
@@ -616,7 +617,7 @@ function StockBreakdownCard({
     <Card>
       <CardHeader className="pb-2">
         <CardTitle className="text-base flex items-center gap-2">
-          <TrendingUp className="h-4 w-4 text-primary" />
+          <TrendingUp className="h-4 w-4 text-emerald-600" />
           Stock Allocation Breakdown
         </CardTitle>
         <CardDescription>
@@ -634,21 +635,21 @@ function StockBreakdownCard({
             <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
               <div>
                 <div className="font-medium">Total US Stock Market</div>
-                <div className="text-xs text-muted-foreground">VTI</div>
+                <div className="text-xs text-slate-500">VTI</div>
               </div>
               <div className="text-right">
                 <div className="font-medium">{(breakdown.coreHoldings.usTotalMarket.allocation * 100).toFixed(0)}%</div>
-                <div className="text-xs text-muted-foreground">{formatCurrency(breakdown.coreHoldings.usTotalMarket.amount)}</div>
+                <div className="text-xs text-slate-500">{formatCurrency(breakdown.coreHoldings.usTotalMarket.amount)}</div>
               </div>
             </div>
             <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
               <div>
                 <div className="font-medium">Total Intl Stock Market</div>
-                <div className="text-xs text-muted-foreground">VXUS</div>
+                <div className="text-xs text-slate-500">VXUS</div>
               </div>
               <div className="text-right">
                 <div className="font-medium">{(breakdown.coreHoldings.intlTotalMarket.allocation * 100).toFixed(0)}%</div>
-                <div className="text-xs text-muted-foreground">{formatCurrency(breakdown.coreHoldings.intlTotalMarket.amount)}</div>
+                <div className="text-xs text-slate-500">{formatCurrency(breakdown.coreHoldings.intlTotalMarket.amount)}</div>
               </div>
             </div>
           </div>
@@ -666,19 +667,19 @@ function StockBreakdownCard({
                 <div className="flex items-start gap-3">
                   <div className={cn(
                     "mt-1 flex-shrink-0",
-                    tilt.status === "recommended" ? "text-green-600" : tilt.status === "reduced" ? "text-yellow-500" : "text-muted-foreground"
+                    tilt.status === "recommended" ? "text-green-600" : tilt.status === "reduced" ? "text-yellow-500" : "text-slate-500"
                   )}>
                     {tilt.status === "recommended" ? <Check className="h-4 w-4" /> : tilt.status === "reduced" ? <Minus className="h-4 w-4" /> : <div className="h-4 w-4" />}
                   </div>
                   <div>
                     <div className="font-medium">{tilt.name}</div>
-                    <div className="text-xs text-muted-foreground">{tilt.ticker}</div>
-                    <div className="text-xs text-muted-foreground mt-1">{tilt.reason}</div>
+                    <div className="text-xs text-slate-500">{tilt.ticker}</div>
+                    <div className="text-xs text-slate-500 mt-1">{tilt.reason}</div>
                   </div>
                 </div>
                 <div className="text-right flex-shrink-0">
                   <div className="font-medium">{(tilt.allocation * 100).toFixed(0)}%</div>
-                  <div className="text-xs text-muted-foreground">{formatCurrency(tilt.dollarAmount)}</div>
+                  <div className="text-xs text-slate-500">{formatCurrency(tilt.dollarAmount)}</div>
                 </div>
               </div>
             ))}
@@ -688,7 +689,7 @@ function StockBreakdownCard({
         {/* Comparison Note */}
         <div className="p-3 bg-blue-500/10 rounded-lg text-sm">
           <div className="font-medium text-blue-500 mb-1">Compared to 100% VTI:</div>
-          <ul className="text-muted-foreground space-y-1">
+          <ul className="text-slate-500 space-y-1">
             <li>• Expected return: Similar (factor premiums offset expensive market)</li>
             <li>• Expected volatility: Lower due to value tilt</li>
             <li>• Downside protection: Better in market corrections</li>
@@ -779,7 +780,7 @@ function TaxLocationStrategyCard({
     <Card>
       <CardHeader>
         <CardTitle className="text-lg flex items-center gap-2">
-          <Landmark className="h-5 w-5 text-primary" />
+          <Landmark className="h-5 w-5 text-emerald-600" />
           Tax Location Strategy
         </CardTitle>
         <CardDescription>
@@ -795,7 +796,7 @@ function TaxLocationStrategyCard({
               <span className="font-medium">Tax-Advantaged</span>
             </div>
             <div className="text-2xl font-bold text-violet-500">{formatCurrency(taxAdvantaged)}</div>
-            <p className="text-xs text-muted-foreground mt-1">401(k), IRA, HSA, Roth</p>
+            <p className="text-xs text-slate-500 mt-1">401(k), IRA, HSA, Roth</p>
           </div>
           <div className="p-4 rounded-lg bg-cyan-500/10 border border-cyan-500/20">
             <div className="flex items-center gap-2 mb-2">
@@ -803,7 +804,7 @@ function TaxLocationStrategyCard({
               <span className="font-medium">Taxable Brokerage</span>
             </div>
             <div className="text-2xl font-bold text-cyan-500">{formatCurrency(taxable)}</div>
-            <p className="text-xs text-muted-foreground mt-1">Regular brokerage account</p>
+            <p className="text-xs text-slate-500 mt-1">Regular brokerage account</p>
           </div>
         </div>
 
@@ -811,12 +812,12 @@ function TaxLocationStrategyCard({
         {annualTaxSavings > 100 && (
           <div className="p-4 rounded-lg bg-primary/10 border border-primary/20">
             <div className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 text-primary mt-0.5" />
+              <CheckCircle2 className="h-5 w-5 text-emerald-600 mt-0.5" />
               <div>
-                <p className="font-medium text-primary">
+                <p className="font-medium text-emerald-600">
                   Estimated Annual Tax Savings: {formatCurrency(annualTaxSavings)}
                 </p>
-                <p className="text-sm text-muted-foreground mt-1">
+                <p className="text-sm text-slate-500 mt-1">
                   By holding tax-inefficient assets in tax-advantaged accounts, you avoid paying
                   ordinary income tax rates on bond interest and REIT dividends.
                 </p>
@@ -856,7 +857,7 @@ function TaxLocationStrategyCard({
                       {item.taxEfficiency}
                     </span>
                   </TableCell>
-                  <TableCell className="text-sm text-muted-foreground">{item.taxRate}</TableCell>
+                  <TableCell className="text-sm text-slate-500">{item.taxRate}</TableCell>
                   <TableCell>
                     <span className={cn(
                       "px-2 py-1 rounded-full text-xs font-medium",
@@ -877,13 +878,13 @@ function TaxLocationStrategyCard({
         {/* Recommendations */}
         <div className="space-y-3">
           <h4 className="font-medium flex items-center gap-2">
-            <Info className="h-4 w-4 text-muted-foreground" />
+            <Info className="h-4 w-4 text-slate-500" />
             Tax Location Rules
           </h4>
           <div className="grid gap-3 md:grid-cols-2">
             <div className="p-3 rounded-lg bg-violet-500/5 border border-violet-500/10">
               <p className="font-medium text-violet-500 text-sm mb-2">Hold in Tax-Advantaged (401k, IRA):</p>
-              <ul className="text-xs text-muted-foreground space-y-1">
+              <ul className="text-xs text-slate-500 space-y-1">
                 <li>• Bonds (taxable interest)</li>
                 <li>• REITs (non-qualified dividends)</li>
                 <li>• High-turnover funds</li>
@@ -892,7 +893,7 @@ function TaxLocationStrategyCard({
             </div>
             <div className="p-3 rounded-lg bg-cyan-500/5 border border-cyan-500/10">
               <p className="font-medium text-cyan-500 text-sm mb-2">Hold in Taxable Brokerage:</p>
-              <ul className="text-xs text-muted-foreground space-y-1">
+              <ul className="text-xs text-slate-500 space-y-1">
                 <li>• International stocks (foreign tax credit)</li>
                 <li>• US stock index funds (tax efficient)</li>
                 <li>• Tax-managed funds</li>
@@ -905,7 +906,7 @@ function TaxLocationStrategyCard({
         {/* Special Note for Roth */}
         <div className="p-3 rounded-lg bg-amber-500/5 border border-amber-500/10 text-sm">
           <p className="font-medium text-amber-500 mb-1">Roth IRA Exception</p>
-          <p className="text-muted-foreground">
+          <p className="text-slate-500">
             Consider holding highest-growth assets (stocks) in Roth accounts since all growth is tax-free.
             This is especially valuable for long time horizons where compounding maximizes the tax benefit.
           </p>
@@ -930,6 +931,12 @@ export default function PortfolioOptimizerPage() {
   const [savedOptimization, setSavedOptimization] = useState<PortfolioOptimization | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [activeScenario, setActiveScenario] = useState<Scenario | null>(null);
+
+  // Landing page 21 design - ensuring consistency
+  const cardClass = "bg-white border-slate-200 shadow-sm";
+  const headerClass = "text-slate-900 font-medium";
+  const mutedTextClass = "text-slate-500";
+  const primaryBtnClass = "bg-emerald-600 hover:bg-emerald-700 text-white";
 
   const fetchData = useCallback(async () => {
     try {
@@ -1075,12 +1082,14 @@ export default function PortfolioOptimizerPage() {
 
   if (loading) {
     return (
-      <div className="space-y-6">
-        <Skeleton className="h-8 w-64" />
-        <Skeleton className="h-4 w-96" />
-        <div className="grid gap-6 md:grid-cols-2">
-          <Skeleton className="h-[400px]" />
-          <Skeleton className="h-[400px]" />
+      <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
+        <div className="max-w-7xl mx-auto space-y-6">
+          <Skeleton className="h-8 w-64" />
+          <Skeleton className="h-4 w-96" />
+          <div className="grid gap-6 md:grid-cols-2">
+            <Skeleton className="h-[400px]" />
+            <Skeleton className="h-[400px]" />
+          </div>
         </div>
       </div>
     );
@@ -1089,10 +1098,11 @@ export default function PortfolioOptimizerPage() {
   // Show questionnaire if needed
   if (showQuestionnaire || (!riskProfile && !optimization)) {
     return (
-      <div className="space-y-6">
+      <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
+        <div className="max-w-7xl mx-auto space-y-6">
         <div>
-          <h1 className="text-3xl font-bold">Portfolio Optimizer</h1>
-          <p className="text-base text-muted-foreground mt-1">
+          <h1 className="text-2xl sm:text-3xl font-medium text-slate-900">Portfolio Optimizer</h1>
+          <p className="text-sm sm:text-base text-slate-500 mt-1">
             Let&apos;s determine your risk profile to provide personalized recommendations
           </p>
         </div>
@@ -1103,12 +1113,13 @@ export default function PortfolioOptimizerPage() {
             onComplete={handleQuestionnaireComplete}
           />
         ) : (
-          <Card>
+          <Card className="bg-white border-slate-200 shadow-sm">
             <CardContent className="py-8 text-center">
-              <p className="text-muted-foreground">Loading questionnaire...</p>
+              <p className="text-slate-500">Loading questionnaire...</p>
             </CardContent>
           </Card>
         )}
+        </div>
       </div>
     );
   }
@@ -1135,17 +1146,18 @@ export default function PortfolioOptimizerPage() {
       case "aggressive":
         return "text-red-500 bg-red-500/10";
       default:
-        return "text-muted-foreground bg-muted";
+        return "text-slate-500 bg-muted";
     }
   };
 
   return (
-    <div className="space-y-6">
+    <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Portfolio Optimizer</h1>
-          <p className="text-base text-muted-foreground mt-1">
+          <h1 className="text-2xl sm:text-3xl font-medium text-slate-900">Portfolio Optimizer</h1>
+          <p className="text-sm sm:text-base text-slate-500 mt-1">
             AI-powered portfolio recommendations based on Modern Portfolio Theory
           </p>
         </div>
@@ -1153,13 +1165,14 @@ export default function PortfolioOptimizerPage() {
           <Button
             variant="outline"
             onClick={() => setShowQuestionnaire(true)}
+            className="border-slate-200 text-slate-700 hover:bg-slate-100"
           >
             Retake Assessment
           </Button>
           <Button
             onClick={() => runOptimization()}
             disabled={optimizing}
-            className="bg-primary hover:bg-primary/90"
+            className="bg-emerald-600 hover:bg-emerald-700 text-white"
           >
             {optimizing ? (
               <>
@@ -1178,14 +1191,14 @@ export default function PortfolioOptimizerPage() {
 
       {/* Error Message */}
       {error && (
-        <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500">
+        <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-500">
           {error}
         </div>
       )}
 
       {/* Risk Profile Card */}
       {riskProfile && (
-        <Card>
+        <Card className="bg-white border-slate-200 shadow-sm">
           <CardContent className="py-4">
             <div className="flex flex-wrap items-center gap-6">
               <div className="flex items-center gap-3">
@@ -1193,16 +1206,16 @@ export default function PortfolioOptimizerPage() {
                   {getRiskIcon()}
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Risk Profile</p>
+                  <p className="text-sm text-slate-500">Risk Profile</p>
                   <p className="font-semibold capitalize">{riskProfile.tolerance}</p>
                 </div>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Risk Score</p>
+                <p className="text-sm text-slate-500">Risk Score</p>
                 <p className="font-semibold">{riskProfile.score}/100</p>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Time Horizon</p>
+                <p className="text-sm text-slate-500">Time Horizon</p>
                 <p className="font-semibold">{riskProfile.timeHorizon} years</p>
               </div>
             </div>
@@ -1212,29 +1225,29 @@ export default function PortfolioOptimizerPage() {
 
       {/* Withdrawal Context from Active Scenario */}
       {activeScenario && activeScenario.annual_withdrawal_requirement > 0 && (
-        <Card className="border-primary/20 bg-primary/5">
+        <Card className="border-emerald-200 bg-emerald-50/50">
           <CardHeader className="pb-2">
             <CardTitle className="text-base flex items-center gap-2">
-              <TrendingDown className="h-4 w-4 text-primary" />
+              <TrendingDown className="h-4 w-4 text-emerald-600" />
               Withdrawal Context: {activeScenario.name}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid gap-4 md:grid-cols-3">
               <div>
-                <p className="text-sm text-muted-foreground">Annual Withdrawal Need</p>
-                <p className="text-2xl font-bold text-primary">
+                <p className="text-sm text-slate-500">Annual Withdrawal Need</p>
+                <p className="text-2xl font-bold text-emerald-600">
                   {formatCurrency(activeScenario.annual_withdrawal_requirement)}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Required Portfolio</p>
+                <p className="text-sm text-slate-500">Required Portfolio</p>
                 <p className="text-lg font-semibold">
                   {formatCurrency(activeScenario.required_net_worth)}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Location</p>
+                <p className="text-sm text-slate-500">Location</p>
                 <p className="text-lg font-semibold">
                   {activeScenario.location_city_name}
                 </p>
@@ -1242,8 +1255,8 @@ export default function PortfolioOptimizerPage() {
             </div>
             <div className="mt-4 p-3 bg-background/50 rounded-lg">
               <div className="flex items-start gap-2">
-                <Info className="h-4 w-4 mt-0.5 flex-shrink-0 text-muted-foreground" />
-                <p className="text-sm text-muted-foreground">
+                <Info className="h-4 w-4 mt-0.5 flex-shrink-0 text-slate-500" />
+                <p className="text-sm text-slate-500">
                   <strong className="text-foreground">Lower withdrawal needs reduce sequence-of-returns risk.</strong>{" "}
                   A smaller annual withdrawal ({formatPercent(activeScenario.withdrawal_rate)}) means your portfolio
                   can better withstand market downturns in early retirement. This may allow you to either
@@ -1273,10 +1286,10 @@ export default function PortfolioOptimizerPage() {
           </div>
 
           {/* Allocation Comparison - Full Width */}
-          <Card>
-            <CardHeader className="bg-gradient-to-r from-primary/5 to-blue-500/5 border-b">
+          <Card className="bg-white border-slate-200 shadow-sm">
+            <CardHeader className="bg-gradient-to-r from-emerald-50 to-blue-50 border-b border-slate-200">
               <CardTitle className="flex items-center gap-2">
-                <Target className="h-5 w-5 text-primary" />
+                <Target className="h-5 w-5 text-emerald-600" />
                 Current vs Recommended Allocation
               </CardTitle>
               <CardDescription>
@@ -1304,38 +1317,38 @@ export default function PortfolioOptimizerPage() {
           </Card>
 
           {/* Key Metrics */}
-          <Card>
+          <Card className="bg-white border-slate-200 shadow-sm">
               <CardHeader>
-                <CardTitle>Expected Performance</CardTitle>
+                <CardTitle className="font-medium text-slate-900">Expected Performance</CardTitle>
                 <CardDescription>
                   Based on historical market data and Modern Portfolio Theory
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid grid-cols-3 gap-4">
-                  <div className="text-center p-4 bg-green-500/10 rounded-lg">
-                    <p className="text-2xl font-bold text-green-600">
+                  <div className="text-center p-4 bg-emerald-50 rounded-lg">
+                    <p className="text-2xl font-bold text-emerald-600">
                       {optimization.expected_return}%
                     </p>
-                    <p className="text-sm text-muted-foreground">Expected Return</p>
+                    <p className="text-sm text-slate-500">Expected Return</p>
                   </div>
-                  <div className="text-center p-4 bg-yellow-500/10 rounded-lg">
-                    <p className="text-2xl font-bold text-yellow-500">
+                  <div className="text-center p-4 bg-amber-50 rounded-lg">
+                    <p className="text-2xl font-bold text-amber-600">
                       {optimization.expected_volatility}%
                     </p>
-                    <p className="text-sm text-muted-foreground">Volatility</p>
+                    <p className="text-sm text-slate-500">Volatility</p>
                   </div>
-                  <div className="text-center p-4 bg-blue-500/10 rounded-lg">
-                    <p className="text-2xl font-bold text-blue-500">
+                  <div className="text-center p-4 bg-blue-50 rounded-lg">
+                    <p className="text-2xl font-bold text-blue-600">
                       {optimization.sharpe_ratio}
                     </p>
-                    <p className="text-sm text-muted-foreground">Sharpe Ratio</p>
+                    <p className="text-sm text-slate-500">Sharpe Ratio</p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-2 p-3 bg-muted/50 rounded-lg text-sm">
-                  <Info className="h-4 w-4 mt-0.5 flex-shrink-0 text-muted-foreground" />
-                  <span className="text-muted-foreground">
+                <div className="flex items-start gap-2 p-3 bg-slate-50 rounded-lg text-sm border border-slate-200">
+                  <Info className="h-4 w-4 mt-0.5 flex-shrink-0 text-slate-400" />
+                  <span className="text-slate-600">
                     The Sharpe Ratio measures risk-adjusted return. Higher is better.
                     A ratio above 1.0 is considered good, above 2.0 is excellent.
                   </span>
@@ -1344,9 +1357,9 @@ export default function PortfolioOptimizerPage() {
             </Card>
 
           {/* Rebalancing Actions */}
-          <Card>
+          <Card className="bg-white border-slate-200 shadow-sm">
             <CardHeader>
-              <CardTitle>Rebalancing Actions</CardTitle>
+              <CardTitle className="font-medium text-slate-900">Rebalancing Actions</CardTitle>
               <CardDescription>
                 Specific trades to align your portfolio with the recommended allocation
               </CardDescription>
@@ -1393,9 +1406,9 @@ export default function PortfolioOptimizerPage() {
           )}
 
           {/* Allocation Difference Chart */}
-          <Card>
+          <Card className="bg-white border-slate-200 shadow-sm">
             <CardHeader>
-              <CardTitle>Allocation Difference</CardTitle>
+              <CardTitle className="font-medium text-slate-900">Allocation Difference</CardTitle>
               <CardDescription>
                 How much you need to adjust each asset class
               </CardDescription>
@@ -1433,12 +1446,12 @@ export default function PortfolioOptimizerPage() {
           </Card>
 
           {/* Disclaimer */}
-          <Card className="border-yellow-500/20 bg-yellow-500/5">
+          <Card className="border-amber-200 bg-amber-50/50">
             <CardContent className="py-4">
               <div className="flex items-start gap-3">
-                <AlertTriangle className="h-5 w-5 text-yellow-500 flex-shrink-0 mt-0.5" />
-                <div className="text-sm text-muted-foreground">
-                  <p className="font-medium text-foreground mb-1">Disclaimer</p>
+                <AlertTriangle className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
+                <div className="text-sm text-slate-600">
+                  <p className="font-medium text-slate-900 mb-1">Disclaimer</p>
                   <p>
                     This tool provides suggestions based on historical market data and
                     Modern Portfolio Theory. Past performance does not guarantee future
@@ -1451,6 +1464,7 @@ export default function PortfolioOptimizerPage() {
           </Card>
         </>
       )}
+      </div>
     </div>
   );
 }

@@ -133,7 +133,7 @@ function getFIEfficiencyColor(label: FIEfficiencyLabel): string {
   switch (label) {
     case "Excellent": return "text-green-600";
     case "Good": return "text-blue-600";
-    case "Neutral": return "text-muted-foreground";
+    case "Neutral": return "text-slate-500";
     case "Poor": return "text-red-500";
   }
 }
@@ -507,11 +507,11 @@ export default function GeoArbitragePage() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
-            <Globe className="h-6 w-6 sm:h-7 sm:w-7 text-primary flex-shrink-0" />
+          <h1 className="text-2xl sm:text-3xl font-medium text-slate-900 flex items-center gap-2">
+            <Globe className="h-6 w-6 sm:h-7 sm:w-7 text-emerald-600 flex-shrink-0" />
             <span className="leading-tight">Geographic Arbitrage</span>
           </h1>
-          <p className="text-sm sm:text-base text-muted-foreground mt-1">Loading comparison data...</p>
+          <p className="text-sm sm:text-base text-slate-500 mt-1">Loading comparison data...</p>
         </div>
         <Skeleton className="h-[600px]" />
       </div>
@@ -522,31 +522,31 @@ export default function GeoArbitragePage() {
     <div className="space-y-6">
       {/* Header with Description */}
       <div>
-        <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
-          <Globe className="h-6 w-6 sm:h-7 sm:w-7 text-primary flex-shrink-0" />
+        <h1 className="text-2xl sm:text-3xl font-medium text-slate-900 flex items-center gap-2">
+          <Globe className="h-6 w-6 sm:h-7 sm:w-7 text-emerald-600 flex-shrink-0" />
           <span className="leading-tight">Geographic Arbitrage</span>
         </h1>
-        <p className="text-sm sm:text-base text-muted-foreground mt-1">
+        <p className="text-sm sm:text-base text-slate-500 mt-1">
           Compare cities to find where your money goes furthest. Geographic arbitrage means
           living in a lower cost-of-living area while earning income based on higher-cost markets.
         </p>
       </div>
 
       {/* How to Use This Dashboard */}
-      <Card className="border-primary/20 bg-primary/5">
+      <Card className="border-primary/20 bg-emerald-600/5">
         <CardContent className="pt-6">
           <div className="flex gap-3">
-            <HelpCircle className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+            <HelpCircle className="h-5 w-5 text-emerald-600 flex-shrink-0 mt-0.5" />
             <div className="space-y-2">
-              <h3 className="font-semibold text-primary">How to Use This Dashboard</h3>
-              <ol className="text-sm text-muted-foreground space-y-1 list-decimal list-inside">
+              <h3 className="font-semibold text-emerald-600">How to Use This Dashboard</h3>
+              <ol className="text-sm text-slate-500 space-y-1 list-decimal list-inside">
                 <li><strong>Set your baseline city</strong> - where you currently live or earn income from</li>
                 <li><strong>Choose a city to compare</strong> - select a potential relocation destination</li>
                 <li><strong>Enter your financials</strong> - gross income, current spending, and net worth</li>
                 <li><strong>Review the hero metrics</strong> - see how many years faster you could reach FI</li>
                 <li><strong>Explore the table</strong> - click any row to see detailed spending breakdowns</li>
               </ol>
-              <p className="text-sm text-muted-foreground mt-2">
+              <p className="text-sm text-slate-500 mt-2">
                 <strong>Key insight:</strong> A city with a lower cost of living lets you save more,
                 reducing both the years to FI and the total amount you need to retire.
               </p>
@@ -566,7 +566,7 @@ export default function GeoArbitragePage() {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger>
-                      <Info className="h-3.5 w-3.5 text-muted-foreground" />
+                      <Info className="h-3.5 w-3.5 text-slate-500" />
                     </TooltipTrigger>
                     <TooltipContent>
                       <p className="max-w-xs text-xs">
@@ -597,7 +597,7 @@ export default function GeoArbitragePage() {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger>
-                      <Info className="h-3.5 w-3.5 text-muted-foreground" />
+                      <Info className="h-3.5 w-3.5 text-slate-500" />
                     </TooltipTrigger>
                     <TooltipContent>
                       <p className="max-w-xs text-xs">
@@ -633,7 +633,7 @@ export default function GeoArbitragePage() {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger>
-                      <Info className="h-3.5 w-3.5 text-muted-foreground" />
+                      <Info className="h-3.5 w-3.5 text-slate-500" />
                     </TooltipTrigger>
                     <TooltipContent>
                       <p className="max-w-xs text-xs">
@@ -683,7 +683,7 @@ export default function GeoArbitragePage() {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger>
-                      <Info className="h-3.5 w-3.5 text-muted-foreground" />
+                      <Info className="h-3.5 w-3.5 text-slate-500" />
                     </TooltipTrigger>
                     <TooltipContent>
                       <p className="max-w-xs text-xs">
@@ -695,7 +695,7 @@ export default function GeoArbitragePage() {
                 </TooltipProvider>
               </label>
               <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
                 <input
                   type="number"
                   value={grossIncome}
@@ -712,7 +712,7 @@ export default function GeoArbitragePage() {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger>
-                      <Info className="h-3.5 w-3.5 text-muted-foreground" />
+                      <Info className="h-3.5 w-3.5 text-slate-500" />
                     </TooltipTrigger>
                     <TooltipContent>
                       <p className="max-w-xs text-xs">
@@ -724,7 +724,7 @@ export default function GeoArbitragePage() {
                 </TooltipProvider>
               </label>
               <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
                 <input
                   type="number"
                   value={baselineAnnualSpend}
@@ -741,7 +741,7 @@ export default function GeoArbitragePage() {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger>
-                      <Info className="h-3.5 w-3.5 text-muted-foreground" />
+                      <Info className="h-3.5 w-3.5 text-slate-500" />
                     </TooltipTrigger>
                     <TooltipContent>
                       <p className="max-w-xs text-xs">
@@ -753,7 +753,7 @@ export default function GeoArbitragePage() {
                 </TooltipProvider>
               </label>
               <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
                 <input
                   type="number"
                   value={currentNetWorth}
@@ -769,7 +769,7 @@ export default function GeoArbitragePage() {
       {/* Comparison Header */}
       {compareAnalysis && baselineAnalysis && (
         <div className="bg-muted/50 rounded-lg p-4">
-          <p className="text-center text-muted-foreground">
+          <p className="text-center text-slate-500">
             Comparing <span className="font-semibold text-foreground">{baselineCity?.city_name}</span> (your current city)
             to <span className="font-semibold text-foreground">{compareAnalysis.city.city_name}</span> (potential new city)
           </p>
@@ -792,7 +792,7 @@ export default function GeoArbitragePage() {
             <CardContent className="pt-4 sm:pt-6 px-3 sm:px-6">
               <div className="flex items-start justify-between">
                 <div className="min-w-0">
-                  <div className="text-xs sm:text-sm text-muted-foreground flex items-center gap-1">
+                  <div className="text-xs sm:text-sm text-slate-500 flex items-center gap-1">
                     <Clock className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                     <span className="truncate">Years to FI</span>
                   </div>
@@ -812,7 +812,7 @@ export default function GeoArbitragePage() {
                       "N/A"
                     )}
                   </div>
-                  <div className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                  <div className="text-xs text-slate-500 mt-1 line-clamp-2">
                     {compareAnalysis.deltaYears < 0
                       ? `Faster in ${compareAnalysis.city.city_name}`
                       : compareAnalysis.deltaYears > 0
@@ -833,7 +833,7 @@ export default function GeoArbitragePage() {
           {/* 2. Required Net Worth in Comparison City */}
           <Card>
             <CardContent className="pt-4 sm:pt-6 px-3 sm:px-6">
-              <div className="text-xs sm:text-sm text-muted-foreground flex items-center gap-1">
+              <div className="text-xs sm:text-sm text-slate-500 flex items-center gap-1">
                 <Target className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                 <span className="truncate">Required NW</span>
               </div>
@@ -846,7 +846,7 @@ export default function GeoArbitragePage() {
                 {compareAnalysis.deltaRequiredNW < 0 ? "−" : "+"}
                 {formatCurrencyCompact(Math.abs(compareAnalysis.deltaRequiredNW))}
               </div>
-              <div className="text-xs text-muted-foreground mt-1 truncate">
+              <div className="text-xs text-slate-500 mt-1 truncate">
                 In {compareAnalysis.city.city_name}
               </div>
             </CardContent>
@@ -855,7 +855,7 @@ export default function GeoArbitragePage() {
           {/* 3. Achievable Savings Rate in Comparison City */}
           <Card className={compareAnalysis.meetsSavingsTarget ? "border-green-500/50 bg-green-50/50" : ""}>
             <CardContent className="pt-4 sm:pt-6 px-3 sm:px-6">
-              <div className="text-xs sm:text-sm text-muted-foreground flex items-center gap-1">
+              <div className="text-xs sm:text-sm text-slate-500 flex items-center gap-1">
                 <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                 <span className="truncate">Savings Rate</span>
               </div>
@@ -871,7 +871,7 @@ export default function GeoArbitragePage() {
                   : "Negative"
                 }
               </div>
-              <div className="text-xs text-muted-foreground mt-1 line-clamp-2">
+              <div className="text-xs text-slate-500 mt-1 line-clamp-2">
                 {compareAnalysis.savingsRate < 0
                   ? "Exceeds income"
                   : compareAnalysis.meetsSavingsTarget
@@ -885,7 +885,7 @@ export default function GeoArbitragePage() {
           {/* 4. Housing Cost in Comparison City */}
           <Card>
             <CardContent className="pt-4 sm:pt-6 px-3 sm:px-6">
-              <div className="text-xs sm:text-sm text-muted-foreground flex items-center gap-1">
+              <div className="text-xs sm:text-sm text-slate-500 flex items-center gap-1">
                 <Home className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                 <span className="truncate">Housing</span>
               </div>
@@ -899,10 +899,10 @@ export default function GeoArbitragePage() {
                 {compareAnalysis.housingCostDelta <= 0 ? "" : "+"}
                 {formatPercent(compareAnalysis.housingCostDelta)}
               </div>
-              <div className="text-xs text-muted-foreground mt-1 truncate">
+              <div className="text-xs text-slate-500 mt-1 truncate">
                 vs {baselineCity?.city_name}
               </div>
-              <div className="text-xs text-muted-foreground">
+              <div className="text-xs text-slate-500">
                 {compareAnalysis.housingCostDelta < 0 ? "Lower" : "Higher"}
               </div>
             </CardContent>
@@ -911,7 +911,7 @@ export default function GeoArbitragePage() {
           {/* 5. FI Efficiency Ratio - With Explanation */}
           <Card className="col-span-2 sm:col-span-1">
             <CardContent className="pt-4 sm:pt-6 px-3 sm:px-6">
-              <div className="text-xs sm:text-sm text-muted-foreground flex items-center gap-1">
+              <div className="text-xs sm:text-sm text-slate-500 flex items-center gap-1">
                 <Zap className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
                 <span>FI Efficiency</span>
                 <TooltipProvider>
@@ -938,7 +938,7 @@ export default function GeoArbitragePage() {
               <div className={`text-xl sm:text-3xl font-bold mt-1 ${getFIEfficiencyColor(getFIEfficiencyLabel(compareAnalysis.fiEfficiencyRatio))}`}>
                 {getFIEfficiencyLabel(compareAnalysis.fiEfficiencyRatio)}
               </div>
-              <div className="text-xs text-muted-foreground mt-1">
+              <div className="text-xs text-slate-500 mt-1">
                 Ratio: {compareAnalysis.fiEfficiencyRatio.toFixed(2)}
               </div>
             </CardContent>
@@ -948,12 +948,12 @@ export default function GeoArbitragePage() {
 
       {/* Apply Location to My Plan CTA */}
       {compareAnalysis && compareAnalysis.city.city_id !== baselineCityId && compareAnalysis.canAchieveFI && (
-        <Card className="border-primary/30 bg-primary/5">
+        <Card className="border-primary/30 bg-emerald-600/5">
           <CardContent className="pt-6 pb-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div>
                 <h3 className="font-semibold text-lg">Ready to see the full picture?</h3>
-                <p className="text-sm text-muted-foreground mt-1">
+                <p className="text-sm text-slate-500 mt-1">
                   Create a detailed financial plan for {compareAnalysis.city.city_name} and see exactly
                   how your retirement timeline changes.
                 </p>
@@ -987,7 +987,7 @@ export default function GeoArbitragePage() {
                     <Icon className={`h-5 w-5 mt-0.5 flex-shrink-0 ${callout.color}`} />
                     <div>
                       <h4 className={`font-medium text-sm ${callout.color}`}>{callout.title}</h4>
-                      <p className="text-sm text-muted-foreground mt-1">{callout.description}</p>
+                      <p className="text-sm text-slate-500 mt-1">{callout.description}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -1001,22 +1001,22 @@ export default function GeoArbitragePage() {
       <div className="grid gap-3 sm:gap-4 grid-cols-2">
         <Card>
           <CardContent className="pt-6">
-            <div className="text-sm text-muted-foreground">Cities Analyzed</div>
+            <div className="text-sm text-slate-500">Cities Analyzed</div>
             <div className="text-2xl font-bold">{CITIES.length}</div>
-            <div className="text-xs text-muted-foreground mt-1">
+            <div className="text-xs text-slate-500 mt-1">
               Across all regions worldwide
             </div>
           </CardContent>
         </Card>
         <Card className="border-green-500/30">
           <CardContent className="pt-6">
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm text-slate-500">
               Cities That Meet {formatPercent(targetSavingsRate)} Savings Rate
             </div>
             <div className="text-2xl font-bold text-green-600">
               {citiesMeetingTarget.length}
             </div>
-            <div className="text-xs text-muted-foreground mt-1">
+            <div className="text-xs text-slate-500 mt-1">
               Where you can achieve your target savings
             </div>
           </CardContent>
@@ -1027,10 +1027,10 @@ export default function GeoArbitragePage() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <MapPin className="h-5 w-5 text-primary" />
+            <MapPin className="h-5 w-5 text-emerald-600" />
             All Cities Comparison
           </CardTitle>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-slate-500">
             Click column headers to sort. Click any row to expand and see detailed spending breakdown.
             Cities highlighted in green meet your target savings rate.
           </p>
@@ -1093,7 +1093,7 @@ export default function GeoArbitragePage() {
                         key={analysis.city.city_id}
                         className={`
                           cursor-pointer transition-colors
-                          ${isBaseline ? "bg-primary/10" : ""}
+                          ${isBaseline ? "bg-emerald-600/10" : ""}
                           ${isComparing && !isBaseline ? "bg-blue-50 border-l-2 border-l-blue-500" : ""}
                           ${!analysis.canAchieveFI ? "opacity-50" : ""}
                           ${analysis.meetsSavingsTarget && analysis.canAchieveFI && !isBaseline ? "bg-green-600/5" : ""}
@@ -1103,7 +1103,7 @@ export default function GeoArbitragePage() {
                       >
                         <TableCell className="font-medium sticky left-0 bg-background z-10">
                           <div className="flex items-center gap-1 sm:gap-2">
-                            {isBaseline && <MapPin className="h-4 w-4 text-primary flex-shrink-0" />}
+                            {isBaseline && <MapPin className="h-4 w-4 text-emerald-600 flex-shrink-0" />}
                             {analysis.meetsSavingsTarget && analysis.canAchieveFI && !isBaseline && (
                               <CheckCircle className="h-4 w-4 text-green-600 flex-shrink-0" />
                             )}
@@ -1112,7 +1112,7 @@ export default function GeoArbitragePage() {
                             )}
                             <div className="min-w-0">
                               <div className="text-xs sm:text-sm truncate">{analysis.city.city_name}</div>
-                              <div className="text-xs text-muted-foreground hidden sm:block">
+                              <div className="text-xs text-slate-500 hidden sm:block">
                                 {analysis.city.country}
                               </div>
                             </div>
@@ -1151,7 +1151,7 @@ export default function GeoArbitragePage() {
                           }`}
                         >
                           {isBaseline ? (
-                            <span className="text-muted-foreground">—</span>
+                            <span className="text-slate-500">—</span>
                           ) : analysis.canAchieveFI && isFinite(analysis.deltaYears) ? (
                             <div className="flex items-center justify-end gap-1">
                               {analysis.deltaYears < 0 ? (
@@ -1193,32 +1193,32 @@ export default function GeoArbitragePage() {
                                 {/* Spend Breakdown */}
                                 <div>
                                   <h4 className="font-medium mb-2">Spending Breakdown (Estimated)</h4>
-                                  <p className="text-xs text-muted-foreground mb-2">
+                                  <p className="text-xs text-slate-500 mb-2">
                                     Based on {formatCurrency(analysis.afterTaxSpend)}/year total
                                   </p>
                                   <div className="space-y-1 text-sm">
                                     <div className="flex justify-between">
-                                      <span className="text-muted-foreground">Housing ({(weights.housing * 100).toFixed(0)}%)</span>
+                                      <span className="text-slate-500">Housing ({(weights.housing * 100).toFixed(0)}%)</span>
                                       <span>{formatCurrency(analysis.afterTaxSpend * weights.housing)}</span>
                                     </div>
                                     <div className="flex justify-between">
-                                      <span className="text-muted-foreground">Food ({(weights.food * 100).toFixed(0)}%)</span>
+                                      <span className="text-slate-500">Food ({(weights.food * 100).toFixed(0)}%)</span>
                                       <span>{formatCurrency(analysis.afterTaxSpend * weights.food)}</span>
                                     </div>
                                     <div className="flex justify-between">
-                                      <span className="text-muted-foreground">Transport ({(weights.transport * 100).toFixed(0)}%)</span>
+                                      <span className="text-slate-500">Transport ({(weights.transport * 100).toFixed(0)}%)</span>
                                       <span>{formatCurrency(analysis.afterTaxSpend * weights.transport)}</span>
                                     </div>
                                     <div className="flex justify-between">
-                                      <span className="text-muted-foreground">Healthcare ({(weights.healthcare * 100).toFixed(0)}%)</span>
+                                      <span className="text-slate-500">Healthcare ({(weights.healthcare * 100).toFixed(0)}%)</span>
                                       <span>{formatCurrency(analysis.afterTaxSpend * weights.healthcare)}</span>
                                     </div>
                                     <div className="flex justify-between">
-                                      <span className="text-muted-foreground">Utilities ({(weights.utilities * 100).toFixed(0)}%)</span>
+                                      <span className="text-slate-500">Utilities ({(weights.utilities * 100).toFixed(0)}%)</span>
                                       <span>{formatCurrency(analysis.afterTaxSpend * weights.utilities)}</span>
                                     </div>
                                     <div className="flex justify-between">
-                                      <span className="text-muted-foreground">Lifestyle ({(weights.lifestyle * 100).toFixed(0)}%)</span>
+                                      <span className="text-slate-500">Lifestyle ({(weights.lifestyle * 100).toFixed(0)}%)</span>
                                       <span>{formatCurrency(analysis.afterTaxSpend * weights.lifestyle)}</span>
                                     </div>
                                   </div>
@@ -1229,27 +1229,27 @@ export default function GeoArbitragePage() {
                                   <h4 className="font-medium mb-2">Financial Independence</h4>
                                   <div className="space-y-1 text-sm">
                                     <div className="flex justify-between">
-                                      <span className="text-muted-foreground">Required Net Worth</span>
+                                      <span className="text-slate-500">Required Net Worth</span>
                                       <span className="font-medium">{formatCurrency(analysis.requiredNW)}</span>
                                     </div>
                                     <div className="flex justify-between">
-                                      <span className="text-muted-foreground">Your Net Worth</span>
+                                      <span className="text-slate-500">Your Net Worth</span>
                                       <span>{formatCurrency(currentNetWorth)}</span>
                                     </div>
                                     <div className="flex justify-between">
-                                      <span className="text-muted-foreground">Gap to FI</span>
+                                      <span className="text-slate-500">Gap to FI</span>
                                       <span className={analysis.requiredNW > currentNetWorth ? "text-amber-600" : "text-green-600"}>
                                         {formatCurrency(Math.max(0, analysis.requiredNW - currentNetWorth))}
                                       </span>
                                     </div>
                                     <div className="flex justify-between">
-                                      <span className="text-muted-foreground">Annual Savings</span>
+                                      <span className="text-slate-500">Annual Savings</span>
                                       <span className={analysis.canAchieveFI ? "text-green-600" : "text-red-500"}>
                                         {formatCurrency(analysis.annualSavings)}
                                       </span>
                                     </div>
                                     <div className="flex justify-between">
-                                      <span className="text-muted-foreground">FI Efficiency</span>
+                                      <span className="text-slate-500">FI Efficiency</span>
                                       <span className={getFIEfficiencyColor(getFIEfficiencyLabel(analysis.fiEfficiencyRatio))}>
                                         {getFIEfficiencyLabel(analysis.fiEfficiencyRatio)} ({analysis.fiEfficiencyRatio.toFixed(2)})
                                       </span>
@@ -1260,28 +1260,28 @@ export default function GeoArbitragePage() {
                                 {/* City Details */}
                                 <div>
                                   <h4 className="font-medium mb-2">City Cost Indices</h4>
-                                  <p className="text-xs text-muted-foreground mb-2">
+                                  <p className="text-xs text-slate-500 mb-2">
                                     NYC = 100 (higher = more expensive)
                                   </p>
                                   <div className="space-y-1 text-sm">
                                     <div className="flex justify-between">
-                                      <span className="text-muted-foreground">Housing</span>
+                                      <span className="text-slate-500">Housing</span>
                                       <span>{analysis.city.housing_index}</span>
                                     </div>
                                     <div className="flex justify-between">
-                                      <span className="text-muted-foreground">Food</span>
+                                      <span className="text-slate-500">Food</span>
                                       <span>{analysis.city.food_index}</span>
                                     </div>
                                     <div className="flex justify-between">
-                                      <span className="text-muted-foreground">Healthcare</span>
+                                      <span className="text-slate-500">Healthcare</span>
                                       <span>{analysis.city.healthcare_index}</span>
                                     </div>
                                     <div className="flex justify-between">
-                                      <span className="text-muted-foreground">Tax Burden</span>
+                                      <span className="text-slate-500">Tax Burden</span>
                                       <span>{analysis.city.tax_index}</span>
                                     </div>
                                     <div className="flex justify-between">
-                                      <span className="text-muted-foreground">Data Confidence</span>
+                                      <span className="text-slate-500">Data Confidence</span>
                                       <span className="capitalize">{analysis.city.confidence}</span>
                                     </div>
                                   </div>
@@ -1294,28 +1294,28 @@ export default function GeoArbitragePage() {
                                   <h4 className="font-medium mb-2">Compared to {baselineCity?.city_name}</h4>
                                   <div className="flex gap-6 text-sm flex-wrap">
                                     <div>
-                                      <span className="text-muted-foreground">Spending: </span>
+                                      <span className="text-slate-500">Spending: </span>
                                       <span className={analysis.afterTaxSpend < baselineAnalysis.afterTaxSpend ? "text-green-600" : "text-red-500"}>
                                         {analysis.afterTaxSpend < baselineAnalysis.afterTaxSpend ? "−" : "+"}
                                         {formatCurrency(Math.abs(analysis.afterTaxSpend - baselineAnalysis.afterTaxSpend))}/yr
                                       </span>
                                     </div>
                                     <div>
-                                      <span className="text-muted-foreground">Savings: </span>
+                                      <span className="text-slate-500">Savings: </span>
                                       <span className={analysis.annualSavings > baselineAnalysis.annualSavings ? "text-green-600" : "text-red-500"}>
                                         {analysis.annualSavings > baselineAnalysis.annualSavings ? "+" : "−"}
                                         {formatCurrency(Math.abs(analysis.annualSavings - baselineAnalysis.annualSavings))}/yr
                                       </span>
                                     </div>
                                     <div>
-                                      <span className="text-muted-foreground">Required NW: </span>
+                                      <span className="text-slate-500">Required NW: </span>
                                       <span className={analysis.requiredNW < baselineAnalysis.requiredNW ? "text-green-600" : "text-red-500"}>
                                         {analysis.requiredNW < baselineAnalysis.requiredNW ? "−" : "+"}
                                         {formatCurrency(Math.abs(analysis.requiredNW - baselineAnalysis.requiredNW))}
                                       </span>
                                     </div>
                                     <div>
-                                      <span className="text-muted-foreground">Housing: </span>
+                                      <span className="text-slate-500">Housing: </span>
                                       <span className={analysis.housingCostDelta < 0 ? "text-green-600" : "text-red-500"}>
                                         {analysis.housingCostDelta <= 0 ? "" : "+"}
                                         {formatPercent(analysis.housingCostDelta)}
@@ -1341,7 +1341,7 @@ export default function GeoArbitragePage() {
       <Card className="border-muted">
         <CardContent className="pt-6">
           <h4 className="font-medium mb-2">Understanding the Calculations</h4>
-          <div className="text-sm text-muted-foreground space-y-2">
+          <div className="text-sm text-slate-500 space-y-2">
             <p>
               <strong>Cost of Living (COL) Index:</strong> Weighted average of housing (35%), food (15%),
               transport (10%), healthcare (10%), utilities (10%), and lifestyle (20%). NYC = 100.

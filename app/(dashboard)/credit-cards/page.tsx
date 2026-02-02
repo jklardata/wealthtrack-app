@@ -237,7 +237,7 @@ function CardForm({ card, onSubmit, onClose, isSubmitting }: CardFormProps) {
         {formData.sub_requirement && formData.sub_requirement > 0 && (
           <div className="mt-3">
             <div className="flex justify-between text-sm mb-1">
-              <span className="text-muted-foreground">Progress</span>
+              <span className="text-slate-500">Progress</span>
               <span className={progress >= 100 ? "text-green-600" : ""}>
                 {formatCurrency(Number(formData.current_spend))} / {formatCurrency(formData.sub_requirement)}
               </span>
@@ -315,7 +315,7 @@ function CardForm({ card, onSubmit, onClose, isSubmitting }: CardFormProps) {
         </Button>
         <Button
           type="submit"
-          className="flex-1 bg-primary hover:bg-primary/90"
+          className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Saving..." : card ? "Update Card" : "Add Card"}
@@ -372,7 +372,7 @@ function CreditCardItem({
             <div>
               <CardTitle className="text-base">{card.card_name}</CardTitle>
               {card.last_four && (
-                <p className="text-xs text-muted-foreground">•••• {card.last_four}</p>
+                <p className="text-xs text-slate-500">•••• {card.last_four}</p>
               )}
             </div>
           </div>
@@ -420,7 +420,7 @@ function CreditCardItem({
         {card.sub_requirement && card.sub_requirement > 0 && (
           <div>
             <div className="flex justify-between text-sm mb-1">
-              <span className="text-muted-foreground">
+              <span className="text-slate-500">
                 {formatCurrency(card.current_spend)} / {formatCurrency(card.sub_requirement)}
               </span>
               <span className={cn(
@@ -440,7 +440,7 @@ function CreditCardItem({
               />
             </div>
             {!isComplete && remaining > 0 && (
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-xs text-slate-500 mt-1">
                 {formatCurrency(remaining)} left to spend
               </p>
             )}
@@ -453,7 +453,7 @@ function CreditCardItem({
             "flex items-center gap-2 text-sm p-2 rounded-lg",
             daysUntilDeadline <= 14 ? "bg-red-500/10 text-red-500" :
             daysUntilDeadline <= 30 ? "bg-yellow-500/10 text-yellow-500" :
-            "bg-muted text-muted-foreground"
+            "bg-muted text-slate-500"
           )}>
             {daysUntilDeadline <= 14 ? (
               <AlertCircle className="h-4 w-4" />
@@ -489,7 +489,7 @@ function CreditCardItem({
         )}
 
         {/* Footer Info */}
-        <div className="flex items-center justify-between text-xs text-muted-foreground pt-2 border-t">
+        <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t">
           {card.signup_date && (
             <span>Opened {formatDate(card.signup_date)}</span>
           )}
@@ -643,7 +643,7 @@ export default function CreditCardsPage() {
             <CreditCardIcon className="h-6 w-6 sm:h-7 sm:w-7 text-primary flex-shrink-0" />
             <span className="leading-tight">Credit Cards</span>
           </h1>
-          <p className="text-sm sm:text-base text-muted-foreground mt-1">Loading your cards...</p>
+          <p className="text-sm sm:text-base text-slate-500 mt-1">Loading your cards...</p>
         </div>
         <div className="grid gap-4 md:grid-cols-4">
           {[...Array(4)].map((_, i) => (
@@ -680,7 +680,8 @@ export default function CreditCardsPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto space-y-6">
       {/* Sync Message */}
       {syncMessage && (
         <div
@@ -709,11 +710,11 @@ export default function CreditCardsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
-            <CreditCardIcon className="h-6 w-6 sm:h-7 sm:w-7 text-primary flex-shrink-0" />
+          <h1 className="text-2xl sm:text-3xl font-medium text-slate-900 flex items-center gap-2">
+            <CreditCardIcon className="h-6 w-6 sm:h-7 sm:w-7 text-emerald-600 flex-shrink-0" />
             <span className="leading-tight">Credit Cards</span>
           </h1>
-          <p className="text-sm sm:text-base text-muted-foreground mt-1">
+          <p className="text-sm sm:text-base text-slate-500 mt-1">
             Track your cards and sign-up bonus progress
           </p>
         </div>
@@ -746,7 +747,7 @@ export default function CreditCardsPage() {
           }}
         >
           <DialogTrigger asChild>
-            <Button className="bg-primary hover:bg-primary/90">
+            <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
               <Plus className="h-4 w-4 mr-2" />
               Add Card
             </Button>
@@ -776,25 +777,25 @@ export default function CreditCardsPage() {
         <Card>
           <CardContent className="pt-6">
             <div className="text-2xl font-bold">{activeCards.length}</div>
-            <p className="text-sm text-muted-foreground">Active Cards</p>
+            <p className="text-sm text-slate-500">Active Cards</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="pt-6">
             <div className="text-2xl font-bold text-primary">{cardsInProgress.length}</div>
-            <p className="text-sm text-muted-foreground">SUBs In Progress</p>
+            <p className="text-sm text-slate-500">SUBs In Progress</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="pt-6">
             <div className="text-2xl font-bold text-green-600">{bonusesEarned}</div>
-            <p className="text-sm text-muted-foreground">Bonuses Earned</p>
+            <p className="text-sm text-slate-500">Bonuses Earned</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="pt-6">
             <div className="text-2xl font-bold">{formatCurrency(totalAnnualFees)}</div>
-            <p className="text-sm text-muted-foreground">Total Annual Fees</p>
+            <p className="text-sm text-slate-500">Total Annual Fees</p>
           </CardContent>
         </Card>
       </div>
@@ -803,8 +804,8 @@ export default function CreditCardsPage() {
       {cards.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
-            <CreditCardIcon className="h-12 w-12 text-muted-foreground mb-4" />
-            <p className="text-muted-foreground mb-4">
+            <CreditCardIcon className="h-12 w-12 text-slate-500 mb-4" />
+            <p className="text-slate-500 mb-4">
               No credit cards added yet. Add your first card to start tracking!
             </p>
             <Button
@@ -828,6 +829,8 @@ export default function CreditCardsPage() {
           ))}
         </div>
       )}
+    </div>
+      </div>
     </div>
   );
 }

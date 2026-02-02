@@ -261,35 +261,35 @@ function EntryForm({ entry, onSubmit, onClose, isSubmitting }: EntryFormProps) {
         />
       </div>
 
-      <div className="pt-4 border-t space-y-2">
+      <div className="pt-4 border-t border-slate-200 space-y-2">
         <div className="flex justify-between text-sm">
-          <span className="text-muted-foreground">Total Assets</span>
-          <span className="font-medium">{formatCurrency(totalAssets)}</span>
+          <span className="text-slate-500">Total Assets</span>
+          <span className="font-medium text-slate-900">{formatCurrency(totalAssets)}</span>
         </div>
         <div className="flex justify-between text-sm">
-          <span className="text-muted-foreground">Total Debts</span>
+          <span className="text-slate-500">Total Debts</span>
           <span className="font-medium text-red-500">
             -{formatCurrency(Number(formData.total_debts))}
           </span>
         </div>
-        <div className="flex justify-between text-lg font-bold pt-2 border-t">
-          <span>Net Worth</span>
-          <span className={netWorth >= 0 ? "text-green-500" : "text-red-500"}>
+        <div className="flex justify-between text-lg font-bold pt-2 border-t border-slate-200">
+          <span className="text-slate-900">Net Worth</span>
+          <span className={netWorth >= 0 ? "text-emerald-600" : "text-red-500"}>
             {formatCurrency(netWorth)}
           </span>
         </div>
         {(Number(formData.pre_tax_income) > 0 || Number(formData.monthly_expenses) > 0) && (
           <>
-            <div className="flex justify-between text-sm pt-2 border-t">
-              <span className="text-muted-foreground">Monthly Net Profit</span>
-              <span className={Number(formData.pre_tax_income) - Number(formData.monthly_expenses) >= 0 ? "text-green-500" : "text-red-500"}>
+            <div className="flex justify-between text-sm pt-2 border-t border-slate-200">
+              <span className="text-slate-500">Monthly Net Profit</span>
+              <span className={Number(formData.pre_tax_income) - Number(formData.monthly_expenses) >= 0 ? "text-emerald-600" : "text-red-500"}>
                 {formatCurrency(Number(formData.pre_tax_income) - Number(formData.monthly_expenses))}
               </span>
             </div>
             {Number(formData.pre_tax_income) > 0 && (
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Savings Rate</span>
-                <span className="font-medium">
+                <span className="text-slate-500">Savings Rate</span>
+                <span className="font-medium text-slate-900">
                   {(((Number(formData.pre_tax_income) - Number(formData.monthly_expenses)) / Number(formData.pre_tax_income)) * 100).toFixed(1)}%
                 </span>
               </div>
@@ -303,14 +303,14 @@ function EntryForm({ entry, onSubmit, onClose, isSubmitting }: EntryFormProps) {
           type="button"
           variant="outline"
           onClick={onClose}
-          className="flex-1"
+          className="flex-1 border-slate-200 text-slate-700 hover:bg-slate-100"
           disabled={isSubmitting}
         >
           Cancel
         </Button>
         <Button
           type="submit"
-          className="flex-1 bg-primary hover:bg-primary/90"
+          className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Saving..." : entry ? "Update Entry" : "Add Entry"}
@@ -334,6 +334,14 @@ export default function NetWorthPage() {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isBulkDeleting, setIsBulkDeleting] = useState(false);
   const [isRemoveAllDialogOpen, setIsRemoveAllDialogOpen] = useState(false);
+
+  // Landing page 21 design - already defined but ensuring consistency
+  const cardClass = "bg-white border-slate-200 shadow-sm";
+  const headerClass = "text-slate-900 font-medium";
+  const mutedTextClass = "text-slate-500";
+  const positiveClass = "text-emerald-600";
+  const negativeClass = "text-red-500";
+  const primaryBtnClass = "bg-emerald-600 hover:bg-emerald-700 text-white";
 
   const fetchEntries = useCallback(async () => {
     try {
@@ -643,38 +651,43 @@ export default function NetWorthPage() {
 
   if (loading) {
     return (
-      <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <Skeleton className="h-8 w-32" />
-          <div className="flex gap-2">
-            <Skeleton className="h-10 w-28" />
-            <Skeleton className="h-10 w-28" />
+      <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
+        <div className="max-w-7xl mx-auto space-y-6">
+          <div className="flex justify-between items-center">
+            <Skeleton className="h-8 w-32" />
+            <div className="flex gap-2">
+              <Skeleton className="h-10 w-28" />
+              <Skeleton className="h-10 w-28" />
+            </div>
           </div>
+          <Card className="bg-white border-slate-200 shadow-sm">
+            <CardContent className="p-6">
+              <Skeleton className="h-[400px] w-full" />
+            </CardContent>
+          </Card>
         </div>
-        <Card>
-          <CardContent className="p-6">
-            <Skeleton className="h-[400px] w-full" />
-          </CardContent>
-        </Card>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center h-[400px] text-center">
-        <p className="text-destructive mb-4">{error}</p>
-        <Button onClick={() => window.location.reload()}>Try Again</Button>
+      <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
+        <div className="max-w-7xl mx-auto flex flex-col items-center justify-center h-[400px] text-center">
+          <p className="text-red-500 mb-4">{error}</p>
+          <Button onClick={() => window.location.reload()} className="bg-emerald-600 hover:bg-emerald-700 text-white">Try Again</Button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Net Worth Timeline</h1>
-          <p className="text-base text-muted-foreground mt-1">
+          <h1 className="text-2xl sm:text-3xl font-medium text-slate-900">Net Worth Timeline</h1>
+          <p className="text-sm sm:text-base text-slate-500 mt-1">
             Track your net worth over time
           </p>
         </div>
@@ -683,22 +696,25 @@ export default function NetWorthPage() {
             variant="outline"
             onClick={handleSync}
             disabled={syncing}
+            className="border-slate-200 text-slate-700 hover:bg-slate-100"
           >
             <RefreshCw className={`h-4 w-4 mr-2 ${syncing ? "animate-spin" : ""}`} />
-            {syncing ? "Syncing..." : "Sync from Sheet"}
+            <span className="hidden sm:inline">{syncing ? "Syncing..." : "Sync from Sheet"}</span>
+            <span className="sm:hidden">Sync</span>
           </Button>
-          <Button variant="outline" onClick={handleExportCSV} disabled={entries.length === 0}>
+          <Button variant="outline" onClick={handleExportCSV} disabled={entries.length === 0} className="border-slate-200 text-slate-700 hover:bg-slate-100">
             <Download className="h-4 w-4 mr-2" />
-            Export CSV
+            <span className="hidden sm:inline">Export CSV</span>
+            <span className="sm:hidden">Export</span>
           </Button>
           <Button
             variant="outline"
             onClick={() => setIsRemoveAllDialogOpen(true)}
             disabled={entries.length === 0}
-            className="text-red-500 hover:text-red-600 hover:bg-red-50"
+            className="text-red-500 hover:text-red-600 hover:bg-red-50 border-slate-200"
           >
-            <Trash2 className="h-4 w-4 mr-2" />
-            Remove All
+            <Trash2 className="h-4 w-4 sm:mr-2" />
+            <span className="hidden sm:inline">Remove All</span>
           </Button>
           <Dialog
             open={isDialogOpen}
@@ -708,7 +724,7 @@ export default function NetWorthPage() {
             }}
           >
             <DialogTrigger asChild>
-              <Button className="bg-primary hover:bg-primary/90">
+              <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
                 <Plus className="h-4 w-4 mr-2" />
                 Add Entry
               </Button>
@@ -735,15 +751,16 @@ export default function NetWorthPage() {
 
       {/* Bulk Actions Bar */}
       {selectedIds.size > 0 && (
-        <div className="flex items-center justify-between p-3 rounded-lg bg-primary/10 border border-primary/20">
+        <div className="flex items-center justify-between p-3 rounded-lg bg-emerald-50 border border-emerald-200">
           <div className="flex items-center gap-3">
-            <span className="text-sm font-medium">
+            <span className="text-sm font-medium text-slate-700">
               {selectedIds.size} {selectedIds.size === 1 ? "entry" : "entries"} selected
             </span>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setSelectedIds(new Set())}
+              className="text-slate-600 hover:text-slate-900"
             >
               <X className="h-4 w-4 mr-1" />
               Clear
@@ -753,6 +770,7 @@ export default function NetWorthPage() {
             variant="destructive"
             size="sm"
             onClick={() => setIsDeleteDialogOpen(true)}
+            className="bg-red-500 hover:bg-red-600"
           >
             <Trash2 className="h-4 w-4 mr-2" />
             Delete Selected
@@ -837,14 +855,14 @@ export default function NetWorthPage() {
         <div
           className={`flex items-center justify-between p-3 rounded-lg ${
             syncMessage.type === "success"
-              ? "bg-green-500/10 text-green-500"
-              : "bg-red-500/10 text-red-500"
+              ? "bg-emerald-50 text-emerald-600 border border-emerald-200"
+              : "bg-red-50 text-red-500 border border-red-200"
           }`}
         >
           <span>{syncMessage.text}</span>
           {syncMessage.type === "error" && syncMessage.text.includes("No Google Sheet") && (
             <Link href="/settings">
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" className="text-slate-600 hover:text-slate-900">
                 <Settings className="h-4 w-4 mr-1" />
                 Configure
               </Button>
@@ -853,18 +871,18 @@ export default function NetWorthPage() {
         </div>
       )}
 
-      <Card>
+      <Card className="bg-white border-slate-200 shadow-sm">
         <CardHeader>
-          <CardTitle className="text-lg">All Entries</CardTitle>
+          <CardTitle className="text-lg font-medium text-slate-900">All Entries</CardTitle>
         </CardHeader>
         <CardContent>
           {entries.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-muted-foreground mb-4">
+              <p className="text-slate-500 mb-4">
                 No entries yet. Add your first net worth entry to get started.
               </p>
               <Button
-                className="bg-primary hover:bg-primary/90"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white"
                 onClick={() => setIsDialogOpen(true)}
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -960,7 +978,7 @@ export default function NetWorthPage() {
                       </TableCell>
                       <TableCell
                         className={`text-right font-bold ${
-                          entry.net_worth >= 0 ? "text-green-500" : "text-red-500"
+                          entry.net_worth >= 0 ? "text-emerald-600" : "text-red-500"
                         }`}
                       >
                         {formatCurrency(entry.net_worth)}
@@ -971,22 +989,22 @@ export default function NetWorthPage() {
                       <TableCell className="text-right">
                         {(entry.monthly_expenses || 0) > 0 ? formatCurrency(entry.monthly_expenses || 0) : "-"}
                       </TableCell>
-                      <TableCell className={`text-right ${metrics.monthlyNetProfit >= 0 ? "text-green-500" : "text-red-500"}`}>
+                      <TableCell className={`text-right ${metrics.monthlyNetProfit >= 0 ? "text-emerald-600" : "text-red-500"}`}>
                         {(entry.pre_tax_income || 0) > 0 || (entry.monthly_expenses || 0) > 0 ? formatCurrency(metrics.monthlyNetProfit) : "-"}
                       </TableCell>
-                      <TableCell className={`text-right ${metrics.savingsRate >= 0 ? "text-green-500" : "text-red-500"}`}>
+                      <TableCell className={`text-right ${metrics.savingsRate >= 0 ? "text-emerald-600" : "text-red-500"}`}>
                         {(entry.pre_tax_income || 0) > 0 ? metrics.savingsRate.toFixed(1) + "%" : "-"}
                       </TableCell>
-                      <TableCell className={`text-right ${metrics.netWorthGrowth >= 0 ? "text-green-500" : "text-red-500"}`}>
+                      <TableCell className={`text-right ${metrics.netWorthGrowth >= 0 ? "text-emerald-600" : "text-red-500"}`}>
                         {metrics.netWorthGrowth !== 0 ? (metrics.netWorthGrowth >= 0 ? "+" : "") + formatCurrency(metrics.netWorthGrowth) : "-"}
                       </TableCell>
-                      <TableCell className={`text-right ${metrics.netWorthGrowthPercent >= 0 ? "text-green-500" : "text-red-500"}`}>
+                      <TableCell className={`text-right ${metrics.netWorthGrowthPercent >= 0 ? "text-emerald-600" : "text-red-500"}`}>
                         {metrics.netWorthGrowthPercent !== 0 ? (metrics.netWorthGrowthPercent >= 0 ? "+" : "") + metrics.netWorthGrowthPercent.toFixed(1) + "%" : "-"}
                       </TableCell>
-                      <TableCell className={`text-right ${metrics.rolling1YearGrowth >= 0 ? "text-green-500" : "text-red-500"}`}>
+                      <TableCell className={`text-right ${metrics.rolling1YearGrowth >= 0 ? "text-emerald-600" : "text-red-500"}`}>
                         {metrics.rolling1YearGrowth !== 0 ? (metrics.rolling1YearGrowth >= 0 ? "+" : "") + formatCurrency(metrics.rolling1YearGrowth) : "-"}
                       </TableCell>
-                      <TableCell className={`text-right ${metrics.rolling1YearGrowthPercent >= 0 ? "text-green-500" : "text-red-500"}`}>
+                      <TableCell className={`text-right ${metrics.rolling1YearGrowthPercent >= 0 ? "text-emerald-600" : "text-red-500"}`}>
                         {metrics.rolling1YearGrowthPercent !== 0 ? (metrics.rolling1YearGrowthPercent >= 0 ? "+" : "") + metrics.rolling1YearGrowthPercent.toFixed(1) + "%" : "-"}
                       </TableCell>
                       <TableCell>
@@ -1020,6 +1038,7 @@ export default function NetWorthPage() {
           )}
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 }

@@ -88,7 +88,7 @@ function TrendIndicator({
 
   if (Math.abs(percentChange) < 0.01) {
     return (
-      <span className="inline-flex items-center text-muted-foreground text-sm">
+      <span className="inline-flex items-center text-slate-500 text-sm">
         <Minus className="h-3 w-3 mr-1" />
         No change
       </span>
@@ -229,8 +229,8 @@ function EmptyState() {
     <div className="flex items-center justify-center min-h-[60vh]">
       <Card className="max-w-md text-center">
         <CardHeader className="pb-4">
-          <div className="mx-auto mb-4 p-4 bg-primary/10 rounded-full w-fit">
-            <Upload className="h-8 w-8 text-primary" />
+          <div className="mx-auto mb-4 p-4 bg-emerald-600/10 rounded-full w-fit">
+            <Upload className="h-8 w-8 text-emerald-600" />
           </div>
           <CardTitle className="text-xl">
             Upload your tax data to unlock optimization insights
@@ -242,7 +242,7 @@ function EmptyState() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-slate-500">
             No SSNs. No addresses. No sensitive PII.
           </p>
           <Button onClick={() => router.push("/settings")} className="w-full">
@@ -286,7 +286,7 @@ function TaxHealthDashboard({
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <DollarSign className="h-5 w-5 text-primary" />
+          <DollarSign className="h-5 w-5 text-emerald-600" />
           Tax Health Dashboard
         </CardTitle>
         <CardDescription>
@@ -298,13 +298,13 @@ function TaxHealthDashboard({
           {/* Effective Tax Rate */}
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm text-slate-500">
                 Effective Tax Rate
               </span>
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>
-                    <Info className="h-3 w-3 text-muted-foreground" />
+                    <Info className="h-3 w-3 text-slate-500" />
                   </TooltipTrigger>
                   <TooltipContent>
                     <p>Total tax divided by total income</p>
@@ -325,13 +325,13 @@ function TaxHealthDashboard({
           {/* AGI vs Total Income */}
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm text-slate-500">
                 AGI vs Total Income
               </span>
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>
-                    <Info className="h-3 w-3 text-muted-foreground" />
+                    <Info className="h-3 w-3 text-slate-500" />
                   </TooltipTrigger>
                   <TooltipContent>
                     <p>Shows how much income was reduced by above-the-line deductions</p>
@@ -340,7 +340,7 @@ function TaxHealthDashboard({
               </TooltipProvider>
             </div>
             <p className="text-3xl font-bold">{formatPercent(agiVsIncome)}</p>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-slate-500">
               {formatCurrency(current.total_income - current.agi)} in adjustments
             </p>
           </div>
@@ -348,13 +348,13 @@ function TaxHealthDashboard({
           {/* Taxable vs AGI */}
           <div className="space-y-1">
             <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm text-slate-500">
                 Taxable Income vs AGI
               </span>
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>
-                    <Info className="h-3 w-3 text-muted-foreground" />
+                    <Info className="h-3 w-3 text-slate-500" />
                   </TooltipTrigger>
                   <TooltipContent>
                     <p>Shows impact of deductions on reducing taxable income</p>
@@ -363,14 +363,14 @@ function TaxHealthDashboard({
               </TooltipProvider>
             </div>
             <p className="text-3xl font-bold">{formatPercent(taxableVsAGI)}</p>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-slate-500">
               {current.deduction_type === "itemized" ? "Itemized" : "Standard"} deduction
             </p>
           </div>
 
           {/* Refund or Amount Owed */}
           <div className="space-y-1">
-            <span className="text-sm text-muted-foreground">
+            <span className="text-sm text-slate-500">
               {refundOrOwed.type === "refund" ? "Refund" : "Amount Owed"}
             </span>
             <p
@@ -399,7 +399,7 @@ function TaxHealthDashboard({
             <h4 className="text-sm font-medium mb-3">Year-over-Year Comparison</h4>
             <div className="grid gap-4 md:grid-cols-3">
               <div className="flex justify-between items-center p-3 bg-muted/50 rounded-lg">
-                <span className="text-sm text-muted-foreground">Total Tax</span>
+                <span className="text-sm text-slate-500">Total Tax</span>
                 <div className="text-right">
                   <p className="font-medium">{formatCurrency(current.total_tax)}</p>
                   <TrendIndicator
@@ -410,7 +410,7 @@ function TaxHealthDashboard({
                 </div>
               </div>
               <div className="flex justify-between items-center p-3 bg-muted/50 rounded-lg">
-                <span className="text-sm text-muted-foreground">Total Income</span>
+                <span className="text-sm text-slate-500">Total Income</span>
                 <div className="text-right">
                   <p className="font-medium">{formatCurrency(current.total_income)}</p>
                   <TrendIndicator
@@ -420,7 +420,7 @@ function TaxHealthDashboard({
                 </div>
               </div>
               <div className="flex justify-between items-center p-3 bg-muted/50 rounded-lg">
-                <span className="text-sm text-muted-foreground">AGI</span>
+                <span className="text-sm text-slate-500">AGI</span>
                 <div className="text-right">
                   <p className="font-medium">{formatCurrency(current.agi)}</p>
                   <TrendIndicator
@@ -473,7 +473,7 @@ function DeductionEfficiencyAnalyzer({
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Percent className="h-5 w-5 text-primary" />
+          <Percent className="h-5 w-5 text-emerald-600" />
           Deduction Efficiency Analyzer
         </CardTitle>
         <CardDescription>
@@ -490,7 +490,7 @@ function DeductionEfficiencyAnalyzer({
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger>
-                      <Info className="h-3 w-3 text-muted-foreground" />
+                      <Info className="h-3 w-3 text-slate-500" />
                     </TooltipTrigger>
                     <TooltipContent className="max-w-xs">
                       <p>
@@ -507,7 +507,7 @@ function DeductionEfficiencyAnalyzer({
             </div>
             <div className="relative h-3 bg-muted rounded-full overflow-hidden">
               <div
-                className="absolute h-full bg-primary rounded-full transition-all"
+                className="absolute h-full bg-emerald-600 rounded-full transition-all"
                 style={{ width: `${Math.min(businessExpenseRatio * 100, 100)}%` }}
               />
               {/* Benchmark markers */}
@@ -520,7 +520,7 @@ function DeductionEfficiencyAnalyzer({
                 style={{ left: "40%" }}
               />
             </div>
-            <div className="flex justify-between text-xs text-muted-foreground">
+            <div className="flex justify-between text-xs text-slate-500">
               <span>0%</span>
               <span>20% (Low)</span>
               <span>40% (Typical)</span>
@@ -537,7 +537,7 @@ function DeductionEfficiencyAnalyzer({
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>
-                    <Info className="h-3 w-3 text-muted-foreground" />
+                    <Info className="h-3 w-3 text-slate-500" />
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
                     <p>
@@ -554,7 +554,7 @@ function DeductionEfficiencyAnalyzer({
           </div>
           <div className="relative h-3 bg-muted rounded-full overflow-hidden">
             <div
-              className="absolute h-full bg-primary rounded-full transition-all"
+              className="absolute h-full bg-emerald-600 rounded-full transition-all"
               style={{ width: `${Math.min(agiReductionPercent * 100 * 3, 100)}%` }}
             />
             <div
@@ -566,13 +566,13 @@ function DeductionEfficiencyAnalyzer({
               style={{ left: "45%" }}
             />
           </div>
-          <div className="flex justify-between text-xs text-muted-foreground">
+          <div className="flex justify-between text-xs text-slate-500">
             <span>0%</span>
             <span>5% (Low)</span>
             <span>15% (Typical)</span>
             <span>30%+</span>
           </div>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-slate-500">
             Your adjustments: {formatCurrency(taxReturn.adjustments)} ({formatPercent(agiReductionPercent)})
           </p>
         </div>
@@ -586,7 +586,7 @@ function DeductionEfficiencyAnalyzer({
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger>
-                      <Info className="h-3 w-3 text-muted-foreground" />
+                      <Info className="h-3 w-3 text-slate-500" />
                     </TooltipTrigger>
                     <TooltipContent className="max-w-xs">
                       <p>
@@ -603,7 +603,7 @@ function DeductionEfficiencyAnalyzer({
             </div>
             <div className="relative h-3 bg-muted rounded-full overflow-hidden">
               <div
-                className="absolute h-full bg-primary rounded-full transition-all"
+                className="absolute h-full bg-emerald-600 rounded-full transition-all"
                 style={{ width: `${Math.min(netProfitMargin * 100, 100)}%` }}
               />
               <div
@@ -615,7 +615,7 @@ function DeductionEfficiencyAnalyzer({
                 style={{ left: "70%" }}
               />
             </div>
-            <div className="flex justify-between text-xs text-muted-foreground">
+            <div className="flex justify-between text-xs text-slate-500">
               <span>0%</span>
               <span>40% (Low)</span>
               <span>70% (Typical)</span>
@@ -629,16 +629,16 @@ function DeductionEfficiencyAnalyzer({
           <h4 className="text-sm font-medium mb-2">Deduction Summary</h4>
           <div className="grid gap-2 text-sm">
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Deduction Type</span>
+              <span className="text-slate-500">Deduction Type</span>
               <span className="font-medium capitalize">{taxReturn.deduction_type}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Deduction Amount</span>
+              <span className="text-slate-500">Deduction Amount</span>
               <span className="font-medium">{formatCurrency(taxReturn.deduction_amount)}</span>
             </div>
             {taxReturn.qbi_deduction > 0 && (
               <div className="flex justify-between">
-                <span className="text-muted-foreground">QBI Deduction</span>
+                <span className="text-slate-500">QBI Deduction</span>
                 <span className="font-medium">{formatCurrency(taxReturn.qbi_deduction)}</span>
               </div>
             )}
@@ -680,7 +680,7 @@ function SelfEmploymentOptimization({
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Building2 className="h-5 w-5 text-primary" />
+            <Building2 className="h-5 w-5 text-emerald-600" />
             Self-Employment Tax Optimization
           </CardTitle>
           <CardDescription>
@@ -688,7 +688,7 @@ function SelfEmploymentOptimization({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="text-center py-8 text-muted-foreground">
+          <div className="text-center py-8 text-slate-500">
             <Building2 className="h-12 w-12 mx-auto mb-4 opacity-50" />
             <p>No self-employment income detected.</p>
             <p className="text-sm mt-2">
@@ -704,7 +704,7 @@ function SelfEmploymentOptimization({
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Building2 className="h-5 w-5 text-primary" />
+          <Building2 className="h-5 w-5 text-emerald-600" />
           Self-Employment Tax Optimization
         </CardTitle>
         <CardDescription>
@@ -715,17 +715,17 @@ function SelfEmploymentOptimization({
         {/* Current SE Tax Overview */}
         <div className="grid gap-4 md:grid-cols-3">
           <div className="p-4 bg-muted/50 rounded-lg">
-            <span className="text-sm text-muted-foreground">Net SE Income</span>
+            <span className="text-sm text-slate-500">Net SE Income</span>
             <p className="text-2xl font-bold">{formatCurrency(netProfit)}</p>
           </div>
           <div className="p-4 bg-muted/50 rounded-lg">
-            <span className="text-sm text-muted-foreground">SE Tax Paid</span>
+            <span className="text-sm text-slate-500">SE Tax Paid</span>
             <p className="text-2xl font-bold">{formatCurrency(taxReturn.se_tax)}</p>
           </div>
           <div className="p-4 bg-muted/50 rounded-lg">
-            <span className="text-sm text-muted-foreground">SE Tax Rate</span>
+            <span className="text-sm text-slate-500">SE Tax Rate</span>
             <p className="text-2xl font-bold">{formatPercent(seTaxPercent)}</p>
-            <p className="text-xs text-muted-foreground">of net profit</p>
+            <p className="text-xs text-slate-500">of net profit</p>
           </div>
         </div>
 
@@ -736,7 +736,7 @@ function SelfEmploymentOptimization({
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
-                  <Info className="h-4 w-4 text-muted-foreground" />
+                  <Info className="h-4 w-4 text-slate-500" />
                 </TooltipTrigger>
                 <TooltipContent className="max-w-xs">
                   <p>
@@ -751,7 +751,7 @@ function SelfEmploymentOptimization({
           {/* Reasonable Salary Slider */}
           <div className="space-y-3">
             <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Reasonable Salary</span>
+              <span className="text-slate-500">Reasonable Salary</span>
               <span className="font-medium">{formatCurrency(reasonableSalary)}</span>
             </div>
             <Slider
@@ -762,7 +762,7 @@ function SelfEmploymentOptimization({
               step={1000}
               className="w-full"
             />
-            <div className="flex justify-between text-xs text-muted-foreground">
+            <div className="flex justify-between text-xs text-slate-500">
               <span>30% of profit</span>
               <span>90% of profit</span>
             </div>
@@ -771,7 +771,7 @@ function SelfEmploymentOptimization({
           {/* Compliance Cost Input */}
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Annual Compliance Cost</span>
+              <span className="text-slate-500">Annual Compliance Cost</span>
               <span className="font-medium">{formatCurrency(complianceCost)}</span>
             </div>
             <Slider
@@ -782,7 +782,7 @@ function SelfEmploymentOptimization({
               step={500}
               className="w-full"
             />
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-slate-500">
               Includes payroll service, tax prep, and state fees
             </p>
           </div>
@@ -790,25 +790,25 @@ function SelfEmploymentOptimization({
           {/* Results */}
           <div className="grid gap-3 pt-4 border-t">
             <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Current SE Tax</span>
+              <span className="text-slate-500">Current SE Tax</span>
               <span className="font-medium text-red-600">
                 {formatCurrency(sCorpAnalysis.currentSETax)}
               </span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">S-Corp Payroll Tax</span>
+              <span className="text-slate-500">S-Corp Payroll Tax</span>
               <span className="font-medium text-orange-600">
                 {formatCurrency(sCorpAnalysis.sCorpPayrollTax)}
               </span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Tax-Free Distributions</span>
+              <span className="text-slate-500">Tax-Free Distributions</span>
               <span className="font-medium text-green-600">
                 {formatCurrency(sCorpAnalysis.distributions)}
               </span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Compliance Cost</span>
+              <span className="text-slate-500">Compliance Cost</span>
               <span className="font-medium">-{formatCurrency(complianceCost)}</span>
             </div>
             <div className="flex justify-between pt-2 border-t">
@@ -856,7 +856,7 @@ function SelfEmploymentOptimization({
         </div>
 
         {/* Disclaimer */}
-        <div className="flex items-start gap-2 p-3 bg-muted/50 rounded-lg text-sm text-muted-foreground">
+        <div className="flex items-start gap-2 p-3 bg-muted/50 rounded-lg text-sm text-slate-500">
           <AlertCircle className="h-4 w-4 flex-shrink-0 mt-0.5" />
           <p>
             <strong>Estimates only.</strong> Consult a tax professional before changing
@@ -907,7 +907,7 @@ function QuarterlyTaxEstimator({
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Calendar className="h-5 w-5 text-primary" />
+          <Calendar className="h-5 w-5 text-emerald-600" />
           Quarterly Tax Estimator
         </CardTitle>
         <CardDescription>
@@ -945,7 +945,7 @@ function QuarterlyTaxEstimator({
         {/* Income Adjustment Slider */}
         <div className="space-y-3">
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Expected Income Change</span>
+            <span className="text-slate-500">Expected Income Change</span>
             <span className="font-medium">
               {incomeChangePercent > 0 ? "+" : ""}
               {incomeChangePercent}%
@@ -959,7 +959,7 @@ function QuarterlyTaxEstimator({
             step={5}
             className="w-full"
           />
-          <div className="flex justify-between text-xs text-muted-foreground">
+          <div className="flex justify-between text-xs text-slate-500">
             <span>-50% (Lower income)</span>
             <span>Same</span>
             <span>+50% (Higher income)</span>
@@ -973,7 +973,7 @@ function QuarterlyTaxEstimator({
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
-                  <Info className="h-4 w-4 text-muted-foreground" />
+                  <Info className="h-4 w-4 text-slate-500" />
                 </TooltipTrigger>
                 <TooltipContent className="max-w-xs">
                   <p>
@@ -986,7 +986,7 @@ function QuarterlyTaxEstimator({
             </TooltipProvider>
           </div>
           <p className="text-2xl font-bold">{formatCurrency(estimates.safeHarborAmount)}</p>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-slate-500">
             {estimates.needsHigherSafeHarbor
               ? "110% of prior year (AGI > $150k)"
               : "100% of prior year tax"}
@@ -1006,15 +1006,15 @@ function QuarterlyTaxEstimator({
                   <div
                     className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium ${
                       idx === 0
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-muted text-muted-foreground"
+                        ? "bg-emerald-600 text-emerald-600-foreground"
+                        : "bg-muted text-slate-500"
                     }`}
                   >
                     {quarter.q}
                   </div>
                   <div>
                     <p className="text-sm font-medium">{quarter.period}</p>
-                    <p className="text-xs text-muted-foreground">Due: {quarter.due}</p>
+                    <p className="text-xs text-slate-500">Due: {quarter.due}</p>
                   </div>
                 </div>
                 <p className="text-lg font-bold">
@@ -1028,11 +1028,11 @@ function QuarterlyTaxEstimator({
         {/* Annual Summary */}
         <div className="grid gap-3 p-4 bg-muted/50 rounded-lg">
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Prior Year Tax ({taxReturn.tax_year})</span>
+            <span className="text-slate-500">Prior Year Tax ({taxReturn.tax_year})</span>
             <span className="font-medium">{formatCurrency(taxReturn.total_tax)}</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Estimated {taxReturn.tax_year + 1} Tax</span>
+            <span className="text-slate-500">Estimated {taxReturn.tax_year + 1} Tax</span>
             <span className="font-medium">{formatCurrency(estimates.annualEstimate)}</span>
           </div>
           <div className="flex justify-between pt-2 border-t">
@@ -1044,7 +1044,7 @@ function QuarterlyTaxEstimator({
         </div>
 
         {/* Assumptions */}
-        <div className="text-sm text-muted-foreground space-y-1">
+        <div className="text-sm text-slate-500 space-y-1">
           <p className="font-medium">Assumptions:</p>
           <ul className="list-disc list-inside space-y-1 ml-2">
             <li>Income distributed evenly throughout the year</li>
@@ -1161,7 +1161,7 @@ function TaxReturnRawData({
         key={field.label}
         className={`flex justify-between py-1.5 ${field.isTotal ? "font-medium border-t pt-2 mt-1" : ""}`}
       >
-        <span className="text-muted-foreground">{field.label}</span>
+        <span className="text-slate-500">{field.label}</span>
         <span className={valueClass}>{displayValue}</span>
       </div>
     );
@@ -1173,7 +1173,7 @@ function TaxReturnRawData({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <CardTitle className="flex items-center gap-2">
-              <FileText className="h-5 w-5 text-primary" />
+              <FileText className="h-5 w-5 text-emerald-600" />
               Tax Return Data
             </CardTitle>
             <CardDescription>
@@ -1211,9 +1211,9 @@ function TaxReturnRawData({
               {/* Year Header (only if showing all) */}
               {selectedYear === "all" && (
                 <div className="flex items-center gap-2 pb-2 border-b">
-                  <Calendar className="h-4 w-4 text-primary" />
+                  <Calendar className="h-4 w-4 text-emerald-600" />
                   <h3 className="font-semibold text-lg">{taxReturn.tax_year}</h3>
-                  <span className="text-sm text-muted-foreground capitalize">
+                  <span className="text-sm text-slate-500 capitalize">
                     ({taxReturn.filing_status.replace(/_/g, " ")})
                   </span>
                 </div>
@@ -1265,7 +1265,7 @@ function TaxReturnRawData({
 
                   {/* Metadata */}
                   <h4 className="font-medium text-sm flex items-center gap-2 mt-4 pt-4 border-t">
-                    <Info className="h-4 w-4 text-muted-foreground" />
+                    <Info className="h-4 w-4 text-slate-500" />
                     Metadata
                   </h4>
                   <div className="text-sm space-y-0.5">
@@ -1278,7 +1278,7 @@ function TaxReturnRawData({
               {taxReturn.notes && (
                 <div className="mt-4 pt-4 border-t">
                   <h4 className="font-medium text-sm mb-2">Notes</h4>
-                  <p className="text-sm text-muted-foreground">{taxReturn.notes}</p>
+                  <p className="text-sm text-slate-500">{taxReturn.notes}</p>
                 </div>
               )}
             </div>
@@ -1330,11 +1330,11 @@ export default function TaxOptimizationPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
-            <Calculator className="h-6 w-6 sm:h-7 sm:w-7 text-primary flex-shrink-0" />
+          <h1 className="text-2xl sm:text-3xl font-medium text-slate-900 flex items-center gap-2">
+            <Calculator className="h-6 w-6 sm:h-7 sm:w-7 text-emerald-600 flex-shrink-0" />
             <span className="leading-tight">Tax Optimization</span>
           </h1>
-          <p className="text-sm sm:text-base text-muted-foreground mt-1">Loading your tax data...</p>
+          <p className="text-sm sm:text-base text-slate-500 mt-1">Loading your tax data...</p>
         </div>
         <div className="grid gap-6">
           <Skeleton className="h-64" />
@@ -1349,8 +1349,8 @@ export default function TaxOptimizationPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
-            <Calculator className="h-6 w-6 sm:h-7 sm:w-7 text-primary flex-shrink-0" />
+          <h1 className="text-2xl sm:text-3xl font-medium text-slate-900 flex items-center gap-2">
+            <Calculator className="h-6 w-6 sm:h-7 sm:w-7 text-emerald-600 flex-shrink-0" />
             <span className="leading-tight">Tax Optimization</span>
           </h1>
         </div>
@@ -1369,11 +1369,11 @@ export default function TaxOptimizationPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
-            <Calculator className="h-6 w-6 sm:h-7 sm:w-7 text-primary flex-shrink-0" />
+          <h1 className="text-2xl sm:text-3xl font-medium text-slate-900 flex items-center gap-2">
+            <Calculator className="h-6 w-6 sm:h-7 sm:w-7 text-emerald-600 flex-shrink-0" />
             <span className="leading-tight">Tax Optimization</span>
           </h1>
-          <p className="text-sm sm:text-base text-muted-foreground mt-1">
+          <p className="text-sm sm:text-base text-slate-500 mt-1">
             Insights and modeling for self-employed tax planning
           </p>
         </div>
@@ -1387,11 +1387,11 @@ export default function TaxOptimizationPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
-          <Calculator className="h-6 w-6 sm:h-7 sm:w-7 text-primary flex-shrink-0" />
+        <h1 className="text-2xl sm:text-3xl font-medium text-slate-900 flex items-center gap-2">
+          <Calculator className="h-6 w-6 sm:h-7 sm:w-7 text-emerald-600 flex-shrink-0" />
           <span className="leading-tight">Tax Optimization</span>
         </h1>
-        <p className="text-sm sm:text-base text-muted-foreground mt-1">
+        <p className="text-sm sm:text-base text-slate-500 mt-1">
           Insights and modeling for self-employed tax planning
         </p>
       </div>
