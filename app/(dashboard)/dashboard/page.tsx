@@ -3,6 +3,14 @@
 import { useEffect, useState, useMemo, useCallback, Suspense } from "react";
 import Link from "next/link";
 import { UpgradeSuccessBanner } from "@/components/upgrade-success-banner";
+import {
+  calculateMomentum,
+  calculateFIProgress,
+  calculateWealthRisk,
+  determineNextActions,
+  formatVelocity,
+  getFIScoreLabel
+} from "@/lib/dashboard-calculations";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -42,6 +50,15 @@ import {
   PiggyBank,
   FileText,
   Briefcase,
+  Target,
+  Shield,
+  Zap,
+  AlertTriangle,
+  TrendingUpIcon,
+  Flame,
+  Clock,
+  Sparkles,
+  ArrowUpRight,
 } from "lucide-react";
 import {
   LineChart,
@@ -484,6 +501,15 @@ export default function DashboardPage() {
     });
   }, [chartData]);
 
+  // New dashboard calculations
+  const momentumMetrics = useMemo(() => calculateMomentum(entries), [entries]);
+  const fiMetrics = useMemo(() => calculateFIProgress(entries), [entries]);
+  const riskMetrics = useMemo(() => latestEntry ? calculateWealthRisk(latestEntry) : null, [latestEntry]);
+  const nextActions = useMemo(() => {
+    if (!latestEntry || !riskMetrics) return [];
+    return determineNextActions(latestEntry, fiMetrics, riskMetrics);
+  }, [latestEntry, fiMetrics, riskMetrics]);
+
   if (loading) {
     return (
       <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
@@ -668,8 +694,8 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Stats Cards - Responsive grid */}
-      <div className="grid gap-3 sm:gap-4 grid-cols-2 lg:grid-cols-5">
+      {/* Stats Cards - Compact */}
+      <div className="grid gap-2 sm:gap-3 grid-cols-2 lg:grid-cols-5">
         <Card className="bg-white border-slate-200 shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between pb-2 p-3 sm:p-6 sm:pb-2">
             <CardTitle className="text-xs sm:text-sm font-medium text-slate-500 uppercase tracking-wide">
@@ -1198,6 +1224,312 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Net Worth Momentum */}
+      {momentumMetrics && (
+        <Card className="bg-white border-slate-200 shadow-sm">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <TrendingUpIcon className="h-5 w-5 text-emerald-600" />
+              Net Worth Momentum
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="p-4 rounded-lg bg-slate-50">
+                <p className="text-sm text-slate-500 mb-1">Current Velocity</p>
+                <p className="text-2xl font-semibold text-emerald-600">
+                  {formatVelocity(momentumMetrics.velocity)}
+                </p>
+                <p className="text-xs text-slate-500 mt-1">Average monthly growth</p>
+              </div>
+              <div className="p-4 rounded-lg bg-slate-50">
+                <p className="text-sm text-slate-500 mb-1">12-Month Change</p>
+                <p className="text-2xl font-semibold text-slate-900">
+                  {formatCurrency(momentumMetrics.contribution12mo.totalChange)}
+                </p>
+                <p className="text-xs text-slate-500 mt-1">Total net worth growth</p>
+              </div>
+              <div className="p-4 rounded-lg bg-slate-50">
+                <p className="text-sm text-slate-500 mb-1">Net Contributions</p>
+                <p className="text-2xl font-semibold text-blue-600">
+                  {formatCurrency(momentumMetrics.contribution12mo.netContributions)}
+                </p>
+                <p className="text-xs text-slate-500 mt-1">Savings minus withdrawals</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* FI Progress Dashboard */}
+      {fiMetrics && (
+        <Card className="bg-white border-slate-200 shadow-sm">
+          <CardHeader>
+            <div className="flex items-start justify-between">
+              <div>
+                <CardTitle className="flex items-center gap-2">
+                  <Flame className="h-5 w-5 text-orange-500" />
+                  Financial Independence Progress
+                </CardTitle>
+                <p className="text-sm text-slate-500 mt-1">
+                  {getFIScoreLabel(fiMetrics.fiScore)}
+                </p>
+              </div>
+              <Link href="/upgrade">
+                <Button variant="ghost" size="sm" className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50">
+                  <Sparkles className="h-4 w-4 mr-1" />
+                  Upgrade for Full Planning
+                </Button>
+              </Link>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {/* Progress Bar */}
+              <div>
+                <div className="flex justify-between text-sm mb-2">
+                  <span className="text-slate-600">Progress to FI</span>
+                  <span className="font-semibold text-slate-900">{fiMetrics.currentProgress.toFixed(1)}%</span>
+                </div>
+                <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-emerald-500 to-emerald-600 transition-all"
+                    style={{ width: `${Math.min(100, fiMetrics.currentProgress)}%` }}
+                  />
+                </div>
+              </div>
+
+              {/* Metrics Grid */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div className="p-3 rounded-lg bg-slate-50">
+                  <p className="text-xs text-slate-500 mb-1">FI Number</p>
+                  <p className="text-lg font-semibold text-slate-900">
+                    {formatCurrency(fiMetrics.fiNumber)}
+                  </p>
+                </div>
+                <div className="p-3 rounded-lg bg-slate-50">
+                  <p className="text-xs text-slate-500 mb-1">Years to FI</p>
+                  <p className="text-lg font-semibold text-slate-900">
+                    {fiMetrics.yearsRemaining !== null
+                      ? `~${fiMetrics.yearsRemaining.toFixed(1)} yrs`
+                      : 'Add income data'}
+                  </p>
+                </div>
+                <div className="p-3 rounded-lg bg-slate-50">
+                  <p className="text-xs text-slate-500 mb-1">Cash Runway</p>
+                  <p className="text-lg font-semibold text-slate-900">
+                    {fiMetrics.monthsOfRunway.toFixed(1)} mo
+                  </p>
+                </div>
+                <div className="p-3 rounded-lg bg-slate-50">
+                  <p className="text-xs text-slate-500 mb-1">Savings Rate</p>
+                  <p className="text-lg font-semibold text-slate-900">
+                    {fiMetrics.savingsRate !== null
+                      ? `${(fiMetrics.savingsRate * 100).toFixed(0)}%`
+                      : 'N/A'}
+                  </p>
+                </div>
+              </div>
+
+              {/* Upgrade Bridge */}
+              <div className="p-3 bg-emerald-50 rounded-lg border border-emerald-200">
+                <p className="text-sm text-emerald-900">
+                  <strong>Want detailed projections?</strong> Model market growth, semi-retirement scenarios, and location arbitrage with Pro →
+                  <Link href="/upgrade" className="text-emerald-600 font-medium ml-1">Upgrade</Link>
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Wealth Health Metrics */}
+      {riskMetrics && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Concentration Risk */}
+          <Card className="bg-white border-slate-200 shadow-sm">
+            <CardContent className="pt-6">
+              <div className="flex items-start justify-between mb-3">
+                <div className="p-2 rounded-lg bg-slate-100">
+                  <AlertTriangle className={`h-5 w-5 ${
+                    riskMetrics.concentrationRisk.label === 'High' ? 'text-red-600' :
+                    riskMetrics.concentrationRisk.label === 'Medium' ? 'text-yellow-600' :
+                    'text-green-600'
+                  }`} />
+                </div>
+                <span className={`text-xs px-2 py-1 rounded-full ${
+                  riskMetrics.concentrationRisk.label === 'High' ? 'bg-red-100 text-red-700' :
+                  riskMetrics.concentrationRisk.label === 'Medium' ? 'bg-yellow-100 text-yellow-700' :
+                  'bg-green-100 text-green-700'
+                }`}>
+                  {riskMetrics.concentrationRisk.label} Risk
+                </span>
+              </div>
+              <h3 className="font-medium text-slate-900 mb-1">Concentration</h3>
+              <p className="text-sm text-slate-500 mb-3">
+                {riskMetrics.concentrationRisk.largestHolding} is {riskMetrics.concentrationRisk.largestPercent.toFixed(0)}% of portfolio
+              </p>
+              <Link href="/portfolio-optimizer">
+                <Button variant="outline" size="sm" className="w-full text-emerald-600 border-emerald-200 hover:bg-emerald-50">
+                  Diversify Portfolio
+                  <ArrowUpRight className="h-4 w-4 ml-1" />
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+
+          {/* Liquidity */}
+          <Card className="bg-white border-slate-200 shadow-sm">
+            <CardContent className="pt-6">
+              <div className="flex items-start justify-between mb-3">
+                <div className="p-2 rounded-lg bg-slate-100">
+                  <Shield className="h-5 w-5 text-blue-600" />
+                </div>
+                <span className={`text-xs px-2 py-1 rounded-full ${
+                  riskMetrics.liquidityRatio.score === 'Excellent' ? 'bg-green-100 text-green-700' :
+                  riskMetrics.liquidityRatio.score === 'Good' ? 'bg-blue-100 text-blue-700' :
+                  riskMetrics.liquidityRatio.score === 'Fair' ? 'bg-yellow-100 text-yellow-700' :
+                  'bg-red-100 text-red-700'
+                }`}>
+                  {riskMetrics.liquidityRatio.score}
+                </span>
+              </div>
+              <h3 className="font-medium text-slate-900 mb-1">Liquidity</h3>
+              <p className="text-sm text-slate-500 mb-3">
+                {riskMetrics.liquidityRatio.monthsOfExpenses.toFixed(1)} months of cash runway
+              </p>
+              <Link href="/articles/best-bank-accounts-for-consultants">
+                <Button variant="outline" size="sm" className="w-full text-blue-600 border-blue-200 hover:bg-blue-50">
+                  Optimize Cash
+                  <ArrowUpRight className="h-4 w-4 ml-1" />
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+
+          {/* Flexibility */}
+          <Card className="bg-white border-slate-200 shadow-sm">
+            <CardContent className="pt-6">
+              <div className="flex items-start justify-between mb-3">
+                <div className="p-2 rounded-lg bg-slate-100">
+                  <Zap className="h-5 w-5 text-purple-600" />
+                </div>
+                <span className={`text-xs px-2 py-1 rounded-full ${
+                  riskMetrics.flexibilityScore.label === 'High' ? 'bg-green-100 text-green-700' :
+                  riskMetrics.flexibilityScore.label === 'Medium' ? 'bg-yellow-100 text-yellow-700' :
+                  'bg-red-100 text-red-700'
+                }`}>
+                  {riskMetrics.flexibilityScore.label}
+                </span>
+              </div>
+              <h3 className="font-medium text-slate-900 mb-1">Flexibility Score</h3>
+              <p className="text-sm text-slate-500 mb-3">
+                Overall financial agility: {riskMetrics.flexibilityScore.score.toFixed(0)}/100
+              </p>
+              <Link href="/geo-arbitrage">
+                <Button variant="outline" size="sm" className="w-full text-purple-600 border-purple-200 hover:bg-purple-50">
+                  Explore Options
+                  <ArrowUpRight className="h-4 w-4 ml-1" />
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* Next Best Actions */}
+      {nextActions.length > 0 && (
+        <Card className="bg-white border-slate-200 shadow-sm">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Target className="h-5 w-5 text-emerald-600" />
+              Next Best Question
+            </CardTitle>
+            <p className="text-sm text-slate-500 mt-1">Questions worth exploring now</p>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {nextActions.map((action, idx) => (
+                <div
+                  key={idx}
+                  className={`p-4 rounded-lg border-2 ${
+                    action.category === 'warning' ? 'bg-yellow-50 border-yellow-200' :
+                    action.category === 'milestone' ? 'bg-blue-50 border-blue-200' :
+                    'bg-emerald-50 border-emerald-200'
+                  }`}
+                >
+                  <div className="flex items-start gap-3">
+                    <div className={`p-2 rounded-lg ${
+                      action.category === 'warning' ? 'bg-yellow-100' :
+                      action.category === 'milestone' ? 'bg-blue-100' :
+                      'bg-emerald-100'
+                    }`}>
+                      {action.icon === 'alert' && <AlertTriangle className="h-5 w-5 text-yellow-700" />}
+                      {action.icon === 'trophy' && <Award className="h-5 w-5 text-blue-700" />}
+                      {action.icon === 'zap' && <Zap className="h-5 w-5 text-emerald-700" />}
+                      {action.icon === 'star' && <Sparkles className="h-5 w-5 text-emerald-700" />}
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-medium text-slate-900 mb-1">{action.title}</h4>
+                      <p className="text-sm text-slate-600 mb-2">{action.description}</p>
+                      <Link href={action.actionLink}>
+                        <Button variant="outline" size="sm" className="text-xs">
+                          {action.actionLabel}
+                          <ArrowRight className="h-3 w-3 ml-1" />
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Learn More Strip */}
+      <Card className="bg-gradient-to-r from-slate-50 to-slate-100 border-slate-200 shadow-sm">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <BookOpen className="h-5 w-5 text-slate-600" />
+            Learn & Explore
+          </CardTitle>
+          <p className="text-sm text-slate-500 mt-1">Free resources to level up your financial knowledge</p>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <Link href="/articles/why-track-net-worth" className="p-3 bg-white rounded-lg border border-slate-200 hover:border-emerald-300 hover:shadow-md transition-all">
+              <div className="flex items-center gap-2 mb-2">
+                <TrendingUp className="h-4 w-4 text-emerald-600" />
+                <h4 className="text-sm font-medium text-slate-900">Why Track Net Worth</h4>
+              </div>
+              <p className="text-xs text-slate-500">The foundation of wealth building</p>
+            </Link>
+            <Link href="/articles/tax-strategies-2026-self-employed" className="p-3 bg-white rounded-lg border border-slate-200 hover:border-emerald-300 hover:shadow-md transition-all">
+              <div className="flex items-center gap-2 mb-2">
+                <Calculator className="h-4 w-4 text-blue-600" />
+                <h4 className="text-sm font-medium text-slate-900">Tax Strategies</h4>
+              </div>
+              <p className="text-xs text-slate-500">Self-employed tax optimization</p>
+            </Link>
+            <Link href="/articles/best-bank-accounts-for-consultants" className="p-3 bg-white rounded-lg border border-slate-200 hover:border-emerald-300 hover:shadow-md transition-all">
+              <div className="flex items-center gap-2 mb-2">
+                <Building2 className="h-4 w-4 text-purple-600" />
+                <h4 className="text-sm font-medium text-slate-900">Best Bank Accounts</h4>
+              </div>
+              <p className="text-xs text-slate-500">Optimize your banking setup</p>
+            </Link>
+            <Link href="/articles/working-remotely-from-another-country" className="p-3 bg-white rounded-lg border border-slate-200 hover:border-emerald-300 hover:shadow-md transition-all">
+              <div className="flex items-center gap-2 mb-2">
+                <Globe className="h-4 w-4 text-orange-600" />
+                <h4 className="text-sm font-medium text-slate-900">Remote Work</h4>
+              </div>
+              <p className="text-xs text-slate-500">Work from anywhere legally</p>
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Quick Actions */}
       <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
