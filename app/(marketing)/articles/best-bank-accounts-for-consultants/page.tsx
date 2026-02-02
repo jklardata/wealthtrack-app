@@ -56,7 +56,7 @@ export default function BankAccountsArticle() {
         <section className="space-y-4">
           <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Personal Banking: Charles Schwab Investor Checking</h2>
           <p className="text-slate-600 leading-relaxed">
-            The gold standard for personal banking, especially if you travel internationally.
+            The gold standard for personal banking, especially if you travel internationally. Schwab has been the go-to recommendation for digital nomads and frequent travelers for over a decade, and for good reason—unlimited worldwide ATM fee rebates means you can withdraw cash from any ATM anywhere in the world and Schwab refunds 100% of the fees at month-end. No foreign transaction fees, no monthly fees, no minimum balances. The only catch is you need to open a linked Schwab brokerage account (which costs nothing and requires no funding), but that's actually a feature, not a bug—it seamlessly integrates your banking and investing.
           </p>
           <div className="rounded-xl border border-emerald-200 bg-emerald-600/10 p-6">
             <h4 className="font-semibold mb-4 text-emerald-600 flex items-center gap-2">
@@ -101,7 +101,7 @@ export default function BankAccountsArticle() {
         <section className="space-y-4">
           <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Business Banking: Mercury</h2>
           <p className="text-slate-600 leading-relaxed">
-            Built specifically for startups and freelancers, Mercury offers a modern banking experience with powerful features.
+            Built specifically for startups and freelancers, Mercury offers a modern banking experience that makes traditional business banks feel ancient. Zero monthly fees, free domestic and international wires (most banks charge $25-45 per wire), virtual and physical debit cards you can create instantly, API access for custom integrations, and their Mercury Treasury product that automatically sweeps idle cash into money market funds earning 4-5%. The interface is clean, support is fast, and they actually understand how consultants and freelancers operate. The only downside: no physical branches, but that's irrelevant for remote workers who haven't visited a bank branch in years anyway.
           </p>
           <div className="rounded-xl border border-slate-200 bg-emerald-600/10 p-6">
             <h4 className="font-semibold mb-4 text-slate-600 flex items-center gap-2">
@@ -137,38 +137,15 @@ export default function BankAccountsArticle() {
         <section className="space-y-4">
           <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Multi-Currency: Wise Business</h2>
           <p className="text-slate-600 leading-relaxed">
-            If you work with international clients, Wise is essential for receiving payments in multiple currencies.
+            If you work with international clients, Wise Business is essential for receiving payments in multiple currencies without getting destroyed by exchange rate markups. You can hold balances in 50+ currencies simultaneously, get local bank account details for USD, EUR, GBP, AUD and 10+ other currencies (so European clients can pay you via SEPA transfer instead of expensive international wires), and convert between currencies at the real mid-market exchange rate with transparent fees of 0.4-2% depending on the currency pair. Traditional banks hide 3-5% markups in their exchange rates, so on a €50,000 payment from a European client, Wise could save you $1,500-2,500 compared to receiving it through a US bank. The interface shows you exactly what you're paying and what you're receiving—no hidden costs.
           </p>
-          <ul className="space-y-3 ml-4">
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0" />
-              <div>
-                <strong className="text-slate-900">50+ Currencies</strong>
-                <p className="text-slate-500">Hold and convert between currencies in one account</p>
-              </div>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0" />
-              <div>
-                <strong className="text-slate-900">Local Bank Details</strong>
-                <p className="text-slate-500">Get account numbers in USD, EUR, GBP, and more</p>
-              </div>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0" />
-              <div>
-                <strong className="text-slate-900">Real Exchange Rates</strong>
-                <p className="text-slate-500">Mid-market rates with low, transparent fees</p>
-              </div>
-            </li>
-          </ul>
         </section>
 
         {/* Section 4 */}
         <section className="space-y-4">
           <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">High-Yield Savings: Wealthfront Cash Account</h2>
           <p className="text-slate-600 leading-relaxed">
-            Park your emergency fund and earn competitive interest rates.
+            Park your emergency fund and earn competitive interest rates—currently 4.5%+ APY, which crushes the 0.01% most traditional banks offer. Wealthfront's Cash Account isn't technically a bank account; it's a brokerage cash management account that sweeps your deposits across multiple partner banks to maximize FDIC insurance coverage (up to $8 million instead of the standard $250K). No monthly fees, no minimum balance, and your money is accessible within 1-2 business days if you need it. For consultants with lumpy income who need to keep 6-12 months of expenses liquid, this is where that cash should sit. On a $50,000 emergency fund, you're earning $2,250/year instead of $5/year at a traditional bank—real money that compounds over time.
           </p>
           <ul className="space-y-3 ml-4">
             <li className="flex items-start gap-3">
