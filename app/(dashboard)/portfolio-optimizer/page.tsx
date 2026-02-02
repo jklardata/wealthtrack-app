@@ -786,9 +786,15 @@ function TaxLocationStrategyCard({
           <Landmark className="h-5 w-5 text-emerald-600" />
           Tax Location Strategy
         </CardTitle>
-        <CardDescription>
-          Optimize where you hold each asset class to minimize taxes
-        </CardDescription>
+        <div className="text-sm text-slate-600 mt-2 space-y-2">
+          <p>
+            Asset location is the secret weapon most investors overlook. By placing tax-inefficient assets (bonds, REITs) in tax-advantaged accounts and tax-efficient assets (stocks) in taxable accounts, you can boost after-tax returns by 0.3-0.5% annually.
+          </p>
+          <p className="text-xs text-slate-500">
+            Over 30 years, that compounds to tens of thousands in additional wealth—for doing nothing except being strategic about account placement.
+          </p>
+        </div>
+      </CardHeader>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Summary Cards */}
@@ -1296,9 +1302,14 @@ export default function PortfolioOptimizerPage() {
                 <Target className="h-5 w-5 text-emerald-600" />
                 Current vs Recommended Allocation
               </CardTitle>
-              <CardDescription>
-                Compare your current portfolio with the optimal allocation based on your risk profile
-              </CardDescription>
+              <div className="text-sm text-slate-600 mt-2 space-y-2">
+                <p>
+                  Your asset allocation is the single biggest determinant of your portfolio's long-term returns—more important than individual stock picks or market timing.
+                </p>
+                <p className="text-xs text-slate-500">
+                  Compare your current portfolio with the optimal allocation based on your risk profile. Small adjustments can significantly improve your risk-adjusted returns over time.
+                </p>
+              </div>
             </CardHeader>
             <CardContent className="pt-6">
               <div className="grid md:grid-cols-2 gap-8">
@@ -1325,9 +1336,15 @@ export default function PortfolioOptimizerPage() {
             <Card className="bg-white border-slate-200 shadow-sm">
               <CardHeader>
                 <CardTitle className="font-medium text-slate-900">Expected Performance</CardTitle>
-                <CardDescription>
-                  Based on historical market data and Modern Portfolio Theory
-                </CardDescription>
+                <div className="text-sm text-slate-600 mt-2 space-y-2">
+                  <p>
+                    These projections aren't guarantees—they're educated estimates based on decades of market history. But they give you realistic expectations for what your money can do.
+                  </p>
+                  <p className="text-xs text-slate-500">
+                    The Sharpe ratio shows your return per unit of risk. Higher is better—it means you're getting more reward for the volatility you're accepting.
+                  </p>
+                </div>
+              </CardHeader>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid grid-cols-3 gap-4">
@@ -1374,9 +1391,15 @@ export default function PortfolioOptimizerPage() {
             <Card className="bg-white border-slate-200 shadow-sm">
               <CardHeader>
                 <CardTitle className="font-medium text-slate-900">Rebalancing Actions</CardTitle>
-                <CardDescription>
-                  Specific trades to align your portfolio with the recommended allocation
-                </CardDescription>
+                <div className="text-sm text-slate-600 mt-2 space-y-2">
+                  <p>
+                    Rebalancing is counter-intuitive: you sell winners and buy losers. But this disciplined approach is how you "buy low, sell high" systematically instead of emotionally.
+                  </p>
+                  <p className="text-xs text-slate-500">
+                    Most investors should rebalance quarterly or when allocations drift 5+ percentage points from targets. Consider tax implications—do this in tax-advantaged accounts when possible.
+                  </p>
+                </div>
+              </CardHeader>
               </CardHeader>
               <CardContent>
                 <RebalancingTrades

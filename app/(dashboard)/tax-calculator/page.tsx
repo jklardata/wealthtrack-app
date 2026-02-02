@@ -690,6 +690,9 @@ export default function TaxCalculatorPage() {
               <Briefcase className="h-5 w-5 text-emerald-600" />
               Income & Business
             </CardTitle>
+            <p className="text-xs text-slate-600 mt-2">
+              Your tax situation starts here. As a self-employed professional, every dollar you legitimately expense reduces your taxable income—this is your first line of defense against overtaxation.
+            </p>
           </CardHeader>
           <CardContent className="space-y-4">
             {/* Tax Return Auto-Populate Banner */}
@@ -854,6 +857,14 @@ export default function TaxCalculatorPage() {
               <PiggyBank className="h-5 w-5 text-emerald-600" />
               Tax-Advantaged Accounts
             </CardTitle>
+            <div className="text-xs text-slate-600 mt-2 space-y-1.5">
+              <p>
+                These accounts are the cornerstone of tax optimization for the self-employed. Every dollar you contribute reduces your current tax bill while building tax-free or tax-deferred wealth.
+              </p>
+              <p className="text-slate-500">
+                The Solo 401(k) is especially powerful—you can contribute as both employee AND employer, sheltering up to $69,000/year from taxes (2025 limits).
+              </p>
+            </div>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">

@@ -942,9 +942,14 @@ function RetirementPageContent() {
                 <TrendingUp className="h-5 w-5 text-emerald-600" />
                 Net Worth Projection
               </CardTitle>
-              <p className="text-sm text-slate-500">
-                Based on {formatPercent(parseFloat(expectedReturn) / 100)} annual return and {formatCurrency(annualSavings)}/year savings
-              </p>
+              <div className="text-sm text-slate-600 mt-2 space-y-2">
+                <p>
+                  This projection shows your path to financial independence. The horizontal lines represent your "finish line"—when your portfolio can sustain your lifestyle indefinitely.
+                </p>
+                <p className="text-xs text-slate-500">
+                  Based on {formatPercent(parseFloat(expectedReturn) / 100)} annual return and {formatCurrency(annualSavings)}/year savings. Remember: your savings rate matters more than investment returns in the early years. Control what you can control.
+                </p>
+              </div>
             </CardHeader>
             <CardContent className="pt-6">
               {/* Legend explanation */}
@@ -1150,9 +1155,14 @@ function RetirementPageContent() {
                 <Globe className="h-5 w-5 text-emerald-600" />
                 All Cities Comparison
               </CardTitle>
-              <p className="text-sm text-slate-500">
-                Based on your {formatCurrency(parseFloat(currentSpend))} annual spending in {currentCity?.city_name || "your current city"} • Current Net Worth: {formatCurrency(currentNetWorth)}
-              </p>
+              <div className="text-sm text-slate-600 mt-2 space-y-2">
+                <p>
+                  Geographic arbitrage is one of the most powerful wealth acceleration strategies available. Moving to a lower cost-of-living city can shave years—sometimes decades—off your timeline to financial independence.
+                </p>
+                <p className="text-xs text-slate-500">
+                  Based on your {formatCurrency(parseFloat(currentSpend))} annual spending in {currentCity?.city_name || "your current city"} • Current Net Worth: {formatCurrency(currentNetWorth)}. Each city shows how location impacts your retirement timeline and required wealth.
+                </p>
+              </div>
             </CardHeader>
             <CardContent className="px-2 sm:px-6">
               <div className="overflow-x-auto -mx-2 sm:mx-0">

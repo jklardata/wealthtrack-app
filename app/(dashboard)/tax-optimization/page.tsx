@@ -292,9 +292,14 @@ function TaxHealthDashboard({
           <DollarSign className="h-5 w-5 text-emerald-600" />
           Tax Health Dashboard
         </CardTitle>
-        <CardDescription>
-          Overview of your {current.tax_year} tax situation
-        </CardDescription>
+        <div className="text-sm text-slate-600 mt-2 space-y-2">
+          <p>
+            Your effective tax rate is what you actually pay after all deductions and credits—this is the number that matters, not your marginal bracket. Most self-employed professionals can achieve an effective rate 10-15 percentage points below their marginal rate through strategic planning.
+          </p>
+          <p className="text-xs text-slate-500">
+            Overview of your {current.tax_year} tax situation. These metrics show how effectively you're using the tax code to your advantage.
+          </p>
+        </div>
       </CardHeader>
       <CardContent>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -479,9 +484,14 @@ function DeductionEfficiencyAnalyzer({
           <Percent className="h-5 w-5 text-emerald-600" />
           Deduction Efficiency Analyzer
         </CardTitle>
-        <CardDescription>
-          How effectively are deductions reducing your taxable income
-        </CardDescription>
+        <div className="text-sm text-slate-600 mt-2 space-y-2">
+          <p>
+            Every legitimate business expense is a dollar you keep instead of sending to the IRS. The key word is "legitimate"—aggressive deductions invite audits, but leaving money on the table is equally foolish.
+          </p>
+          <p className="text-xs text-slate-500">
+            These benchmarks show if you're optimizing deductions or potentially under-claiming. Most consultants have 20-40% expense ratios depending on their business model.
+          </p>
+        </div>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Business Expense Ratio */}
@@ -710,9 +720,14 @@ function SelfEmploymentOptimization({
           <Building2 className="h-5 w-5 text-emerald-600" />
           Self-Employment Tax Optimization
         </CardTitle>
-        <CardDescription>
-          Analyze self-employment tax burden and S-Corp break-even
-        </CardDescription>
+        <div className="text-sm text-slate-600 mt-2 space-y-2">
+          <p>
+            Self-employment tax is the hidden wealth killer for consultants—15.3% right off the top before income tax even starts. An S-Corp election can slash this burden by allowing you to take part of your income as distributions instead of salary.
+          </p>
+          <p className="text-xs text-slate-500">
+            The break-even is typically around $60-80k in net income. Below that, the compliance costs outweigh savings. Above $100k, it's almost always worth it.
+          </p>
+        </div>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Current SE Tax Overview */}
@@ -913,9 +928,14 @@ function QuarterlyTaxEstimator({
           <Calendar className="h-5 w-5 text-emerald-600" />
           Quarterly Tax Estimator
         </CardTitle>
-        <CardDescription>
-          Estimated payments for {taxReturn.tax_year + 1} based on {taxReturn.tax_year} data
-        </CardDescription>
+        <div className="text-sm text-slate-600 mt-2 space-y-2">
+          <p>
+            Quarterly estimated taxes are your commitment to the IRS—pay too little and you'll face penalties plus interest. Pay too much and you're giving the government an interest-free loan.
+          </p>
+          <p className="text-xs text-slate-500">
+            Estimated payments for {taxReturn.tax_year + 1} based on {taxReturn.tax_year} data. These calculations use the safe harbor method to avoid underpayment penalties while minimizing overpayment.
+          </p>
+        </div>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Warning Alerts */}
