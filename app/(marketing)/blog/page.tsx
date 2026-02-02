@@ -82,6 +82,36 @@ const ARTICLES: Article[] = [
     date: "January 2026",
     image: "https://images.unsplash.com/photo-1488085061387-422e29b40080?w=800&h=450&fit=crop",
   },
+  {
+    slug: "overlooked-tax-deductions-consultants",
+    title: "Top 10 Overlooked Tax Deductions for Consultants",
+    excerpt: "Many self-employed professionals miss out on thousands in tax savings by overlooking common deductions. Here are the top 10 you shouldn't miss.",
+    category: "Tax Deductions",
+    categoryColor: "bg-indigo-500",
+    readTime: "12 min read",
+    date: "February 2026",
+    image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&h=450&fit=crop",
+  },
+  {
+    slug: "30-percent-rule-self-employment-taxes",
+    title: "The 30% Rule: Why You Should Set Aside This Much for Taxes",
+    excerpt: "Self-employment taxes can be shocking if you're not prepared. Learn why the 30% rule works and how to implement it in your business.",
+    category: "Tax Planning",
+    categoryColor: "bg-cyan-500",
+    readTime: "10 min read",
+    date: "February 2026",
+    image: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&h=450&fit=crop",
+  },
+  {
+    slug: "sole-proprietor-vs-llc",
+    title: "Sole Proprietor vs. LLC: Which Structure Saves You More Money?",
+    excerpt: "Choosing between a sole proprietorship and LLC can save you thousands. Compare the tax implications, liability protection, and costs of each structure.",
+    category: "Business Structure",
+    categoryColor: "bg-violet-500",
+    readTime: "14 min read",
+    date: "February 2026",
+    image: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&h=450&fit=crop",
+  },
 ];
 
 export default function BlogPage() {
@@ -97,7 +127,7 @@ export default function BlogPage() {
             <span className="text-emerald-600">Solo</span>FI
           </Link>
           <div className="flex items-center gap-6">
-            <Link href="/tools/tax-savings" className="text-sm text-slate-600 hover:text-slate-900 hidden md:block">
+            <Link href="/tools" className="text-sm text-slate-600 hover:text-slate-900 hidden md:block">
               Free Tools
             </Link>
             <Link href="/dashboard">
