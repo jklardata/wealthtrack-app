@@ -67,9 +67,19 @@ export async function POST(request: NextRequest) {
     const host = request.headers.get('host');
     const protocol = host?.includes('localhost') ? 'http' : 'https';
     const requestUrl = host ? `${protocol}://${host}` : null;
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || requestUrl || 'http://localhost:3000';
+
+    // Prefer request URL over environment variable to avoid stale deployment URLs
+    const appUrl = requestUrl || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
     const tier = getTierFromPriceId(priceId);
-    console.log('Creating checkout session with appUrl:', appUrl);
+
+    console.log('Checkout session details:', {
+      host,
+      requestUrl,
+      envUrl: process.env.NEXT_PUBLIC_APP_URL,
+      finalAppUrl: appUrl,
+      successUrl: `${appUrl}/upgrade?success=true&tier=${tier}`,
+      cancelUrl: `${appUrl}/upgrade?canceled=true`
+    });
 
     const session = await stripe.checkout.sessions.create({
       customer: stripeCustomerId,
