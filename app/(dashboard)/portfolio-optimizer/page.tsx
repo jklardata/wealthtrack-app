@@ -1344,7 +1344,6 @@ export default function PortfolioOptimizerPage() {
                   </p>
                 </div>
               </CardHeader>
-              </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid grid-cols-3 gap-4">
                   <div className="text-center p-4 bg-emerald-50 rounded-lg">
@@ -1398,7 +1397,6 @@ export default function PortfolioOptimizerPage() {
                     Most investors should rebalance quarterly or when allocations drift 5+ percentage points from targets. Consider tax implications—do this in tax-advantaged accounts when possible.
                   </p>
                 </div>
-              </CardHeader>
               </CardHeader>
               <CardContent>
                 <RebalancingTrades
