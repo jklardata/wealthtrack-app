@@ -63,7 +63,11 @@ export async function POST(request: NextRequest) {
     }
 
     // Create Checkout Session
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    // Get the base URL from the request or environment variable
+    const host = request.headers.get('host');
+    const protocol = host?.includes('localhost') ? 'http' : 'https';
+    const requestUrl = host ? `${protocol}://${host}` : null;
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || requestUrl || 'http://localhost:3000';
     const tier = getTierFromPriceId(priceId);
     console.log('Creating checkout session with appUrl:', appUrl);
 
@@ -76,8 +80,8 @@ export async function POST(request: NextRequest) {
           quantity: 1,
         },
       ],
-      success_url: `${appUrl}/settings?success=true&tier=${tier}`,
-      cancel_url: `${appUrl}/pricing?canceled=true`,
+      success_url: `${appUrl}/upgrade?success=true&tier=${tier}`,
+      cancel_url: `${appUrl}/upgrade?canceled=true`,
       subscription_data: {
         metadata: {
           clerk_user_id: userId,
