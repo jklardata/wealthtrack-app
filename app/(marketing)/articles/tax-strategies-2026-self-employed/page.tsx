@@ -77,39 +77,20 @@ export default function TaxStrategiesArticle() {
             </p>
           </div>
 
-          <h3 className="text-lg font-semibold mt-6 text-slate-900">How It Works</h3>
-          <ul className="space-y-3 ml-4">
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0" />
-              <div>
-                <strong className="text-slate-900">Pay yourself a "reasonable salary"</strong>
-                <p className="text-slate-500">Subject to payroll taxes (FICA)</p>
-              </div>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0" />
-              <div>
-                <strong className="text-slate-900">Take remaining profits as distributions</strong>
-                <p className="text-slate-500">No self-employment tax on distributions</p>
-              </div>
-            </li>
-          </ul>
-
-          <h3 className="text-lg font-semibold mt-6 text-slate-900">When to Consider It</h3>
-          <ul className="space-y-2 ml-4">
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-slate-600">Consistent profit over $80-100K annually</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-slate-600">Willing to run payroll (services like Gusto make this easy)</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-slate-600">Comfortable with additional compliance requirements</span>
-            </li>
-          </ul>
+          <div className="space-y-4 mt-6">
+            <div>
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">How It Works</h3>
+              <p className="text-slate-600 leading-relaxed">
+                The S-Corp strategy splits your income into two buckets: reasonable salary and distributions. You pay yourself a W-2 salary that's subject to normal payroll taxes (FICA—Social Security and Medicare), just like any employee. The IRS requires this salary to be "reasonable" for your role and industry, typically 40-60% of your total profit. The remaining profits flow through as distributions, which are subject to income tax but NOT self-employment tax. That's where the savings come from—you're avoiding the 15.3% self-employment tax on potentially $50-100K+ of income.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">When to Consider It</h3>
+              <p className="text-slate-600 leading-relaxed">
+                S-Corp makes sense once you're consistently earning $80-100K+ in annual profit. Below that threshold, the administrative costs and complexity outweigh the tax savings. You'll need to run payroll (services like Gusto or ADP make this relatively painless for $40-100/month), file additional tax returns, and maintain stricter separation between personal and business finances. Most CPAs recommend waiting until you're clearing at least $80K in net income, at which point the $10,000-15,000 in annual tax savings more than covers the $2,000-3,000 in additional accounting and payroll costs.
+              </p>
+            </div>
+          </div>
         </section>
 
         {/* Image break */}
@@ -152,81 +133,44 @@ export default function TaxStrategiesArticle() {
             </div>
           </div>
 
-          <h3 className="text-lg font-semibold mt-6 text-slate-900">Strategy Tips</h3>
-          <ul className="space-y-3 ml-4">
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0" />
-              <div>
-                <strong className="text-slate-900">Combine with S-Corp</strong>
-                <p className="text-slate-500">Employer contributions based on W-2 salary</p>
-              </div>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0" />
-              <div>
-                <strong className="text-slate-900">Consider Roth contributions</strong>
-                <p className="text-slate-500">Tax diversification for retirement</p>
-              </div>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-purple-500 rounded-full mt-2 flex-shrink-0" />
-              <div>
-                <strong className="text-slate-900">Deadline</strong>
-                <p className="text-slate-500">December 31 to establish, tax filing deadline to contribute</p>
-              </div>
-            </li>
-          </ul>
+          <div className="mt-6">
+            <h3 className="text-lg font-semibold text-slate-900 mb-2">Strategy Tips</h3>
+            <p className="text-slate-600 leading-relaxed">
+              The Solo 401(k) becomes even more powerful when combined with S-Corp taxation. If you're an S-Corp, your employer contributions are based on your W-2 salary, which can actually allow for larger total contributions in some scenarios. Don't overlook Roth contributions either—while traditional contributions give you an immediate tax deduction, Roth contributions grow tax-free forever, which is powerful tax diversification for retirement. You can even split your contributions, doing some traditional and some Roth to hedge your bets on future tax rates.
+            </p>
+            <p className="text-slate-600 leading-relaxed mt-3">
+              Timing matters: you must establish your Solo 401(k) by December 31st of the tax year, but you have until your tax filing deadline (including extensions) to make contributions. This gives you flexibility to wait and see your final income before committing to contribution amounts. Many self-employed professionals make their employee contributions during the year, then calculate the optimal employer contribution when they file taxes in April.
+            </p>
+          </div>
         </section>
 
         {/* Section 3 */}
         <section className="space-y-4">
           <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">3. QBI Deduction (Section 199A)</h2>
           <p className="text-slate-600 leading-relaxed">
-            Deduct up to <strong className="text-slate-900">20%</strong> of your qualified business income from taxable income.
+            The Qualified Business Income (QBI) deduction lets you deduct up to <strong className="text-slate-900">20%</strong> of your qualified business income from taxable income—not from gross income, but from taxable income, which makes it incredibly valuable. This deduction is available to all pass-through entities including sole proprietors, S-Corps, partnerships, and LLCs. If you're earning $100K in qualified business income, this deduction alone can save you $4,000-6,000 in federal taxes depending on your bracket.
           </p>
-          <ul className="space-y-3 ml-4">
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-slate-600">Available to pass-through entities (sole props, S-Corps, partnerships)</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-slate-600">Phase-out begins at $191,950 single / $383,900 married (2026)</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-yellow-500 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-slate-500">Specified service businesses (consulting) have additional limitations</span>
-            </li>
-          </ul>
+          <p className="text-slate-600 leading-relaxed">
+            The catch: specified service businesses (which includes most consulting work) face phase-outs starting at $191,950 for single filers and $383,900 for married couples in 2026. Below those thresholds, you get the full 20% deduction. Above them, the deduction phases out over the next $50K ($100K married). If you're a consultant earning $150K, you get the full benefit—a $30K reduction in taxable income worth roughly $7,500 in tax savings. This is one of the most valuable deductions created by the Tax Cuts and Jobs Act, and it's set to expire after 2025 unless Congress extends it.
+          </p>
         </section>
 
         {/* Section 4 */}
         <section className="space-y-4">
           <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">4. Health Insurance Deduction</h2>
           <p className="text-slate-600 leading-relaxed">
-            Self-employed individuals can deduct <strong className="text-slate-900">100%</strong> of health insurance premiums for themselves and their families.
+            Self-employed individuals can deduct <strong className="text-slate-900">100%</strong> of health insurance premiums for themselves and their families, and this is an above-the-line deduction that goes on line 17 of Schedule 1. "Above the line" means it reduces your adjusted gross income before you even get to itemized deductions, which makes it more valuable than standard business deductions. This includes medical insurance, dental, vision, and even long-term care insurance premiums for you, your spouse, and your dependents.
           </p>
-          <ul className="space-y-3 ml-4">
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-slate-600">Deducted from gross income (above the line)</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-slate-600">Includes medical, dental, and long-term care insurance</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
-              <span className="text-slate-600">HSA contributions provide additional tax benefits</span>
-            </li>
-          </ul>
+          <p className="text-slate-600 leading-relaxed">
+            If you're paying $800/month for family health coverage, that's a $9,600 annual deduction that saves you roughly $3,400 in combined federal and self-employment taxes at a 35% effective rate. Stack this with an HSA (Health Savings Account) if you have a high-deductible health plan, and you create a triple tax advantage: contributions are deductible, growth is tax-free, and withdrawals for medical expenses are tax-free. The 2026 HSA limits are $4,300 individual / $8,550 family, plus an additional $1,000 catch-up contribution if you're 55+. This combination—health insurance deduction plus HSA max—can reduce your taxable income by $15,000-18,000 annually.
+          </p>
         </section>
 
         {/* Section 5 */}
         <section className="space-y-4">
           <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">5. Home Office Deduction</h2>
           <p className="text-slate-600 leading-relaxed">
-            If you work from home, you can deduct a portion of housing expenses.
+            If you work from home, you can deduct a portion of housing expenses through two methods: simplified or actual expenses. The simplified method gives you $5 per square foot up to 300 square feet ($1,500 maximum deduction), with zero recordkeeping required. The actual expense method lets you deduct the business-use percentage of your rent/mortgage, utilities, insurance, repairs, and depreciation—often resulting in $3,000-5,000+ in deductions for consultants with dedicated office space. The actual method requires more documentation but typically yields higher savings, especially if you rent or have a mortgage in a high-cost area.
           </p>
           <div className="grid md:grid-cols-2 gap-4">
             <div className="rounded-xl border border-slate-200 bg-white/5 p-5">
@@ -246,7 +190,7 @@ export default function TaxStrategiesArticle() {
         <section className="space-y-4">
           <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">6. Estimated Tax Payments</h2>
           <p className="text-slate-600 leading-relaxed">
-            Avoid underpayment penalties by making quarterly estimated tax payments.
+            The IRS requires you to pay taxes as you earn income, which means making quarterly estimated tax payments if you're self-employed. Miss these deadlines or underpay, and you'll face underpayment penalties—typically 5-8% annually on the shortfall. The safe harbor rule protects you: if you pay either 90% of current year's tax liability OR 100% of prior year's tax liability (110% if you earned over $150K), you avoid penalties. Most consultants target paying 100-110% of last year's taxes, then settle up when they file. This strategy eliminates penalty risk while preserving cash flow throughout the year.
           </p>
           <div className="rounded-xl border border-slate-200 bg-white/5 p-6">
             <h4 className="font-semibold mb-4 text-slate-900">2026 Deadlines</h4>
@@ -319,29 +263,16 @@ export default function TaxStrategiesArticle() {
         {/* Key Takeaways */}
         <section className="space-y-4">
           <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Key Takeaways</h2>
-          <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-6">
-            <ul className="space-y-3">
-              <li className="flex items-start gap-3">
-                <span className="text-amber-400 font-bold">1.</span>
-                <span className="text-slate-700">S-Corp election can save $10-20K+ annually for high earners</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-amber-400 font-bold">2.</span>
-                <span className="text-slate-700">Max out Solo 401(k) contributions before year-end</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-amber-400 font-bold">3.</span>
-                <span className="text-slate-700">Track all business expenses meticulously</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-amber-400 font-bold">4.</span>
-                <span className="text-slate-700">Make quarterly estimated payments to avoid penalties</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-amber-400 font-bold">5.</span>
-                <span className="text-slate-700">Work with a CPA who understands self-employment</span>
-              </li>
-            </ul>
+          <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-6 space-y-3">
+            <p className="text-slate-700 leading-relaxed">
+              S-Corp election is the single highest-impact tax strategy for profitable consultants, potentially saving $10-20K+ annually once you're earning $80-100K+ in net income. The tax savings come from splitting income between salary (subject to payroll taxes) and distributions (exempt from self-employment tax), but it requires running payroll and additional compliance. Below that income threshold, focus on maxing out your Solo 401(k) contributions—up to $70,000 in 2026 ($77,500 if 50+)—which provides immediate tax deductions and decades of tax-free growth.
+            </p>
+            <p className="text-slate-700 leading-relaxed">
+              The foundation of tax optimization is meticulous expense tracking. Every dollar you legitimately deduct reduces your taxable income by 30-40% (depending on your bracket and state), so missing deductions is literally leaving money on the table. Make quarterly estimated tax payments on time to avoid penalties—aim to pay 100-110% of last year's total tax bill to stay in the IRS safe harbor. These payments can feel painful, but underpayment penalties of 5-8% annually hurt more.
+            </p>
+            <p className="text-slate-700 leading-relaxed">
+              Finally, invest in a CPA who understands self-employment tax strategy. The $2,000-4,000 you spend on quality accounting advice will save you multiples of that in optimized deductions, retirement contributions, and S-Corp structuring. DIY tax software is fine for W-2 employees, but once you're self-employed and earning real money, professional guidance pays for itself many times over.
+            </p>
           </div>
         </section>
 
