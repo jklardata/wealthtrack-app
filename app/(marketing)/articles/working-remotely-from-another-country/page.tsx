@@ -55,32 +55,14 @@ export default function WorkingRemotelyArticle() {
         {/* Section 1 */}
         <section className="space-y-4">
           <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Understanding Your Tax Obligations</h2>
-          <p className="text-slate-600 leading-relaxed">
-            As a US citizen or green card holder, you're taxed on your <strong className="text-slate-900">worldwide income</strong> regardless of where you live or work. This is different from most other countries that use territorial taxation. However, several provisions can significantly reduce your tax burden:
-          </p>
-          <ul className="space-y-3 ml-4">
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
-              <div>
-                <strong className="text-slate-900">Foreign Earned Income Exclusion (FEIE)</strong>
-                <p className="text-slate-500">Exclude up to $130,000 (2026) of foreign earned income from federal taxes</p>
-              </div>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
-              <div>
-                <strong className="text-slate-900">Foreign Tax Credit (FTC)</strong>
-                <p className="text-slate-500">Receive credit for taxes paid to foreign governments to avoid double taxation</p>
-              </div>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
-              <div>
-                <strong className="text-slate-900">Foreign Housing Exclusion</strong>
-                <p className="text-slate-500">Additional exclusion for qualified housing expenses while living abroad</p>
-              </div>
-            </li>
-          </ul>
+          <div className="space-y-3">
+            <p className="text-slate-600 leading-relaxed">
+              As a US citizen or green card holder, you're taxed on your <strong className="text-slate-900">worldwide income</strong> regardless of where you live or work. This is fundamentally different from most other countries that use territorial taxation (you're only taxed on income earned within their borders). The US and Eritrea are the only countries that tax based on citizenship rather than residence, which means even if you live in Portugal for five years, the IRS still wants its cut of your income.
+            </p>
+            <p className="text-slate-600 leading-relaxed">
+              The good news: several provisions can dramatically reduce your tax burden. The Foreign Earned Income Exclusion (FEIE) lets you exclude up to $130,000 (2026) of foreign earned income from federal taxes—if you're earning $120K remotely from Portugal, you could pay zero federal income tax. The Foreign Tax Credit (FTC) prevents double taxation by giving you credit for taxes paid to foreign governments. If Portugal taxes you $15K, you get a $15K credit against your US tax bill. The Foreign Housing Exclusion adds another layer, letting you exclude qualified housing expenses on top of the FEIE. Combined, these provisions can reduce your effective US tax rate to near zero for many remote workers living abroad.
+            </p>
+          </div>
         </section>
 
         {/* Image break */}
