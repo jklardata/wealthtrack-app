@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
+import { useSubscription } from "@/hooks/use-subscription";
+import { LockedModule } from "@/components/locked-module";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import type { TaxReturn } from "@/lib/types";
 import { Button } from "@/components/ui/button";
@@ -249,6 +251,9 @@ interface TaxCalculation {
 }
 
 export default function TaxCalculatorPage() {
+  // Subscription status
+  const { isPro, isLoading: subscriptionLoading } = useSubscription();
+
   // Input state
   const [grossIncome, setGrossIncome] = useState("150000");
   const [filingStatus, setFilingStatus] = useState<"single" | "married">("single");
@@ -773,61 +778,74 @@ export default function TaxCalculatorPage() {
         </Card>
 
         {/* S-Corp Strategy */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
-              <Building2 className="h-5 w-5 text-emerald-600" />
-              S-Corp Strategy
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <Label>Reasonable Salary %</Label>
-                <span className="text-sm font-medium">{sCorpSalaryPercent}%</span>
-              </div>
-              <Slider
-                value={[sCorpSalaryPercent]}
-                onValueChange={(v) => setSCorpSalaryPercent(v[0])}
-                min={30}
-                max={70}
-                step={5}
-              />
-              <p className="text-xs text-slate-500">
-                Salary: {formatCurrency(netIncome * (sCorpSalaryPercent / 100))} •
-                Distributions: {formatCurrency(netIncome * (1 - sCorpSalaryPercent / 100))}
-              </p>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="customSalary">Or Custom Salary Amount</Label>
-              <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
-                <Input
-                  id="customSalary"
-                  type="number"
-                  value={customSalary}
-                  onChange={(e) => setCustomSalary(e.target.value)}
-                  className="pl-9"
-                  placeholder="Leave blank to use %"
+        {isPro ? (
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Building2 className="h-5 w-5 text-emerald-600" />
+                S-Corp Strategy
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <Label>Reasonable Salary %</Label>
+                  <span className="text-sm font-medium">{sCorpSalaryPercent}%</span>
+                </div>
+                <Slider
+                  value={[sCorpSalaryPercent]}
+                  onValueChange={(v) => setSCorpSalaryPercent(v[0])}
+                  min={30}
+                  max={70}
+                  step={5}
                 />
+                <p className="text-xs text-slate-500">
+                  Salary: {formatCurrency(netIncome * (sCorpSalaryPercent / 100))} •
+                  Distributions: {formatCurrency(netIncome * (1 - sCorpSalaryPercent / 100))}
+                </p>
               </div>
-            </div>
 
-            <div className="p-3 rounded-lg bg-muted/50 text-sm space-y-2">
-              <p className="font-medium flex items-center gap-1">
-                <Info className="h-4 w-4" />
-                Reasonable Salary Guidelines
-              </p>
-              <ul className="text-xs text-slate-500 space-y-1">
-                <li>• Must be "reasonable" for your industry/role</li>
-                <li>• IRS scrutinizes salaries below 40% of net income</li>
-                <li>• Consider similar W-2 positions as benchmark</li>
-                <li>• Document your salary methodology</li>
-              </ul>
-            </div>
-          </CardContent>
-        </Card>
+              <div className="space-y-2">
+                <Label htmlFor="customSalary">Or Custom Salary Amount</Label>
+                <div className="relative">
+                  <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
+                  <Input
+                    id="customSalary"
+                    type="number"
+                    value={customSalary}
+                    onChange={(e) => setCustomSalary(e.target.value)}
+                    className="pl-9"
+                    placeholder="Leave blank to use %"
+                  />
+                </div>
+              </div>
+
+              <div className="p-3 rounded-lg bg-muted/50 text-sm space-y-2">
+                <p className="font-medium flex items-center gap-1">
+                  <Info className="h-4 w-4" />
+                  Reasonable Salary Guidelines
+                </p>
+                <ul className="text-xs text-slate-500 space-y-1">
+                  <li>• Must be "reasonable" for your industry/role</li>
+                  <li>• IRS scrutinizes salaries below 40% of net income</li>
+                  <li>• Consider similar W-2 positions as benchmark</li>
+                  <li>• Document your salary methodology</li>
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
+        ) : (
+          <LockedModule
+            title="S-Corp Strategy"
+            description="Calculate optimal salary vs distributions to minimize self-employment tax"
+            icon={<Building2 className="h-5 w-5 text-emerald-600" />}
+            benefits={[
+              "Reasonable salary calculator",
+              "Tax savings from distributions",
+              "IRS compliance guidelines"
+            ]}
+          />
+        )}
 
         {/* Tax-Advantaged Accounts */}
         <Card>

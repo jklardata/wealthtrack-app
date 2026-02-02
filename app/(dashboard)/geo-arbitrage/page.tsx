@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
+import { useSubscription } from "@/hooks/use-subscription";
+import { LockedModule } from "@/components/locked-module";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -258,6 +260,9 @@ function generateCallouts(
 // ============================================================================
 
 export default function GeoArbitragePage() {
+  // Subscription status
+  const { isPro, isLoading: subscriptionLoading } = useSubscription();
+
   // Data state
   const [netWorthEntries, setNetWorthEntries] = useState<NetWorthEntry[]>([]);
   const [loading, setLoading] = useState(true);
@@ -1024,7 +1029,8 @@ export default function GeoArbitragePage() {
       </div>
 
       {/* City Comparison Table */}
-      <Card>
+      {isPro ? (
+        <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <MapPin className="h-5 w-5 text-emerald-600" />
@@ -1336,6 +1342,19 @@ export default function GeoArbitragePage() {
           </div>
         </CardContent>
       </Card>
+      ) : (
+        <LockedModule
+          title="All Cities Comparison"
+          description="Compare all cities side-by-side with sortable columns and detailed breakdowns"
+          icon={<MapPin className="h-5 w-5 text-emerald-600" />}
+          benefits={[
+            "Sort and filter 50+ cities",
+            "Detailed spending breakdowns",
+            "Years to FI comparison",
+            "Housing cost differentials"
+          ]}
+        />
+      )}
 
       {/* Methodology Note */}
       <Card className="border-muted">
