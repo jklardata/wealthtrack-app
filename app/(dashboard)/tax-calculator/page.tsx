@@ -1028,6 +1028,7 @@ export default function TaxCalculatorPage() {
 
       {/* Total Tax Savings Highlight */}
       {isPro ? (
+        <>
         <Card>
         <CardHeader className="pb-2">
           <CardTitle className="text-lg flex items-center gap-2">
@@ -1685,6 +1686,7 @@ export default function TaxCalculatorPage() {
           </CardContent>
         </Card>
       </div>
+      </>
       ) : (
         <LockedModule
           title="Tax Analysis & Results"
