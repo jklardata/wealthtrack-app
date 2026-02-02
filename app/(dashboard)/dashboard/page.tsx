@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState, useMemo, useCallback } from "react";
-import { useSearchParams } from "next/navigation";
+import { useEffect, useState, useMemo, useCallback, Suspense } from "react";
 import Link from "next/link";
+import { UpgradeSuccessBanner } from "@/components/upgrade-success-banner";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -42,8 +42,6 @@ import {
   PiggyBank,
   FileText,
   Briefcase,
-  CheckCircle2,
-  X,
 } from "lucide-react";
 import {
   LineChart,
@@ -212,10 +210,6 @@ function getPresetDateRange(preset: PresetRange): DateRange {
 }
 
 export default function DashboardPage() {
-  const searchParams = useSearchParams();
-  const showSuccess = searchParams.get("success") === "true";
-  const [showSuccessBanner, setShowSuccessBanner] = useState(showSuccess);
-
   const [entries, setEntries] = useState<NetWorthEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -597,23 +591,9 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto space-y-6">
       {/* Success Banner */}
-      {showSuccessBanner && (
-        <div className="flex items-center justify-between gap-4 p-4 bg-emerald-50 border border-emerald-200 rounded-lg">
-          <div className="flex items-center gap-3">
-            <CheckCircle2 className="h-5 w-5 text-emerald-600 flex-shrink-0" />
-            <div>
-              <p className="font-medium text-emerald-900">Welcome to Pro!</p>
-              <p className="text-sm text-emerald-700">Your subscription is now active. Enjoy full access to all premium features!</p>
-            </div>
-          </div>
-          <button
-            onClick={() => setShowSuccessBanner(false)}
-            className="text-emerald-600 hover:text-emerald-700"
-          >
-            <X className="h-5 w-5" />
-          </button>
-        </div>
-      )}
+      <Suspense fallback={null}>
+        <UpgradeSuccessBanner />
+      </Suspense>
 
       {/* Header with Date Filters */}
       <div className="flex flex-col gap-4">
