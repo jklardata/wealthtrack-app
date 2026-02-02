@@ -151,11 +151,16 @@ export default function SoleProprietorVsLLCArticle() {
         <section className="space-y-4">
           <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Tax Differences: The Truth</h2>
 
-          <p className="text-slate-600 leading-relaxed">
-            Here's the most important thing to understand: <strong className="text-slate-900">An LLC taxed as a disregarded entity pays the EXACT same taxes as a sole proprietor.</strong>
-          </p>
+          <div className="space-y-4">
+            <p className="text-slate-600 leading-relaxed">
+              Here's the most important thing to understand: <strong className="text-slate-900">An LLC taxed as a disregarded entity pays the EXACT same taxes as a sole proprietor.</strong> This shocks most new consultants who assume forming an LLC will magically reduce their tax bill. The IRS doesn't care what you call yourself—if you're a single-member LLC and don't elect special tax treatment, you're filing Schedule C and paying the same self-employment tax (15.3%), the same federal income tax, and the same state income tax as a sole proprietor.
+            </p>
+            <p className="text-slate-600 leading-relaxed">
+              The term "disregarded entity" means the IRS literally ignores your LLC structure for tax purposes and treats you as if the business doesn't exist separately from you. Same quarterly estimated payments, same deductions, same everything. The comparison charts below are identical because the tax obligations are identical. The only time an LLC can save you money is if you elect S-Corp taxation—but that election is available to both sole proprietors AND LLCs, so it's not an LLC-specific benefit.
+            </p>
+          </div>
 
-          <div className="rounded-xl border border-amber-200 bg-amber-50 p-6">
+          <div className="rounded-xl border border-amber-200 bg-amber-50 p-6 mt-4">
             <h4 className="font-semibold mb-3 text-amber-900 flex items-center gap-2">
               <AlertCircle className="h-5 w-5" />
               Common Misconception
@@ -220,9 +225,14 @@ export default function SoleProprietorVsLLCArticle() {
         <section className="space-y-4">
           <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Liability Protection: The Real Difference</h2>
 
-          <p className="text-slate-600 leading-relaxed">
-            This is where the LLC shines. The primary benefit of an LLC is <strong className="text-slate-900">limited liability protection</strong>.
-          </p>
+          <div className="space-y-4">
+            <p className="text-slate-600 leading-relaxed">
+              This is where the LLC shines. The primary benefit of an LLC is <strong className="text-slate-900">limited liability protection</strong>, and it's the real reason to form one. When you operate as a sole proprietor, you and your business are legally the same entity in the eyes of the law. If your business gets sued, creditors can come after your personal assets—your home, your savings account, your car, even your retirement accounts in some states. Your personal credit score is tied directly to business debts.
+            </p>
+            <p className="text-slate-600 leading-relaxed">
+              An LLC creates a legal separation between you and your business. The LLC is its own entity, which means in most cases, liability is limited to business assets. If your LLC gets sued or goes into debt, creditors generally can't touch your personal home, savings, or other assets. This protection isn't absolute—you can still be held personally liable for your own negligence or malpractice, which is why professional liability insurance (E&O insurance) is still critical. But for contract disputes, business debts, or third-party claims, the LLC shield protects everything you've built outside the business.
+            </p>
+          </div>
 
           <div className="grid md:grid-cols-2 gap-6">
             <div className="rounded-xl border border-red-200 bg-red-50 p-6">
@@ -368,28 +378,12 @@ export default function SoleProprietorVsLLCArticle() {
                 <Building2 className="h-6 w-6" />
                 Choose Sole Proprietor If:
               </h4>
-              <ul className="space-y-2">
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-slate-700">You're just testing a side hustle</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-slate-700">You're earning less than $30-50K annually</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-slate-700">Your work is low-risk (writing, design, coaching)</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-slate-700">You have professional liability insurance</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-slate-700">You want to minimize paperwork and costs</span>
-                </li>
-              </ul>
+              <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                Sole proprietorship makes sense when you're just testing a side hustle or earning less than $30-50K annually. It's perfect for low-risk work like writing, graphic design, or coaching—services where the likelihood of being sued is minimal. If you already carry professional liability insurance (which covers malpractice), the urgency for LLC protection decreases further. The beauty of sole proprietorship is simplicity: zero setup costs, minimal paperwork, and you can start invoicing clients tomorrow.
+              </p>
+              <p className="text-sm text-slate-700 leading-relaxed">
+                The tradeoff is risk. If you're earning $20K on the side and have no significant assets, the personal liability exposure is manageable. But if you own a home with equity, have substantial savings, or are building wealth through investments, you're gambling that nothing goes wrong. For many early-stage consultants, that bet makes sense—use the $800 you'd spend on LLC fees for marketing instead and grow faster.
+              </p>
             </div>
 
             <div className="rounded-xl border-2 border-emerald-200 bg-emerald-50 p-6">
@@ -397,32 +391,12 @@ export default function SoleProprietorVsLLCArticle() {
                 <Shield className="h-6 w-6" />
                 Choose LLC If:
               </h4>
-              <ul className="space-y-2">
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-emerald-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-slate-700">You're earning $50K+ annually</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-emerald-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-slate-700">Your work involves liability risk (engineering, financial advice, etc.)</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-emerald-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-slate-700">You own significant personal assets to protect</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-emerald-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-slate-700">You work with high-value clients or contracts</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-emerald-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-slate-700">You plan to grow and hire employees eventually</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-emerald-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm text-slate-700">You want a more professional image</span>
-                </li>
-              </ul>
+              <p className="text-sm text-slate-700 leading-relaxed mb-3">
+                Form an LLC once you're earning $50K+ annually or your work involves meaningful liability risk. If you're doing engineering consulting, giving financial advice, handling sensitive client data, or working with high-value contracts ($50K+ projects), the liability exposure becomes real. One lawsuit could wipe out everything you've built—your home equity, retirement accounts, investment portfolio. The $150-900 annual cost of an LLC is cheap insurance against catastrophic loss.
+              </p>
+              <p className="text-sm text-slate-700 leading-relaxed">
+                LLCs also make sense if you plan to grow. Want to hire employees eventually? An LLC provides cleaner structure. Working with enterprise clients or government contracts? Many prefer or require working with formal business entities. The professional image matters more than most consultants think—"John Smith Consulting LLC" signals permanence and seriousness in ways "John Smith" doesn't. Once you have significant personal assets to protect or you're generating meaningful revenue, the LLC becomes a no-brainer.
+              </p>
             </div>
           </div>
         </section>
@@ -431,13 +405,17 @@ export default function SoleProprietorVsLLCArticle() {
         <section className="space-y-4">
           <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Decision Framework by Income Level</h2>
 
-          <div className="space-y-3">
+          <p className="text-slate-600 leading-relaxed">
+            The decision becomes clearer when you map it to income level. Below $30K annually, the math favors simplicity—stay as a sole proprietor and invest the LLC fees in growing your business. Between $30K-50K, you're in the gray zone where personal risk tolerance and asset protection needs drive the decision. Above $50K, the liability exposure and professional credibility make an LLC worth the cost. Above $100K, you should not only have an LLC but also be exploring S-Corp taxation to reduce self-employment taxes.
+          </p>
+
+          <div className="space-y-3 mt-4">
             <div className="p-5 rounded-xl bg-slate-50 border border-slate-200">
               <div className="flex items-center justify-between mb-2">
                 <h4 className="font-semibold text-slate-900">$0 - $30,000/year</h4>
                 <span className="text-sm font-medium text-blue-600">Sole Proprietor</span>
               </div>
-              <p className="text-sm text-slate-600">Stay simple. Use that $800 for marketing instead of LLC fees.</p>
+              <p className="text-sm text-slate-600">Stay simple. Use that $800 for marketing instead of LLC fees. At this income level, you're building momentum—don't slow down with unnecessary complexity.</p>
             </div>
 
             <div className="p-5 rounded-xl bg-gradient-to-r from-slate-50 to-emerald-50 border border-slate-200">
@@ -445,7 +423,7 @@ export default function SoleProprietorVsLLCArticle() {
                 <h4 className="font-semibold text-slate-900">$30,000 - $50,000/year</h4>
                 <span className="text-sm font-medium text-amber-600">Consider LLC</span>
               </div>
-              <p className="text-sm text-slate-600">Depends on your risk tolerance and whether you have assets to protect.</p>
+              <p className="text-sm text-slate-600">Depends on your risk tolerance and whether you have assets to protect. If you own a home or have substantial savings, lean toward LLC. If you're renting and building wealth, you can wait.</p>
             </div>
 
             <div className="p-5 rounded-xl bg-emerald-50 border border-emerald-200">
@@ -453,7 +431,7 @@ export default function SoleProprietorVsLLCArticle() {
                 <h4 className="font-semibold text-slate-900">$50,000 - $100,000/year</h4>
                 <span className="text-sm font-medium text-emerald-600">Form LLC</span>
               </div>
-              <p className="text-sm text-slate-600">The liability protection is worth it at this income level.</p>
+              <p className="text-sm text-slate-600">The liability protection is worth it at this income level. You're generating real revenue and likely have assets worth protecting. Make it official.</p>
             </div>
 
             <div className="p-5 rounded-xl bg-gradient-to-r from-emerald-50 to-purple-50 border border-emerald-200">
@@ -461,7 +439,7 @@ export default function SoleProprietorVsLLCArticle() {
                 <h4 className="font-semibold text-slate-900">$100,000+/year</h4>
                 <span className="text-sm font-medium text-purple-600">LLC + Consider S-Corp</span>
               </div>
-              <p className="text-sm text-slate-600">Form an LLC and consider S-Corp election to save on self-employment taxes.</p>
+              <p className="text-sm text-slate-600">Form an LLC and talk to a CPA about S-Corp election. At six figures, the self-employment tax savings from S-Corp (typically $3,000-8,000 annually) more than pay for the additional accounting costs.</p>
             </div>
           </div>
         </section>
@@ -470,7 +448,15 @@ export default function SoleProprietorVsLLCArticle() {
         <section className="space-y-4">
           <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Ongoing Maintenance Requirements</h2>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <p className="text-slate-600 leading-relaxed">
+            Beyond the initial setup, both structures require ongoing maintenance—but the LLC adds a few extra layers. As a sole proprietor, you're looking at about 5 hours per year of compliance work: file Schedule C with your tax return, track business expenses throughout the year, keep records for at least 3 years, and make quarterly estimated tax payments. That's it. No annual filings, no state reports, no formal meetings.
+          </p>
+
+          <p className="text-slate-600 leading-relaxed">
+            An LLC requires everything above plus annual state filings (in most states), maintaining a completely separate business bank account to preserve liability protection, and potentially keeping meeting minutes if you have multiple members. Some states require updating your operating agreement when ownership or business activities change. Total time commitment increases to 8-10 hours per year, plus the annual fees ($0-800 depending on state). The difference isn't huge, but it's real—an LLC means you're committing to slightly more administrative overhead in exchange for legal protection.
+          </p>
+
+          <div className="grid md:grid-cols-2 gap-6 mt-4">
             <div className="rounded-xl border border-slate-200 bg-slate-50 p-5">
               <h4 className="font-semibold text-slate-900 mb-3">Sole Proprietor</h4>
               <ul className="space-y-2 text-sm text-slate-600">
@@ -478,7 +464,7 @@ export default function SoleProprietorVsLLCArticle() {
                 <li>• Track business expenses</li>
                 <li>• Keep business records 3+ years</li>
                 <li>• Make quarterly tax payments</li>
-                <li className="text-emerald-600 font-medium">Total time: ~5 hours/year</li>
+                <li className="text-emerald-600 font-medium mt-3">Total time: ~5 hours/year</li>
               </ul>
             </div>
 
@@ -490,7 +476,7 @@ export default function SoleProprietorVsLLCArticle() {
                 <li>• Maintain separate business bank account</li>
                 <li>• Keep meeting minutes (if multi-member)</li>
                 <li>• Update operating agreement as needed</li>
-                <li className="text-amber-600 font-medium">Total time: ~8-10 hours/year</li>
+                <li className="text-amber-600 font-medium mt-3">Total time: ~8-10 hours/year</li>
               </ul>
             </div>
           </div>
@@ -534,29 +520,16 @@ export default function SoleProprietorVsLLCArticle() {
         {/* Key Takeaways */}
         <section className="space-y-4">
           <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Key Takeaways</h2>
-          <div className="rounded-xl border border-emerald-500/30 bg-emerald-50 p-6">
-            <ul className="space-y-3">
-              <li className="flex items-start gap-3">
-                <span className="text-emerald-600 font-bold">1.</span>
-                <span className="text-slate-700">LLC doesn't automatically save taxes—it provides liability protection</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-emerald-600 font-bold">2.</span>
-                <span className="text-slate-700">Start as sole proprietor if you're earning under $30-50K</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-emerald-600 font-bold">3.</span>
-                <span className="text-slate-700">Form an LLC once you hit $50K+ or have assets to protect</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-emerald-600 font-bold">4.</span>
-                <span className="text-slate-700">Consider S-Corp election at $80-100K+ to save on self-employment taxes</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-emerald-600 font-bold">5.</span>
-                <span className="text-slate-700">Get professional liability insurance regardless of structure</span>
-              </li>
-            </ul>
+          <div className="rounded-xl border border-emerald-500/30 bg-emerald-50 p-6 space-y-3">
+            <p className="text-slate-700 leading-relaxed">
+              The most important thing to understand: an LLC doesn't automatically save you taxes—it provides liability protection. By default, a single-member LLC pays identical taxes to a sole proprietor (15.3% self-employment tax + income tax). The tax benefits only appear if you elect S-Corp taxation, and that election is available whether you're a sole proprietor or LLC.
+            </p>
+            <p className="text-slate-700 leading-relaxed">
+              Start as a sole proprietor if you're earning under $30-50K annually. The simplicity and zero costs make it perfect for testing ideas and building momentum. Form an LLC once you hit $50K+ in revenue or accumulate significant personal assets worth protecting—at that point, the $150-900 annual cost is cheap insurance against catastrophic liability. Once you're generating $80-100K+, talk to a CPA about S-Corp election, which can save $3,000-8,000 annually in self-employment taxes.
+            </p>
+            <p className="text-slate-700 leading-relaxed">
+              Regardless of structure, get professional liability insurance (E&O insurance). An LLC protects against business debts and third-party claims, but it doesn't shield you from liability for your own negligence or malpractice. Insurance fills that gap and costs $500-2,000 per year depending on your field. Combined with the right business structure, you create comprehensive protection for both your business and personal wealth.
+            </p>
           </div>
         </section>
 
