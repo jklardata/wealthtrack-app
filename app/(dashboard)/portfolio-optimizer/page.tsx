@@ -795,7 +795,6 @@ function TaxLocationStrategyCard({
           </p>
         </div>
       </CardHeader>
-      </CardHeader>
       <CardContent className="space-y-6">
         {/* Summary Cards */}
         <div className="grid grid-cols-2 gap-4">
