@@ -506,7 +506,13 @@ export default function GeoArbitragePage() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <Skeleton className="h-10 w-64" />
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
+            <Globe className="h-6 w-6 sm:h-7 sm:w-7 text-primary flex-shrink-0" />
+            <span className="leading-tight">Geographic Arbitrage</span>
+          </h1>
+          <p className="text-sm sm:text-base text-muted-foreground mt-1">Loading comparison data...</p>
+        </div>
         <Skeleton className="h-[600px]" />
       </div>
     );
@@ -518,9 +524,9 @@ export default function GeoArbitragePage() {
       <div>
         <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
           <Globe className="h-6 w-6 sm:h-7 sm:w-7 text-primary flex-shrink-0" />
-          Geographic Arbitrage
+          <span className="leading-tight">Geographic Arbitrage</span>
         </h1>
-        <p className="text-sm sm:text-base text-muted-foreground mt-2">
+        <p className="text-sm sm:text-base text-muted-foreground mt-1">
           Compare cities to find where your money goes furthest. Geographic arbitrage means
           living in a lower cost-of-living area while earning income based on higher-cost markets.
         </p>

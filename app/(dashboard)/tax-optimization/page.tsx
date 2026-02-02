@@ -1330,8 +1330,11 @@ export default function TaxOptimizationPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold">Tax Optimization</h1>
-          <p className="text-muted-foreground">Loading your tax data...</p>
+          <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
+            <Calculator className="h-6 w-6 sm:h-7 sm:w-7 text-primary flex-shrink-0" />
+            <span className="leading-tight">Tax Optimization</span>
+          </h1>
+          <p className="text-sm sm:text-base text-muted-foreground mt-1">Loading your tax data...</p>
         </div>
         <div className="grid gap-6">
           <Skeleton className="h-64" />
@@ -1346,7 +1349,10 @@ export default function TaxOptimizationPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold">Tax Optimization</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
+            <Calculator className="h-6 w-6 sm:h-7 sm:w-7 text-primary flex-shrink-0" />
+            <span className="leading-tight">Tax Optimization</span>
+          </h1>
         </div>
         <Card>
           <CardContent className="py-8 text-center">
@@ -1363,8 +1369,11 @@ export default function TaxOptimizationPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold">Tax Optimization</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
+            <Calculator className="h-6 w-6 sm:h-7 sm:w-7 text-primary flex-shrink-0" />
+            <span className="leading-tight">Tax Optimization</span>
+          </h1>
+          <p className="text-sm sm:text-base text-muted-foreground mt-1">
             Insights and modeling for self-employed tax planning
           </p>
         </div>
@@ -1378,8 +1387,11 @@ export default function TaxOptimizationPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold">Tax Optimization</h1>
-        <p className="text-muted-foreground">
+        <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
+          <Calculator className="h-6 w-6 sm:h-7 sm:w-7 text-primary flex-shrink-0" />
+          <span className="leading-tight">Tax Optimization</span>
+        </h1>
+        <p className="text-sm sm:text-base text-muted-foreground mt-1">
           Insights and modeling for self-employed tax planning
         </p>
       </div>

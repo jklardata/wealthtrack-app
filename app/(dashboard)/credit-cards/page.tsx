@@ -638,9 +638,12 @@ export default function CreditCardsPage() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <Skeleton className="h-8 w-32" />
-          <Skeleton className="h-10 w-28" />
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
+            <CreditCardIcon className="h-6 w-6 sm:h-7 sm:w-7 text-primary flex-shrink-0" />
+            <span className="leading-tight">Credit Cards</span>
+          </h1>
+          <p className="text-sm sm:text-base text-muted-foreground mt-1">Loading your cards...</p>
         </div>
         <div className="grid gap-4 md:grid-cols-4">
           {[...Array(4)].map((_, i) => (
@@ -658,9 +661,20 @@ export default function CreditCardsPage() {
 
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center h-[400px] text-center">
-        <p className="text-destructive mb-4">{error}</p>
-        <Button onClick={() => window.location.reload()}>Try Again</Button>
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
+            <CreditCardIcon className="h-6 w-6 sm:h-7 sm:w-7 text-primary flex-shrink-0" />
+            <span className="leading-tight">Credit Cards</span>
+          </h1>
+        </div>
+        <Card>
+          <CardContent className="py-8 text-center">
+            <AlertCircle className="h-12 w-12 mx-auto mb-4 text-red-500" />
+            <p className="text-destructive mb-4">{error}</p>
+            <Button onClick={() => window.location.reload()}>Try Again</Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }
@@ -695,8 +709,11 @@ export default function CreditCardsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold">Credit Cards</h1>
-          <p className="text-base text-muted-foreground mt-1">
+          <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
+            <CreditCardIcon className="h-6 w-6 sm:h-7 sm:w-7 text-primary flex-shrink-0" />
+            <span className="leading-tight">Credit Cards</span>
+          </h1>
+          <p className="text-sm sm:text-base text-muted-foreground mt-1">
             Track your cards and sign-up bonus progress
           </p>
         </div>
