@@ -89,65 +89,63 @@ export default function BlogPage() {
   const regularArticles = ARTICLES.filter((a) => !a.featured);
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-slate-50">
       {/* Nav */}
-      <nav className="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
-        <Link href="/" className="text-xl font-medium tracking-tight">
-          SoloFI
-        </Link>
-        <div className="flex items-center gap-6">
-          <Link href="/tools/tax-savings" className="text-sm text-white/60 hover:text-white hidden md:block">
-            Free Tools
+      <nav className="bg-white border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+          <Link href="/" className="text-xl font-medium tracking-tight text-slate-900">
+            <span className="text-emerald-600">Solo</span>FI
           </Link>
-          <Link href="/dashboard">
-            <Button variant="outline" className="border-white/20 text-white hover:bg-white/10">
-              Get Started
-            </Button>
-          </Link>
+          <div className="flex items-center gap-6">
+            <Link href="/tools/tax-savings" className="text-sm text-slate-600 hover:text-slate-900 hidden md:block">
+              Free Tools
+            </Link>
+            <Link href="/dashboard">
+              <Button className="bg-emerald-600 text-white hover:bg-emerald-700">
+                Get Started
+              </Button>
+            </Link>
+          </div>
         </div>
       </nav>
 
       {/* Hero */}
-      <section className="max-w-7xl mx-auto px-6 py-16">
-        <div className="max-w-4xl">
-          <div className="inline-flex items-center gap-2 border border-white/20 px-4 py-2 rounded-full text-sm mb-8">
-            <Sparkles className="h-4 w-4 text-amber-400" />
-            <span className="text-white/70">Insights for the self-employed</span>
+      <section className="bg-gradient-to-br from-emerald-50 via-white to-slate-50 border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-6 py-16 md:py-24">
+          <div className="max-w-4xl">
+            <div className="inline-flex items-center gap-2 border border-emerald-200 bg-emerald-50 px-4 py-2 rounded-full text-sm mb-8">
+              <Sparkles className="h-4 w-4 text-emerald-600" />
+              <span className="text-slate-700">Insights for the self-employed</span>
+            </div>
+
+            <h1 className="text-5xl md:text-6xl font-medium tracking-tight mb-6 leading-[1.1] text-slate-900">
+              Resources & Insights
+            </h1>
+
+            <p className="text-xl text-slate-600 max-w-2xl">
+              Financial insights, tax strategies, and wealth-building tips for consultants, freelancers, and business owners.
+            </p>
           </div>
-
-          <h1 className="text-5xl md:text-6xl font-medium tracking-tight mb-6 leading-[1.1]">
-            The SoloFI{" "}
-            <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-              Blog
-            </span>
-          </h1>
-
-          <p className="text-xl text-white/60 max-w-2xl">
-            Financial insights, tax strategies, and wealth-building tips for consultants, freelancers, and business owners.
-          </p>
         </div>
       </section>
 
-      {/* Gradient divider */}
-      <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-
       {/* Featured Articles */}
-      <section className="py-16">
+      <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-sm font-medium text-white/40 uppercase tracking-wider mb-8">
+          <h2 className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-8">
             Featured
           </h2>
           <div className="grid md:grid-cols-2 gap-8">
             {featuredArticles.map((article) => (
               <Link key={article.slug} href={`/articles/${article.slug}`}>
-                <article className="group rounded-2xl border border-white/10 bg-white/5 overflow-hidden hover:border-white/20 transition-colors">
+                <article className="group rounded-2xl border border-slate-200 bg-white overflow-hidden hover:border-emerald-300 hover:shadow-lg transition-all">
                   <div className="relative h-56 overflow-hidden">
                     <img
                       src={article.image}
                       alt={article.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                     <div className="absolute top-4 left-4">
                       <span className={`text-xs font-medium text-white ${article.categoryColor} px-3 py-1 rounded-full`}>
                         {article.category}
@@ -155,13 +153,13 @@ export default function BlogPage() {
                     </div>
                   </div>
                   <div className="p-6">
-                    <h3 className="text-xl font-medium mb-3 group-hover:text-amber-400 transition-colors line-clamp-2">
+                    <h3 className="text-xl font-medium mb-3 text-slate-900 group-hover:text-emerald-600 transition-colors line-clamp-2">
                       {article.title}
                     </h3>
-                    <p className="text-white/60 mb-4 line-clamp-2">
+                    <p className="text-slate-600 mb-4 line-clamp-2">
                       {article.excerpt}
                     </p>
-                    <div className="flex items-center gap-4 text-sm text-white/40">
+                    <div className="flex items-center gap-4 text-sm text-slate-500">
                       <span>{article.date}</span>
                       <span className="flex items-center gap-1">
                         <Clock className="h-4 w-4" />
@@ -176,26 +174,23 @@ export default function BlogPage() {
         </div>
       </section>
 
-      {/* Gradient divider */}
-      <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-
       {/* All Articles */}
-      <section className="py-16">
+      <section className="py-16 bg-slate-50">
         <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-sm font-medium text-white/40 uppercase tracking-wider mb-8">
+          <h2 className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-8">
             All Articles
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {regularArticles.map((article) => (
               <Link key={article.slug} href={`/articles/${article.slug}`}>
-                <article className="group rounded-2xl border border-white/10 bg-white/5 overflow-hidden hover:border-white/20 transition-colors h-full">
+                <article className="group rounded-2xl border border-slate-200 bg-white overflow-hidden hover:border-emerald-300 hover:shadow-lg transition-all h-full">
                   <div className="relative h-40 overflow-hidden">
                     <img
                       src={article.image}
                       alt={article.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                     <div className="absolute top-3 left-3">
                       <span className={`text-xs font-medium text-white ${article.categoryColor} px-2 py-0.5 rounded-full`}>
                         {article.category}
@@ -203,10 +198,10 @@ export default function BlogPage() {
                     </div>
                   </div>
                   <div className="p-4">
-                    <h3 className="font-medium mb-2 group-hover:text-amber-400 transition-colors line-clamp-2 text-sm">
+                    <h3 className="font-medium mb-2 text-slate-900 group-hover:text-emerald-600 transition-colors line-clamp-2 text-sm">
                       {article.title}
                     </h3>
-                    <div className="flex items-center gap-3 text-xs text-white/40">
+                    <div className="flex items-center gap-3 text-xs text-slate-500">
                       <span>{article.date}</span>
                       <span className="flex items-center gap-1">
                         <Clock className="h-3 w-3" />
@@ -221,52 +216,49 @@ export default function BlogPage() {
         </div>
       </section>
 
-      {/* Gradient divider */}
-      <div className="h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-
       {/* Newsletter Section */}
-      <section className="py-24">
+      <section className="py-24 bg-white border-y border-slate-200">
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-3xl font-medium mb-4">
+          <h2 className="text-3xl font-medium mb-4 text-slate-900">
             Get financial insights in your inbox
           </h2>
-          <p className="text-white/60 mb-8">
+          <p className="text-slate-600 mb-8">
             Join 10,000+ self-employed professionals getting weekly tips on taxes, investing, and building wealth.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto">
             <input
               type="email"
               placeholder="you@example.com"
-              className="flex-1 px-4 py-3 bg-white/5 border border-white/20 rounded-lg focus:outline-none focus:border-white/40 text-white placeholder:text-white/40"
+              className="flex-1 px-4 py-3 bg-white border border-slate-300 rounded-lg focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 text-slate-900 placeholder:text-slate-400"
             />
-            <Button className="bg-white text-black hover:bg-white/90">
+            <Button className="bg-emerald-600 text-white hover:bg-emerald-700">
               Subscribe
             </Button>
           </div>
-          <p className="text-xs text-white/40 mt-4">
+          <p className="text-xs text-slate-500 mt-4">
             No spam. Unsubscribe anytime.
           </p>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 border-y border-white/10">
+      <section className="py-24 bg-gradient-to-br from-emerald-50 via-white to-slate-50">
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-4xl font-medium mb-6">
+          <h2 className="text-4xl font-medium mb-6 text-slate-900">
             Ready to optimize your finances?
           </h2>
-          <p className="text-white/60 mb-10 text-lg">
+          <p className="text-slate-600 mb-10 text-lg">
             SoloFI helps self-employed professionals track net worth, optimize taxes, and plan for financial independence.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/dashboard">
-              <Button size="lg" className="bg-white text-black hover:bg-white/90">
+              <Button size="lg" className="bg-emerald-600 text-white hover:bg-emerald-700">
                 Get Started Free
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
             <Link href="/tools/tax-savings">
-              <Button size="lg" variant="outline" className="border-white/20 text-white hover:bg-white/10">
+              <Button size="lg" variant="outline" className="border-slate-300 text-slate-700 hover:bg-slate-100">
                 Try Tax Calculator
               </Button>
             </Link>
@@ -275,40 +267,40 @@ export default function BlogPage() {
       </section>
 
       {/* Free Tools */}
-      <section className="py-16">
+      <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-sm font-medium text-white/40 uppercase tracking-wider mb-8">
+          <h2 className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-8">
             Free Tools
           </h2>
           <div className="grid md:grid-cols-5 gap-6">
             <Link href="/tools/tax-savings">
-              <div className="p-6 rounded-2xl border border-white/10 bg-white/5 hover:border-amber-500/50 transition-colors h-full">
-                <h3 className="font-medium mb-2">Tax Savings Calculator</h3>
-                <p className="text-sm text-white/60">Find your Solo 401k, S-Corp, and HSA opportunities.</p>
+              <div className="p-6 rounded-2xl border border-slate-200 bg-white hover:border-emerald-300 hover:shadow-lg transition-all h-full">
+                <h3 className="font-medium mb-2 text-slate-900">Tax Savings Calculator</h3>
+                <p className="text-sm text-slate-600">Find your Solo 401k, S-Corp, and HSA opportunities.</p>
               </div>
             </Link>
             <Link href="/tools/fi-calculator">
-              <div className="p-6 rounded-2xl border border-white/10 bg-white/5 hover:border-purple-500/50 transition-colors h-full">
-                <h3 className="font-medium mb-2">FI Calculator</h3>
-                <p className="text-sm text-white/60">Calculate your path to financial independence.</p>
+              <div className="p-6 rounded-2xl border border-slate-200 bg-white hover:border-emerald-300 hover:shadow-lg transition-all h-full">
+                <h3 className="font-medium mb-2 text-slate-900">FI Calculator</h3>
+                <p className="text-sm text-slate-600">Calculate your path to financial independence.</p>
               </div>
             </Link>
             <Link href="/tools/roth-conversion">
-              <div className="p-6 rounded-2xl border border-white/10 bg-white/5 hover:border-pink-500/50 transition-colors h-full">
-                <h3 className="font-medium mb-2">Roth Conversion Ladder</h3>
-                <p className="text-sm text-white/60">Access retirement funds before 59½.</p>
+              <div className="p-6 rounded-2xl border border-slate-200 bg-white hover:border-emerald-300 hover:shadow-lg transition-all h-full">
+                <h3 className="font-medium mb-2 text-slate-900">Roth Conversion Ladder</h3>
+                <p className="text-sm text-slate-600">Access retirement funds before 59½.</p>
               </div>
             </Link>
             <Link href="/tools/net-worth-quiz">
-              <div className="p-6 rounded-2xl border border-white/10 bg-white/5 hover:border-blue-500/50 transition-colors h-full">
-                <h3 className="font-medium mb-2">Net Worth Quiz</h3>
-                <p className="text-sm text-white/60">Assess your financial tracking habits.</p>
+              <div className="p-6 rounded-2xl border border-slate-200 bg-white hover:border-emerald-300 hover:shadow-lg transition-all h-full">
+                <h3 className="font-medium mb-2 text-slate-900">Net Worth Quiz</h3>
+                <p className="text-sm text-slate-600">Assess your financial tracking habits.</p>
               </div>
             </Link>
             <Link href="/tools/freelance-checklist">
-              <div className="p-6 rounded-2xl border border-white/10 bg-white/5 hover:border-green-500/50 transition-colors h-full">
-                <h3 className="font-medium mb-2">Freelance Checklist</h3>
-                <p className="text-sm text-white/60">First-year financial setup guide.</p>
+              <div className="p-6 rounded-2xl border border-slate-200 bg-white hover:border-emerald-300 hover:shadow-lg transition-all h-full">
+                <h3 className="font-medium mb-2 text-slate-900">Freelance Checklist</h3>
+                <p className="text-sm text-slate-600">First-year financial setup guide.</p>
               </div>
             </Link>
           </div>
@@ -316,13 +308,13 @@ export default function BlogPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/10 py-12">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-white/40">
+      <footer className="bg-slate-900 text-white py-12">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-slate-400">
           <span>© 2026 SoloFI</span>
           <div className="flex gap-6">
-            <Link href="/blog" className="hover:text-white">Blog</Link>
-            <Link href="/privacy" className="hover:text-white">Privacy</Link>
-            <Link href="/terms" className="hover:text-white">Terms</Link>
+            <Link href="/blog" className="hover:text-white transition-colors">Blog</Link>
+            <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
+            <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
           </div>
         </div>
       </footer>

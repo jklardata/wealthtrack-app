@@ -38,7 +38,7 @@ const navItems = [
   { href: "/tax-calculator", label: "Tax Calculator", icon: Receipt },
   { href: "/tax-optimization", label: "Tax Optimization", icon: Lightbulb },
   { href: "/geo-arbitrage", label: "Geo Arbitrage", icon: Globe },
-  { href: "/articles", label: "Resources", icon: BookOpen },
+  { href: "/blog", label: "Resources", icon: BookOpen },
   { href: "/award-programs", label: "Award Programs", icon: Award, disabled: true },
   { href: "/pricing", label: "Pricing", icon: Sparkles },
   { href: "/settings", label: "Settings", icon: Settings },
