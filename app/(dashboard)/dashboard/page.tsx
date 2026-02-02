@@ -577,10 +577,17 @@ export default function DashboardPage() {
                   <TrendingUp className="h-10 w-10 text-emerald-600" />
                 </div>
                 <h2 className="text-2xl font-semibold text-slate-900 mb-3">Start Your Financial Journey</h2>
-                <p className="text-base text-slate-600 mb-8 max-w-lg leading-relaxed">
-                  Add your first net worth entry to unlock powerful insights and start making data-driven financial decisions.
-                  Track your progress over time and see exactly where you stand.
-                </p>
+                <div className="text-base text-slate-600 mb-8 max-w-2xl leading-relaxed space-y-3">
+                  <p>
+                    Your net worth is the single most important number in personal finance. It's the difference between everything you own and everything you owe—your true financial position.
+                  </p>
+                  <p>
+                    As a self-employed professional, tracking your net worth monthly gives you clarity that income alone can't provide. You'll see if you're actually building wealth or just staying busy. Most consultants are surprised to discover they're earning well but not accumulating assets at the rate they should be.
+                  </p>
+                  <p className="font-medium text-slate-700">
+                    The simple act of measuring creates accountability. When you track it, you manage it. When you manage it, it grows.
+                  </p>
+                </div>
 
                 {/* Benefits Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 w-full">
