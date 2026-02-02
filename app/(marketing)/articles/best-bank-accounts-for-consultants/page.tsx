@@ -30,8 +30,8 @@ export default function BankAccountsArticle() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
         <div className="absolute bottom-6 left-6 right-6">
-          <span className="text-sm font-medium text-white bg-green-500 px-3 py-1 rounded-full">Banking</span>
-          <h1 className="text-3xl md:text-4xl font-bold text-white mt-3">Best Bank Accounts for Remote Workers and Independent Consultants</h1>
+          <span className="text-sm font-medium text-white bg-emerald-600 px-3 py-1 rounded-full">Banking</span>
+          <h1 className="text-3xl md:text-4xl font-medium text-slate-900 mt-3">Best Bank Accounts for Remote Workers and Independent Consultants</h1>
           <div className="flex items-center gap-4 mt-3 text-white/60 text-sm">
             <span className="flex items-center gap-1">
               <Calendar className="h-4 w-4" />
@@ -58,8 +58,8 @@ export default function BankAccountsArticle() {
           <p className="text-white/70 leading-relaxed">
             The gold standard for personal banking, especially if you travel internationally.
           </p>
-          <div className="rounded-xl border border-green-500/30 bg-green-500/10 p-6">
-            <h4 className="font-semibold mb-4 text-green-400 flex items-center gap-2">
+          <div className="rounded-xl border border-emerald-200 bg-emerald-600/10 p-6">
+            <h4 className="font-semibold mb-4 text-emerald-600 flex items-center gap-2">
               <Wallet className="h-5 w-5" />
               Why We Recommend It
             </h4>
@@ -103,8 +103,8 @@ export default function BankAccountsArticle() {
           <p className="text-white/70 leading-relaxed">
             Built specifically for startups and freelancers, Mercury offers a modern banking experience with powerful features.
           </p>
-          <div className="rounded-xl border border-blue-500/30 bg-blue-500/10 p-6">
-            <h4 className="font-semibold mb-4 text-blue-400 flex items-center gap-2">
+          <div className="rounded-xl border border-slate-200 bg-emerald-600/10 p-6">
+            <h4 className="font-semibold mb-4 text-slate-600 flex items-center gap-2">
               <CreditCard className="h-5 w-5" />
               Key Features
             </h4>
@@ -202,35 +202,35 @@ export default function BankAccountsArticle() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-white/10 bg-white/5">
-                  <th className="text-left p-4 font-semibold text-white">Bank</th>
-                  <th className="text-left p-4 font-semibold text-white">Best For</th>
-                  <th className="text-left p-4 font-semibold text-white">Monthly Fee</th>
-                  <th className="text-left p-4 font-semibold text-white">FX Fees</th>
+                  <th className="text-left p-4 font-medium text-slate-900">Bank</th>
+                  <th className="text-left p-4 font-medium text-slate-900">Best For</th>
+                  <th className="text-left p-4 font-medium text-slate-900">Monthly Fee</th>
+                  <th className="text-left p-4 font-medium text-slate-900">FX Fees</th>
                 </tr>
               </thead>
               <tbody>
                 <tr className="border-b border-white/10">
                   <td className="p-4 font-medium text-white">Schwab</td>
                   <td className="p-4 text-white/60">Personal/Travel</td>
-                  <td className="p-4 text-green-400 font-medium">$0</td>
-                  <td className="p-4 text-green-400 font-medium">None</td>
+                  <td className="p-4 text-emerald-600 font-medium">$0</td>
+                  <td className="p-4 text-emerald-600 font-medium">None</td>
                 </tr>
                 <tr className="border-b border-white/10">
                   <td className="p-4 font-medium text-white">Mercury</td>
                   <td className="p-4 text-white/60">Business</td>
-                  <td className="p-4 text-green-400 font-medium">$0</td>
+                  <td className="p-4 text-emerald-600 font-medium">$0</td>
                   <td className="p-4 text-white/60">1%</td>
                 </tr>
                 <tr className="border-b border-white/10">
                   <td className="p-4 font-medium text-white">Wise</td>
                   <td className="p-4 text-white/60">International</td>
-                  <td className="p-4 text-green-400 font-medium">$0</td>
+                  <td className="p-4 text-emerald-600 font-medium">$0</td>
                   <td className="p-4 text-white/60">0.4-1%</td>
                 </tr>
                 <tr>
                   <td className="p-4 font-medium text-white">Wealthfront</td>
                   <td className="p-4 text-white/60">Savings</td>
-                  <td className="p-4 text-green-400 font-medium">$0</td>
+                  <td className="p-4 text-emerald-600 font-medium">$0</td>
                   <td className="p-4 text-white/60">N/A</td>
                 </tr>
               </tbody>
@@ -246,30 +246,30 @@ export default function BankAccountsArticle() {
           </p>
           <div className="grid md:grid-cols-2 gap-4">
             <div className="rounded-xl border border-white/10 bg-white/5 overflow-hidden">
-              <div className="h-1.5 bg-blue-500" />
+              <div className="h-1.5 bg-emerald-600" />
               <div className="p-4">
-                <h4 className="font-semibold text-white">1. Mercury</h4>
+                <h4 className="font-medium text-slate-900">1. Mercury</h4>
                 <p className="text-sm text-white/60">Business checking and receiving client payments</p>
               </div>
             </div>
             <div className="rounded-xl border border-white/10 bg-white/5 overflow-hidden">
-              <div className="h-1.5 bg-green-500" />
+              <div className="h-1.5 bg-emerald-600" />
               <div className="p-4">
-                <h4 className="font-semibold text-white">2. Charles Schwab</h4>
+                <h4 className="font-medium text-slate-900">2. Charles Schwab</h4>
                 <p className="text-sm text-white/60">Personal checking and travel spending</p>
               </div>
             </div>
             <div className="rounded-xl border border-white/10 bg-white/5 overflow-hidden">
               <div className="h-1.5 bg-purple-500" />
               <div className="p-4">
-                <h4 className="font-semibold text-white">3. Wise</h4>
+                <h4 className="font-medium text-slate-900">3. Wise</h4>
                 <p className="text-sm text-white/60">International clients paying in their currency</p>
               </div>
             </div>
             <div className="rounded-xl border border-white/10 bg-white/5 overflow-hidden">
               <div className="h-1.5 bg-amber-500" />
               <div className="p-4">
-                <h4 className="font-semibold text-white">4. Wealthfront</h4>
+                <h4 className="font-medium text-slate-900">4. Wealthfront</h4>
                 <p className="text-sm text-white/60">Emergency fund and short-term savings</p>
               </div>
             </div>
@@ -306,7 +306,7 @@ export default function BankAccountsArticle() {
           <h3 className="text-xl font-bold mb-3">Ready to optimize your finances?</h3>
           <p className="text-white/60 mb-6">Download our free First Year Freelance Checklist.</p>
           <Link href="/tools/freelance-checklist">
-            <Button className="bg-white text-black hover:bg-white/90">
+            <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
               <Building2 className="mr-2 h-4 w-4" />
               Get Checklist
             </Button>

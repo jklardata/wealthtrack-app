@@ -30,8 +30,8 @@ export default function WorkingRemotelyArticle() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
         <div className="absolute bottom-6 left-6 right-6">
-          <span className="text-sm font-medium text-white bg-blue-500 px-3 py-1 rounded-full">Remote Work</span>
-          <h1 className="text-3xl md:text-4xl font-bold text-white mt-3">A US Guide for Working Remotely From Another Country</h1>
+          <span className="text-sm font-medium text-white bg-emerald-600 px-3 py-1 rounded-full">Remote Work</span>
+          <h1 className="text-3xl md:text-4xl font-medium text-slate-900 mt-3">A US Guide for Working Remotely From Another Country</h1>
           <div className="flex items-center gap-4 mt-3 text-white/60 text-sm">
             <span className="flex items-center gap-1">
               <Calendar className="h-4 w-4" />
@@ -60,21 +60,21 @@ export default function WorkingRemotelyArticle() {
           </p>
           <ul className="space-y-3 ml-4">
             <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
+              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
               <div>
                 <strong className="text-white">Foreign Earned Income Exclusion (FEIE)</strong>
                 <p className="text-white/60">Exclude up to $130,000 (2026) of foreign earned income from federal taxes</p>
               </div>
             </li>
             <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
+              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
               <div>
                 <strong className="text-white">Foreign Tax Credit (FTC)</strong>
                 <p className="text-white/60">Receive credit for taxes paid to foreign governments to avoid double taxation</p>
               </div>
             </li>
             <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
+              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
               <div>
                 <strong className="text-white">Foreign Housing Exclusion</strong>
                 <p className="text-white/60">Additional exclusion for qualified housing expenses while living abroad</p>
@@ -99,7 +99,7 @@ export default function WorkingRemotelyArticle() {
             To qualify for FEIE, you must be physically present in a foreign country for at least <strong className="text-white">330 full days</strong> during a 12-month period. Here's what you need to know:
           </p>
           <div className="rounded-xl border border-white/10 bg-white/5 p-6 space-y-3">
-            <h4 className="font-semibold text-white">Key Requirements</h4>
+            <h4 className="font-medium text-slate-900">Key Requirements</h4>
             <ul className="space-y-2 text-sm">
               <li className="text-white/70">• Days don't need to be consecutive</li>
               <li className="text-white/70">• The 12-month period can begin on any day</li>
@@ -108,10 +108,10 @@ export default function WorkingRemotelyArticle() {
               <li className="text-white/70">• A full day means the entire 24-hour period (midnight to midnight)</li>
             </ul>
           </div>
-          <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-4 flex gap-3">
+          <div className="rounded-xl border border-slate-200 bg-yellow-500/10 p-4 flex gap-3">
             <AlertTriangle className="h-5 w-5 text-yellow-500 flex-shrink-0 mt-0.5" />
             <div>
-              <h4 className="font-semibold text-yellow-400">Watch Out</h4>
+              <h4 className="font-semibold text-emerald-600">Watch Out</h4>
               <p className="text-sm text-white/60">A two-week trip home for the holidays could disqualify you if you're close to the 330-day threshold. Plan your US visits carefully and track every day.</p>
             </div>
           </div>
@@ -126,16 +126,16 @@ export default function WorkingRemotelyArticle() {
           <div className="grid md:grid-cols-2 gap-4">
             <div className="rounded-xl border border-white/10 bg-white/5 p-5">
               <div className="flex items-center gap-2 mb-3">
-                <MapPin className="h-5 w-5 text-blue-400" />
-                <h4 className="font-semibold text-white">Digital Nomad Visas</h4>
+                <MapPin className="h-5 w-5 text-slate-600" />
+                <h4 className="font-medium text-slate-900">Digital Nomad Visas</h4>
               </div>
               <p className="text-sm text-white/60 mb-3">Portugal, Spain, Croatia, Estonia, and 50+ other countries now offer specific visas for remote workers.</p>
               <p className="text-xs text-white/40">Duration: 1-2 years typically</p>
             </div>
             <div className="rounded-xl border border-white/10 bg-white/5 p-5">
               <div className="flex items-center gap-2 mb-3">
-                <MapPin className="h-5 w-5 text-green-400" />
-                <h4 className="font-semibold text-white">Freelancer Visas</h4>
+                <MapPin className="h-5 w-5 text-emerald-600" />
+                <h4 className="font-medium text-slate-900">Freelancer Visas</h4>
               </div>
               <p className="text-sm text-white/60 mb-3">Germany, Netherlands, and other countries have self-employment visas for freelancers and consultants.</p>
               <p className="text-xs text-white/40">Duration: 1-3 years typically</p>
@@ -152,7 +152,7 @@ export default function WorkingRemotelyArticle() {
                 <img src="https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=400&h=200&fit=crop" alt="Lisbon Portugal" className="w-full h-full object-cover" />
               </div>
               <div className="p-4">
-                <h4 className="font-semibold text-white">Portugal</h4>
+                <h4 className="font-medium text-slate-900">Portugal</h4>
                 <p className="text-sm text-white/60">D7 visa, NHR tax regime (10% flat tax for 10 years), thriving tech scene in Lisbon and Porto</p>
               </div>
             </div>
@@ -161,7 +161,7 @@ export default function WorkingRemotelyArticle() {
                 <img src="https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?w=400&h=200&fit=crop" alt="Mexico City" className="w-full h-full object-cover" />
               </div>
               <div className="p-4">
-                <h4 className="font-semibold text-white">Mexico</h4>
+                <h4 className="font-medium text-slate-900">Mexico</h4>
                 <p className="text-sm text-white/60">180-day tourist visa, same time zones as US, low cost of living, excellent internet</p>
               </div>
             </div>
@@ -170,7 +170,7 @@ export default function WorkingRemotelyArticle() {
                 <img src="https://images.unsplash.com/photo-1528181304800-259b08848526?w=400&h=200&fit=crop" alt="Thailand" className="w-full h-full object-cover" />
               </div>
               <div className="p-4">
-                <h4 className="font-semibold text-white">Thailand</h4>
+                <h4 className="font-medium text-slate-900">Thailand</h4>
                 <p className="text-sm text-white/60">New LTR visa for remote workers, extremely affordable, excellent infrastructure in Bangkok/Chiang Mai</p>
               </div>
             </div>
@@ -179,7 +179,7 @@ export default function WorkingRemotelyArticle() {
                 <img src="https://images.unsplash.com/photo-1518638150340-f706e86654de?w=400&h=200&fit=crop" alt="Medellin Colombia" className="w-full h-full object-cover" />
               </div>
               <div className="p-4">
-                <h4 className="font-semibold text-white">Colombia</h4>
+                <h4 className="font-medium text-slate-900">Colombia</h4>
                 <p className="text-sm text-white/60">Digital nomad visa available, Medellin's perfect weather, growing expat community</p>
               </div>
             </div>
@@ -194,21 +194,21 @@ export default function WorkingRemotelyArticle() {
           </p>
           <ul className="space-y-3 ml-4">
             <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0" />
+              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
               <div>
                 <strong className="text-white">Charles Schwab Investor Checking</strong>
                 <p className="text-white/60">No foreign transaction fees, unlimited ATM rebates worldwide</p>
               </div>
             </li>
             <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0" />
+              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
               <div>
                 <strong className="text-white">Wise (formerly TransferWise)</strong>
                 <p className="text-white/60">Multi-currency account with real exchange rates, local bank details in 10+ currencies</p>
               </div>
             </li>
             <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0" />
+              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
               <div>
                 <strong className="text-white">Mercury</strong>
                 <p className="text-white/60">Business banking with international wire support and no monthly fees</p>
@@ -251,7 +251,7 @@ export default function WorkingRemotelyArticle() {
           <h3 className="text-xl font-bold mb-3">Planning to work abroad?</h3>
           <p className="text-white/60 mb-6">Explore how geo-arbitrage can maximize your financial independence.</p>
           <Link href="/geo-arbitrage">
-            <Button className="bg-white text-black hover:bg-white/90">
+            <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
               <Globe className="mr-2 h-4 w-4" />
               Explore Geo Arbitrage
             </Button>

@@ -30,7 +30,7 @@ export default function TaxStrategiesArticle() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
         <div className="absolute bottom-6 left-6 right-6">
           <span className="text-sm font-medium text-white bg-purple-500 px-3 py-1 rounded-full">Taxes</span>
-          <h1 className="text-3xl md:text-4xl font-bold text-white mt-3">Tax Strategies in 2026 for Self-Employed Workers</h1>
+          <h1 className="text-3xl md:text-4xl font-medium text-slate-900 mt-3">Tax Strategies in 2026 for Self-Employed Workers</h1>
           <div className="flex items-center gap-4 mt-3 text-white/60 text-sm">
             <span className="flex items-center gap-1">
               <Calendar className="h-4 w-4" />
@@ -52,10 +52,10 @@ export default function TaxStrategiesArticle() {
         </p>
 
         {/* Disclaimer */}
-        <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-4 flex gap-3">
+        <div className="rounded-xl border border-slate-200 bg-yellow-500/10 p-4 flex gap-3">
           <AlertTriangle className="h-5 w-5 text-yellow-500 flex-shrink-0 mt-0.5" />
           <div>
-            <h4 className="font-semibold text-yellow-400">Disclaimer</h4>
+            <h4 className="font-semibold text-emerald-600">Disclaimer</h4>
             <p className="text-sm text-white/60">This article is for educational purposes only. Consult a qualified CPA or tax professional for advice specific to your situation.</p>
           </div>
         </div>
@@ -67,8 +67,8 @@ export default function TaxStrategiesArticle() {
             The single most impactful tax strategy for profitable freelancers. By electing S-Corp status, you can save 15.3% self-employment tax on a portion of your income.
           </p>
 
-          <div className="rounded-xl border border-green-500/30 bg-green-500/10 p-6">
-            <h4 className="font-semibold mb-3 text-green-400 flex items-center gap-2">
+          <div className="rounded-xl border border-emerald-200 bg-emerald-600/10 p-6">
+            <h4 className="font-semibold mb-3 text-emerald-600 flex items-center gap-2">
               <DollarSign className="h-5 w-5" />
               Example Savings
             </h4>
@@ -98,15 +98,15 @@ export default function TaxStrategiesArticle() {
           <h3 className="text-lg font-semibold mt-6 text-white">When to Consider It</h3>
           <ul className="space-y-2 ml-4">
             <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
+              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
               <span className="text-white/70">Consistent profit over $80-100K annually</span>
             </li>
             <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
+              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
               <span className="text-white/70">Willing to run payroll (services like Gusto make this easy)</span>
             </li>
             <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
+              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
               <span className="text-white/70">Comfortable with additional compliance requirements</span>
             </li>
           </ul>
@@ -140,12 +140,12 @@ export default function TaxStrategiesArticle() {
                 <p className="text-xs text-white/40">($31,000 if 50+)</p>
               </div>
               <div className="text-center p-4 bg-white/5 rounded-xl border border-white/10">
-                <p className="text-2xl font-bold text-blue-400">25%</p>
+                <p className="text-2xl font-bold text-slate-600">25%</p>
                 <p className="text-xs text-white/60">Employer Contribution</p>
                 <p className="text-xs text-white/40">of net SE income</p>
               </div>
               <div className="text-center p-4 bg-white/5 rounded-xl border border-white/10">
-                <p className="text-2xl font-bold text-green-400">$70,000</p>
+                <p className="text-2xl font-bold text-emerald-600">$70,000</p>
                 <p className="text-xs text-white/60">Total Maximum</p>
                 <p className="text-xs text-white/40">($77,500 if 50+)</p>
               </div>
@@ -186,11 +186,11 @@ export default function TaxStrategiesArticle() {
           </p>
           <ul className="space-y-3 ml-4">
             <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0" />
+              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
               <span className="text-white/70">Available to pass-through entities (sole props, S-Corps, partnerships)</span>
             </li>
             <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0" />
+              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
               <span className="text-white/70">Phase-out begins at $191,950 single / $383,900 married (2026)</span>
             </li>
             <li className="flex items-start gap-3">
@@ -208,15 +208,15 @@ export default function TaxStrategiesArticle() {
           </p>
           <ul className="space-y-3 ml-4">
             <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
+              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
               <span className="text-white/70">Deducted from gross income (above the line)</span>
             </li>
             <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
+              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
               <span className="text-white/70">Includes medical, dental, and long-term care insurance</span>
             </li>
             <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
+              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
               <span className="text-white/70">HSA contributions provide additional tax benefits</span>
             </li>
           </ul>
@@ -237,7 +237,7 @@ export default function TaxStrategiesArticle() {
             <div className="rounded-xl border border-white/10 bg-white/5 p-5">
               <h4 className="font-semibold mb-2 text-white">Actual Expenses</h4>
               <p className="text-sm text-white/60">Percentage of rent/mortgage, utilities, insurance based on square footage</p>
-              <p className="text-lg font-bold text-green-400 mt-2">Often higher</p>
+              <p className="text-lg font-bold text-emerald-600 mt-2">Often higher</p>
             </div>
           </div>
         </section>
@@ -252,19 +252,19 @@ export default function TaxStrategiesArticle() {
             <h4 className="font-semibold mb-4 text-white">2026 Deadlines</h4>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
               <div className="p-3 bg-white/5 rounded-xl border border-white/10">
-                <p className="font-semibold text-white">Q1</p>
+                <p className="font-medium text-slate-900">Q1</p>
                 <p className="text-sm text-white/60">April 15, 2026</p>
               </div>
               <div className="p-3 bg-white/5 rounded-xl border border-white/10">
-                <p className="font-semibold text-white">Q2</p>
+                <p className="font-medium text-slate-900">Q2</p>
                 <p className="text-sm text-white/60">June 15, 2026</p>
               </div>
               <div className="p-3 bg-white/5 rounded-xl border border-white/10">
-                <p className="font-semibold text-white">Q3</p>
+                <p className="font-medium text-slate-900">Q3</p>
                 <p className="text-sm text-white/60">Sept 15, 2026</p>
               </div>
               <div className="p-3 bg-white/5 rounded-xl border border-white/10">
-                <p className="font-semibold text-white">Q4</p>
+                <p className="font-medium text-slate-900">Q4</p>
                 <p className="text-sm text-white/60">Jan 15, 2027</p>
               </div>
             </div>
@@ -350,7 +350,7 @@ export default function TaxStrategiesArticle() {
           <h3 className="text-xl font-bold mb-3">Ready to optimize your taxes?</h3>
           <p className="text-white/60 mb-6">Use our free Tax Savings Calculator to find your opportunities.</p>
           <Link href="/tools/tax-savings">
-            <Button className="bg-white text-black hover:bg-white/90">
+            <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
               <Calculator className="mr-2 h-4 w-4" />
               Try Tax Calculator
             </Button>

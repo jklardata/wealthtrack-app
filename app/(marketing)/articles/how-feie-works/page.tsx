@@ -31,7 +31,7 @@ export default function FEIEArticle() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
         <div className="absolute bottom-6 left-6 right-6">
           <span className="text-sm font-medium text-white bg-cyan-500 px-3 py-1 rounded-full">Tax Planning</span>
-          <h1 className="text-3xl md:text-4xl font-bold text-white mt-3">How the Foreign Earned Income Exclusion (FEIE) Works</h1>
+          <h1 className="text-3xl md:text-4xl font-medium text-slate-900 mt-3">How the Foreign Earned Income Exclusion (FEIE) Works</h1>
           <div className="flex items-center gap-4 mt-3 text-white/60 text-sm">
             <span className="flex items-center gap-1">
               <Calendar className="h-4 w-4" />
@@ -81,26 +81,26 @@ export default function FEIEArticle() {
             FEIE applies only to income earned from personal services performed in a foreign country:
           </p>
           <div className="grid md:grid-cols-2 gap-4">
-            <div className="rounded-xl border border-green-500/30 bg-green-500/10 p-5">
-              <h4 className="font-semibold text-green-400 mb-4 flex items-center gap-2">
+            <div className="rounded-xl border border-emerald-200 bg-emerald-600/10 p-5">
+              <h4 className="font-semibold text-emerald-600 mb-4 flex items-center gap-2">
                 <Check className="h-5 w-5" />
                 Qualifies
               </h4>
               <ul className="space-y-3">
                 <li className="flex items-center gap-2 text-sm">
-                  <span className="w-2 h-2 bg-green-500 rounded-full flex-shrink-0" />
+                  <span className="w-2 h-2 bg-emerald-600 rounded-full flex-shrink-0" />
                   <span className="text-white/70">Consulting fees earned abroad</span>
                 </li>
                 <li className="flex items-center gap-2 text-sm">
-                  <span className="w-2 h-2 bg-green-500 rounded-full flex-shrink-0" />
+                  <span className="w-2 h-2 bg-emerald-600 rounded-full flex-shrink-0" />
                   <span className="text-white/70">Freelance income for work done abroad</span>
                 </li>
                 <li className="flex items-center gap-2 text-sm">
-                  <span className="w-2 h-2 bg-green-500 rounded-full flex-shrink-0" />
+                  <span className="w-2 h-2 bg-emerald-600 rounded-full flex-shrink-0" />
                   <span className="text-white/70">Salary from foreign employer</span>
                 </li>
                 <li className="flex items-center gap-2 text-sm">
-                  <span className="w-2 h-2 bg-green-500 rounded-full flex-shrink-0" />
+                  <span className="w-2 h-2 bg-emerald-600 rounded-full flex-shrink-0" />
                   <span className="text-white/70">Self-employment income earned abroad</span>
                 </li>
               </ul>
@@ -153,44 +153,44 @@ export default function FEIEArticle() {
           </p>
 
           <h3 className="text-lg font-semibold mt-6 flex items-center gap-2 text-white">
-            <Globe className="h-5 w-5 text-blue-400" />
+            <Globe className="h-5 w-5 text-slate-600" />
             1. Physical Presence Test
           </h3>
           <p className="text-white/70 leading-relaxed">
             Be physically present in a foreign country for at least <strong className="text-white">330 full days</strong> during any 12-month period.
           </p>
           <div className="rounded-xl border border-white/10 bg-white/5 p-6 space-y-3">
-            <h4 className="font-semibold text-white">Key Requirements</h4>
+            <h4 className="font-medium text-slate-900">Key Requirements</h4>
             <ul className="space-y-2 text-sm">
               <li className="flex items-start gap-2">
-                <span className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
+                <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
                 <span className="text-white/70">Days don't need to be consecutive</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
+                <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
                 <span className="text-white/70">The 12-month period can start on any day</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
+                <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
                 <span className="text-white/70">Parts of days don't count—you need 330 full 24-hour periods</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0" />
+                <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
                 <span className="text-white/70">Days in international waters/airspace don't count</span>
               </li>
             </ul>
           </div>
 
-          <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-4 flex gap-3">
+          <div className="rounded-xl border border-slate-200 bg-yellow-500/10 p-4 flex gap-3">
             <AlertTriangle className="h-5 w-5 text-yellow-500 flex-shrink-0 mt-0.5" />
             <div>
-              <h4 className="font-semibold text-yellow-400">Important</h4>
+              <h4 className="font-semibold text-emerald-600">Important</h4>
               <p className="text-sm text-white/60">Days spent in the US count against you. A two-week Christmas visit home could disqualify you if you're close to the 330-day threshold.</p>
             </div>
           </div>
 
           <h3 className="text-lg font-semibold mt-6 flex items-center gap-2 text-white">
-            <Globe className="h-5 w-5 text-green-400" />
+            <Globe className="h-5 w-5 text-emerald-600" />
             2. Bona Fide Residence Test
           </h3>
           <p className="text-white/70 leading-relaxed">
@@ -198,19 +198,19 @@ export default function FEIEArticle() {
           </p>
           <ul className="space-y-3 ml-4">
             <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0" />
+              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
               <span className="text-white/70">More flexible than physical presence test</span>
             </li>
             <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0" />
+              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
               <span className="text-white/70">Can spend time in the US without losing qualification</span>
             </li>
             <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0" />
+              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
               <span className="text-white/70">Requires establishing actual residency (visa, local ties, etc.)</span>
             </li>
             <li className="flex items-start gap-3">
-              <span className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0" />
+              <span className="w-2 h-2 bg-emerald-600 rounded-full mt-2 flex-shrink-0" />
               <span className="text-white/70">Must be resident for full calendar year to qualify</span>
             </li>
           </ul>
@@ -281,10 +281,10 @@ export default function FEIEArticle() {
               <p className="text-sm text-white/60">Better if you pay <strong className="text-white">significant foreign taxes</strong></p>
             </div>
           </div>
-          <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-4 flex gap-3">
+          <div className="rounded-xl border border-slate-200 bg-yellow-500/10 p-4 flex gap-3">
             <AlertTriangle className="h-5 w-5 text-yellow-500 flex-shrink-0 mt-0.5" />
             <div>
-              <h4 className="font-semibold text-yellow-400">5-Year Rule</h4>
+              <h4 className="font-semibold text-emerald-600">5-Year Rule</h4>
               <p className="text-sm text-white/60">You can revoke FEIE election, but there's a 5-year waiting period to re-elect. Choose carefully.</p>
             </div>
           </div>
@@ -369,7 +369,7 @@ export default function FEIEArticle() {
           <h3 className="text-xl font-bold mb-3">Planning to work abroad?</h3>
           <p className="text-white/60 mb-6">Use our Tax Savings Calculator to estimate your potential savings.</p>
           <Link href="/tools/tax-savings">
-            <Button className="bg-white text-black hover:bg-white/90">
+            <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
               <Calculator className="mr-2 h-4 w-4" />
               Calculate Savings
             </Button>
