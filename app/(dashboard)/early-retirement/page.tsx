@@ -103,8 +103,8 @@ export default function EarlyRetirementPage() {
   const [targetRetirementAge, setTargetRetirementAge] = useState(50);
   const [currentPortfolio, setCurrentPortfolio] = useState(500000);
   const [annualIncome, setAnnualIncome] = useState(150000);
-  const [annualExpenses, setAnnualExpenses] = useState(80000); // 2026 US average ~$80k
-  const [annualSavings, setAnnualSavings] = useState(70000);
+  const [annualExpenses, setAnnualExpenses] = useState(60000);
+  const [annualSavings, setAnnualSavings] = useState(0);
 
   // Assumptions
   const [withdrawalRate, setWithdrawalRate] = useState(4);
@@ -532,7 +532,7 @@ function FIReadinessDashboard({
                     i <= currentIndex ? "bg-emerald-600" : "bg-muted"
                   } ${i === currentIndex ? "ring-2 ring-primary ring-offset-1" : ""}`}
                 />
-                <span className="text-[10px] mt-1">{s.label}</span>
+                <span className="text-xs sm:text-[10px] mt-1 font-medium">{s.label}</span>
               </div>
             ))}
           </div>
@@ -642,30 +642,30 @@ function WithdrawalStressSimulator({
         <div className="grid grid-cols-4 gap-3">
           <div className="text-center p-2 rounded-lg bg-muted/50">
             <p
-              className="text-2xl font-bold"
+              className="text-base sm:text-xl md:text-2xl font-bold"
               style={{ color: riskColors[simulation.riskLevel] }}
             >
               {formatPercent(simulation.successProbability, 0)}
             </p>
-            <p className="text-[10px] text-slate-500">Success Rate</p>
+            <p className="text-[9px] sm:text-[10px] text-slate-500">Success Rate</p>
           </div>
           <div className="text-center p-2 rounded-lg bg-muted/50">
-            <p className="text-2xl font-bold text-blue-600">
+            <p className="text-base sm:text-xl md:text-2xl font-bold text-blue-600">
               {formatCurrency(simulation.medianEndingBalance)}
             </p>
-            <p className="text-[10px] text-slate-500">Median Balance</p>
+            <p className="text-[9px] sm:text-[10px] text-slate-500">Median Balance</p>
           </div>
           <div className="text-center p-2 rounded-lg bg-muted/50">
-            <p className="text-2xl font-bold text-green-600">
+            <p className="text-base sm:text-xl md:text-2xl font-bold text-green-600">
               {formatCurrency(simulation.percentile75Balance)}
             </p>
-            <p className="text-[10px] text-slate-500">75th Percentile</p>
+            <p className="text-[9px] sm:text-[10px] text-slate-500">75th Percentile</p>
           </div>
           <div className="text-center p-2 rounded-lg bg-muted/50">
-            <p className="text-2xl font-bold text-red-600">
+            <p className="text-base sm:text-xl md:text-2xl font-bold text-red-600">
               {formatCurrency(simulation.percentile25Balance)}
             </p>
-            <p className="text-[10px] text-slate-500">25th Percentile</p>
+            <p className="text-[9px] sm:text-[10px] text-slate-500">25th Percentile</p>
           </div>
         </div>
 
@@ -676,14 +676,14 @@ function WithdrawalStressSimulator({
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
               <XAxis
                 dataKey="age"
-                tick={{ fontSize: 10 }}
+                tick={{ fontSize: 12 }}
                 tickFormatter={(v) => `${v}`}
-                label={{ value: 'Age', position: 'insideBottom', offset: -5, fontSize: 10 }}
+                label={{ value: 'Age', position: 'insideBottom', offset: -5, fontSize: 12 }}
               />
               <YAxis
-                tick={{ fontSize: 10 }}
+                tick={{ fontSize: 12 }}
                 tickFormatter={(v) => `$${(v / 1000000).toFixed(1)}M`}
-                label={{ value: 'Portfolio', angle: -90, position: 'insideLeft', fontSize: 10 }}
+                label={{ value: 'Portfolio', angle: -90, position: 'insideLeft', fontSize: 12 }}
               />
               <RechartsTooltip
                 formatter={(value) => formatCurrency(value as number)}
@@ -1072,7 +1072,7 @@ function SemiRetirementBridgeModule({
                         minWidth: '30px',
                       }}
                     >
-                      <span className="text-[10px] font-medium text-white">
+                      <span className="text-xs sm:text-[10px] font-medium text-white">
                         {width > 15 ? phase.label : shortLabel}
                       </span>
                     </div>
@@ -1198,7 +1198,7 @@ function GeoArbitrageLink({
                   <p className="text-xs font-medium">{s.label}</p>
                   <p className="text-[10px] text-slate-500">{s.multiplier}x</p>
                   <p
-                    className="text-sm font-bold"
+                    className="text-xs sm:text-sm font-bold"
                     style={{ color: s.color }}
                   >
                     {formatCurrency(baselinePortfolio * s.multiplier)}
@@ -1593,28 +1593,28 @@ function RothConversionLadderModule({
         {/* Key Metrics */}
         <div className="grid grid-cols-4 gap-3">
           <div className="text-center p-3 rounded-lg bg-blue-500/10">
-            <p className="text-xl font-bold text-blue-600">
+            <p className="text-base sm:text-lg md:text-xl font-bold text-blue-600">
               {formatCurrency(ladder.optimalConversionAmount)}
             </p>
-            <p className="text-[10px] text-slate-500">Convert Per Year</p>
+            <p className="text-[9px] sm:text-[10px] text-slate-500">Convert Per Year</p>
           </div>
           <div className="text-center p-3 rounded-lg bg-green-500/10">
-            <p className="text-xl font-bold text-green-600">
+            <p className="text-base sm:text-lg md:text-xl font-bold text-green-600">
               {formatCurrency(ladder.taxSavingsVsLater)}
             </p>
-            <p className="text-[10px] text-slate-500">Tax Savings</p>
+            <p className="text-[9px] sm:text-[10px] text-slate-500">Tax Savings</p>
           </div>
           <div className="text-center p-3 rounded-lg bg-purple-500/10">
-            <p className="text-xl font-bold text-purple-600">
+            <p className="text-base sm:text-lg md:text-xl font-bold text-purple-600">
               {ladder.canAccessFundsAge.toFixed(0)}
             </p>
-            <p className="text-[10px] text-slate-500">First Access Age</p>
+            <p className="text-[9px] sm:text-[10px] text-slate-500">First Access Age</p>
           </div>
           <div className="text-center p-3 rounded-lg bg-amber-500/10">
-            <p className="text-xl font-bold text-amber-600">
+            <p className="text-base sm:text-lg md:text-xl font-bold text-amber-600">
               {formatCurrency(ladder.totalTaxPaid)}
             </p>
-            <p className="text-[10px] text-slate-500">Total Tax on Conversions</p>
+            <p className="text-[9px] sm:text-[10px] text-slate-500">Total Tax on Conversions</p>
           </div>
         </div>
 
@@ -1636,10 +1636,10 @@ function RothConversionLadderModule({
                             backgroundColor: i < 5 ? "#ef444440" : "#10b98140",
                           }}
                         >
-                          <span className="text-[10px] font-medium">
+                          <span className="text-xs sm:text-[10px] font-medium">
                             {conv.age}
                           </span>
-                          <span className="text-[8px] text-slate-500">
+                          <span className="text-[10px] sm:text-[8px] text-slate-500">
                             ${(conv.conversionAmount / 1000).toFixed(0)}k
                           </span>
                         </div>
