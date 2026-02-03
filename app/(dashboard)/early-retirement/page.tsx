@@ -68,6 +68,7 @@ import {
   HelpCircle,
   RefreshCcw,
   Wallet,
+  BarChart3,
 } from "lucide-react";
 import type { NetWorthEntry } from "@/lib/types";
 import {
