@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import { useSubscription } from "@/hooks/useSubscription";
 
 interface UpgradeButtonProps {
   priceId: string;
@@ -20,6 +21,10 @@ export function UpgradeButton({
   disabled = false,
 }: UpgradeButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const { isPro } = useSubscription();
+
+  // Don't show upgrade button for Pro users
+  if (isPro) return null;
 
   const handleUpgrade = async () => {
     console.log("Upgrade clicked, priceId:", priceId);

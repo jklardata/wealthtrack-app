@@ -1436,12 +1436,14 @@ export default function DashboardPage() {
                   </p>
                 </div>
               </div>
-              <Link href="/upgrade">
-                <Button variant="ghost" size="sm" className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50">
-                  <Sparkles className="h-4 w-4 mr-1" />
-                  Upgrade for Full Planning
-                </Button>
-              </Link>
+              {!isPro && (
+                <Link href="/upgrade">
+                  <Button variant="ghost" size="sm" className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50">
+                    <Sparkles className="h-4 w-4 mr-1" />
+                    Upgrade for Full Planning
+                  </Button>
+                </Link>
+              )}
             </div>
           </CardHeader>
           <CardContent>
@@ -1493,12 +1495,14 @@ export default function DashboardPage() {
               </div>
 
               {/* Upgrade Bridge */}
-              <div className="p-3 bg-emerald-50 rounded-lg border border-emerald-200">
-                <p className="text-sm text-emerald-900">
-                  <strong>Want detailed projections?</strong> Model market growth, semi-retirement scenarios, and location arbitrage with Pro →
-                  <Link href="/upgrade" className="text-emerald-600 font-medium ml-1">Upgrade</Link>
-                </p>
-              </div>
+              {!isPro && (
+                <div className="p-3 bg-emerald-50 rounded-lg border border-emerald-200">
+                  <p className="text-sm text-emerald-900">
+                    <strong>Want detailed projections?</strong> Model market growth, semi-retirement scenarios, and location arbitrage with Pro →
+                    <Link href="/upgrade" className="text-emerald-600 font-medium ml-1">Upgrade</Link>
+                  </p>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>
@@ -1687,9 +1691,10 @@ export default function DashboardPage() {
 
       {/* Upgrade CTA & Next Steps - For users with some data */}
       {entries.length >= 2 && (
-        <div className="grid gap-4 md:grid-cols-2">
-          {/* Unlock Pro Features Card */}
-          <Card className="bg-gradient-to-br from-purple-50 via-white to-purple-50 border-2 border-purple-200 shadow-sm">
+        <div className={`grid gap-4 ${!isPro ? 'md:grid-cols-2' : 'md:grid-cols-1'}`}>
+          {/* Unlock Pro Features Card - Only show for free users */}
+          {!isPro && (
+            <Card className="bg-gradient-to-br from-purple-50 via-white to-purple-50 border-2 border-purple-200 shadow-sm">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="flex items-center gap-2 text-slate-900">
@@ -1750,6 +1755,7 @@ export default function DashboardPage() {
               </Link>
             </CardContent>
           </Card>
+          )}
 
           {/* Next Steps Card */}
           <Card className="bg-gradient-to-br from-emerald-50 via-white to-emerald-50 border-2 border-emerald-200 shadow-sm">
