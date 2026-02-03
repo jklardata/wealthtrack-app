@@ -163,7 +163,6 @@ export default function RetirementScenariosPage() {
   const [scenarios, setScenarios] = useState<Scenario[]>([]);
   const [selectedScenarios, setSelectedScenarios] = useState<string[]>([]);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-  const [viewMode, setViewMode] = useState<"chart" | "table">("chart");
 
   const canCreateScenario = isPro || scenarios.length === 0;
 
@@ -550,30 +549,14 @@ export default function RetirementScenariosPage() {
 
         {/* Visualization */}
         {selectedScenarios.length > 0 && (
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-xl">Scenario Comparison</CardTitle>
-                <div className="flex gap-2">
-                  <Button
-                    variant={viewMode === "chart" ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setViewMode("chart")}
-                  >
-                    Chart View
-                  </Button>
-                  <Button
-                    variant={viewMode === "table" ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setViewMode("table")}
-                  >
-                    Table View
-                  </Button>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              {viewMode === "chart" ? (
+          <>
+            {/* Chart View */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-xl">Scenario Comparison - Chart</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {(
                 <div className="h-[600px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={chartData}>
@@ -623,7 +606,15 @@ export default function RetirementScenariosPage() {
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
-              ) : (
+              </CardContent>
+            </Card>
+
+            {/* Table View */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-xl">Scenario Comparison - Table</CardTitle>
+              </CardHeader>
+              <CardContent>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
@@ -706,9 +697,9 @@ export default function RetirementScenariosPage() {
                     </tbody>
                   </table>
                 </div>
-              )}
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </>
         )}
 
         {/* Quick Links */}
