@@ -556,7 +556,6 @@ export default function RetirementScenariosPage() {
                 <CardTitle className="text-xl">Scenario Comparison - Chart</CardTitle>
               </CardHeader>
               <CardContent>
-                {(
                 <div className="h-[600px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart data={chartData}>
