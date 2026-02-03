@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
-import { useSubscription } from "@/hooks/useSubscription";
+import { useSubscription } from "@/hooks/use-subscription";
 
 interface UpgradeButtonProps {
   priceId: string;
