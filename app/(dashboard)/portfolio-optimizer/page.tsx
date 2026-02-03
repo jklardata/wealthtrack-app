@@ -252,7 +252,7 @@ function AllocationChart({
 
       {/* Pie Chart */}
       <div className="relative">
-        <ResponsiveContainer width="100%" height={180}>
+        <ResponsiveContainer width="100%" height={280}>
           <PieChart>
             <defs>
               {Object.entries(COLOR_GRADIENTS).map(([key, gradient]) => (
@@ -266,8 +266,8 @@ function AllocationChart({
               data={data}
               cx="50%"
               cy="50%"
-              innerRadius={55}
-              outerRadius={80}
+              innerRadius={70}
+              outerRadius={110}
               paddingAngle={3}
               dataKey="value"
               stroke="none"
@@ -279,6 +279,12 @@ function AllocationChart({
                   className="drop-shadow-sm"
                 />
               ))}
+            <Label
+              value={title}
+              position="centerBottom"
+              className="text-xs fill-slate-500"
+              offset={-10}
+            />
             </Pie>
             <Tooltip
               content={({ active, payload }) => {

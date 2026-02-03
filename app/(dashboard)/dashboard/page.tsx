@@ -567,7 +567,7 @@ export default function DashboardPage() {
           <div>
             <h1 className="text-2xl sm:text-3xl font-medium text-slate-900">Dashboard</h1>
             <p className="text-sm sm:text-base text-slate-500 mt-1">
-              Update your <Link href="/net-worth" className="text-emerald-600 hover:text-emerald-700 underline">Net Worth Timeline</Link> to analyze portfolio allocation, concentration risk, model tax-optimized withdrawal strategies, and project retirement outcomes based on dynamic market scenarios and spending assumptions.
+              Regular net worth tracking is the foundation of sound financial planning. Update your <Link href="/net-worth" className="text-emerald-600 hover:text-emerald-700 underline">Net Worth Timeline</Link> monthly to monitor progress, analyze portfolio allocation and concentration risk, model tax-optimized withdrawal strategies, and project retirement outcomes based on your unique financial situation.
             </p>
           </div>
 
@@ -739,7 +739,7 @@ export default function DashboardPage() {
         <div>
           <h1 className="text-2xl sm:text-3xl font-medium text-slate-900">Dashboard</h1>
           <p className="text-sm sm:text-base text-slate-500 mt-1">
-            Update your <Link href="/net-worth" className="text-emerald-600 hover:text-emerald-700 underline">Net Worth Timeline</Link> to analyze portfolio allocation, concentration risk, model tax-optimized withdrawal strategies, and project retirement outcomes based on dynamic market scenarios and spending assumptions.
+            Regular net worth tracking is the foundation of sound financial planning. Update your <Link href="/net-worth" className="text-emerald-600 hover:text-emerald-700 underline">Net Worth Timeline</Link> monthly to monitor progress, analyze portfolio allocation and concentration risk, model tax-optimized withdrawal strategies, and project retirement outcomes based on your unique financial situation.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -1106,7 +1106,7 @@ export default function DashboardPage() {
               <div className="space-y-4">
                 {/* Pie Chart */}
                 <div className="relative">
-                  <ResponsiveContainer width="100%" height={200}>
+                  <ResponsiveContainer width="100%" height={300}>
                     <PieChart>
                       <defs>
                         {Object.entries(ASSET_GRADIENTS).map(([key, gradient]) => (
@@ -1120,8 +1120,8 @@ export default function DashboardPage() {
                         data={allocationData}
                         cx="50%"
                         cy="50%"
-                        innerRadius={55}
-                        outerRadius={80}
+                        innerRadius={70}
+                        outerRadius={110}
                         paddingAngle={3}
                         dataKey="value"
                         stroke="none"
@@ -1133,7 +1133,12 @@ export default function DashboardPage() {
                             className="drop-shadow-sm"
                           />
                         ))}
-                      </Pie>
+                      <Label
+                        value={`${allocationData.length} Assets`}
+                        position="center"
+                        className="text-xs fill-slate-500"
+                      />
+                    </Pie>
                       <Tooltip
                         content={({ active, payload }) => {
                           if (active && payload && payload.length) {
