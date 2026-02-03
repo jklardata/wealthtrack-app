@@ -99,12 +99,12 @@ const ASSET_COLORS = {
 
 // Gradient pairs for visual appeal
 const ASSET_GRADIENTS = {
-  stocks: { start: "#fb923c", end: "#ea580c" },
-  bonds: { start: "#38bdf8", end: "#0284c7" },
-  cash: { start: "#34d399", end: "#059669" },
-  real_estate: { start: "#a78bfa", end: "#7c3aed" },
-  points_value: { start: "#fbbf24", end: "#d97706" },
-  other_assets: { start: "#94a3b8", end: "#475569" },
+  stocks: { start: "#60a5fa", end: "#2563eb" }, // Blue gradient
+  bonds: { start: "#818cf8", end: "#4f46e5" }, // Indigo gradient
+  cash: { start: "#34d399", end: "#059669" }, // Emerald gradient
+  real_estate: { start: "#a78bfa", end: "#7c3aed" }, // Purple gradient
+  points_value: { start: "#fbbf24", end: "#d97706" }, // Amber gradient
+  other_assets: { start: "#94a3b8", end: "#475569" }, // Slate gradient
 };
 
 const ASSET_LABELS: Record<string, string> = {
@@ -567,7 +567,7 @@ export default function DashboardPage() {
           <div>
             <h1 className="text-2xl sm:text-3xl font-medium text-slate-900">Dashboard</h1>
             <p className="text-sm sm:text-base text-slate-500 mt-1">
-              Comprehensive wealth management for high-income professionals. Track assets across multiple accounts, analyze portfolio allocation and concentration risk, model tax-optimized withdrawal strategies, and project retirement outcomes based on dynamic market scenarios and spending assumptions.
+              Update your <Link href="/net-worth" className="text-emerald-600 hover:text-emerald-700 underline">Net Worth Timeline</Link> to analyze portfolio allocation, concentration risk, model tax-optimized withdrawal strategies, and project retirement outcomes based on dynamic market scenarios and spending assumptions.
             </p>
           </div>
 
@@ -739,7 +739,7 @@ export default function DashboardPage() {
         <div>
           <h1 className="text-2xl sm:text-3xl font-medium text-slate-900">Dashboard</h1>
           <p className="text-sm sm:text-base text-slate-500 mt-1">
-            Comprehensive wealth management for high-income professionals. Track assets across multiple accounts, analyze portfolio allocation and concentration risk, model tax-optimized withdrawal strategies, and project retirement outcomes based on dynamic market scenarios and spending assumptions.
+            Update your <Link href="/net-worth" className="text-emerald-600 hover:text-emerald-700 underline">Net Worth Timeline</Link> to analyze portfolio allocation, concentration risk, model tax-optimized withdrawal strategies, and project retirement outcomes based on dynamic market scenarios and spending assumptions.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -808,7 +808,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Stats Cards - Compact */}
-      <div className="grid gap-2 sm:gap-3 grid-cols-2 lg:grid-cols-5">
+      <div className="grid gap-2 sm:gap-3 grid-cols-2 lg:grid-cols-4">
         <Card className="bg-white border-slate-200 shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between pb-2 p-3 sm:p-6 sm:pb-2">
             <CardTitle className="text-xs sm:text-sm font-medium text-slate-500 uppercase tracking-wide">
@@ -854,10 +854,7 @@ export default function DashboardPage() {
             </p>
           </CardContent>
         </Card>
-      </div>
 
-      {/* Additional Metrics */}
-      <div className="grid gap-4 sm:grid-cols-2">
         {/* YTD Change */}
         <Card className="bg-white border-slate-200 shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between pb-2 p-3 sm:p-6 sm:pb-2">
@@ -901,6 +898,8 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
       </div>
+
+
 
       {/* Net Worth Chart */}
       <Card className="bg-white border-slate-200 shadow-sm">
@@ -1088,8 +1087,12 @@ export default function DashboardPage() {
         </CardContent>
       </Card>
 
-      {/* Asset Allocation Section */}
-      <Card className="bg-white border-slate-200 shadow-sm">
+
+      {/* Asset Allocation and Net Worth Momentum */}
+      <div className="grid gap-4 lg:grid-cols-2">
+        {/* Asset Allocation */}
+        <Card className="bg-white border-slate-200 shadow-sm">
+
           <CardHeader>
             <CardTitle className="text-slate-900">Asset Allocation</CardTitle>
             <div className="text-xs text-slate-600 mt-1">
@@ -1202,6 +1205,59 @@ export default function DashboardPage() {
           </CardContent>
       </Card>
 
+      {/* Net Worth Momentum */}
+        {momentumMetrics && (
+          <Card className="bg-white border-slate-200 shadow-sm">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <TrendingUpIcon className="h-5 w-5 text-emerald-600" />
+                Net Worth Momentum
+              </CardTitle>
+              <div className="text-xs text-slate-600 mt-1 space-y-1.5">
+                <p>
+                  This is where you separate luck from strategy. Are you building wealth through disciplined saving, or are you relying solely on market performance?
+                </p>
+                <p className="text-slate-500">
+                  The most successful self-employed professionals control what they can control: their savings rate. Market returns are the bonus, not the plan.
+                </p>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                <div className="p-3 rounded-lg bg-slate-50">
+                  <p className="text-sm text-slate-500 mb-1">Current Velocity</p>
+                  <p className="text-xl font-semibold text-emerald-600">
+                    {formatVelocity(momentumMetrics.velocity)}
+                  </p>
+                  <p className="text-xs text-slate-500 mt-1">Your average monthly net worth increase based on recent trend</p>
+                </div>
+                <div className="p-3 rounded-lg bg-slate-50">
+                  <p className="text-sm text-slate-500 mb-1">12-Month Change</p>
+                  <p className="text-xl font-semibold text-slate-900">
+                    {formatCurrency(momentumMetrics.contribution12mo.totalChange)}
+                  </p>
+                  <p className="text-xs text-slate-500 mt-1">Total net worth change over the last 12 months</p>
+                </div>
+                <div className="p-3 rounded-lg bg-slate-50">
+                  <p className="text-sm text-slate-500 mb-1">Net Contributions</p>
+                  <p className="text-xl font-semibold text-blue-600">
+                    {formatCurrency(momentumMetrics.contribution12mo.netContributions)}
+                  </p>
+                  <p className="text-xs text-slate-500 mt-1">New money you added (or withdrew) from your portfolio in the last year</p>
+                </div>
+                <div className="mt-3 p-3 rounded-lg bg-emerald-50 border border-emerald-100">
+                  <p className="text-xs text-emerald-900 space-y-1">
+                    <span className="block font-semibold">💡 Reading Your Momentum:</span>
+                    <span className="block">If your 12-month change exceeds net contributions, congratulations—your money is working for you through market gains. This is compound growth in action.</span>
+                    <span className="block mt-1">If it's lower, market volatility has temporarily reduced returns. Stay the course. Consistent contributions during downturns are how wealth is built.</span>
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+      </div>
+
       {/* Wealth Health Metrics */}
       {riskMetrics && (
         <div className="grid gap-4 lg:grid-cols-3">
@@ -1296,57 +1352,7 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* Net Worth Momentum */}
-        {momentumMetrics && (
-          <Card className="bg-white border-slate-200 shadow-sm">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <TrendingUpIcon className="h-5 w-5 text-emerald-600" />
-                Net Worth Momentum
-              </CardTitle>
-              <div className="text-xs text-slate-600 mt-1 space-y-1.5">
-                <p>
-                  This is where you separate luck from strategy. Are you building wealth through disciplined saving, or are you relying solely on market performance?
-                </p>
-                <p className="text-slate-500">
-                  The most successful self-employed professionals control what they can control: their savings rate. Market returns are the bonus, not the plan.
-                </p>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <div className="p-3 rounded-lg bg-slate-50">
-                  <p className="text-sm text-slate-500 mb-1">Current Velocity</p>
-                  <p className="text-xl font-semibold text-emerald-600">
-                    {formatVelocity(momentumMetrics.velocity)}
-                  </p>
-                  <p className="text-xs text-slate-500 mt-1">Your average monthly net worth increase based on recent trend</p>
-                </div>
-                <div className="p-3 rounded-lg bg-slate-50">
-                  <p className="text-sm text-slate-500 mb-1">12-Month Change</p>
-                  <p className="text-xl font-semibold text-slate-900">
-                    {formatCurrency(momentumMetrics.contribution12mo.totalChange)}
-                  </p>
-                  <p className="text-xs text-slate-500 mt-1">Total net worth change over the last 12 months</p>
-                </div>
-                <div className="p-3 rounded-lg bg-slate-50">
-                  <p className="text-sm text-slate-500 mb-1">Net Contributions</p>
-                  <p className="text-xl font-semibold text-blue-600">
-                    {formatCurrency(momentumMetrics.contribution12mo.netContributions)}
-                  </p>
-                  <p className="text-xs text-slate-500 mt-1">New money you added (or withdrew) from your portfolio in the last year</p>
-                </div>
-                <div className="mt-3 p-3 rounded-lg bg-emerald-50 border border-emerald-100">
-                  <p className="text-xs text-emerald-900 space-y-1">
-                    <span className="block font-semibold">💡 Reading Your Momentum:</span>
-                    <span className="block">If your 12-month change exceeds net contributions, congratulations—your money is working for you through market gains. This is compound growth in action.</span>
-                    <span className="block mt-1">If it's lower, market volatility has temporarily reduced returns. Stay the course. Consistent contributions during downturns are how wealth is built.</span>
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+
 
       {/* Next Best Actions */}
       {nextActions.length > 0 && (
