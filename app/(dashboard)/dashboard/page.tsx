@@ -567,7 +567,7 @@ export default function DashboardPage() {
           <div>
             <h1 className="text-2xl sm:text-3xl font-medium text-slate-900">Dashboard</h1>
             <p className="text-sm sm:text-base text-slate-500 mt-1">
-              Track net worth, optimize your portfolio, plan retirement, and maximize tax savings.
+              Comprehensive wealth management for high-income professionals. Track assets across multiple accounts, analyze portfolio allocation and concentration risk, model tax-optimized withdrawal strategies, and project retirement outcomes based on dynamic market scenarios and spending assumptions.
             </p>
           </div>
 
@@ -739,7 +739,7 @@ export default function DashboardPage() {
         <div>
           <h1 className="text-2xl sm:text-3xl font-medium text-slate-900">Dashboard</h1>
           <p className="text-sm sm:text-base text-slate-500 mt-1">
-            Track net worth, optimize your portfolio, plan retirement, and maximize tax savings.
+            Comprehensive wealth management for high-income professionals. Track assets across multiple accounts, analyze portfolio allocation and concentration risk, model tax-optimized withdrawal strategies, and project retirement outcomes based on dynamic market scenarios and spending assumptions.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -854,174 +854,53 @@ export default function DashboardPage() {
             </p>
           </CardContent>
         </Card>
+      </div>
 
+      {/* Additional Metrics */}
+      <div className="grid gap-4 sm:grid-cols-2">
+        {/* YTD Change */}
         <Card className="bg-white border-slate-200 shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between pb-2 p-3 sm:p-6 sm:pb-2">
             <CardTitle className="text-xs sm:text-sm font-medium text-slate-500 uppercase tracking-wide">
-              Total Stocks
+              YTD Change
             </CardTitle>
-            <TrendingUp className="h-4 w-4 text-blue-500" />
+            <TrendingUp className="h-4 w-4 text-emerald-500" />
           </CardHeader>
           <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
-            <div className="text-lg sm:text-2xl font-semibold text-blue-600 font-mono">
-              {latestEntry ? formatCurrency(latestEntry.stocks || 0) : "$0"}
+            <div className={`text-lg sm:text-2xl font-semibold font-mono ${
+              growthMetrics.ytd.amount >= 0 ? "text-emerald-600" : "text-red-500"
+            }`}>
+              {growthMetrics.ytd.amount >= 0 ? "+" : ""}
+              {formatCurrency(growthMetrics.ytd.amount)}
             </div>
-            <p className="text-xs text-slate-500 mt-1">
-              Equity investments
+            <p className={`text-xs mt-1 ${
+              growthMetrics.ytd.percent >= 0 ? "text-emerald-600" : "text-red-500"
+            }`}>
+              {growthMetrics.ytd.percent >= 0 ? "+" : ""}
+              {growthMetrics.ytd.percent.toFixed(1)}% growth
             </p>
           </CardContent>
         </Card>
 
+        {/* Avg Monthly $ */}
         <Card className="bg-white border-slate-200 shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between pb-2 p-3 sm:p-6 sm:pb-2">
             <CardTitle className="text-xs sm:text-sm font-medium text-slate-500 uppercase tracking-wide">
-              Total Bonds
+              Avg Monthly $
             </CardTitle>
-            <Shield className="h-4 w-4 text-indigo-500" />
+            <TrendingUp className="h-4 w-4 text-blue-500" />
           </CardHeader>
           <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
-            <div className="text-lg sm:text-2xl font-semibold text-indigo-600 font-mono">
-              {latestEntry ? formatCurrency(latestEntry.bonds || 0) : "$0"}
+            <div className={`text-lg sm:text-2xl font-semibold font-mono ${
+              growthMetrics.avgMonthlyGrowth >= 0 ? "text-blue-600" : "text-red-500"
+            }`}>
+              {growthMetrics.avgMonthlyGrowth >= 0 ? "+" : ""}
+              {formatCurrency(growthMetrics.avgMonthlyGrowth)}
             </div>
-            <p className="text-xs text-slate-500 mt-1">Fixed income</p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-white border-slate-200 shadow-sm">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 p-3 sm:p-6 sm:pb-2">
-            <CardTitle className="text-xs sm:text-sm font-medium text-slate-500 uppercase tracking-wide">
-              Total Cash
-            </CardTitle>
-            <DollarSign className="h-4 w-4 text-emerald-500" />
-          </CardHeader>
-          <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
-            <div className="text-lg sm:text-2xl font-semibold text-emerald-600 font-mono">
-              {latestEntry ? formatCurrency(latestEntry.cash || 0) : "$0"}
-            </div>
-            <p className="text-xs text-slate-500 mt-1">Liquid reserves</p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-white border-slate-200 shadow-sm">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 p-3 sm:p-6 sm:pb-2">
-            <CardTitle className="text-xs sm:text-sm font-medium text-slate-500 uppercase tracking-wide">
-              Total Real Estate
-            </CardTitle>
-            <Building2 className="h-4 w-4 text-purple-500" />
-          </CardHeader>
-          <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
-            <div className="text-lg sm:text-2xl font-semibold text-purple-600 font-mono">
-              {latestEntry ? formatCurrency(latestEntry.real_estate || 0) : "$0"}
-            </div>
-            <p className="text-xs text-slate-500 mt-1">Property value</p>
+            <p className="text-xs text-slate-500 mt-1">Average monthly growth</p>
           </CardContent>
         </Card>
       </div>
-
-      {/* Growth Metrics Section */}
-      {entries.length > 1 && (
-        <Card className="bg-white border-slate-200 shadow-sm">
-          <CardHeader className="pb-2">
-            <CardTitle className="flex items-center gap-2 text-slate-900 text-base">
-              <div className="w-7 h-7 bg-emerald-50 rounded-lg flex items-center justify-center">
-                <TrendingUp className="h-4 w-4 text-emerald-600" />
-              </div>
-              Growth Trends
-            </CardTitle>
-            <div className="text-xs text-slate-600 mt-2 space-y-1.5">
-              <p>
-                Month-over-month growth is the heartbeat of your financial health. A consistent upward trend—even if modest—compounds into substantial wealth over time.
-              </p>
-              <p className="text-slate-500">
-                For self-employed professionals, volatile income makes monthly tracking essential. You'll quickly spot if irregular earnings are translating into actual wealth accumulation or just covering expenses.
-              </p>
-            </div>
-          </CardHeader>
-          <CardContent className="pt-3">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 mb-3">
-              {/* This Month */}
-              <div className="p-2.5 sm:p-3 rounded-xl bg-slate-50 border border-slate-200">
-                <p className="text-xs text-slate-500 mb-0.5">This Month</p>
-                <p
-                  className={`text-base sm:text-lg font-semibold font-mono ${
-                    growthMetrics.thisMonth.amount >= 0 ? "text-emerald-600" : "text-red-500"
-                  }`}
-                >
-                  {growthMetrics.thisMonth.amount >= 0 ? "+" : ""}
-                  {formatCurrency(growthMetrics.thisMonth.amount)}
-                </p>
-                <p
-                  className={`text-xs ${
-                    growthMetrics.thisMonth.percent >= 0 ? "text-emerald-600" : "text-red-500"
-                  }`}
-                >
-                  {growthMetrics.thisMonth.percent >= 0 ? "+" : ""}
-                  {growthMetrics.thisMonth.percent.toFixed(1)}%
-                </p>
-              </div>
-
-              {/* YTD */}
-              <div className="p-2.5 sm:p-3 rounded-xl bg-slate-50 border border-slate-200">
-                <p className="text-xs text-slate-500 mb-0.5">Year to Date</p>
-                <p
-                  className={`text-base sm:text-lg font-semibold font-mono ${
-                    growthMetrics.ytd.amount >= 0 ? "text-emerald-600" : "text-red-500"
-                  }`}
-                >
-                  {growthMetrics.ytd.amount >= 0 ? "+" : ""}
-                  {formatCurrency(growthMetrics.ytd.amount)}
-                </p>
-                <p
-                  className={`text-xs ${
-                    growthMetrics.ytd.percent >= 0 ? "text-emerald-600" : "text-red-500"
-                  }`}
-                >
-                  {growthMetrics.ytd.percent >= 0 ? "+" : ""}
-                  {growthMetrics.ytd.percent.toFixed(1)}%
-                </p>
-              </div>
-
-              {/* All Time */}
-              <div className="p-2.5 sm:p-3 rounded-xl bg-slate-50 border border-slate-200">
-                <p className="text-xs text-slate-500 mb-0.5">All Time</p>
-                <p
-                  className={`text-base sm:text-lg font-semibold font-mono ${
-                    growthMetrics.allTime.amount >= 0 ? "text-emerald-600" : "text-red-500"
-                  }`}
-                >
-                  {growthMetrics.allTime.amount >= 0 ? "+" : ""}
-                  {formatCurrency(growthMetrics.allTime.amount)}
-                </p>
-                <p
-                  className={`text-xs ${
-                    growthMetrics.allTime.percent >= 0 ? "text-emerald-600" : "text-red-500"
-                  }`}
-                >
-                  {growthMetrics.allTime.percent >= 0 ? "+" : ""}
-                  {growthMetrics.allTime.percent.toFixed(1)}%
-                </p>
-              </div>
-            </div>
-
-            {/* Projection footer */}
-            <div className="pt-3 border-t border-slate-200 flex flex-col sm:flex-row justify-between gap-1.5 text-sm">
-              <div className="text-slate-500">
-                <span className="font-medium text-slate-700">Avg Monthly:</span>{" "}
-                <span className={growthMetrics.avgMonthlyGrowth >= 0 ? "text-emerald-600" : "text-red-500"}>
-                  {growthMetrics.avgMonthlyGrowth >= 0 ? "+" : ""}
-                  {formatCurrency(growthMetrics.avgMonthlyGrowth)}
-                </span>
-              </div>
-              <div className="text-slate-500">
-                <span className="font-medium text-slate-700">Projected:</span>{" "}
-                <span className="text-emerald-600 font-medium">
-                  {formatCurrency(growthMetrics.projectedYear)} by Dec {new Date().getFullYear()}
-                </span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
 
       {/* Net Worth Chart */}
       <Card className="bg-white border-slate-200 shadow-sm">
@@ -1210,9 +1089,7 @@ export default function DashboardPage() {
       </Card>
 
       {/* Asset Allocation Section */}
-      <div className="grid gap-4 lg:grid-cols-4">
-        {/* Pie Chart - Current Allocation */}
-        <Card className="bg-white border-slate-200 shadow-sm">
+      <Card className="bg-white border-slate-200 shadow-sm">
           <CardHeader>
             <CardTitle className="text-slate-900">Asset Allocation</CardTitle>
             <div className="text-xs text-slate-600 mt-1">
@@ -1323,14 +1200,12 @@ export default function DashboardPage() {
               </div>
             )}
           </CardContent>
-        </Card>
+      </Card>
 
-        
-
-        {/* Wealth Health Metrics - Inline */}
-        {riskMetrics && (
-          <>
-            {/* Concentration Risk */}
+      {/* Wealth Health Metrics */}
+      {riskMetrics && (
+        <div className="grid gap-4 lg:grid-cols-3">
+          {/* Concentration Risk */}
           <Card className="bg-white border-slate-200 shadow-sm">
             <CardContent className="pt-6">
               <div className="flex items-start justify-between mb-3">
@@ -1362,7 +1237,7 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
 
-            {/* Liquidity */}
+          {/* Liquidity */}
           <Card className="bg-white border-slate-200 shadow-sm">
             <CardContent className="pt-6">
               <div className="flex items-start justify-between mb-3">
@@ -1391,7 +1266,7 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
 
-            {/* Flexibility */}
+          {/* Flexibility */}
           <Card className="bg-white border-slate-200 shadow-sm">
             <CardContent className="pt-6">
               <div className="flex items-start justify-between mb-3">
@@ -1418,66 +1293,10 @@ export default function DashboardPage() {
               </Link>
             </CardContent>
           </Card>
-          </>
-        )}
+        </div>
+      )}
 
-        
-      </div>
-
-      {/* Asset Allocation Over Time - Separate Row */}
-      {/* Stacked Bar Chart - Allocation Over Time */}
-        <Card className="bg-white border-slate-200 shadow-sm">
-          <CardHeader>
-            <CardTitle className="text-slate-900">Allocation Over Time</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {allocationOverTimeData.length > 0 ? (
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={allocationOverTimeData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                  <XAxis
-                    dataKey="date"
-                    stroke="#94a3b8"
-                    fontSize={11}
-                    tickLine={false}
-                    axisLine={false}
-                  />
-                  <YAxis
-                    stroke="#94a3b8"
-                    fontSize={11}
-                    tickLine={false}
-                    axisLine={false}
-                    tickFormatter={(value) => `${value.toFixed(0)}%`}
-                    width={40}
-                  />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: "#ffffff",
-                      border: "1px solid #e2e8f0",
-                      borderRadius: "12px",
-                    }}
-                    formatter={(value) => [`${(value as number).toFixed(1)}%`, ""]}
-                  />
-                  <Legend wrapperStyle={{ fontSize: "12px" }} />
-                  <Bar dataKey="stocksPct" name="Stocks" stackId="a" fill={ASSET_COLORS.stocks} />
-                  <Bar dataKey="bondsPct" name="Bonds" stackId="a" fill={ASSET_COLORS.bonds} />
-                  <Bar dataKey="cashPct" name="Cash" stackId="a" fill={ASSET_COLORS.cash} />
-                  <Bar dataKey="realEstatePct" name="Real Estate" stackId="a" fill={ASSET_COLORS.real_estate} />
-                  <Bar dataKey="pointsPct" name="Points" stackId="a" fill={ASSET_COLORS.points_value} />
-                  <Bar dataKey="otherPct" name="Other" stackId="a" fill={ASSET_COLORS.other_assets} />
-                </BarChart>
-              </ResponsiveContainer>
-            ) : (
-              <div className="flex items-center justify-center h-[300px] text-slate-500">
-                No data available
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-
-      <div className="grid gap-4 lg:grid-cols-3">
-        {/* Net Worth Momentum */}
+      {/* Net Worth Momentum */}
         {momentumMetrics && (
           <Card className="bg-white border-slate-200 shadow-sm">
             <CardHeader>
@@ -1528,10 +1347,6 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
         )}
-      </div>
-
-
-      
 
       {/* Next Best Actions */}
       {nextActions.length > 0 && (
