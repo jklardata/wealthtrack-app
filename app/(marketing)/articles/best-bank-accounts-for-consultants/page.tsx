@@ -281,11 +281,11 @@ export default function BankAccountsArticle() {
         {/* CTA */}
         <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-green-500/20 to-blue-500/20 p-8 text-center">
           <h3 className="text-xl font-bold mb-3">Ready to optimize your finances?</h3>
-          <p className="text-slate-500 mb-6">Download our free First Year Freelance Checklist.</p>
-          <Link href="/tools/freelance-checklist">
+          <p className="text-slate-500 mb-6">Discover our free tools to help you manage your consulting business.</p>
+          <Link href="/tools">
             <Button className="bg-emerald-600 hover:bg-emerald-700 text-slate-900">
               <Building2 className="mr-2 h-4 w-4" />
-              Get Checklist
+              Explore Free Tools
             </Button>
           </Link>
         </div>

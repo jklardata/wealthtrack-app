@@ -431,11 +431,11 @@ export default function BecomeFreelancerArticle() {
         {/* CTA */}
         <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-pink-500/20 to-purple-500/20 p-8 text-center">
           <h3 className="text-xl font-bold mb-3">Ready to get started?</h3>
-          <p className="text-slate-500 mb-6">Download our free First Year Freelance Checklist.</p>
-          <Link href="/tools/freelance-checklist">
+          <p className="text-slate-500 mb-6">Explore our free tools and resources to help you launch your freelance business.</p>
+          <Link href="/tools">
             <Button className="bg-emerald-600 hover:bg-emerald-700 text-slate-900">
               <Briefcase className="mr-2 h-4 w-4" />
-              Get Checklist
+              Explore Free Tools
             </Button>
           </Link>
         </div>

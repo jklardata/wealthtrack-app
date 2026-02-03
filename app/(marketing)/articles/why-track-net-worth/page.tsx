@@ -274,11 +274,11 @@ export default function WhyTrackNetWorthArticle() {
         {/* CTA */}
         <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-emerald-50 to-emerald-100 p-8 text-center">
           <h3 className="text-xl font-bold mb-3">Ready to start tracking?</h3>
-          <p className="text-slate-500 mb-6">Take our quiz to see how well you're tracking your finances.</p>
-          <Link href="/tools/net-worth-quiz">
+          <p className="text-slate-500 mb-6">Explore our free financial tools to help you track and optimize your wealth.</p>
+          <Link href="/tools">
             <Button className="bg-emerald-600 hover:bg-emerald-700 text-slate-900">
               <PiggyBank className="mr-2 h-4 w-4" />
-              Take the Quiz
+              Explore Free Tools
             </Button>
           </Link>
         </div>

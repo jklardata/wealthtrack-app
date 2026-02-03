@@ -279,11 +279,11 @@ export default function TaxStrategiesArticle() {
         {/* CTA */}
         <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-purple-500/20 to-pink-500/20 p-8 text-center">
           <h3 className="text-xl font-bold mb-3">Ready to optimize your taxes?</h3>
-          <p className="text-slate-500 mb-6">Use our free Tax Savings Calculator to find your opportunities.</p>
-          <Link href="/tools/tax-savings">
+          <p className="text-slate-500 mb-6">Explore our free tools and calculators to help you save on taxes.</p>
+          <Link href="/tools">
             <Button className="bg-emerald-600 hover:bg-emerald-700 text-slate-900">
               <Calculator className="mr-2 h-4 w-4" />
-              Try Tax Calculator
+              Explore Free Tools
             </Button>
           </Link>
         </div>

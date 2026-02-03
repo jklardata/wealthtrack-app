@@ -287,9 +287,9 @@ export default function BlogPage() {
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
-            <Link href="/tools/tax-savings">
+            <Link href="/tools">
               <Button size="lg" variant="outline" className="border-slate-300 text-slate-700 hover:bg-slate-100">
-                Try Tax Calculator
+                Explore Free Tools
               </Button>
             </Link>
           </div>

@@ -430,11 +430,11 @@ export default function OverlookedDeductionsArticle() {
         {/* CTA */}
         <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-emerald-500/20 to-teal-500/20 p-8 text-center">
           <h3 className="text-xl font-bold mb-3">Calculate Your Tax Savings</h3>
-          <p className="text-slate-600 mb-6">Use our free tax calculator to estimate how much these deductions could save you.</p>
-          <Link href="/tools/tax-savings">
+          <p className="text-slate-600 mb-6">Explore our free tools to help you maximize your deductions and save on taxes.</p>
+          <Link href="/tools">
             <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
               <Calculator className="mr-2 h-4 w-4" />
-              Free Tax Calculator
+              Explore Free Tools
             </Button>
           </Link>
         </div>

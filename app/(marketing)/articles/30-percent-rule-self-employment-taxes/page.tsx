@@ -436,11 +436,11 @@ export default function ThirtyPercentRuleArticle() {
         {/* CTA */}
         <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-emerald-500/20 to-teal-500/20 p-8 text-center">
           <h3 className="text-xl font-bold mb-3">Calculate Your Exact Tax Rate</h3>
-          <p className="text-slate-600 mb-6">Use our free tax calculator to find your personalized savings percentage.</p>
-          <Link href="/tools/tax-savings">
+          <p className="text-slate-600 mb-6">Explore our free tools to help you plan and manage your taxes effectively.</p>
+          <Link href="/tools">
             <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
               <Calculator className="mr-2 h-4 w-4" />
-              Free Tax Calculator
+              Explore Free Tools
             </Button>
           </Link>
         </div>
