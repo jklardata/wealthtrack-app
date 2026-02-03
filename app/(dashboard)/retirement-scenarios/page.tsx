@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useSubscription } from "@/hooks/use-subscription";
-import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectContent,
@@ -313,9 +312,6 @@ export default function RetirementScenariosPage() {
                 <Button className="bg-emerald-600 hover:bg-emerald-700">
                   <Plus className="h-4 w-4 mr-2" />
                   Create Scenario
-                  {!isPro && scenarios.length === 0 && (
-                    <Badge variant="secondary" className="ml-2">Free</Badge>
-                  )}
                 </Button>
               </DialogTrigger>
             <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
