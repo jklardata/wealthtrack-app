@@ -42,15 +42,15 @@ export default function Landing21() {
       </nav>
 
       {/* Hero */}
-      <section className="max-w-4xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 pb-12 sm:pb-16">
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 pb-8 sm:pb-12">
         <div className="text-center">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-medium tracking-tight text-slate-900 mb-3 sm:mb-4 leading-tight">
-            Build wealth. Reduce taxes.
-            <br />
-            Retire on your terms.
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-slate-900 mb-3 sm:mb-4 leading-tight">
+            <span className="block">Build wealth.</span>
+            <span className="block">Reduce taxes.</span>
+            <span className="block">Retire on your terms.</span>
           </h1>
           <p className="text-base sm:text-lg text-slate-600 mb-3 sm:mb-4 max-w-2xl mx-auto leading-relaxed">
-            SoloFI helps self-employed professionals model tax strategies, retirement outcomes, and portfolio decisions.
+            Model tax strategies, retirement outcomes, and portfolio decisions.
           </p>
           <p className="text-sm sm:text-base text-slate-500 mb-6 sm:mb-8 max-w-xl mx-auto">
             No asset transfers. No account linking required. Just clarity.
@@ -116,18 +116,18 @@ export default function Landing21() {
       </section>
 
       {/* Core Value Pillars */}
-      <section className="py-16 sm:py-20">
+      <section className="py-12 sm:py-16">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <h2 className="text-xl sm:text-2xl font-medium text-slate-900 text-center mb-3 sm:mb-4">What SoloFI does</h2>
           <p className="text-sm sm:text-base text-slate-600 text-center mb-10 sm:mb-12 max-w-2xl mx-auto">
-            A decision engine, not a brokerage. We help you understand the implications of financial choices before you make them.
+            A <span className="font-semibold">decision engine</span>, not a brokerage. Understand the implications of financial choices before you make them.
           </p>
 
           <div className="grid md:grid-cols-2 gap-8">
             <div className="bg-white border border-slate-200 rounded-xl p-8 border-t-2 border-t-emerald-500">
               <h3 className="text-lg font-medium text-slate-900 mb-3">Decision Modeling</h3>
               <p className="text-slate-600 mb-4">
-                Compare scenarios side-by-side. S-Corp vs LLC. Roth conversion now vs later. Retire at 55 vs 60. See the 10-year impact of each choice before committing.
+                Compare Self Employment vs W-2. Roth conversion now vs later. Retire at 40 vs 55.
               </p>
               <ul className="space-y-2">
                 <li className="flex items-center gap-2 text-sm text-slate-600">
@@ -216,7 +216,7 @@ export default function Landing21() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <h2 className="text-xl sm:text-2xl font-medium text-slate-900 text-center mb-3 sm:mb-4">Built for complex financial lives</h2>
           <p className="text-sm sm:text-base text-slate-600 text-center mb-8 sm:mb-10 max-w-2xl mx-auto">
-            If your finances involve multiple income streams, tax optimization decisions, and long-term planning—SoloFI was built for you.
+            Built for people with multiple income streams, complicated taxes, and long term planning.
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
             <div className="text-center">
@@ -262,7 +262,7 @@ export default function Landing21() {
           <div className="grid md:grid-cols-2 gap-8 sm:gap-10">
             <div>
               <h3 className="text-base sm:text-lg font-medium mb-4 sm:mb-5 text-slate-300">Typical platforms</h3>
-              <ul className="space-y-3 sm:space-y-4">
+              <ul className="space-y-2 sm:space-y-3">
                 <li className="flex items-start gap-2 sm:gap-3">
                   <span className="w-1.5 h-1.5 bg-slate-600 rounded-full mt-2" />
                   <span className="text-sm sm:text-base text-slate-400">Require asset transfers or account linking</span>
@@ -283,7 +283,7 @@ export default function Landing21() {
             </div>
             <div>
               <h3 className="text-base sm:text-lg font-medium mb-4 sm:mb-5 text-white">SoloFI</h3>
-              <ul className="space-y-4">
+              <ul className="space-y-2 sm:space-y-3">
                 <li className="flex items-start gap-3">
                   <Check className="h-5 w-5 text-emerald-400 mt-0.5 flex-shrink-0" />
                   <span className="text-slate-300">No asset transfers. Your money stays where it is.</span>
@@ -451,7 +451,7 @@ export default function Landing21() {
       <section className="py-24">
         <div className="max-w-4xl mx-auto px-6">
           <h2 className="text-2xl font-medium text-slate-900 text-center mb-4">Our principles</h2>
-          <p className="text-slate-600 text-center mb-16 max-w-2xl mx-auto">
+          <p className="text-slate-600 text-center mb-10 max-w-2xl mx-auto">
             How we think about building financial tools.
           </p>
 
@@ -508,10 +508,10 @@ export default function Landing21() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-24">
+      <section className="py-16">
         <div className="max-w-3xl mx-auto px-6 text-center">
           <h2 className="text-2xl font-medium text-slate-900 mb-4">Start modeling your financial decisions</h2>
-          <p className="text-slate-600 mb-8 max-w-xl mx-auto">
+          <p className="text-slate-600 mb-6 max-w-xl mx-auto">
             Free to start. No credit card required. See what clarity looks like before your next big financial decision.
           </p>
           <TrackedLink
