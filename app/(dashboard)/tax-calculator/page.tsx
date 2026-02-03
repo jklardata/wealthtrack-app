@@ -97,7 +97,7 @@ const TAX_CONSTANTS = {
   // Solo 401k / SEP IRA 2025
   solo401kEmployeeLimit: 23500,
   sepIraMaxPercent: 0.25,
-  sepIraMaxDollar: 70000,
+  sepIraMaxDollar: 69000,
 
   // Tax Loss Harvesting
   capitalLossDeductionLimit: 3000, // $3,000 against ordinary income ($1,500 if MFS)

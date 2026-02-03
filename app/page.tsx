@@ -66,11 +66,7 @@ export default function Landing21() {
               Start modeling
               <ArrowRight className="ml-2 h-5 w-5" />
             </TrackedLink>
-            <Link href="/pricing">
-              <Button size="lg" variant="outline" className="border-emerald-200 text-emerald-700 hover:bg-emerald-50 px-10 py-6 text-base sm:text-lg w-full sm:w-auto">
-                View pricing
-              </Button>
-            </Link>
+
           </div>
         </div>
 

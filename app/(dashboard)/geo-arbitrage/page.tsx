@@ -274,8 +274,8 @@ export default function GeoArbitragePage() {
   const [weights] = useState<SpendingWeights>(DEFAULT_WEIGHTS);
 
   // Core financial parameters
-  const [grossIncome, setGrossIncome] = useState(150000);
-  const [baselineAnnualSpend, setBaselineAnnualSpend] = useState(75000);
+  const [grossIncome, setGrossIncome] = useState(80000);
+  const [baselineAnnualSpend, setBaselineAnnualSpend] = useState(50000);
   const [currentNetWorth, setCurrentNetWorth] = useState(100000);
   const [expectedReturn] = useState(0.05); // 5% real return
   const [withdrawalRate] = useState(0.04); // 4% SWR

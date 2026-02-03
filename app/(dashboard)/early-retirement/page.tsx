@@ -107,8 +107,8 @@ export default function EarlyRetirementPage() {
   const [currentAge, setCurrentAge] = useState(35);
   const [targetRetirementAge, setTargetRetirementAge] = useState(50);
   const [currentPortfolio, setCurrentPortfolio] = useState(500000);
-  const [annualIncome, setAnnualIncome] = useState(150000);
-  const [annualExpenses, setAnnualExpenses] = useState(60000);
+  const [annualIncome, setAnnualIncome] = useState(5000);
+  const [annualExpenses, setAnnualExpenses] = useState(50000);
   const [annualSavings, setAnnualSavings] = useState(0);
 
   // Assumptions

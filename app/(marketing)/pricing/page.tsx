@@ -360,66 +360,66 @@ export default function PricingPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-slate-200">
-                  <th className="text-left py-4 pr-4 font-medium text-slate-900">Feature</th>
-                  <th className="text-center py-4 px-4 font-medium text-slate-900 w-28">Free</th>
-                  <th className="text-center py-4 pl-4 font-medium text-slate-900 w-28">Pro</th>
+                  <th className="text-left py-2 pr-4 font-medium text-slate-900">Feature</th>
+                  <th className="text-center py-2 px-4 font-medium text-slate-900 w-28">Free</th>
+                  <th className="text-center py-2 pl-4 font-medium text-slate-900 w-28">Pro</th>
                 </tr>
               </thead>
               <tbody className="text-sm">
                 <tr className="border-b border-slate-100">
-                  <td className="py-4 pr-4 text-slate-600">Net worth tracking</td>
-                  <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-emerald-500 mx-auto" /></td>
-                  <td className="py-4 pl-4 text-center"><Check className="h-5 w-5 text-emerald-500 mx-auto" /></td>
+                  <td className="py-2 pr-4 text-base text-slate-700">Net worth tracking</td>
+                  <td className="py-2 px-4 text-center"><Check className="h-5 w-5 text-emerald-500 mx-auto" /></td>
+                  <td className="py-2 pl-4 text-center"><Check className="h-5 w-5 text-emerald-500 mx-auto" /></td>
                 </tr>
                 <tr className="border-b border-slate-100">
-                  <td className="py-4 pr-4 text-slate-600">Basic tax calculator</td>
-                  <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-emerald-500 mx-auto" /></td>
-                  <td className="py-4 pl-4 text-center"><Check className="h-5 w-5 text-emerald-500 mx-auto" /></td>
+                  <td className="py-2 pr-4 text-base text-slate-700">Basic tax calculator</td>
+                  <td className="py-2 px-4 text-center"><Check className="h-5 w-5 text-emerald-500 mx-auto" /></td>
+                  <td className="py-2 pl-4 text-center"><Check className="h-5 w-5 text-emerald-500 mx-auto" /></td>
                 </tr>
                 <tr className="border-b border-slate-100">
-                  <td className="py-4 pr-4 text-slate-600">Retirement projections</td>
-                  <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-emerald-500 mx-auto" /></td>
-                  <td className="py-4 pl-4 text-center"><Check className="h-5 w-5 text-emerald-500 mx-auto" /></td>
+                  <td className="py-2 pr-4 text-base text-slate-700">Retirement projections</td>
+                  <td className="py-2 px-4 text-center"><Check className="h-5 w-5 text-emerald-500 mx-auto" /></td>
+                  <td className="py-2 pl-4 text-center"><Check className="h-5 w-5 text-emerald-500 mx-auto" /></td>
                 </tr>
                 <tr className="border-b border-slate-100">
-                  <td className="py-4 pr-4 text-slate-600">Geographic arbitrage explorer</td>
-                  <td className="py-4 px-4 text-center"><Check className="h-5 w-5 text-emerald-500 mx-auto" /></td>
-                  <td className="py-4 pl-4 text-center"><Check className="h-5 w-5 text-emerald-500 mx-auto" /></td>
+                  <td className="py-2 pr-4 text-base text-slate-700">Geographic arbitrage explorer</td>
+                  <td className="py-2 px-4 text-center"><Check className="h-5 w-5 text-emerald-500 mx-auto" /></td>
+                  <td className="py-2 pl-4 text-center"><Check className="h-5 w-5 text-emerald-500 mx-auto" /></td>
                 </tr>
                 <tr className="border-b border-slate-100">
-                  <td className="py-4 pr-4 text-slate-600">S-Corp vs LLC modeling</td>
-                  <td className="py-4 px-4 text-center"><Minus className="h-5 w-5 text-slate-300 mx-auto" /></td>
-                  <td className="py-4 pl-4 text-center"><Check className="h-5 w-5 text-emerald-500 mx-auto" /></td>
+                  <td className="py-2 pr-4 text-base text-slate-700">S-Corp vs LLC modeling</td>
+                  <td className="py-2 px-4 text-center"><Minus className="h-5 w-5 text-slate-300 mx-auto" /></td>
+                  <td className="py-2 pl-4 text-center"><Check className="h-5 w-5 text-emerald-500 mx-auto" /></td>
                 </tr>
                 <tr className="border-b border-slate-100">
-                  <td className="py-4 pr-4 text-slate-600">Optimal salary calculator</td>
-                  <td className="py-4 px-4 text-center"><Minus className="h-5 w-5 text-slate-300 mx-auto" /></td>
-                  <td className="py-4 pl-4 text-center"><Check className="h-5 w-5 text-emerald-500 mx-auto" /></td>
+                  <td className="py-2 pr-4 text-base text-slate-700">Optimal salary calculator</td>
+                  <td className="py-2 px-4 text-center"><Minus className="h-5 w-5 text-slate-300 mx-auto" /></td>
+                  <td className="py-2 pl-4 text-center"><Check className="h-5 w-5 text-emerald-500 mx-auto" /></td>
                 </tr>
                 <tr className="border-b border-slate-100">
-                  <td className="py-4 pr-4 text-slate-600">Quarterly tax estimates</td>
-                  <td className="py-4 px-4 text-center"><Minus className="h-5 w-5 text-slate-300 mx-auto" /></td>
-                  <td className="py-4 pl-4 text-center"><Check className="h-5 w-5 text-emerald-500 mx-auto" /></td>
+                  <td className="py-2 pr-4 text-base text-slate-700">Quarterly tax estimates</td>
+                  <td className="py-2 px-4 text-center"><Minus className="h-5 w-5 text-slate-300 mx-auto" /></td>
+                  <td className="py-2 pl-4 text-center"><Check className="h-5 w-5 text-emerald-500 mx-auto" /></td>
                 </tr>
                 <tr className="border-b border-slate-100">
-                  <td className="py-4 pr-4 text-slate-600">Capital gains simulator</td>
-                  <td className="py-4 px-4 text-center"><Minus className="h-5 w-5 text-slate-300 mx-auto" /></td>
-                  <td className="py-4 pl-4 text-center"><Check className="h-5 w-5 text-emerald-500 mx-auto" /></td>
+                  <td className="py-2 pr-4 text-base text-slate-700">Capital gains simulator</td>
+                  <td className="py-2 px-4 text-center"><Minus className="h-5 w-5 text-slate-300 mx-auto" /></td>
+                  <td className="py-2 pl-4 text-center"><Check className="h-5 w-5 text-emerald-500 mx-auto" /></td>
                 </tr>
                 <tr className="border-b border-slate-100">
-                  <td className="py-4 pr-4 text-slate-600">Monte Carlo simulations</td>
-                  <td className="py-4 px-4 text-center"><Minus className="h-5 w-5 text-slate-300 mx-auto" /></td>
-                  <td className="py-4 pl-4 text-center"><Check className="h-5 w-5 text-emerald-500 mx-auto" /></td>
+                  <td className="py-2 pr-4 text-base text-slate-700">Monte Carlo simulations</td>
+                  <td className="py-2 px-4 text-center"><Minus className="h-5 w-5 text-slate-300 mx-auto" /></td>
+                  <td className="py-2 pl-4 text-center"><Check className="h-5 w-5 text-emerald-500 mx-auto" /></td>
                 </tr>
                 <tr className="border-b border-slate-100">
-                  <td className="py-4 pr-4 text-slate-600">Saved scenario comparisons</td>
-                  <td className="py-4 px-4 text-center"><Minus className="h-5 w-5 text-slate-300 mx-auto" /></td>
-                  <td className="py-4 pl-4 text-center"><Check className="h-5 w-5 text-emerald-500 mx-auto" /></td>
+                  <td className="py-2 pr-4 text-base text-slate-700">Saved scenario comparisons</td>
+                  <td className="py-2 px-4 text-center"><Minus className="h-5 w-5 text-slate-300 mx-auto" /></td>
+                  <td className="py-2 pl-4 text-center"><Check className="h-5 w-5 text-emerald-500 mx-auto" /></td>
                 </tr>
                 <tr>
-                  <td className="py-4 pr-4 text-slate-600">Personalized insights</td>
-                  <td className="py-4 px-4 text-center"><Minus className="h-5 w-5 text-slate-300 mx-auto" /></td>
-                  <td className="py-4 pl-4 text-center"><Check className="h-5 w-5 text-emerald-500 mx-auto" /></td>
+                  <td className="py-2 pr-4 text-base text-slate-700">Personalized insights</td>
+                  <td className="py-2 px-4 text-center"><Minus className="h-5 w-5 text-slate-300 mx-auto" /></td>
+                  <td className="py-2 pl-4 text-center"><Check className="h-5 w-5 text-emerald-500 mx-auto" /></td>
                 </tr>
               </tbody>
             </table>
