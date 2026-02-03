@@ -29,7 +29,7 @@ import {
 
 export default function DashboardMockup() {
   // Simulate whether user has data
-  const hasData = false; // Toggle this to see both states
+  const hasData = true; // Toggle this to see both states
   const isPro = false;
 
   // ========================================

@@ -87,14 +87,14 @@ type DateRange = {
 
 type PresetRange = "all" | "this-month" | "last-month" | "this-quarter" | "last-quarter" | "ytd" | "last-year" | "custom";
 
-// Vibrant, distinct colors for better visibility
+// Professional, harmonious color palette for asset classes
 const ASSET_COLORS = {
-  stocks: "#f97316", // Bright Orange
-  bonds: "#0ea5e9", // Sky Blue
-  cash: "#10b981", // Emerald Green
-  real_estate: "#8b5cf6", // Violet Purple
-  points_value: "#f59e0b", // Amber Yellow
-  other_assets: "#64748b", // Slate Gray
+  stocks: "#3b82f6", // Blue - growth and equity
+  bonds: "#6366f1", // Indigo - stability and fixed income
+  cash: "#10b981", // Emerald - liquidity and safety
+  real_estate: "#8b5cf6", // Purple - tangible and alternative
+  points_value: "#f59e0b", // Amber - rewards and perks
+  other_assets: "#64748b", // Slate - miscellaneous
 };
 
 // Gradient pairs for visual appeal
@@ -858,16 +858,16 @@ export default function DashboardPage() {
         <Card className="bg-white border-slate-200 shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between pb-2 p-3 sm:p-6 sm:pb-2">
             <CardTitle className="text-xs sm:text-sm font-medium text-slate-500 uppercase tracking-wide">
-              Total Assets
+              Total Stocks
             </CardTitle>
-            <TrendingUp className="h-4 w-4 text-slate-400" />
+            <TrendingUp className="h-4 w-4 text-blue-500" />
           </CardHeader>
           <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
-            <div className="text-lg sm:text-2xl font-semibold text-slate-900 font-mono">
-              {latestEntry ? formatCurrency(latestEntry.total_assets) : "$0"}
+            <div className="text-lg sm:text-2xl font-semibold text-blue-600 font-mono">
+              {latestEntry ? formatCurrency(latestEntry.stocks || 0) : "$0"}
             </div>
             <p className="text-xs text-slate-500 mt-1">
-              {filteredEntries.length} entries
+              Equity investments
             </p>
           </CardContent>
         </Card>
@@ -875,30 +875,45 @@ export default function DashboardPage() {
         <Card className="bg-white border-slate-200 shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between pb-2 p-3 sm:p-6 sm:pb-2">
             <CardTitle className="text-xs sm:text-sm font-medium text-slate-500 uppercase tracking-wide">
-              Points Value
+              Total Bonds
             </CardTitle>
-            <Award className="h-4 w-4 text-amber-500" />
+            <Shield className="h-4 w-4 text-indigo-500" />
           </CardHeader>
           <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
-            <div className="text-lg sm:text-2xl font-semibold text-amber-600 font-mono">
-              {latestEntry ? formatCurrency(latestEntry.points_value) : "$0"}
+            <div className="text-lg sm:text-2xl font-semibold text-indigo-600 font-mono">
+              {latestEntry ? formatCurrency(latestEntry.bonds || 0) : "$0"}
             </div>
-            <p className="text-xs text-slate-500 mt-1">Points value</p>
+            <p className="text-xs text-slate-500 mt-1">Fixed income</p>
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-slate-200 shadow-sm col-span-2 lg:col-span-1">
+        <Card className="bg-white border-slate-200 shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between pb-2 p-3 sm:p-6 sm:pb-2">
             <CardTitle className="text-xs sm:text-sm font-medium text-slate-500 uppercase tracking-wide">
-              Total Debts
+              Total Cash
             </CardTitle>
-            <TrendingDown className="h-4 w-4 text-red-400" />
+            <DollarSign className="h-4 w-4 text-emerald-500" />
           </CardHeader>
           <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
-            <div className="text-lg sm:text-2xl font-semibold text-red-500 font-mono">
-              {latestEntry ? formatCurrency(latestEntry.total_debts) : "$0"}
+            <div className="text-lg sm:text-2xl font-semibold text-emerald-600 font-mono">
+              {latestEntry ? formatCurrency(latestEntry.cash || 0) : "$0"}
             </div>
-            <p className="text-xs text-slate-500 mt-1">Outstanding balance</p>
+            <p className="text-xs text-slate-500 mt-1">Liquid reserves</p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-white border-slate-200 shadow-sm">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 p-3 sm:p-6 sm:pb-2">
+            <CardTitle className="text-xs sm:text-sm font-medium text-slate-500 uppercase tracking-wide">
+              Total Real Estate
+            </CardTitle>
+            <Building2 className="h-4 w-4 text-purple-500" />
+          </CardHeader>
+          <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
+            <div className="text-lg sm:text-2xl font-semibold text-purple-600 font-mono">
+              {latestEntry ? formatCurrency(latestEntry.real_estate || 0) : "$0"}
+            </div>
+            <p className="text-xs text-slate-500 mt-1">Property value</p>
           </CardContent>
         </Card>
       </div>
@@ -1200,11 +1215,8 @@ export default function DashboardPage() {
         <Card className="bg-white border-slate-200 shadow-sm">
           <CardHeader>
             <CardTitle className="text-slate-900">Asset Allocation</CardTitle>
-            <div className="text-xs text-slate-600 mt-1 space-y-1.5">
+            <div className="text-xs text-slate-600 mt-1">
               <p>
-                Diversification isn't just a buzzword—it's your protection against concentrated risk. As a business owner, your income already depends on one source. Your investments shouldn't.
-              </p>
-              <p className="text-slate-500">
                 A balanced mix of stocks, bonds, and alternative assets smooths the ride and positions you for long-term growth regardless of market conditions.
               </p>
             </div>
@@ -1416,99 +1428,6 @@ export default function DashboardPage() {
         )}
       </div>
 
-      {/* FI Progress Dashboard */}
-      {fiMetrics && (
-        <Card className="bg-white border-slate-200 shadow-sm">
-          <CardHeader>
-            <div className="flex items-start justify-between">
-              <div>
-                <CardTitle className="flex items-center gap-2">
-                  <Flame className="h-5 w-5 text-orange-500" />
-                  Financial Independence Progress
-                </CardTitle>
-                <div className="text-xs text-slate-600 mt-1 space-y-1.5">
-                  <p className="text-sm font-medium text-slate-700">
-                    {getFIScoreLabel(fiMetrics.fiScore)}
-                  </p>
-                  <p>
-                    Financial independence means your assets generate enough passive income to cover your living expenses—work becomes optional. For entrepreneurs, it's the ultimate exit strategy.
-                  </p>
-                  <p className="text-slate-500">
-                    The key metric: 25x your annual spending. Once you hit that number at a 4% safe withdrawal rate, you're financially free.
-                  </p>
-                </div>
-              </div>
-              {!isPro && (
-                <Link href="/upgrade">
-                  <Button variant="ghost" size="sm" className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50">
-                    <Sparkles className="h-4 w-4 mr-1" />
-                    Upgrade for Full Planning
-                  </Button>
-                </Link>
-              )}
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {/* Progress Bar */}
-              <div>
-                <div className="flex justify-between text-sm mb-2">
-                  <span className="text-slate-600">Progress to FI</span>
-                  <span className="font-semibold text-slate-900">{fiMetrics.currentProgress.toFixed(1)}%</span>
-                </div>
-                <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-gradient-to-r from-emerald-500 to-emerald-600 transition-all"
-                    style={{ width: `${Math.min(100, fiMetrics.currentProgress)}%` }}
-                  />
-                </div>
-              </div>
-
-              {/* Metrics Grid */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <div className="p-3 rounded-lg bg-slate-50">
-                  <p className="text-xs text-slate-500 mb-1">FI Number</p>
-                  <p className="text-lg font-semibold text-slate-900">
-                    {formatCurrency(fiMetrics.fiNumber)}
-                  </p>
-                </div>
-                <div className="p-3 rounded-lg bg-slate-50">
-                  <p className="text-xs text-slate-500 mb-1">Years to FI</p>
-                  <p className="text-lg font-semibold text-slate-900">
-                    {fiMetrics.yearsRemaining !== null
-                      ? `~${fiMetrics.yearsRemaining.toFixed(1)} yrs`
-                      : 'Add income data'}
-                  </p>
-                </div>
-                <div className="p-3 rounded-lg bg-slate-50">
-                  <p className="text-xs text-slate-500 mb-1">Cash Runway</p>
-                  <p className="text-lg font-semibold text-slate-900">
-                    {fiMetrics.monthsOfRunway.toFixed(1)} mo
-                  </p>
-                </div>
-                <div className="p-3 rounded-lg bg-slate-50">
-                  <p className="text-xs text-slate-500 mb-1">Savings Rate</p>
-                  <p className="text-lg font-semibold text-slate-900">
-                    {fiMetrics.savingsRate !== null
-                      ? `${(fiMetrics.savingsRate * 100).toFixed(0)}%`
-                      : 'N/A'}
-                  </p>
-                </div>
-              </div>
-
-              {/* Upgrade Bridge */}
-              {!isPro && (
-                <div className="p-3 bg-emerald-50 rounded-lg border border-emerald-200">
-                  <p className="text-sm text-emerald-900">
-                    <strong>Want detailed projections?</strong> Model market growth, semi-retirement scenarios, and location arbitrage with Pro →
-                    <Link href="/upgrade" className="text-emerald-600 font-medium ml-1">Upgrade</Link>
-                  </p>
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-      )}
 
       {/* Wealth Health Metrics */}
       {riskMetrics && (
@@ -1654,42 +1573,6 @@ export default function DashboardPage() {
         </Card>
       )}
 
-      {/* Quick Actions */}
-      <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
-        <Card className="bg-white border-slate-200 shadow-sm cursor-pointer hover:border-emerald-300 hover:shadow-md transition-all">
-          <Link href="/net-worth">
-            <CardContent className="flex items-center gap-3 sm:gap-4 p-4 sm:p-6">
-              <div className="p-2.5 sm:p-3 rounded-xl bg-emerald-50">
-                <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 text-emerald-600" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="font-medium text-slate-900 text-sm sm:text-base">Net Worth Timeline</h3>
-                <p className="text-xs sm:text-sm text-slate-500 truncate">
-                  View and manage all entries
-                </p>
-              </div>
-              <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400 flex-shrink-0" />
-            </CardContent>
-          </Link>
-        </Card>
-
-        <Card className="bg-white border-slate-200 shadow-sm cursor-pointer hover:border-emerald-300 hover:shadow-md transition-all">
-          <Link href="/settings">
-            <CardContent className="flex items-center gap-3 sm:gap-4 p-4 sm:p-6">
-              <div className="p-2.5 sm:p-3 rounded-xl bg-emerald-50">
-                <DollarSign className="h-5 w-5 sm:h-6 sm:w-6 text-emerald-600" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="font-medium text-slate-900 text-sm sm:text-base">Google Sheets Sync</h3>
-                <p className="text-xs sm:text-sm text-slate-500 truncate">
-                  Connect spreadsheet for sync
-                </p>
-              </div>
-              <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 text-slate-400 flex-shrink-0" />
-            </CardContent>
-          </Link>
-        </Card>
-      </div>
 
       {/* Upgrade CTA & Next Steps - For users with some data */}
       {entries.length >= 2 && (
@@ -1826,160 +1709,7 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* Articles Section */}
-      <Card className="bg-white border-slate-200 shadow-sm">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-slate-900">
-            <div className="w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center">
-              <BookOpen className="h-4 w-4 text-emerald-600" />
-            </div>
-            Resources for Independent Consultants
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-            {/* Article 1 */}
-            <Link href="/articles/working-remotely-from-another-country">
-              <div className="h-full cursor-pointer bg-white border border-slate-200 rounded-xl overflow-hidden group hover:border-emerald-300 hover:shadow-lg transition-all">
-                <div className="relative h-32 sm:h-40 overflow-hidden">
-                  <img
-                    src="https://images.unsplash.com/photo-1488085061387-422e29b40080?w=600&h=300&fit=crop"
-                    alt="Working remotely from another country"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <div className="absolute bottom-3 left-3">
-                    <span className="text-xs font-medium text-white bg-emerald-600 px-2 py-1 rounded-full">Remote Work</span>
-                  </div>
-                </div>
-                <div className="p-3 sm:p-4">
-                  <h3 className="font-medium text-sm sm:text-base text-slate-900 mb-1 sm:mb-2 line-clamp-2 group-hover:text-emerald-600 transition-colors">A US Guide for Working Remotely From Another Country</h3>
-                  <p className="text-xs sm:text-sm text-slate-500 line-clamp-2">
-                    Taxes, visas, and logistics for US-based consultants working abroad.
-                  </p>
-                </div>
-              </div>
-            </Link>
-
-            {/* Article 2 */}
-            <Link href="/articles/best-bank-accounts-for-consultants">
-              <div className="h-full cursor-pointer bg-white border border-slate-200 rounded-xl overflow-hidden group hover:border-emerald-300 hover:shadow-lg transition-all">
-                <div className="relative h-32 sm:h-40 overflow-hidden">
-                  <img
-                    src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&h=300&fit=crop"
-                    alt="Bank accounts for consultants"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <div className="absolute bottom-3 left-3">
-                    <span className="text-xs font-medium text-white bg-emerald-600 px-2 py-1 rounded-full">Banking</span>
-                  </div>
-                </div>
-                <div className="p-3 sm:p-4">
-                  <h3 className="font-medium text-sm sm:text-base text-slate-900 mb-1 sm:mb-2 line-clamp-2 group-hover:text-emerald-600 transition-colors">Best Bank Accounts for Remote Workers and Consultants</h3>
-                  <p className="text-xs sm:text-sm text-slate-500 line-clamp-2">
-                    Compare Mercury, Schwab, Wise, and other top banks for freelancers.
-                  </p>
-                </div>
-              </div>
-            </Link>
-
-            {/* Article 3 */}
-            <Link href="/articles/tax-strategies-2026-self-employed">
-              <div className="h-full cursor-pointer bg-white border border-slate-200 rounded-xl overflow-hidden group hover:border-emerald-300 hover:shadow-lg transition-all">
-                <div className="relative h-32 sm:h-40 overflow-hidden">
-                  <img
-                    src="https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=600&h=300&fit=crop"
-                    alt="Tax strategies for self-employed"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <div className="absolute bottom-3 left-3">
-                    <span className="text-xs font-medium text-white bg-emerald-600 px-2 py-1 rounded-full">Taxes</span>
-                  </div>
-                </div>
-                <div className="p-3 sm:p-4">
-                  <h3 className="font-medium text-sm sm:text-base text-slate-900 mb-1 sm:mb-2 line-clamp-2 group-hover:text-emerald-600 transition-colors">Tax Strategies in 2026 for Self-Employed Workers</h3>
-                  <p className="text-xs sm:text-sm text-slate-500 line-clamp-2">
-                    S-Corp election, Solo 401k, QBI deduction, and more strategies.
-                  </p>
-                </div>
-              </div>
-            </Link>
-
-            {/* Article 4 */}
-            <Link href="/articles/why-track-net-worth">
-              <div className="h-full cursor-pointer bg-white border border-slate-200 rounded-xl overflow-hidden group hover:border-emerald-300 hover:shadow-lg transition-all">
-                <div className="relative h-32 sm:h-40 overflow-hidden">
-                  <img
-                    src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=600&h=300&fit=crop"
-                    alt="Tracking net worth"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <div className="absolute bottom-3 left-3">
-                    <span className="text-xs font-medium text-white bg-emerald-600 px-2 py-1 rounded-full">Wealth Building</span>
-                  </div>
-                </div>
-                <div className="p-3 sm:p-4">
-                  <h3 className="font-medium text-sm sm:text-base text-slate-900 mb-1 sm:mb-2 line-clamp-2 group-hover:text-emerald-600 transition-colors">Why Tracking Your Net Worth Over Time is Useful</h3>
-                  <p className="text-xs sm:text-sm text-slate-500 line-clamp-2">
-                    The psychological and practical benefits of monitoring your progress.
-                  </p>
-                </div>
-              </div>
-            </Link>
-
-            {/* Article 5 */}
-            <Link href="/articles/how-feie-works">
-              <div className="h-full cursor-pointer bg-white border border-slate-200 rounded-xl overflow-hidden group hover:border-emerald-300 hover:shadow-lg transition-all">
-                <div className="relative h-32 sm:h-40 overflow-hidden">
-                  <img
-                    src="https://images.unsplash.com/photo-1569025690938-a00729c9e1f9?w=600&h=300&fit=crop"
-                    alt="FEIE Foreign Earned Income Exclusion"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <div className="absolute bottom-3 left-3">
-                    <span className="text-xs font-medium text-white bg-emerald-600 px-2 py-1 rounded-full">Tax Planning</span>
-                  </div>
-                </div>
-                <div className="p-3 sm:p-4">
-                  <h3 className="font-medium text-sm sm:text-base text-slate-900 mb-1 sm:mb-2 line-clamp-2 group-hover:text-emerald-600 transition-colors">How the Foreign Earned Income Exclusion (FEIE) Works</h3>
-                  <p className="text-xs sm:text-sm text-slate-500 line-clamp-2">
-                    Exclude up to $130,000 of foreign income from US taxes.
-                  </p>
-                </div>
-              </div>
-            </Link>
-
-            {/* Article 6 */}
-            <Link href="/articles/become-self-employed-freelancer-2026">
-              <div className="h-full cursor-pointer bg-white border border-slate-200 rounded-xl overflow-hidden group hover:border-emerald-300 hover:shadow-lg transition-all">
-                <div className="relative h-32 sm:h-40 overflow-hidden">
-                  <img
-                    src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=300&fit=crop"
-                    alt="Become a freelancer"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <div className="absolute bottom-3 left-3">
-                    <span className="text-xs font-medium text-white bg-emerald-600 px-2 py-1 rounded-full">Getting Started</span>
-                  </div>
-                </div>
-                <div className="p-3 sm:p-4">
-                  <h3 className="font-medium text-sm sm:text-base text-slate-900 mb-1 sm:mb-2 line-clamp-2 group-hover:text-emerald-600 transition-colors">How to Become a Self-Employed Freelancer in 2026</h3>
-                  <p className="text-xs sm:text-sm text-slate-500 line-clamp-2">
-                    A complete guide from finding clients to setting up your business.
-                  </p>
-                </div>
-              </div>
-            </Link>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Edit Entry Dialog */}
+ {/* Edit Entry Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={(open) => {
         setIsEditDialogOpen(open);
         if (!open) setEditingEntry(null);
