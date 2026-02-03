@@ -1133,12 +1133,7 @@ export default function DashboardPage() {
                             className="drop-shadow-sm"
                           />
                         ))}
-                      <Label
-                        value={`${allocationData.length} Assets`}
-                        position="center"
-                        className="text-xs fill-slate-500"
-                      />
-                    </Pie>
+                      </Pie>
                       <Tooltip
                         content={({ active, payload }) => {
                           if (active && payload && payload.length) {

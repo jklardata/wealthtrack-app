@@ -279,12 +279,6 @@ function AllocationChart({
                   className="drop-shadow-sm"
                 />
               ))}
-            <Label
-              value={title}
-              position="centerBottom"
-              className="text-xs fill-slate-500"
-              offset={-10}
-            />
             </Pie>
             <Tooltip
               content={({ active, payload }) => {
