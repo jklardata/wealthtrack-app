@@ -597,7 +597,7 @@ export default function RetirementScenariosPage() {
                           borderRadius: "8px",
                           fontSize: 12,
                         }}
-                        formatter={(value: number) => formatCurrency(value)}
+                        formatter={(value) => formatCurrency(value as number)}
                         labelFormatter={(age) => `Age ${age}`}
                       />
                       <Legend
