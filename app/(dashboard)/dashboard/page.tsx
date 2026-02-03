@@ -3,6 +3,7 @@
 import { useEffect, useState, useMemo, useCallback, Suspense } from "react";
 import Link from "next/link";
 import { UpgradeSuccessBanner } from "@/components/upgrade-success-banner";
+import { useSubscription } from "@/hooks/use-subscription";
 import {
   calculateMomentum,
   calculateFIProgress,
@@ -227,6 +228,7 @@ function getPresetDateRange(preset: PresetRange): DateRange {
 }
 
 export default function DashboardPage() {
+  const { isPro } = useSubscription();
   const [entries, setEntries] = useState<NetWorthEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
