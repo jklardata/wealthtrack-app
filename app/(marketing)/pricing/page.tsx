@@ -167,11 +167,27 @@ export default function PricingPage() {
               </li>
               <li className="flex items-start gap-3 text-sm text-slate-600">
                 <Check className="h-5 w-5 text-emerald-500 flex-shrink-0" />
+                Roth conversion ladder planning
+              </li>
+              <li className="flex items-start gap-3 text-sm text-slate-600">
+                <Check className="h-5 w-5 text-emerald-500 flex-shrink-0" />
+                Portfolio rebalancing recommendations
+              </li>
+              <li className="flex items-start gap-3 text-sm text-slate-600">
+                <Check className="h-5 w-5 text-emerald-500 flex-shrink-0" />
+                Tax location optimization
+              </li>
+              <li className="flex items-start gap-3 text-sm text-slate-600">
+                <Check className="h-5 w-5 text-emerald-500 flex-shrink-0" />
                 Capital gains strategy simulator
               </li>
               <li className="flex items-start gap-3 text-sm text-slate-600">
                 <Check className="h-5 w-5 text-emerald-500 flex-shrink-0" />
                 Monte Carlo retirement scenarios
+              </li>
+              <li className="flex items-start gap-3 text-sm text-slate-600">
+                <Check className="h-5 w-5 text-emerald-500 flex-shrink-0" />
+                Tax-loss harvesting analysis
               </li>
               <li className="flex items-start gap-3 text-sm text-slate-600">
                 <Check className="h-5 w-5 text-emerald-500 flex-shrink-0" />
@@ -251,7 +267,7 @@ export default function PricingPage() {
               </div>
               <div className="space-y-3 text-sm">
                 <p className="text-emerald-50">
-                  <span className="font-medium text-white">Annual cost:</span> $348/year
+                  <span className="font-medium text-white">Annual cost:</span> $249/year
                   <span className="text-xs text-emerald-100 block">Less than 1 CPA session</span>
                 </p>
                 <div className="pt-3 border-t border-emerald-400/30">
