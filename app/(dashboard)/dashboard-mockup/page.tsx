@@ -328,7 +328,7 @@ export default function DashboardMockup() {
                     Unlock advanced modeling
                   </h4>
                   <p className="text-sm text-slate-600 mb-3">
-                    Pro gives you S-Corp analysis, Monte Carlo simulations, portfolio optimization, and Roth conversion planning. $29/month.
+                    Pro gives you S-Corp analysis, Monte Carlo simulations, portfolio optimization, and Roth conversion planning. $19/month or $199/year.
                   </p>
                   <Link href="/pricing">
                     <Button className="bg-purple-600 hover:bg-purple-700 text-white">

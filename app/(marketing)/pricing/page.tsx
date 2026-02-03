@@ -8,10 +8,12 @@ import { Check, Minus, ArrowRight, Shield, Lock, Eye } from "lucide-react";
 export default function PricingPage() {
   const [billingInterval, setBillingInterval] = useState<"monthly" | "yearly">("monthly");
 
-  const monthlyPrice = 29;
-  const yearlyPrice = 249;
+  const monthlyPrice = 19;
+  const yearlyPrice = 199;
   const displayPrice = billingInterval === "monthly" ? monthlyPrice : yearlyPrice;
   const priceLabel = billingInterval === "monthly" ? "/month" : "/year";
+  const yearlyMonthlyEquivalent = (yearlyPrice / 12).toFixed(2);
+  const yearlySavings = (monthlyPrice * 12) - yearlyPrice;
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -65,8 +67,8 @@ export default function PricingPage() {
           }`}
         >
           Yearly
-          <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full">
-            Save 28%
+          <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-semibold">
+            Save ${yearlySavings}
           </span>
         </button>
       </div>
@@ -133,10 +135,20 @@ export default function PricingPage() {
               <p className="text-slate-500 text-sm">Advanced modeling and optimization</p>
             </div>
             <div className="mb-6">
-              <span className="text-4xl font-semibold text-slate-900">${displayPrice}</span>
-              <span className="text-slate-500">{priceLabel}</span>
+              <div className="flex items-baseline gap-2">
+                <span className="text-4xl font-semibold text-slate-900">${displayPrice}</span>
+                <span className="text-slate-500">{priceLabel}</span>
+              </div>
               {billingInterval === "yearly" && (
-                <span className="ml-2 text-sm text-slate-400 line-through">${monthlyPrice * 12}/year</span>
+                <div className="mt-2">
+                  <span className="text-sm text-slate-400 line-through">${monthlyPrice * 12}/year</span>
+                  <span className="ml-2 text-sm font-semibold text-emerald-600">
+                    Save ${yearlySavings}/year
+                  </span>
+                  <div className="text-xs text-slate-500 mt-1">
+                    ${yearlyMonthlyEquivalent}/month when billed annually
+                  </div>
+                </div>
               )}
             </div>
             <p className="text-slate-600 text-sm mb-6 leading-relaxed">
@@ -262,13 +274,13 @@ export default function PricingPage() {
               </div>
               <div className="text-center mb-4">
                 <h3 className="font-medium mb-2">Solofi Pro</h3>
-                <div className="text-3xl font-semibold mb-1">$29</div>
+                <div className="text-3xl font-semibold mb-1">$19</div>
                 <div className="text-sm text-emerald-50">per month</div>
               </div>
               <div className="space-y-3 text-sm">
                 <p className="text-emerald-50">
-                  <span className="font-medium text-white">Annual cost:</span> $249/year
-                  <span className="text-xs text-emerald-100 block">Less than 1 CPA session</span>
+                  <span className="font-medium text-white">Annual cost:</span> $199/year
+                  <span className="text-xs text-emerald-100 block">Save $29 • Less than 1 CPA session</span>
                 </p>
                 <div className="pt-3 border-t border-emerald-400/30">
                   <p className="text-emerald-50 text-xs leading-relaxed">
@@ -309,7 +321,7 @@ export default function PricingPage() {
             <p>
               The subscription model keeps our incentives aligned with yours.
               We don't earn commissions, hold assets, or benefit from you making more transactions.
-              Our only goal is to be useful enough that you keep paying $29/month.
+              Our only goal is to be useful enough that you keep paying $19/month.
             </p>
           </div>
         </div>
