@@ -542,3 +542,65 @@ export interface TaxReturn {
   created_at: string;
   updated_at: string;
 }
+
+// ============================================
+// Projected Net Worth / Lifetime Income Types
+// ============================================
+
+export type IncomeSourceType = 'work' | 'social_security' | 'passive' | 'windfall';
+export type ExpenseCategoryType = 'recurring' | 'onetime' | 'medical_pre65' | 'medicare';
+
+export interface IncomeSource {
+  id: string;
+  user_id: string;
+  source_type: IncomeSourceType;
+  name: string;
+  annual_amount: number;
+  start_age_months?: number;
+  stop_age_months?: number;
+  growth_rate?: number;
+  pretax_deductions?: number;
+  claiming_age_months?: number;
+  auto_estimate?: boolean;
+  estimated_benefit?: number;
+  windfall_year?: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ExpenseCategory {
+  id: string;
+  user_id: string;
+  category_type: ExpenseCategoryType;
+  name: string;
+  monthly_amount: number;
+  start_age_months?: number;
+  end_age_months?: number;
+  notes?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ProjectionPoint {
+  year: number;
+  age: number;
+  ageMonths: number;
+  workIncome: number;
+  socialSecurityIncome: number;
+  passiveIncome: number;
+  windfallIncome: number;
+  totalIncome: number;
+  totalExpenses: number;
+  portfolioValue: number;
+  netCashFlow: number;
+}
+
+export interface ProjectionInput {
+  currentAge: number; // in months
+  currentNetWorth: number;
+  expectedReturn: number; // decimal, e.g., 0.07 for 7%
+  inflationRate: number; // decimal, e.g., 0.03 for 3%
+  longevityAge?: number; // default 95
+  incomeSources: IncomeSource[];
+  expenses: ExpenseCategory[];
+}

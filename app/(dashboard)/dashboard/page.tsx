@@ -1443,6 +1443,50 @@ export default function DashboardPage() {
               </Link>
             </CardContent>
           </Card>
+
+          {/* Projected Net Worth Card */}
+          {isPro ? (
+            <Link href="/lifetime-income">
+              <Card className="bg-gradient-to-br from-blue-50 to-purple-50 border-blue-200 hover:shadow-lg transition-shadow cursor-pointer">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <TrendingUpIcon className="h-5 w-5 text-blue-600" />
+                    Projected Net Worth
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-slate-600">
+                    Model your lifetime income from all sources and project your net worth trajectory
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
+          ) : (
+            <Card className="relative bg-slate-50 border-slate-200">
+              <div className="absolute top-2 right-2">
+                <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full font-medium">
+                  Pro
+                </span>
+              </div>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-slate-400">
+                  <TrendingUpIcon className="h-5 w-5" />
+                  Projected Net Worth
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-slate-500 mb-3">
+                  Model lifetime income and net worth trajectory
+                </p>
+                <Link href="/pricing">
+                  <Button variant="outline" className="w-full border-purple-200 text-purple-700 hover:bg-purple-50">
+                    <Sparkles className="h-3 w-3 mr-1" />
+                    Upgrade to Unlock
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          )}
         </div>
       )}
 
