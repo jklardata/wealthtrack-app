@@ -4,8 +4,8 @@ import { ArrowRight, Check, Calculator, PieChart, Building2, TrendingUp, Shield,
 import { LandingAnalytics, TrackedLink } from "@/components/analytics";
 
 export const metadata = {
-  title: "Solofi - Financial Decision Engine for Self-Employed Professionals",
-  description: "Model tax strategies, portfolio allocation, and retirement outcomes before making irreversible financial decisions. Built for independent consultants and high earners.",
+  title: "SoloFI - Financial Decision Engine for Self-Employed Professionals",
+  description: "SoloFI helps self-employed professionals model tax strategies, retirement outcomes, and portfolio decisions.",
 };
 
 // Force deployment refresh
@@ -18,9 +18,9 @@ export default function Landing21() {
       <LandingAnalytics variant={VARIANT} />
 
       {/* Nav */}
-      <nav className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-6 flex justify-between items-center">
+      <nav className="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex justify-between items-center">
         <span className="text-lg sm:text-xl font-semibold text-slate-900">
-          <span className="text-emerald-600">Solo</span>fi
+          <span className="text-emerald-600">Solo</span>FI
         </span>
         <div className="flex items-center gap-2 sm:gap-4">
           <Link href="/blog" className="hidden sm:block text-slate-600 hover:text-slate-900 text-sm">
@@ -42,32 +42,32 @@ export default function Landing21() {
       </nav>
 
       {/* Hero */}
-      <section className="max-w-4xl mx-auto px-4 sm:px-6 pt-12 sm:pt-16 pb-16 sm:pb-24">
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 pb-12 sm:pb-16">
         <div className="text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-slate-900 mb-4 sm:mb-6 leading-tight">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-medium tracking-tight text-slate-900 mb-3 sm:mb-4 leading-tight">
             Build wealth. Reduce taxes.
             <br />
             Retire on your terms.
           </h1>
-          <p className="text-lg sm:text-xl text-slate-600 mb-4 max-w-2xl mx-auto leading-relaxed">
-            Solofi helps self-employed professionals model tax strategies, retirement outcomes, and portfolio decisions—before committing to anything irreversible.
+          <p className="text-base sm:text-lg text-slate-600 mb-3 sm:mb-4 max-w-2xl mx-auto leading-relaxed">
+            SoloFI helps self-employed professionals model tax strategies, retirement outcomes, and portfolio decisions.
           </p>
-          <p className="text-base text-slate-500 mb-10 max-w-xl mx-auto">
+          <p className="text-sm sm:text-base text-slate-500 mb-6 sm:mb-8 max-w-xl mx-auto">
             No asset transfers. No account linking required. Just clarity.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <TrackedLink
               href="/dashboard"
               trackingAction="get_started"
               trackingLocation="hero"
               trackingVariant={VARIANT}
-              buttonProps={{ size: "lg", className: "bg-emerald-600 hover:bg-emerald-700 text-white px-8" }}
+              buttonProps={{ size: "lg", className: "bg-emerald-600 hover:bg-emerald-700 text-white px-10 py-6 text-base sm:text-lg" }}
             >
               Start modeling
-              <ArrowRight className="ml-2 h-4 w-4" />
+              <ArrowRight className="ml-2 h-5 w-5" />
             </TrackedLink>
             <Link href="/pricing">
-              <Button size="lg" variant="outline" className="border-emerald-200 text-emerald-700 hover:bg-emerald-50 px-8">
+              <Button size="lg" variant="outline" className="border-emerald-200 text-emerald-700 hover:bg-emerald-50 px-10 py-6 text-base sm:text-lg w-full sm:w-auto">
                 View pricing
               </Button>
             </Link>
@@ -75,91 +75,51 @@ export default function Landing21() {
         </div>
 
         {/* Product Preview */}
-        <div className="mt-12 sm:mt-16 max-w-4xl mx-auto">
-          <div className="bg-white rounded-xl sm:rounded-2xl border border-slate-200 overflow-hidden shadow-lg">
-            <div className="bg-slate-100 px-3 sm:px-4 py-2 sm:py-3 flex items-center gap-1.5 sm:gap-2 border-b border-slate-200">
+        <div className="mt-8 sm:mt-12 max-w-4xl mx-auto">
+          <div className="bg-white rounded-lg sm:rounded-xl border border-slate-200 overflow-hidden shadow-lg">
+            <div className="bg-slate-100 px-3 sm:px-4 py-1.5 sm:py-2 flex items-center gap-1.5 sm:gap-2 border-b border-slate-200">
               <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-red-400"></div>
               <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-yellow-400"></div>
               <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-green-400"></div>
               <span className="ml-2 sm:ml-4 text-xs sm:text-sm text-slate-500 font-mono">solofi.io</span>
             </div>
-            <div className="p-4 sm:p-8 bg-slate-50">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-                <div className="bg-white p-4 sm:p-5 rounded-lg sm:rounded-xl border border-slate-200 shadow-sm flex sm:block items-center justify-between">
+            <div className="p-3 sm:p-6 bg-slate-50">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4">
+                <div className="bg-white p-3 sm:p-4 rounded-lg border border-slate-200 shadow-sm flex sm:block items-center justify-between">
                   <div>
-                    <p className="text-xs text-slate-500 uppercase tracking-wide mb-0.5 sm:mb-1">Net Worth</p>
+                    <p className="text-xs text-slate-500 uppercase tracking-wide">Net Worth</p>
                     <p className="text-xs text-emerald-600 sm:hidden">+12.4% YTD</p>
                   </div>
-                  <p className="text-xl sm:text-2xl font-semibold text-slate-900 font-mono">$847,293</p>
-                  <p className="text-xs text-emerald-600 mt-1 hidden sm:block">+12.4% YTD</p>
+                  <p className="text-lg sm:text-2xl font-semibold text-slate-900 font-mono">$847K</p>
+                  <p className="text-xs text-emerald-600 mt-0.5 hidden sm:block">+12.4% YTD</p>
                 </div>
-                <div className="bg-white p-4 sm:p-5 rounded-lg sm:rounded-xl border border-slate-200 shadow-sm flex sm:block items-center justify-between">
+                <div className="bg-white p-3 sm:p-4 rounded-lg border border-slate-200 shadow-sm flex sm:block items-center justify-between">
                   <div>
-                    <p className="text-xs text-slate-500 uppercase tracking-wide mb-0.5 sm:mb-1">Portfolio Value</p>
+                    <p className="text-xs text-slate-500 uppercase tracking-wide">Portfolio</p>
                     <p className="text-xs text-emerald-600 sm:hidden">Tax-optimized</p>
                   </div>
-                  <p className="text-xl sm:text-2xl font-semibold text-slate-900 font-mono">$523,800</p>
-                  <p className="text-xs text-emerald-600 mt-1 hidden sm:block">Tax-optimized</p>
+                  <p className="text-lg sm:text-2xl font-semibold text-slate-900 font-mono">$524K</p>
+                  <p className="text-xs text-emerald-600 mt-0.5 hidden sm:block">Tax-optimized</p>
                 </div>
-                <div className="bg-white p-4 sm:p-5 rounded-lg sm:rounded-xl border border-slate-200 shadow-sm flex sm:block items-center justify-between">
+                <div className="bg-white p-3 sm:p-4 rounded-lg border border-slate-200 shadow-sm flex sm:block items-center justify-between">
                   <div>
-                    <p className="text-xs text-slate-500 uppercase tracking-wide mb-0.5 sm:mb-1">Tax Savings</p>
-                    <p className="text-xs text-slate-500 sm:hidden">S-Corp optimized</p>
+                    <p className="text-xs text-slate-500 uppercase tracking-wide">Tax Savings</p>
+                    <p className="text-xs text-slate-500 sm:hidden">S-Corp</p>
                   </div>
-                  <p className="text-xl sm:text-2xl font-semibold text-emerald-600 font-mono">$34,800</p>
-                  <p className="text-xs text-slate-500 mt-1 hidden sm:block">S-Corp optimized</p>
+                  <p className="text-lg sm:text-2xl font-semibold text-emerald-600 font-mono">$35K</p>
+                  <p className="text-xs text-slate-500 mt-0.5 hidden sm:block">S-Corp optimized</p>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Who Solofi is for */}
-      <section className="bg-white border-y border-slate-200 py-20">
-        <div className="max-w-5xl mx-auto px-6">
-          <h2 className="text-2xl font-medium text-slate-900 text-center mb-4">Built for complex financial lives</h2>
-          <p className="text-slate-600 text-center mb-12 max-w-2xl mx-auto">
-            If your finances involve multiple income streams, tax optimization decisions, and long-term planning—Solofi was built for you.
-          </p>
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="w-12 h-12 bg-emerald-50 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Building2 className="h-6 w-6 text-emerald-600" />
-              </div>
-              <h3 className="font-medium text-slate-900 mb-2">Independent Consultants</h3>
-              <p className="text-sm text-slate-500">Managing variable income, quarterly taxes, and business structure decisions</p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-emerald-50 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Calculator className="h-6 w-6 text-emerald-600" />
-              </div>
-              <h3 className="font-medium text-slate-900 mb-2">Self-Employed Professionals</h3>
-              <p className="text-sm text-slate-500">Navigating Solo 401k, SEP IRA, and S-Corp election timing</p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-emerald-50 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <TrendingUp className="h-6 w-6 text-emerald-600" />
-              </div>
-              <h3 className="font-medium text-slate-900 mb-2">Business Owners</h3>
-              <p className="text-sm text-slate-500">Coordinating personal and business finances with exit planning</p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 bg-emerald-50 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <PieChart className="h-6 w-6 text-emerald-600" />
-              </div>
-              <h3 className="font-medium text-slate-900 mb-2">High Earners</h3>
-              <p className="text-sm text-slate-500">Optimizing across tax brackets, investment accounts, and retirement vehicles</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Core Value Pillars */}
-      <section className="py-24">
-        <div className="max-w-5xl mx-auto px-6">
-          <h2 className="text-2xl font-medium text-slate-900 text-center mb-4">What Solofi does</h2>
-          <p className="text-slate-600 text-center mb-16 max-w-2xl mx-auto">
+      <section className="py-16 sm:py-20">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <h2 className="text-xl sm:text-2xl font-medium text-slate-900 text-center mb-3 sm:mb-4">What SoloFI does</h2>
+          <p className="text-sm sm:text-base text-slate-600 text-center mb-10 sm:mb-12 max-w-2xl mx-auto">
             A decision engine, not a brokerage. We help you understand the implications of financial choices before you make them.
           </p>
 
@@ -251,38 +211,78 @@ export default function Landing21() {
         </div>
       </section>
 
+      {/* Who SoloFI is for */}
+      <section className="bg-white border-y border-slate-200 py-12 sm:py-16">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <h2 className="text-xl sm:text-2xl font-medium text-slate-900 text-center mb-3 sm:mb-4">Built for complex financial lives</h2>
+          <p className="text-sm sm:text-base text-slate-600 text-center mb-8 sm:mb-10 max-w-2xl mx-auto">
+            If your finances involve multiple income streams, tax optimization decisions, and long-term planning—SoloFI was built for you.
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+            <div className="text-center">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-50 rounded-lg flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                <Building2 className="h-5 w-5 sm:h-6 sm:w-6 text-emerald-600" />
+              </div>
+              <h3 className="font-medium text-slate-900 mb-1 sm:mb-2 text-sm sm:text-base">Independent Consultants</h3>
+              <p className="text-xs sm:text-sm text-slate-500">Managing variable income, quarterly taxes, and business structure decisions</p>
+            </div>
+            <div className="text-center">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-50 rounded-lg flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                <Calculator className="h-5 w-5 sm:h-6 sm:w-6 text-emerald-600" />
+              </div>
+              <h3 className="font-medium text-slate-900 mb-1 sm:mb-2 text-sm sm:text-base">Self-Employed Professionals</h3>
+              <p className="text-xs sm:text-sm text-slate-500">Navigating Solo 401k, SEP IRA, and S-Corp election timing</p>
+            </div>
+            <div className="text-center">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-50 rounded-lg flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 text-emerald-600" />
+              </div>
+              <h3 className="font-medium text-slate-900 mb-1 sm:mb-2 text-sm sm:text-base">Business Owners</h3>
+              <p className="text-xs sm:text-sm text-slate-500">Coordinating personal and business finances with exit planning</p>
+            </div>
+            <div className="text-center">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-50 rounded-lg flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                <PieChart className="h-5 w-5 sm:h-6 sm:w-6 text-emerald-600" />
+              </div>
+              <h3 className="font-medium text-slate-900 mb-1 sm:mb-2 text-sm sm:text-base">High Earners</h3>
+              <p className="text-xs sm:text-sm text-slate-500">Optimizing across tax brackets, investment accounts, and retirement vehicles</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Differentiation */}
-      <section className="bg-slate-900 text-white py-24">
-        <div className="max-w-5xl mx-auto px-6">
-          <h2 className="text-2xl font-medium text-center mb-4">A different kind of financial tool</h2>
-          <p className="text-slate-400 text-center mb-16 max-w-2xl mx-auto">
-            Most platforms want to hold your assets or sell you products. Solofi exists to help you think clearly.
+      <section className="bg-slate-900 text-white py-16 sm:py-20">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <h2 className="text-xl sm:text-2xl font-medium text-center mb-3 sm:mb-4">A different kind of financial tool</h2>
+          <p className="text-sm sm:text-base text-slate-400 text-center mb-10 sm:mb-12 max-w-2xl mx-auto">
+            Most platforms want to hold your assets or sell you products. SoloFI exists to help you think clearly.
           </p>
 
-          <div className="grid md:grid-cols-2 gap-12">
+          <div className="grid md:grid-cols-2 gap-8 sm:gap-10">
             <div>
-              <h3 className="text-lg font-medium mb-6 text-slate-300">Typical platforms</h3>
-              <ul className="space-y-4">
-                <li className="flex items-start gap-3">
+              <h3 className="text-base sm:text-lg font-medium mb-4 sm:mb-5 text-slate-300">Typical platforms</h3>
+              <ul className="space-y-3 sm:space-y-4">
+                <li className="flex items-start gap-2 sm:gap-3">
                   <span className="w-1.5 h-1.5 bg-slate-600 rounded-full mt-2" />
-                  <span className="text-slate-400">Require asset transfers or account linking</span>
+                  <span className="text-sm sm:text-base text-slate-400">Require asset transfers or account linking</span>
                 </li>
-                <li className="flex items-start gap-3">
+                <li className="flex items-start gap-2 sm:gap-3">
                   <span className="w-1.5 h-1.5 bg-slate-600 rounded-full mt-2" />
-                  <span className="text-slate-400">Optimized for AUM fees or product sales</span>
+                  <span className="text-sm sm:text-base text-slate-400">Optimized for AUM fees or product sales</span>
                 </li>
-                <li className="flex items-start gap-3">
+                <li className="flex items-start gap-2 sm:gap-3">
                   <span className="w-1.5 h-1.5 bg-slate-600 rounded-full mt-2" />
-                  <span className="text-slate-400">Generic advice that doesn't account for self-employment</span>
+                  <span className="text-sm sm:text-base text-slate-400">Generic advice that doesn't account for self-employment</span>
                 </li>
-                <li className="flex items-start gap-3">
+                <li className="flex items-start gap-2 sm:gap-3">
                   <span className="w-1.5 h-1.5 bg-slate-600 rounded-full mt-2" />
-                  <span className="text-slate-400">Lock you into their ecosystem</span>
+                  <span className="text-sm sm:text-base text-slate-400">Lock you into their ecosystem</span>
                 </li>
               </ul>
             </div>
             <div>
-              <h3 className="text-lg font-medium mb-6 text-white">Solofi</h3>
+              <h3 className="text-base sm:text-lg font-medium mb-4 sm:mb-5 text-white">SoloFI</h3>
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
                   <Check className="h-5 w-5 text-emerald-400 mt-0.5 flex-shrink-0" />
@@ -528,10 +528,10 @@ export default function Landing21() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-slate-200 py-12">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-slate-500">
-            <span>© 2026 Solofi</span>
+      <footer className="border-t border-slate-200 py-8 sm:py-10">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-6 text-xs sm:text-sm text-slate-500">
+            <span>© 2026 SoloFI</span>
             <div className="flex gap-8">
               <Link href="/blog" className="hover:text-slate-700">Resources</Link>
               <Link href="/privacy" className="hover:text-slate-700">Privacy</Link>
