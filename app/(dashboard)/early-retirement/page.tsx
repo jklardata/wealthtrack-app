@@ -290,6 +290,26 @@ export default function EarlyRetirementPage() {
           </p>
         </div>
 
+        {/* Scenario Planner Callout */}
+        <Card className="bg-gradient-to-r from-emerald-50 to-blue-50 border-emerald-200">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-semibold text-slate-900 mb-1">Compare Multiple Retirement Paths</h3>
+                <p className="text-sm text-slate-600">
+                  Create and compare different scenarios side-by-side to find your optimal strategy.
+                </p>
+              </div>
+              <Link href="/retirement-scenarios">
+                <Button className="bg-emerald-600 hover:bg-emerald-700 whitespace-nowrap ml-4">
+                  <BarChart3 className="h-4 w-4 mr-2" />
+                  Scenario Planner
+                </Button>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Input Panel */}
         <Card className="bg-white border-slate-200 shadow-sm">
           <CardContent className="pt-4 pb-3">
