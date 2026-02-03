@@ -186,6 +186,92 @@ export default function PricingPage() {
         </div>
       </section>
 
+      {/* Cost Comparison */}
+      <section className="bg-gradient-to-br from-emerald-50 via-white to-slate-50 py-20 border-y border-slate-200">
+        <div className="max-w-5xl mx-auto px-6">
+          <h2 className="text-2xl font-medium text-slate-900 text-center mb-4">
+            Compare the cost of financial guidance
+          </h2>
+          <p className="text-slate-600 text-center mb-12 max-w-2xl mx-auto">
+            Solofi provides decision-modeling capabilities at a fraction of the cost of traditional services.
+          </p>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {/* Traditional CPA */}
+            <div className="bg-white border border-slate-200 rounded-xl p-6">
+              <div className="text-center mb-4">
+                <h3 className="font-medium text-slate-900 mb-2">Traditional CPA</h3>
+                <div className="text-3xl font-semibold text-slate-900 mb-1">$400</div>
+                <div className="text-sm text-slate-500">per consultation</div>
+              </div>
+              <div className="space-y-3 text-sm">
+                <p className="text-slate-600">
+                  <span className="font-medium text-slate-900">Annual cost:</span> $1,600+
+                  <span className="text-xs text-slate-500 block">Based on 4 sessions/year</span>
+                </p>
+                <div className="pt-3 border-t border-slate-100">
+                  <p className="text-slate-500 text-xs leading-relaxed">
+                    Reactive advice after you've already made decisions. Limited modeling of future scenarios.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Financial Advisor */}
+            <div className="bg-white border border-slate-200 rounded-xl p-6">
+              <div className="text-center mb-4">
+                <h3 className="font-medium text-slate-900 mb-2">Financial Advisor</h3>
+                <div className="text-3xl font-semibold text-slate-900 mb-1">1% AUM</div>
+                <div className="text-sm text-slate-500">annual fee</div>
+              </div>
+              <div className="space-y-3 text-sm">
+                <p className="text-slate-600">
+                  <span className="font-medium text-slate-900">Annual cost:</span> $5,000/year
+                  <span className="text-xs text-slate-500 block">On $500K portfolio</span>
+                </p>
+                <div className="pt-3 border-t border-slate-100">
+                  <p className="text-slate-500 text-xs leading-relaxed">
+                    Requires asset custody. Commission incentives may not align with your goals.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Solofi */}
+            <div className="bg-gradient-to-br from-emerald-500 to-teal-600 text-white rounded-xl p-6 relative">
+              <div className="absolute -top-3 left-6">
+                <span className="bg-white text-emerald-600 text-xs font-medium px-3 py-1 rounded-full">
+                  Best value
+                </span>
+              </div>
+              <div className="text-center mb-4">
+                <h3 className="font-medium mb-2">Solofi Pro</h3>
+                <div className="text-3xl font-semibold mb-1">$29</div>
+                <div className="text-sm text-emerald-50">per month</div>
+              </div>
+              <div className="space-y-3 text-sm">
+                <p className="text-emerald-50">
+                  <span className="font-medium text-white">Annual cost:</span> $348/year
+                  <span className="text-xs text-emerald-100 block">Less than 1 CPA session</span>
+                </p>
+                <div className="pt-3 border-t border-emerald-400/30">
+                  <p className="text-emerald-50 text-xs leading-relaxed">
+                    Model unlimited scenarios. No asset custody. No commissions. Cancel anytime.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 text-center">
+            <p className="text-sm text-slate-600 max-w-2xl mx-auto">
+              If one S-Corp decision saves you $3,000 in taxes, or one optimal Roth conversion timing
+              saves $5,000 over a decade, Solofi pays for itself many times over.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Why Pro Exists */}
       <section className="bg-white border-y border-slate-200 py-20">
         <div className="max-w-3xl mx-auto px-6">
