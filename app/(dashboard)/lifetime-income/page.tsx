@@ -8,13 +8,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AgeInput } from "@/components/ui/age-input";
-import { IncomeSourcesForm } from "./components/IncomeSourcesForm";
-import { ExpensesForm } from "./components/ExpensesForm";
 import { ProjectionChart } from "./components/ProjectionChart";
 import { ProjectionSummary } from "./components/ProjectionSummary";
-import { TrendingUp, Calculator, DollarSign, RefreshCw } from "lucide-react";
+import { TrendingUp, Calculator, RefreshCw, Settings as SettingsIcon, DollarSign } from "lucide-react";
+import Link from "next/link";
 import type { ProjectionPoint } from "@/lib/types";
 
 export default function LifetimeIncomePage() {
@@ -84,13 +82,6 @@ export default function LifetimeIncomePage() {
     }
   };
 
-  const handleDataUpdate = () => {
-    // Recalculate if we've already calculated once
-    if (hasCalculated) {
-      calculateProjection();
-    }
-  };
-
   if (subLoading) {
     return (
       <div className="p-8 space-y-6">
@@ -123,11 +114,27 @@ export default function LifetimeIncomePage() {
       <div>
         <h1 className="text-3xl font-bold flex items-center gap-2">
           <TrendingUp className="h-8 w-8 text-emerald-600" />
-          Projected Net Worth
+          Net Worth Projected
         </h1>
         <p className="text-slate-600 mt-2">
-          Model your lifetime income from all sources and project your net worth trajectory
+          View your lifetime net worth trajectory based on your income and expenses
         </p>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="flex gap-3">
+        <Link href="/profile">
+          <Button variant="outline" className="border-blue-200 text-blue-700 hover:bg-blue-50">
+            <DollarSign className="h-4 w-4 mr-2" />
+            Modify Income
+          </Button>
+        </Link>
+        <Link href="/profile">
+          <Button variant="outline" className="border-purple-200 text-purple-700 hover:bg-purple-50">
+            <SettingsIcon className="h-4 w-4 mr-2" />
+            Modify Expenses
+          </Button>
+        </Link>
       </div>
 
       {/* Calculation Parameters */}
@@ -142,7 +149,7 @@ export default function LifetimeIncomePage() {
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             <div>
-              <Label htmlFor="current_age">Current Age *</Label>
+              <Label htmlFor="current_age">Age *</Label>
               <AgeInput
                 id="current_age"
                 value={currentAge || undefined}
@@ -217,42 +224,8 @@ export default function LifetimeIncomePage() {
       {/* Results Summary */}
       {hasCalculated && <ProjectionSummary projection={projection} />}
 
-      {/* Two-Column Layout: Forms and Chart */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Left: Income & Expenses Forms */}
-        <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <DollarSign className="h-5 w-5 text-blue-600" />
-                Income & Expenses
-              </CardTitle>
-              <CardDescription>
-                Add your income sources and expense categories
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Tabs defaultValue="income" className="w-full">
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="income">Income Sources</TabsTrigger>
-                  <TabsTrigger value="expenses">Expenses</TabsTrigger>
-                </TabsList>
-                <TabsContent value="income" className="mt-4">
-                  <IncomeSourcesForm onUpdate={handleDataUpdate} />
-                </TabsContent>
-                <TabsContent value="expenses" className="mt-4">
-                  <ExpensesForm onUpdate={handleDataUpdate} />
-                </TabsContent>
-              </Tabs>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Right: Projection Chart */}
-        <div>
-          <ProjectionChart projection={projection} />
-        </div>
-      </div>
+      {/* Projection Chart */}
+      <ProjectionChart projection={projection} />
 
       {/* Instructions */}
       {!hasCalculated && (
@@ -262,11 +235,10 @@ export default function LifetimeIncomePage() {
           </CardHeader>
           <CardContent className="text-sm text-blue-800 space-y-2">
             <ol className="list-decimal list-inside space-y-1">
+              <li>Go to your <Link href="/profile" className="underline font-medium">Profile</Link> to add income sources and expenses</li>
               <li>Enter your current age and net worth in the parameters above</li>
-              <li>Add your income sources using the Income Sources tab</li>
-              <li>Add your expected expenses using the Expenses tab</li>
               <li>Click "Calculate Projection" to see your lifetime net worth trajectory</li>
-              <li>Adjust assumptions and income/expenses to model different scenarios</li>
+              <li>Adjust assumptions and modify income/expenses to model different scenarios</li>
             </ol>
           </CardContent>
         </Card>

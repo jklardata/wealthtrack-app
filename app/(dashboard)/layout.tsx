@@ -19,6 +19,8 @@ import {
   Lightbulb,
   Sunrise,
   BookOpen,
+  User,
+  LineChart,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -31,6 +33,7 @@ import { FeedbackWidget } from "@/components/feedback-widget";
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/net-worth", label: "Net Worth", icon: TrendingUp },
+  { href: "/lifetime-income", label: "Net Worth Projected", icon: LineChart },
   { href: "/credit-cards", label: "Credit Cards", icon: CreditCard },
   { href: "/portfolio-optimizer", label: "Portfolio Optimizer", icon: PieChart },
   { href: "/retirement", label: "Retirement Calculator", icon: Calculator },
@@ -41,6 +44,7 @@ const navItems = [
   { href: "/blog", label: "Resources", icon: BookOpen },
   { href: "/award-programs", label: "Award Programs", icon: Award, disabled: true },
   { href: "/pricing", label: "Pricing", icon: Sparkles },
+  { href: "/profile", label: "Profile", icon: User },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 
