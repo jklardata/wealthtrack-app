@@ -73,7 +73,7 @@ export default function ComparisonPage({
             <Calculator className="h-6 w-6 text-emerald-600" />
             <span className="font-semibold text-lg">SoloFI</span>
           </Link>
-          <Link href="/dashboard">
+          <Link href="/sign-up">
             <Button className="bg-emerald-600 hover:bg-emerald-700">
               Try SoloFI Free
             </Button>
@@ -281,7 +281,7 @@ export default function ComparisonPage({
             <p className="text-emerald-100 mb-6 max-w-xl mx-auto">
               Join thousands of freelancers using SoloFI to optimize taxes, track net worth, and reach financial independence faster.
             </p>
-            <Link href="/dashboard">
+            <Link href="/sign-up">
               <Button size="lg" className="bg-white text-emerald-600 hover:bg-emerald-50">
                 Try SoloFI Free <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
