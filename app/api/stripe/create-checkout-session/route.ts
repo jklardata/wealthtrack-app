@@ -18,8 +18,11 @@ export async function POST(request: NextRequest) {
 
     const { priceId, trialDays } = await request.json();
     if (!priceId) {
+      console.error('Missing priceId in request');
       return NextResponse.json({ error: 'Price ID is required' }, { status: 400 });
     }
+
+    console.log('Creating checkout session with priceId:', priceId);
 
     const supabase = createServerSupabaseClient();
     const email = user.emailAddresses[0].emailAddress;
@@ -37,6 +40,7 @@ export async function POST(request: NextRequest) {
 
     // Create Stripe customer if none exists
     if (!stripeCustomerId) {
+      console.log('Creating new Stripe customer for user:', userId);
       const customer = await stripe.customers.create({
         email,
         metadata: {
@@ -44,21 +48,32 @@ export async function POST(request: NextRequest) {
         },
       });
       stripeCustomerId = customer.id;
+      console.log('Created Stripe customer:', stripeCustomerId);
 
       // Create or update subscription record with customer ID
       if (subscription) {
-        await supabase
+        const { error: updateError } = await supabase
           .from('subscriptions')
           .update({ stripe_customer_id: stripeCustomerId })
           .eq('user_id', userId);
+
+        if (updateError) {
+          console.error('Error updating subscription record:', updateError);
+          throw new Error('Failed to update subscription record');
+        }
       } else {
-        await supabase
+        const { error: insertError } = await supabase
           .from('subscriptions')
           .insert({
             user_id: userId,
             stripe_customer_id: stripeCustomerId,
             entitlement_tier: 'free',
           });
+
+        if (insertError) {
+          console.error('Error creating subscription record:', insertError);
+          throw new Error('Failed to create subscription record');
+        }
       }
     }
 
@@ -81,6 +96,7 @@ export async function POST(request: NextRequest) {
       cancelUrl: `${appUrl}/upgrade?canceled=true`
     });
 
+    console.log('Creating Stripe checkout session for customer:', stripeCustomerId);
     const session = await stripe.checkout.sessions.create({
       customer: stripeCustomerId,
       mode: 'subscription',
@@ -100,6 +116,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    console.log('Checkout session created:', session.id);
     return NextResponse.json({ url: session.url });
   } catch (error) {
     console.error('Error creating checkout session:', error);

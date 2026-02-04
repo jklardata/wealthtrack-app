@@ -41,6 +41,7 @@ import {
   TrendingUp,
   DollarSign,
   User,
+  Copy,
 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
@@ -414,6 +415,18 @@ export default function NetWorthPage() {
 
   const handleEdit = (entry: NetWorthEntry) => {
     setEditingEntry(entry);
+    setIsDialogOpen(true);
+  };
+
+  const handleDuplicate = (entry: NetWorthEntry) => {
+    // Create a duplicate entry with today's date but without the ID
+    // This will cause the form to create a new entry instead of updating
+    const { id, created_at, updated_at, user_id, ...entryData } = entry;
+    const duplicateEntry = {
+      ...entryData,
+      date: getDefaultDate(), // Set to today's date
+    } as unknown as NetWorthEntry;
+    setEditingEntry(duplicateEntry);
     setIsDialogOpen(true);
   };
 
@@ -1098,6 +1111,10 @@ export default function NetWorthPage() {
                             <DropdownMenuItem onClick={() => handleEdit(entry)}>
                               <Pencil className="h-4 w-4 mr-2" />
                               Edit
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleDuplicate(entry)}>
+                              <Copy className="h-4 w-4 mr-2" />
+                              Duplicate
                             </DropdownMenuItem>
                             <DropdownMenuItem
                               onClick={() => handleDelete(entry.id)}

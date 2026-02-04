@@ -25,6 +25,11 @@ export default function PricingPage() {
         ? STRIPE_PRICES.pro.monthly
         : STRIPE_PRICES.pro.yearly;
 
+      // Validate that price ID is configured
+      if (!priceId) {
+        throw new Error("Stripe configuration is incomplete. Please contact support.");
+      }
+
       const response = await fetch("/api/stripe/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -40,7 +45,8 @@ export default function PricingPage() {
       }
     } catch (error) {
       console.error("Error creating checkout:", error);
-      alert("Failed to create checkout. Please try again.");
+      const errorMessage = error instanceof Error ? error.message : "Failed to create checkout";
+      alert(`${errorMessage}. Please try again or contact support if the issue persists.`);
     } finally {
       setIsLoading(false);
     }

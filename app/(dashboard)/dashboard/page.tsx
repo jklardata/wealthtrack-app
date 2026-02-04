@@ -1290,84 +1290,86 @@ export default function DashboardPage() {
                 <YAxis stroke="#94a3b8" fontSize={11} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
                 <Tooltip formatter={(value) => formatCurrency(Number(value))} />
                 <Legend />
-                <Bar dataKey="income" name="Income" fill="#10b981" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="expenses" name="Expenses" fill="#ef4444" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="income" name="Income" fill="#3b82f6" radius={[4, 4, 0, 0]} label={{ position: 'top', formatter: (value: number) => `$${(value / 1000).toFixed(0)}k`, fontSize: 10 }} />
+                <Bar dataKey="expenses" name="Expenses" fill="#d97706" radius={[4, 4, 0, 0]} label={{ position: 'top', formatter: (value: number) => `$${(value / 1000).toFixed(0)}k`, fontSize: 10 }} />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
       )}
 
-      {/* Current Month Income vs Expenses Comparison */}
-      {latestEntry && latestEntry.pre_tax_income > 0 && latestEntry.monthly_expenses > 0 && (
-        <Card className="bg-white border-slate-200 shadow-sm">
-          <CardHeader>
-            <CardTitle className="text-slate-900">Current Monthly Cash Flow</CardTitle>
-            <p className="text-sm text-slate-500 mt-1">
-              Recorded on {new Date(latestEntry.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-            </p>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 rounded-lg bg-green-50 border border-green-200">
-                  <div className="text-sm text-green-700 mb-1">Monthly Income</div>
-                  <div className="text-2xl font-bold text-green-900">
-                    {formatCurrency(latestEntry.pre_tax_income)}
+      {/* Current Month Income vs Expenses Comparison and Next Best Actions - Side by Side */}
+      <div className="grid lg:grid-cols-2 gap-6">
+        {/* Current Monthly Cash Flow */}
+        {latestEntry && latestEntry.pre_tax_income > 0 && latestEntry.monthly_expenses > 0 && (
+          <Card className="bg-white border-slate-200 shadow-sm">
+            <CardHeader>
+              <CardTitle className="text-slate-900">Current Monthly Cash Flow</CardTitle>
+              <p className="text-sm text-slate-500 mt-1">
+                Recorded on {new Date(latestEntry.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+              </p>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="p-4 rounded-lg bg-green-50 border border-green-200">
+                    <div className="text-sm text-green-700 mb-1">Monthly Income</div>
+                    <div className="text-2xl font-bold text-green-900">
+                      {formatCurrency(latestEntry.pre_tax_income)}
+                    </div>
+                  </div>
+                  <div className="p-4 rounded-lg bg-red-50 border border-red-200">
+                    <div className="text-sm text-red-700 mb-1">Monthly Expenses</div>
+                    <div className="text-2xl font-bold text-red-900">
+                      {formatCurrency(latestEntry.monthly_expenses)}
+                    </div>
                   </div>
                 </div>
-                <div className="p-4 rounded-lg bg-red-50 border border-red-200">
-                  <div className="text-sm text-red-700 mb-1">Monthly Expenses</div>
-                  <div className="text-2xl font-bold text-red-900">
-                    {formatCurrency(latestEntry.monthly_expenses)}
+                <div className="p-4 rounded-lg bg-gradient-to-br from-emerald-400 to-emerald-500 border-emerald-300">
+                  <div className="text-sm text-emerald-50 mb-1">Net Monthly Savings</div>
+                  <div className="text-3xl font-bold text-white">
+                    {formatCurrency(latestEntry.pre_tax_income - latestEntry.monthly_expenses)}
+                  </div>
+                  <div className="text-sm text-emerald-50 mt-2">
+                    Savings Rate: {((latestEntry.pre_tax_income - latestEntry.monthly_expenses) / latestEntry.pre_tax_income * 100).toFixed(1)}%
                   </div>
                 </div>
               </div>
-              <div className="p-4 rounded-lg bg-gradient-to-br from-green-800 to-green-900 border-green-700">
-                <div className="text-sm text-green-100 mb-1">Net Monthly Savings</div>
-                <div className="text-3xl font-bold text-white">
-                  {formatCurrency(latestEntry.pre_tax_income - latestEntry.monthly_expenses)}
-                </div>
-                <div className="text-sm text-green-100 mt-2">
-                  Savings Rate: {((latestEntry.pre_tax_income - latestEntry.monthly_expenses) / latestEntry.pre_tax_income * 100).toFixed(1)}%
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+            </CardContent>
+          </Card>
+        )}
 
-      {/* Next Best Actions */}
-      {nextActions.length > 0 && (
-        <Card className="bg-white border-slate-200 shadow-sm">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Target className="h-5 w-5 text-emerald-600" />
-              Next Best Question
-            </CardTitle>
-            <p className="text-sm text-slate-500 mt-1">Questions worth exploring now</p>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {nextActions.map((action, idx) => (
-                <div
-                  key={idx}
-                  className={`p-4 rounded-lg border-2 ${
-                    action.category === 'warning' ? 'bg-yellow-50 border-yellow-200' :
-                    action.category === 'milestone' ? 'bg-blue-50 border-blue-200' :
-                    'bg-emerald-50 border-emerald-200'
-                  }`}
-                >
-                  <div className="flex items-start gap-3">
-                    <div className={`p-2 rounded-lg ${
-                      action.category === 'warning' ? 'bg-yellow-100' :
-                      action.category === 'milestone' ? 'bg-blue-100' :
-                      'bg-emerald-100'
-                    }`}>
-                      {action.icon === 'alert' && <AlertTriangle className="h-5 w-5 text-yellow-700" />}
-                      {action.icon === 'trophy' && <Award className="h-5 w-5 text-blue-700" />}
-                      {action.icon === 'zap' && <Zap className="h-5 w-5 text-emerald-700" />}
-                      {action.icon === 'star' && <Sparkles className="h-5 w-5 text-emerald-700" />}
+        {/* Next Best Actions */}
+        {nextActions.length > 0 && (
+          <Card className="bg-white border-slate-200 shadow-sm">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Target className="h-5 w-5 text-emerald-600" />
+                Next Best Question
+              </CardTitle>
+              <p className="text-sm text-slate-500 mt-1">Questions worth exploring now</p>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {nextActions.map((action, idx) => (
+                  <div
+                    key={idx}
+                    className={`p-4 rounded-lg border-2 ${
+                      action.category === 'warning' ? 'bg-yellow-50 border-yellow-200' :
+                      action.category === 'milestone' ? 'bg-blue-50 border-blue-200' :
+                      'bg-emerald-50 border-emerald-200'
+                    }`}
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className={`p-2 rounded-lg ${
+                        action.category === 'warning' ? 'bg-yellow-100' :
+                        action.category === 'milestone' ? 'bg-blue-100' :
+                        'bg-emerald-100'
+                      }`}>
+                        {action.icon === 'alert' && <AlertTriangle className="h-5 w-5 text-yellow-700" />}
+                        {action.icon === 'trophy' && <Award className="h-5 w-5 text-blue-700" />}
+                        {action.icon === 'zap' && <Zap className="h-5 w-5 text-emerald-700" />}
+                        {action.icon === 'star' && <Sparkles className="h-5 w-5 text-emerald-700" />}
                     </div>
                     <div className="flex-1">
                       <h4 className="font-medium text-slate-900 mb-1">{action.title}</h4>
@@ -1385,8 +1387,8 @@ export default function DashboardPage() {
             </div>
           </CardContent>
         </Card>
-      )}
-
+        )}
+      </div>
 
       {/* Upgrade CTA & Next Steps - For users with some data */}
       {entries.length >= 2 && (
