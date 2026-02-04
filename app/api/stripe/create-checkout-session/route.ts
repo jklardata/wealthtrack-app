@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'User email not found' }, { status: 400 });
     }
 
-    const { priceId } = await request.json();
+    const { priceId, trialDays } = await request.json();
     if (!priceId) {
       return NextResponse.json({ error: 'Price ID is required' }, { status: 400 });
     }
@@ -96,6 +96,7 @@ export async function POST(request: NextRequest) {
         metadata: {
           clerk_user_id: userId,
         },
+        ...(trialDays && { trial_period_days: trialDays }),
       },
     });
 

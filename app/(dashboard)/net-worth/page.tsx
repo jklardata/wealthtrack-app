@@ -38,6 +38,8 @@ import {
   Settings,
   X,
   AlertTriangle,
+  TrendingUp,
+  DollarSign,
 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
@@ -871,23 +873,94 @@ export default function NetWorthPage() {
         </div>
       )}
 
+      {/* Income/Expenses CTA Banner */}
+      {entries.length > 0 && entries.every(e => !e.pre_tax_income && !e.monthly_expenses) && (
+        <div className="bg-gradient-to-r from-blue-50 via-cyan-50 to-blue-50 border border-blue-200 rounded-lg p-5">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+              <DollarSign className="h-6 w-6 text-blue-600" />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-semibold text-slate-900 mb-2">
+                Track Your Income & Expenses
+              </h3>
+              <p className="text-sm text-slate-600 mb-4">
+                Add your monthly income and expenses to your net worth entries to automatically calculate your savings rate, net profit, and see your complete financial picture.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <Button
+                  size="sm"
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                  onClick={() => setIsDialogOpen(true)}
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Income & Expenses
+                </Button>
+                <Link href="/settings">
+                  <Button size="sm" variant="outline" className="border-blue-200 text-blue-700 hover:bg-blue-50">
+                    <Settings className="h-4 w-4 mr-2" />
+                    Update via Google Sheets
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <Card className="bg-white border-slate-200 shadow-sm">
         <CardHeader>
           <CardTitle className="text-lg font-medium text-slate-900">All Entries</CardTitle>
         </CardHeader>
         <CardContent>
           {entries.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-slate-500 mb-4">
-                No entries yet. Add your first net worth entry to get started.
-              </p>
-              <Button
-                className="bg-emerald-600 hover:bg-emerald-700 text-white"
-                onClick={() => setIsDialogOpen(true)}
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Add First Entry
-              </Button>
+            <div className="text-center py-16 px-6">
+              <div className="max-w-2xl mx-auto">
+                <div className="w-20 h-20 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <TrendingUp className="h-10 w-10 text-emerald-600" />
+                </div>
+                <h3 className="text-2xl font-semibold text-slate-900 mb-3">
+                  Start Tracking Your Net Worth
+                </h3>
+                <p className="text-base text-slate-600 mb-8 max-w-xl mx-auto">
+                  Get a complete picture of your financial health. Track your assets, debts, income, and expenses over time to make better financial decisions.
+                </p>
+                <div className="grid sm:grid-cols-2 gap-4 mb-8 max-w-xl mx-auto">
+                  <div className="bg-gradient-to-br from-emerald-50 to-green-50 border border-emerald-200 rounded-lg p-5 text-left">
+                    <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center mb-3">
+                      <TrendingUp className="h-5 w-5 text-emerald-600" />
+                    </div>
+                    <h4 className="font-semibold text-slate-900 mb-2">Track Your Growth</h4>
+                    <p className="text-sm text-slate-600">See how your net worth changes over time with beautiful visualizations</p>
+                  </div>
+                  <div className="bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-200 rounded-lg p-5 text-left">
+                    <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-3">
+                      <DollarSign className="h-5 w-5 text-blue-600" />
+                    </div>
+                    <h4 className="font-semibold text-slate-900 mb-2">Monitor Income & Expenses</h4>
+                    <p className="text-sm text-slate-600">Track your monthly income and expenses to calculate your savings rate</p>
+                  </div>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  <Button
+                    size="lg"
+                    className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                    onClick={() => setIsDialogOpen(true)}
+                  >
+                    <Plus className="h-5 w-5 mr-2" />
+                    Add Your First Entry
+                  </Button>
+                  <Link href="/settings">
+                    <Button size="lg" variant="outline" className="w-full sm:w-auto border-slate-300">
+                      <Settings className="h-5 w-5 mr-2" />
+                      Or Sync from Google Sheets
+                    </Button>
+                  </Link>
+                </div>
+                <p className="text-sm text-slate-500 mt-4">
+                  Tip: Include your monthly income and expenses to calculate your savings rate automatically
+                </p>
+              </div>
             </div>
           ) : (
             <div className="overflow-x-auto">

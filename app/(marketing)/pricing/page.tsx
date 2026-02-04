@@ -4,9 +4,42 @@ import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Check, Minus, ArrowRight, Shield, Lock, Eye } from "lucide-react";
+import { STRIPE_PRICES } from "@/lib/stripe-config";
 
 export default function PricingPage() {
   const [billingInterval, setBillingInterval] = useState<"monthly" | "yearly">("monthly");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleTrialCheckout = async () => {
+    setIsLoading(true);
+    try {
+      const priceId = billingInterval === "monthly"
+        ? STRIPE_PRICES.pro.monthly
+        : STRIPE_PRICES.pro.yearly;
+
+      const response = await fetch("/api/stripe/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          priceId,
+          trialDays: 14
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error(data.error || "Failed to create checkout session");
+      }
+    } catch (error) {
+      console.error("Error starting trial:", error);
+      alert("Failed to start trial. Please try again or sign up first.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const monthlyPrice = 19;
   const yearlyPrice = 199;
@@ -155,11 +188,13 @@ export default function PricingPage() {
               Model complex decisions before you make them. Compare entity structures, optimize tax timing,
               and simulate retirement scenarios with precision.
             </p>
-            <Link href="/sign-up">
-              <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
-                Start 14-day trial
-              </Button>
-            </Link>
+            <Button
+              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
+              onClick={handleTrialCheckout}
+              disabled={isLoading}
+            >
+              {isLoading ? "Loading..." : "Start 14-day trial"}
+            </Button>
             <ul className="mt-8 space-y-3">
               <li className="flex items-start gap-3 text-sm text-slate-600">
                 <Check className="h-5 w-5 text-emerald-500 flex-shrink-0" />

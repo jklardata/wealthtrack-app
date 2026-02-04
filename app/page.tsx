@@ -1,7 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Check, Calculator, PieChart, Building2, TrendingUp, Shield, Lock, Eye } from "lucide-react";
 import { LandingAnalytics, TrackedLink } from "@/components/analytics";
+import { useState } from "react";
 
 export const metadata = {
   title: "SoloFI - Financial Decision Engine for Self-Employed Professionals",
@@ -13,6 +16,37 @@ export const metadata = {
 const VARIANT = "landing_21_decision_engine";
 
 export default function Landing21() {
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setMessage(null);
+
+    try {
+      const response = await fetch("/api/newsletter/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setMessage({ type: "success", text: data.message });
+        setEmail("");
+      } else {
+        setMessage({ type: "error", text: data.error || "Something went wrong" });
+      }
+    } catch (error) {
+      setMessage({ type: "error", text: "Failed to subscribe. Please try again." });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-50">
       <LandingAnalytics variant={VARIANT} />
@@ -492,16 +526,29 @@ export default function Landing21() {
           <p className="text-slate-600 mb-6">
             Occasional emails on tax optimization, retirement planning, and financial modeling. No spam, no sales pitches.
           </p>
-          <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+          <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
             <input
               type="email"
               placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
               className="flex-1 px-4 py-3 rounded-lg border border-emerald-200 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent text-sm"
+              disabled={isSubmitting}
             />
-            <Button className="bg-emerald-600 hover:bg-emerald-700 text-white px-6">
-              Subscribe
+            <Button
+              type="submit"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white px-6"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Subscribing..." : "Subscribe"}
             </Button>
           </form>
+          {message && (
+            <p className={`mt-3 text-sm text-center ${message.type === "success" ? "text-emerald-600" : "text-red-600"}`}>
+              {message.text}
+            </p>
+          )}
         </div>
       </section>
 

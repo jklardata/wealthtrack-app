@@ -51,6 +51,9 @@ export default function SettingsPage() {
   const [taxPreview, setTaxPreview] = useState<Partial<TaxReturn>[] | null>(null);
   const [uploadingTax, setUploadingTax] = useState(false);
   const [taxMessage, setTaxMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [promoCode, setPromoCode] = useState("");
+  const [promoLoading, setPromoLoading] = useState(false);
+  const [promoMessage, setPromoMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
   useEffect(() => {
     async function fetchSettings() {
@@ -316,6 +319,39 @@ export default function SettingsPage() {
     }).format(value);
   };
 
+  const handlePromoCodeSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPromoLoading(true);
+    setPromoMessage(null);
+
+    try {
+      const response = await fetch("/api/promo-code/redeem", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: promoCode }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setPromoMessage({ type: "success", text: data.message });
+        setPromoCode("");
+        // Refresh subscription status
+        const subResponse = await fetch("/api/stripe/subscription");
+        if (subResponse.ok) {
+          const subData = await subResponse.json();
+          setSubscription(subData);
+        }
+      } else {
+        setPromoMessage({ type: "error", text: data.error || "Invalid promo code" });
+      }
+    } catch (error) {
+      setPromoMessage({ type: "error", text: "Failed to redeem promo code" });
+    } finally {
+      setPromoLoading(false);
+    }
+  };
+
   const extractSheetId = (input: string): string => {
     // If it's a full URL, extract the ID
     const match = input.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
@@ -415,6 +451,46 @@ export default function SettingsPage() {
                   </li>
                 ))}
               </ul>
+            </div>
+          )}
+
+          {/* Promo Code Section */}
+          {subscription?.entitlement_tier === "free" && (
+            <div className="pt-4 border-t">
+              <h4 className="font-medium text-sm mb-3">Have a promo code?</h4>
+              <form onSubmit={handlePromoCodeSubmit} className="flex gap-2">
+                <Input
+                  type="text"
+                  placeholder="Enter promo code"
+                  value={promoCode}
+                  onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                  disabled={promoLoading}
+                  className="flex-1"
+                />
+                <Button
+                  type="submit"
+                  disabled={promoLoading || !promoCode}
+                  variant="outline"
+                >
+                  {promoLoading ? "Applying..." : "Apply"}
+                </Button>
+              </form>
+              {promoMessage && (
+                <div
+                  className={`flex items-center gap-2 p-2 rounded-lg mt-2 text-sm ${
+                    promoMessage.type === "success"
+                      ? "bg-green-500/10 text-green-600"
+                      : "bg-red-500/10 text-red-600"
+                  }`}
+                >
+                  {promoMessage.type === "success" ? (
+                    <Check className="h-4 w-4" />
+                  ) : (
+                    <AlertCircle className="h-4 w-4" />
+                  )}
+                  {promoMessage.text}
+                </div>
+              )}
             </div>
           )}
         </CardContent>
