@@ -1088,6 +1088,59 @@ export default function DashboardPage() {
       </Card>
 
 
+      {/* Dark Green Callout Boxes - Key Metrics */}
+      {latestEntry && (
+        <div className="grid gap-3 grid-cols-2 lg:grid-cols-4">
+          <Card className="bg-gradient-to-br from-green-800 to-green-900 border-green-700 shadow-lg">
+            <CardContent className="p-4">
+              <div className="text-green-100 text-xs font-semibold uppercase tracking-wide mb-1">
+                Total Assets
+              </div>
+              <div className="text-2xl font-bold text-white">
+                {formatCurrency(latestEntry.total_assets)}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-to-br from-green-800 to-green-900 border-green-700 shadow-lg">
+            <CardContent className="p-4">
+              <div className="text-green-100 text-xs font-semibold uppercase tracking-wide mb-1">
+                Total Debts
+              </div>
+              <div className="text-2xl font-bold text-white">
+                {formatCurrency(latestEntry.total_debts)}
+              </div>
+            </CardContent>
+          </Card>
+
+          {latestEntry.pre_tax_income > 0 && (
+            <Card className="bg-gradient-to-br from-green-800 to-green-900 border-green-700 shadow-lg">
+              <CardContent className="p-4">
+                <div className="text-green-100 text-xs font-semibold uppercase tracking-wide mb-1">
+                  Monthly Income
+                </div>
+                <div className="text-2xl font-bold text-white">
+                  {formatCurrency(latestEntry.pre_tax_income)}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {latestEntry.monthly_expenses > 0 && (
+            <Card className="bg-gradient-to-br from-green-800 to-green-900 border-green-700 shadow-lg">
+              <CardContent className="p-4">
+                <div className="text-green-100 text-xs font-semibold uppercase tracking-wide mb-1">
+                  Monthly Expenses
+                </div>
+                <div className="text-2xl font-bold text-white">
+                  {formatCurrency(latestEntry.monthly_expenses)}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+      )}
+
       {/* Asset Allocation and Net Worth Momentum */}
       <div className="grid gap-4 lg:grid-cols-2">
         {/* Asset Allocation */}
@@ -1258,7 +1311,208 @@ export default function DashboardPage() {
         )}
       </div>
 
+      {/* Individual Asset Charts */}
+      {chartData.length > 0 && (
+        <div className="grid gap-4 lg:grid-cols-2">
+          {/* Stocks Over Time */}
+          <Card className="bg-white border-slate-200 shadow-sm">
+            <CardHeader>
+              <CardTitle className="text-slate-900 flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: ASSET_COLORS.stocks }} />
+                Stocks Over Time
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ResponsiveContainer width="100%" height={200}>
+                <BarChart data={chartData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                  <XAxis dataKey="date" stroke="#94a3b8" fontSize={11} />
+                  <YAxis stroke="#94a3b8" fontSize={11} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
+                  <Tooltip formatter={(value) => formatCurrency(Number(value))} />
+                  <Bar dataKey="stocks" fill={ASSET_COLORS.stocks} radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
 
+          {/* Bonds Over Time */}
+          <Card className="bg-white border-slate-200 shadow-sm">
+            <CardHeader>
+              <CardTitle className="text-slate-900 flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: ASSET_COLORS.bonds }} />
+                Bonds Over Time
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ResponsiveContainer width="100%" height={200}>
+                <BarChart data={chartData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                  <XAxis dataKey="date" stroke="#94a3b8" fontSize={11} />
+                  <YAxis stroke="#94a3b8" fontSize={11} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
+                  <Tooltip formatter={(value) => formatCurrency(Number(value))} />
+                  <Bar dataKey="bonds" fill={ASSET_COLORS.bonds} radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+
+          {/* Real Estate Over Time */}
+          <Card className="bg-white border-slate-200 shadow-sm">
+            <CardHeader>
+              <CardTitle className="text-slate-900 flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: ASSET_COLORS.real_estate }} />
+                Real Estate Over Time
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ResponsiveContainer width="100%" height={200}>
+                <BarChart data={chartData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                  <XAxis dataKey="date" stroke="#94a3b8" fontSize={11} />
+                  <YAxis stroke="#94a3b8" fontSize={11} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
+                  <Tooltip formatter={(value) => formatCurrency(Number(value))} />
+                  <Bar dataKey="real_estate" fill={ASSET_COLORS.real_estate} radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+
+          {/* Commodities Over Time */}
+          <Card className="bg-white border-slate-200 shadow-sm">
+            <CardHeader>
+              <CardTitle className="text-slate-900 flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                Commodities Over Time
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ResponsiveContainer width="100%" height={200}>
+                <BarChart data={chartData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                  <XAxis dataKey="date" stroke="#94a3b8" fontSize={11} />
+                  <YAxis stroke="#94a3b8" fontSize={11} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
+                  <Tooltip formatter={(value) => formatCurrency(Number(value))} />
+                  <Bar dataKey="commodities" fill="#eab308" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+
+          {/* Total Debts Over Time */}
+          <Card className="bg-white border-slate-200 shadow-sm">
+            <CardHeader>
+              <CardTitle className="text-slate-900 flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-red-500" />
+                Total Debts Over Time
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ResponsiveContainer width="100%" height={200}>
+                <BarChart data={chartData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                  <XAxis dataKey="date" stroke="#94a3b8" fontSize={11} />
+                  <YAxis stroke="#94a3b8" fontSize={11} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
+                  <Tooltip formatter={(value) => formatCurrency(Number(value))} />
+                  <Bar dataKey="total_debts" fill="#ef4444" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+
+          {/* Cash Over Time */}
+          <Card className="bg-white border-slate-200 shadow-sm">
+            <CardHeader>
+              <CardTitle className="text-slate-900 flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: ASSET_COLORS.cash }} />
+                Cash Over Time
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ResponsiveContainer width="100%" height={200}>
+                <BarChart data={chartData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                  <XAxis dataKey="date" stroke="#94a3b8" fontSize={11} />
+                  <YAxis stroke="#94a3b8" fontSize={11} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
+                  <Tooltip formatter={(value) => formatCurrency(Number(value))} />
+                  <Bar dataKey="cash" fill={ASSET_COLORS.cash} radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* Income vs Expenses Chart */}
+      {chartData.length > 0 && chartData.some(d => d.netWorth > 0) && (
+        <Card className="bg-white border-slate-200 shadow-sm">
+          <CardHeader>
+            <CardTitle className="text-slate-900">Monthly Income vs Expenses</CardTitle>
+            <p className="text-sm text-slate-500 mt-1">
+              Track your cash flow over time to understand your savings rate
+            </p>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={chartData.map(entry => {
+                const rawEntry = entries.find(e => e.id === entry.entryId);
+                return {
+                  date: entry.date,
+                  income: rawEntry?.pre_tax_income || 0,
+                  expenses: rawEntry?.monthly_expenses || 0,
+                  netProfit: (rawEntry?.pre_tax_income || 0) - (rawEntry?.monthly_expenses || 0),
+                };
+              })}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                <XAxis dataKey="date" stroke="#94a3b8" fontSize={11} />
+                <YAxis stroke="#94a3b8" fontSize={11} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
+                <Tooltip formatter={(value) => formatCurrency(Number(value))} />
+                <Legend />
+                <Bar dataKey="income" name="Income" fill="#10b981" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="expenses" name="Expenses" fill="#ef4444" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Current Month Income vs Expenses Comparison */}
+      {latestEntry && latestEntry.pre_tax_income > 0 && latestEntry.monthly_expenses > 0 && (
+        <Card className="bg-white border-slate-200 shadow-sm">
+          <CardHeader>
+            <CardTitle className="text-slate-900">Current Monthly Cash Flow</CardTitle>
+            <p className="text-sm text-slate-500 mt-1">
+              Most recent month's income and expenses
+            </p>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-4 rounded-lg bg-green-50 border border-green-200">
+                  <div className="text-sm text-green-700 mb-1">Monthly Income</div>
+                  <div className="text-2xl font-bold text-green-900">
+                    {formatCurrency(latestEntry.pre_tax_income)}
+                  </div>
+                </div>
+                <div className="p-4 rounded-lg bg-red-50 border border-red-200">
+                  <div className="text-sm text-red-700 mb-1">Monthly Expenses</div>
+                  <div className="text-2xl font-bold text-red-900">
+                    {formatCurrency(latestEntry.monthly_expenses)}
+                  </div>
+                </div>
+              </div>
+              <div className="p-4 rounded-lg bg-gradient-to-br from-green-800 to-green-900 border-green-700">
+                <div className="text-sm text-green-100 mb-1">Net Monthly Savings</div>
+                <div className="text-3xl font-bold text-white">
+                  {formatCurrency(latestEntry.pre_tax_income - latestEntry.monthly_expenses)}
+                </div>
+                <div className="text-sm text-green-100 mt-2">
+                  Savings Rate: {((latestEntry.pre_tax_income - latestEntry.monthly_expenses) / latestEntry.pre_tax_income * 100).toFixed(1)}%
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Next Best Actions */}
       {nextActions.length > 0 && (
