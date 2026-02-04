@@ -1304,7 +1304,7 @@ export default function DashboardPage() {
           <CardHeader>
             <CardTitle className="text-slate-900">Current Monthly Cash Flow</CardTitle>
             <p className="text-sm text-slate-500 mt-1">
-              Recorded on {new Date(latestEntry.recorded_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+              Recorded on {new Date(latestEntry.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
             </p>
           </CardHeader>
           <CardContent>
