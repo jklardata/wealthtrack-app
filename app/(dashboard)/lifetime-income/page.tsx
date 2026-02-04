@@ -101,7 +101,20 @@ export default function LifetimeIncomePage() {
   }
 
   if (!isPro) {
-    return <LockedModule feature="Projected Net Worth" />;
+    return (
+      <LockedModule
+        title="Projected Net Worth"
+        description="Model your lifetime income from all sources and project your net worth trajectory"
+        icon={<TrendingUp className="h-5 w-5 text-emerald-600" />}
+        benefits={[
+          "Track multiple income sources (work, social security, passive, windfalls)",
+          "Model age-dependent expenses (medical, Medicare)",
+          "Year-by-year portfolio projections with charts",
+          "Social Security benefit estimation",
+          "Portfolio depletion warnings and peak net worth analysis"
+        ]}
+      />
+    );
   }
 
   return (
