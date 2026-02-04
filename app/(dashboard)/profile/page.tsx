@@ -7,15 +7,41 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { IncomeSourcesForm } from "../lifetime-income/components/IncomeSourcesForm";
 import { ExpensesForm } from "../lifetime-income/components/ExpensesForm";
-import { User, DollarSign, Calendar, Save } from "lucide-react";
-import type { UserSettings } from "@/lib/types";
+import { User, DollarSign, Calendar, Save, Briefcase, Shield, Users } from "lucide-react";
+import type { UserSettings, MaritalStatus, TaxFilingStatus, RiskTolerance } from "@/lib/types";
+import {
+  MARITAL_STATUS_OPTIONS,
+  TAX_FILING_STATUS_OPTIONS,
+  RISK_TOLERANCE_OPTIONS,
+  US_STATES
+} from "@/lib/profile-constants";
 
 export default function ProfilePage() {
   const [settings, setSettings] = useState<UserSettings | null>(null);
   const [currentAge, setCurrentAge] = useState("");
   const [desiredRetirementAge, setDesiredRetirementAge] = useState("");
+
+  // New personal information fields
+  const [fullName, setFullName] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [maritalStatus, setMaritalStatus] = useState<MaritalStatus | "">("");
+  const [numberOfDependents, setNumberOfDependents] = useState("");
+  const [stateOfResidence, setStateOfResidence] = useState("");
+  const [taxFilingStatus, setTaxFilingStatus] = useState<TaxFilingStatus | "">("");
+  const [riskTolerance, setRiskTolerance] = useState<RiskTolerance | "">("");
+  const [lifeExpectancy, setLifeExpectancy] = useState("95");
+  const [employerName, setEmployerName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+
   const [isSaving, setIsSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -33,6 +59,17 @@ export default function ProfilePage() {
         setSettings(data.data);
         setCurrentAge(data.data.current_age?.toString() || "");
         setDesiredRetirementAge(data.data.desired_retirement_age?.toString() || "");
+        // New fields
+        setFullName(data.data.full_name || "");
+        setDateOfBirth(data.data.date_of_birth || "");
+        setMaritalStatus(data.data.marital_status || "");
+        setNumberOfDependents(data.data.number_of_dependents?.toString() || "");
+        setStateOfResidence(data.data.state_of_residence || "");
+        setTaxFilingStatus(data.data.tax_filing_status || "");
+        setRiskTolerance(data.data.risk_tolerance || "");
+        setLifeExpectancy(data.data.life_expectancy_assumption?.toString() || "95");
+        setEmployerName(data.data.employer_name || "");
+        setPhoneNumber(data.data.phone_number || "");
       }
     } catch (error) {
       console.error("Error fetching settings:", error);
@@ -51,6 +88,17 @@ export default function ProfilePage() {
         body: JSON.stringify({
           current_age: currentAge ? parseInt(currentAge) : null,
           desired_retirement_age: desiredRetirementAge ? parseInt(desiredRetirementAge) : null,
+          // New fields
+          full_name: fullName || null,
+          date_of_birth: dateOfBirth || null,
+          marital_status: maritalStatus || null,
+          number_of_dependents: numberOfDependents ? parseInt(numberOfDependents) : null,
+          state_of_residence: stateOfResidence || null,
+          tax_filing_status: taxFilingStatus || null,
+          risk_tolerance: riskTolerance || null,
+          life_expectancy_assumption: lifeExpectancy ? parseInt(lifeExpectancy) : null,
+          employer_name: employerName || null,
+          phone_number: phoneNumber || null,
         }),
       });
 
@@ -95,46 +143,195 @@ export default function ProfilePage() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Calendar className="h-5 w-5 text-emerald-600" />
+            <User className="h-5 w-5 text-emerald-600" />
             Personal Information
           </CardTitle>
           <CardDescription>
-            Set your age and retirement goals. These will auto-populate in planning tools.
+            Your personal details help personalize financial planning across all tools
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="current_age">Age</Label>
-              <Input
-                id="current_age"
-                type="number"
-                placeholder="35"
-                value={currentAge}
-                onChange={(e) => setCurrentAge(e.target.value)}
-              />
-              <p className="text-xs text-slate-500 mt-1">Used in Net Worth Projected</p>
-            </div>
-            <div>
-              <Label htmlFor="desired_retirement_age">Desired Retirement Age</Label>
-              <Input
-                id="desired_retirement_age"
-                type="number"
-                placeholder="65"
-                value={desiredRetirementAge}
-                onChange={(e) => setDesiredRetirementAge(e.target.value)}
-              />
-              <p className="text-xs text-slate-500 mt-1">Used in Early Retirement calculator</p>
+        <CardContent className="space-y-6">
+          {/* Basic Information */}
+          <div>
+            <h3 className="text-sm font-semibold text-slate-900 mb-3 flex items-center gap-2">
+              <Users className="h-4 w-4" />
+              Basic Information
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div>
+                <Label htmlFor="full_name">Full Name</Label>
+                <Input
+                  id="full_name"
+                  placeholder="John Doe"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                />
+              </div>
+              <div>
+                <Label htmlFor="date_of_birth">Date of Birth</Label>
+                <Input
+                  id="date_of_birth"
+                  type="date"
+                  value={dateOfBirth}
+                  onChange={(e) => setDateOfBirth(e.target.value)}
+                />
+              </div>
+              <div>
+                <Label htmlFor="current_age">Current Age (years)</Label>
+                <Input
+                  id="current_age"
+                  type="number"
+                  placeholder="35"
+                  value={currentAge}
+                  onChange={(e) => setCurrentAge(e.target.value)}
+                />
+              </div>
+              <div>
+                <Label htmlFor="phone_number">Phone Number</Label>
+                <Input
+                  id="phone_number"
+                  type="tel"
+                  placeholder="(555) 123-4567"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                />
+              </div>
+              <div>
+                <Label htmlFor="marital_status">Marital Status</Label>
+                <Select value={maritalStatus} onValueChange={(v) => setMaritalStatus(v as MaritalStatus)}>
+                  <SelectTrigger id="marital_status">
+                    <SelectValue placeholder="Select status..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {MARITAL_STATUS_OPTIONS.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="number_of_dependents">Number of Dependents</Label>
+                <Input
+                  id="number_of_dependents"
+                  type="number"
+                  min="0"
+                  placeholder="0"
+                  value={numberOfDependents}
+                  onChange={(e) => setNumberOfDependents(e.target.value)}
+                />
+              </div>
+              <div>
+                <Label htmlFor="state_of_residence">State of Residence</Label>
+                <Select value={stateOfResidence} onValueChange={setStateOfResidence}>
+                  <SelectTrigger id="state_of_residence">
+                    <SelectValue placeholder="Select state..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {US_STATES.map((state) => (
+                      <SelectItem key={state} value={state}>
+                        {state}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label htmlFor="employer_name">Employer Name</Label>
+                <Input
+                  id="employer_name"
+                  placeholder="Company Name"
+                  value={employerName}
+                  onChange={(e) => setEmployerName(e.target.value)}
+                />
+              </div>
             </div>
           </div>
-          <div className="mt-4 flex items-center gap-3">
+
+          {/* Financial Planning */}
+          <div className="border-t pt-6">
+            <h3 className="text-sm font-semibold text-slate-900 mb-3 flex items-center gap-2">
+              <Calendar className="h-4 w-4" />
+              Retirement Planning
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div>
+                <Label htmlFor="desired_retirement_age">Desired Retirement Age</Label>
+                <Input
+                  id="desired_retirement_age"
+                  type="number"
+                  placeholder="65"
+                  value={desiredRetirementAge}
+                  onChange={(e) => setDesiredRetirementAge(e.target.value)}
+                />
+                <p className="text-xs text-slate-500 mt-1">Used in Early Retirement calculator</p>
+              </div>
+              <div>
+                <Label htmlFor="life_expectancy">Life Expectancy Assumption</Label>
+                <Input
+                  id="life_expectancy"
+                  type="number"
+                  placeholder="95"
+                  value={lifeExpectancy}
+                  onChange={(e) => setLifeExpectancy(e.target.value)}
+                />
+                <p className="text-xs text-slate-500 mt-1">For retirement projections</p>
+              </div>
+              <div>
+                <Label htmlFor="risk_tolerance">Risk Tolerance</Label>
+                <Select value={riskTolerance} onValueChange={(v) => setRiskTolerance(v as RiskTolerance)}>
+                  <SelectTrigger id="risk_tolerance">
+                    <SelectValue placeholder="Select tolerance..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {RISK_TOLERANCE_OPTIONS.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <p className="text-xs text-slate-500 mt-1">Used in Portfolio Optimizer</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Tax Information */}
+          <div className="border-t pt-6">
+            <h3 className="text-sm font-semibold text-slate-900 mb-3 flex items-center gap-2">
+              <Shield className="h-4 w-4" />
+              Tax Information
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="tax_filing_status">Tax Filing Status</Label>
+                <Select value={taxFilingStatus} onValueChange={(v) => setTaxFilingStatus(v as TaxFilingStatus)}>
+                  <SelectTrigger id="tax_filing_status">
+                    <SelectValue placeholder="Select status..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {TAX_FILING_STATUS_OPTIONS.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <p className="text-xs text-slate-500 mt-1">Used in Tax calculators</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Save Button */}
+          <div className="flex items-center gap-3 pt-4 border-t">
             <Button
               onClick={handleSaveSettings}
               disabled={isSaving}
-              className="bg-slate-800 hover:bg-slate-900 text-white"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white"
             >
               <Save className="h-4 w-4 mr-2" />
-              {isSaving ? "Saving..." : "Save Settings"}
+              {isSaving ? "Saving..." : "Save All Settings"}
             </Button>
             {saveMessage && (
               <span className={`text-sm ${saveMessage.includes("success") ? "text-emerald-600" : "text-red-600"}`}>

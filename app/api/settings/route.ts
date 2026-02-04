@@ -61,6 +61,37 @@ export async function POST(request: NextRequest) {
     if ('desired_retirement_age' in body) {
       updateData.desired_retirement_age = body.desired_retirement_age;
     }
+    // New personal information fields
+    if ('full_name' in body) {
+      updateData.full_name = body.full_name || null;
+    }
+    if ('date_of_birth' in body) {
+      updateData.date_of_birth = body.date_of_birth || null;
+    }
+    if ('marital_status' in body) {
+      updateData.marital_status = body.marital_status || null;
+    }
+    if ('number_of_dependents' in body) {
+      updateData.number_of_dependents = body.number_of_dependents;
+    }
+    if ('state_of_residence' in body) {
+      updateData.state_of_residence = body.state_of_residence || null;
+    }
+    if ('tax_filing_status' in body) {
+      updateData.tax_filing_status = body.tax_filing_status || null;
+    }
+    if ('risk_tolerance' in body) {
+      updateData.risk_tolerance = body.risk_tolerance || null;
+    }
+    if ('life_expectancy_assumption' in body) {
+      updateData.life_expectancy_assumption = body.life_expectancy_assumption;
+    }
+    if ('employer_name' in body) {
+      updateData.employer_name = body.employer_name || null;
+    }
+    if ('phone_number' in body) {
+      updateData.phone_number = body.phone_number || null;
+    }
 
     // Upsert settings
     const { data, error } = await supabase

@@ -98,9 +98,29 @@ export interface UserSettings {
   consulting_income_last_sync_at: string | null;
   current_age: number | null;
   desired_retirement_age: number | null;
+  // Personal Information
+  full_name: string | null;
+  date_of_birth: string | null;
+  marital_status: MaritalStatus | null;
+  number_of_dependents: number | null;
+  state_of_residence: string | null;
+  // Tax Information
+  tax_filing_status: TaxFilingStatus | null;
+  // Financial Planning
+  risk_tolerance: RiskTolerance | null;
+  life_expectancy_assumption: number | null;
+  // Employment & Contact
+  employer_name: string | null;
+  phone_number: string | null;
   created_at: string;
   updated_at: string;
 }
+
+export type MaritalStatus = 'single' | 'married' | 'divorced' | 'widowed' | 'domestic_partner';
+
+export type TaxFilingStatus = 'single' | 'married_filing_jointly' | 'married_filing_separately' | 'head_of_household';
+
+// Note: RiskTolerance type already exists in the file at line 211
 
 export interface SheetRow {
   date: string;
