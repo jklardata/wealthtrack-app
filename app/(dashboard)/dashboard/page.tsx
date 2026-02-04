@@ -1409,6 +1409,22 @@ export default function DashboardPage() {
                   </div>
                 </div>
               </Link>
+              <Link href="/profile" className="block">
+                <div className="p-3 rounded-lg bg-white border border-slate-200 hover:border-purple-300 hover:shadow-md transition-all group">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center">
+                        <DollarSign className="h-4 w-4 text-purple-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-slate-900">Configure Income & Expenses</p>
+                        <p className="text-xs text-slate-500">Set up for lifetime projections</p>
+                      </div>
+                    </div>
+                    <ArrowRight className="h-4 w-4 text-slate-400 group-hover:text-emerald-600 transition-colors" />
+                  </div>
+                </div>
+              </Link>
               <Link href="/settings" className="block">
                 <div className="p-3 rounded-lg bg-white border border-slate-200 hover:border-emerald-300 hover:shadow-md transition-all group">
                   <div className="flex items-center justify-between">

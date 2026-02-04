@@ -76,33 +76,43 @@ export function ProjectionChart({ projection }: ProjectionChartProps) {
         <div className="space-y-8">
           {/* Main Portfolio Chart */}
           <div>
-            <h3 className="text-sm font-medium mb-3">Portfolio Value Over Time</h3>
+            <h3 className="text-sm font-medium mb-3 text-slate-900">Portfolio Value Over Time</h3>
             <ResponsiveContainer width="100%" height={400}>
-              <LineChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+              <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                <defs>
+                  <linearGradient id="portfolioGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.1}/>
+                    <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
                 <XAxis
                   dataKey="age"
-                  label={{ value: "Age", position: "insideBottom", offset: -5 }}
-                  stroke="#64748b"
+                  label={{ value: "Age", position: "insideBottom", offset: -5, fill: "#64748b" }}
+                  stroke="#cbd5e1"
+                  tick={{ fill: "#64748b", fontSize: 12 }}
                 />
                 <YAxis
-                  label={{ value: "Portfolio Value ($)", angle: -90, position: "insideLeft" }}
-                  stroke="#64748b"
+                  label={{ value: "Portfolio Value ($)", angle: -90, position: "insideLeft", fill: "#64748b" }}
+                  stroke="#cbd5e1"
+                  tick={{ fill: "#64748b", fontSize: 12 }}
                   tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
                 />
                 <Tooltip
                   formatter={(value: number | undefined) =>
-                    value !== undefined ? `$${value.toLocaleString()}` : ""
+                    value !== undefined ? `$${Math.round(value).toLocaleString()}` : ""
                   }
                   labelFormatter={(age) => `Age: ${age}`}
                   contentStyle={{
                     backgroundColor: "white",
                     border: "1px solid #e2e8f0",
-                    borderRadius: "6px",
+                    borderRadius: "8px",
+                    boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
                   }}
+                  labelStyle={{ color: "#0f172a", fontWeight: 600 }}
                 />
-                <Legend />
-                <ReferenceLine y={0} stroke="#ef4444" strokeDasharray="3 3" />
+                <Legend wrapperStyle={{ paddingTop: "10px" }} />
+                <ReferenceLine y={0} stroke="#ef4444" strokeDasharray="3 3" strokeWidth={2} />
                 <Line
                   type="monotone"
                   dataKey="portfolioValue"
@@ -110,6 +120,7 @@ export function ProjectionChart({ projection }: ProjectionChartProps) {
                   strokeWidth={3}
                   dot={false}
                   name="Portfolio Value"
+                  fill="url(#portfolioGradient)"
                 />
               </LineChart>
             </ResponsiveContainer>
