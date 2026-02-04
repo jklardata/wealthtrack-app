@@ -21,6 +21,14 @@ const isPublicRoute = createRouteMatcher([
 export default clerkMiddleware(async (auth, req) => {
   const url = req.nextUrl;
   const hostname = req.headers.get('host') || '';
+  const { userId } = await auth();
+
+  // If authenticated user tries to access sign-in/sign-up on main domain, redirect to app subdomain
+  if (userId && (url.pathname.startsWith('/sign-in') || url.pathname.startsWith('/sign-up'))) {
+    if (!hostname.startsWith('app.')) {
+      return NextResponse.redirect(new URL('https://app.solofi.io/dashboard'));
+    }
+  }
 
   // If app subdomain and root path, redirect to dashboard
   if (hostname.startsWith('app.') && url.pathname === '/') {
