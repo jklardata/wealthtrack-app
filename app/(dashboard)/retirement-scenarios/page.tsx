@@ -608,10 +608,10 @@ export default function RetirementScenariosPage() {
               </CardContent>
             </Card>
 
-            {/* Table View */}
+            {/* Summary Table View */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-xl">Scenario Comparison - Table</CardTitle>
+                <CardTitle className="text-xl">Scenario Comparison - Summary</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="overflow-x-auto">
@@ -696,6 +696,91 @@ export default function RetirementScenariosPage() {
                     </tbody>
                   </table>
                 </div>
+              </CardContent>
+            </Card>
+
+            {/* Detailed Projection Table with Download */}
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle className="text-xl">Year-by-Year Projection Data</CardTitle>
+                <Button
+                  onClick={() => {
+                    // Convert chartData to CSV
+                    const headers = ['Age', 'Year', ...selectedScenarios.map(id =>
+                      scenarios.find(s => s.id === id)?.name || ''
+                    )];
+
+                    const csvRows = [headers.join(',')];
+
+                    chartData.forEach(point => {
+                      const row = [
+                        point.age,
+                        point.year,
+                        ...selectedScenarios.map(id => {
+                          const scenario = scenarios.find(s => s.id === id);
+                          return scenario ? (point[scenario.name] || 0) : 0;
+                        })
+                      ];
+                      csvRows.push(row.join(','));
+                    });
+
+                    const csvContent = csvRows.join('\n');
+                    const blob = new Blob([csvContent], { type: 'text/csv' });
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `retirement-scenarios-${new Date().toISOString().split('T')[0]}.csv`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                  }}
+                  className="bg-slate-700 hover:bg-slate-800"
+                >
+                  <Download className="h-4 w-4 mr-2" />
+                  Download CSV
+                </Button>
+              </CardHeader>
+              <CardContent>
+                <div className="overflow-x-auto max-h-[500px] overflow-y-auto border rounded-lg">
+                  <table className="w-full text-sm">
+                    <thead className="sticky top-0 bg-slate-100 z-10">
+                      <tr className="border-b">
+                        <th className="text-left p-3 font-semibold">Age</th>
+                        <th className="text-left p-3 font-semibold">Year</th>
+                        {scenarios
+                          .filter((s) => selectedScenarios.includes(s.id))
+                          .map((scenario) => (
+                            <th
+                              key={scenario.id}
+                              className="text-right p-3 font-semibold"
+                              style={{ color: COLORS[scenarios.indexOf(scenario) % COLORS.length] }}
+                            >
+                              {scenario.name}
+                            </th>
+                          ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {chartData.map((point, index) => (
+                        <tr key={index} className="border-b hover:bg-slate-50">
+                          <td className="p-3 font-medium">{point.age}</td>
+                          <td className="p-3 text-slate-600">{point.year}</td>
+                          {scenarios
+                            .filter((s) => selectedScenarios.includes(s.id))
+                            .map((scenario) => (
+                              <td key={scenario.id} className="p-3 text-right tabular-nums">
+                                {formatCurrency(point[scenario.name] || 0)}
+                              </td>
+                            ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <p className="text-xs text-slate-500 mt-3">
+                  Showing portfolio values from age {chartData[0]?.age} to {chartData[chartData.length - 1]?.age} for all selected scenarios
+                </p>
               </CardContent>
             </Card>
           </>
