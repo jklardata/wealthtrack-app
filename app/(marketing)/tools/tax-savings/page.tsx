@@ -145,7 +145,7 @@ export default function TaxSavingsLeadMagnet() {
             <Calculator className="h-6 w-6 text-emerald-600" />
             <span className="font-semibold text-lg">SoloFI</span>
           </Link>
-          <Link href="/dashboard">
+          <Link href="/sign-up">
             <Button variant="outline" size="sm">Sign In</Button>
           </Link>
         </div>
@@ -644,7 +644,7 @@ export default function TaxSavingsLeadMagnet() {
                 <p className="text-emerald-100 mb-6">
                   Get the full SoloFI toolkit: net worth tracking, tax optimization, and retirement planning.
                 </p>
-                <Link href="/dashboard">
+                <Link href="/sign-up">
                   <Button size="lg" className="bg-white text-emerald-600 hover:bg-emerald-50">
                     Get Started Free <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>

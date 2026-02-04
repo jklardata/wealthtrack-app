@@ -264,7 +264,7 @@ export default function NetWorthQuiz() {
             <Wallet className="h-6 w-6 text-indigo-600" />
             <span className="font-semibold text-lg">SoloFI</span>
           </Link>
-          <Link href="/dashboard">
+          <Link href="/sign-up">
             <Button variant="outline" size="sm">Sign In</Button>
           </Link>
         </div>
@@ -480,7 +480,7 @@ export default function NetWorthQuiz() {
                 <p className="text-indigo-100 mb-6">
                   SoloFI helps self-employed professionals track wealth, optimize taxes, and plan for FI.
                 </p>
-                <Link href="/dashboard">
+                <Link href="/sign-up">
                   <Button size="lg" className="bg-white text-indigo-600 hover:bg-indigo-50">
                     Get Started Free <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>

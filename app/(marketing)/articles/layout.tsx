@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import NewsletterForm from "./components/NewsletterForm";
 
 export default function ArticlesLayout({
   children,
@@ -38,27 +39,7 @@ export default function ArticlesLayout({
 
       {/* Newsletter */}
       <section className="py-16">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-2xl font-medium mb-4 text-slate-900">
-            Get more insights like this
-          </h2>
-          <p className="text-slate-600 mb-8">
-            Join 10,000+ self-employed professionals getting weekly tips on taxes, investing, and building wealth.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="you@example.com"
-              className="flex-1 px-4 py-3 bg-white border border-slate-200 rounded-lg focus:outline-none focus:border-emerald-500 text-slate-900 placeholder:text-slate-400"
-            />
-            <Button className="bg-emerald-600 text-white hover:bg-emerald-700">
-              Subscribe
-            </Button>
-          </div>
-          <p className="text-xs text-slate-500 mt-4">
-            No spam. Unsubscribe anytime.
-          </p>
-        </div>
+        <NewsletterForm />
       </section>
 
       {/* Footer */}

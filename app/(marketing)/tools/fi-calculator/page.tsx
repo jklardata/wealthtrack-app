@@ -223,7 +223,7 @@ export default function FICalculator() {
             <Target className="h-6 w-6 text-violet-600" />
             <span className="font-semibold text-lg">SoloFI</span>
           </Link>
-          <Link href="/dashboard">
+          <Link href="/sign-up">
             <Button variant="outline" size="sm">Sign In</Button>
           </Link>
         </div>
@@ -589,7 +589,7 @@ export default function FICalculator() {
                 <p className="text-violet-100 mb-6">
                   SoloFI helps you track net worth, optimize taxes, and monitor your FI timeline in real-time.
                 </p>
-                <Link href="/dashboard">
+                <Link href="/sign-up">
                   <Button size="lg" className="bg-white text-violet-600 hover:bg-violet-50">
                     Get Started Free <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>

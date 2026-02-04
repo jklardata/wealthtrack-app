@@ -184,7 +184,7 @@ export default function FreelanceChecklist() {
             <FileText className="h-6 w-6 text-orange-600" />
             <span className="font-semibold text-lg">SoloFI</span>
           </Link>
-          <Link href="/dashboard">
+          <Link href="/sign-up">
             <Button variant="outline" size="sm">Sign In</Button>
           </Link>
         </div>
@@ -387,7 +387,7 @@ export default function FreelanceChecklist() {
                 <p className="text-orange-100 mb-6">
                   Net worth tracking, tax optimization calculator, and retirement planning—all in one place.
                 </p>
-                <Link href="/dashboard">
+                <Link href="/sign-up">
                   <Button size="lg" className="bg-white text-orange-600 hover:bg-orange-50">
                     Get Started Free <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>

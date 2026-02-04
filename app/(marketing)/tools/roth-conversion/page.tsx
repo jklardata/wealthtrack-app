@@ -258,7 +258,7 @@ export default function RothConversionLeadMagnet() {
           <Link href="/blog" className="text-sm text-white/60 hover:text-white hidden md:block">
             Blog
           </Link>
-          <Link href="/dashboard">
+          <Link href="/sign-up">
             <Button variant="outline" className="border-white/20 text-white hover:bg-white/10">
               Get Started
             </Button>
@@ -757,7 +757,7 @@ export default function RothConversionLeadMagnet() {
                 <p className="text-white/60 mb-4">
                   Want to track your full early retirement plan?
                 </p>
-                <Link href="/dashboard">
+                <Link href="/sign-up">
                   <Button className="bg-white text-black hover:bg-white/90 px-8">
                     Get Started with SoloFI
                     <ArrowRight className="ml-2 h-4 w-4" />
