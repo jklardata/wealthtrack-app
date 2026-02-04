@@ -44,6 +44,7 @@ import {
 } from "lucide-react";
 import type { CreditCard, CreditCardFormData, CreditCardStatus } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { CREDIT_CARD_FAMILIES, REWARDS_CATEGORIES } from "@/lib/credit-card-constants";
 
 function formatCurrency(value: number): string {
   return new Intl.NumberFormat("en-US", {
@@ -114,6 +115,8 @@ function CardForm({ card, onSubmit, onClose, isSubmitting }: CardFormProps) {
     annual_fee_date: card?.annual_fee_date || "",
     close_date: card?.close_date || "",
     notes: card?.notes || "",
+    credit_card_family: card?.credit_card_family || "",
+    rewards_category: card?.rewards_category || "",
   });
 
   const handleChange = (field: keyof CreditCardFormData, value: string | number | boolean) => {
@@ -302,6 +305,51 @@ function CardForm({ card, onSubmit, onClose, isSubmitting }: CardFormProps) {
           onChange={(e) => handleChange("notes", e.target.value)}
           placeholder="Any notes about this card..."
         />
+      </div>
+
+      <div className="border-t pt-4 mt-4">
+        <h4 className="font-medium mb-3">Card Details</h4>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="credit_card_family">Card Family</Label>
+            <Select
+              value={formData.credit_card_family || ""}
+              onValueChange={(v) => handleChange("credit_card_family", v)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select issuer..." />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">None</SelectItem>
+                {CREDIT_CARD_FAMILIES.map((family) => (
+                  <SelectItem key={family} value={family}>
+                    {family}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="rewards_category">Rewards Category</Label>
+            <Select
+              value={formData.rewards_category || ""}
+              onValueChange={(v) => handleChange("rewards_category", v)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select category..." />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">None</SelectItem>
+                {REWARDS_CATEGORIES.map((category) => (
+                  <SelectItem key={category} value={category}>
+                    {category}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
       </div>
 
       <div className="flex gap-3 pt-4">
@@ -514,6 +562,11 @@ export default function CreditCardsPage() {
   const [syncMessage, setSyncMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [hasSheetConnected, setHasSheetConnected] = useState(false);
 
+  // Filter state
+  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [familyFilter, setFamilyFilter] = useState<string>("all");
+  const [rewardsFilter, setRewardsFilter] = useState<string>("all");
+
   const fetchCards = useCallback(async () => {
     try {
       const response = await fetch("/api/credit-cards");
@@ -627,6 +680,14 @@ export default function CreditCardsPage() {
     setEditingCard(card);
     setIsDialogOpen(true);
   };
+
+  // Filter cards
+  const filteredCards = cards.filter((card) => {
+    if (statusFilter !== "all" && card.status !== statusFilter) return false;
+    if (familyFilter !== "all" && card.credit_card_family !== familyFilter) return false;
+    if (rewardsFilter !== "all" && card.rewards_category !== rewardsFilter) return false;
+    return true;
+  });
 
   // Stats
   const activeCards = cards.filter((c) => c.status === "active");
@@ -813,6 +874,64 @@ export default function CreditCardsPage() {
         </Card>
       </div>
 
+      {/* Filters */}
+      {cards.length > 0 && (
+        <Card>
+          <CardContent className="pt-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="status-filter">Status</Label>
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                  <SelectTrigger id="status-filter">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Statuses</SelectItem>
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="pending">Pending</SelectItem>
+                    <SelectItem value="closed">Closed</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="family-filter">Card Family</Label>
+                <Select value={familyFilter} onValueChange={setFamilyFilter}>
+                  <SelectTrigger id="family-filter">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Families</SelectItem>
+                    {CREDIT_CARD_FAMILIES.map((family) => (
+                      <SelectItem key={family} value={family}>
+                        {family}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="rewards-filter">Rewards Category</Label>
+                <Select value={rewardsFilter} onValueChange={setRewardsFilter}>
+                  <SelectTrigger id="rewards-filter">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Categories</SelectItem>
+                    {REWARDS_CATEGORIES.map((category) => (
+                      <SelectItem key={category} value={category}>
+                        {category}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Cards Grid */}
       {cards.length === 0 ? (
         <Card>
@@ -830,9 +949,28 @@ export default function CreditCardsPage() {
             </Button>
           </CardContent>
         </Card>
+      ) : filteredCards.length === 0 ? (
+        <Card>
+          <CardContent className="flex flex-col items-center justify-center py-12">
+            <CreditCardIcon className="h-12 w-12 text-slate-500 mb-4" />
+            <p className="text-slate-500 mb-4">
+              No cards match the selected filters.
+            </p>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setStatusFilter("all");
+                setFamilyFilter("all");
+                setRewardsFilter("all");
+              }}
+            >
+              Clear Filters
+            </Button>
+          </CardContent>
+        </Card>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {cards.map((card) => (
+          {filteredCards.map((card) => (
             <CreditCardItem
               key={card.id}
               card={card}

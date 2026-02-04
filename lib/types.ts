@@ -171,6 +171,49 @@ export interface CreditCardSheetRow {
 
 export type CreditCardStatus = 'active' | 'pending' | 'closed';
 
+export type CreditCardFamily =
+  | 'Chase'
+  | 'American Express (Amex)'
+  | 'Citi'
+  | 'Capital One'
+  | 'Bank of America'
+  | 'Discover'
+  | 'Wells Fargo'
+  | 'U.S. Bank'
+  | 'Barclays'
+  | 'Synchrony'
+  | 'Navy Federal Credit Union'
+  | 'PNC'
+  | 'TD Bank'
+  | 'Fifth Third Bank'
+  | 'Truist'
+  | 'Regions Bank'
+  | 'Huntington Bank'
+  | 'Ally Bank'
+  | 'Comerica'
+  | 'First Citizens Bank'
+  | 'BMO Harris'
+  | 'KeyBank'
+  | 'Citizens Bank'
+  | 'Santander'
+  | 'HSBC'
+  | 'SoFi'
+  | 'Upgrade'
+  | 'Bread Financial'
+  | 'Comenity';
+
+export type RewardsCategory =
+  | 'cash back'
+  | 'travel rewards'
+  | 'airline miles'
+  | 'hotel points'
+  | 'dining rewards'
+  | 'grocery rewards'
+  | 'gas & EV charging'
+  | 'streaming services'
+  | 'entertainment'
+  | 'rotating categories';
+
 export interface CreditCard {
   id: string;
   user_id: string;
@@ -187,6 +230,8 @@ export interface CreditCard {
   annual_fee_date: string | null;
   close_date: string | null;
   notes: string | null;
+  credit_card_family: string | null;
+  rewards_category: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -205,6 +250,8 @@ export interface CreditCardFormData {
   annual_fee_date?: string;
   close_date?: string;
   notes?: string;
+  credit_card_family?: string;
+  rewards_category?: string;
 }
 
 // Portfolio Optimization Types

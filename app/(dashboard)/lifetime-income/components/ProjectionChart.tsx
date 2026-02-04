@@ -69,11 +69,11 @@ export function ProjectionChart({ projection, expectedReturn = 7, incomeSources 
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
           <TrendingUp className="h-5 w-5 text-emerald-600" />
-          Net Worth Projection
+          <span>Net Worth Projection</span>
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-sm">
           Lifetime portfolio value trajectory with income and expenses
         </CardDescription>
       </CardHeader>
@@ -258,7 +258,7 @@ export function ProjectionChart({ projection, expectedReturn = 7, incomeSources 
 
           {/* Projection Data Table */}
           <div>
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
               <h3 className="text-sm font-medium text-slate-900">Year-by-Year Projection Data</h3>
               <Button
                 onClick={() => {
@@ -322,10 +322,10 @@ export function ProjectionChart({ projection, expectedReturn = 7, incomeSources 
                   window.URL.revokeObjectURL(url);
                 }}
                 size="sm"
-                className="bg-slate-700 hover:bg-slate-800"
+                className="bg-slate-700 hover:bg-slate-800 w-full sm:w-auto"
               >
                 <Download className="h-4 w-4 mr-2" />
-                Download CSV
+                <span className="whitespace-nowrap">Download CSV</span>
               </Button>
             </div>
             <div className="overflow-x-auto max-h-[400px] overflow-y-auto border rounded-lg">

@@ -59,6 +59,8 @@ export async function POST(request: NextRequest) {
         annual_fee_date: body.annual_fee_date || null,
         close_date: body.close_date || null,
         notes: body.notes || null,
+        credit_card_family: body.credit_card_family || null,
+        rewards_category: body.rewards_category || null,
       })
       .select()
       .single();

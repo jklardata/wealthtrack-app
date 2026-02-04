@@ -125,22 +125,22 @@ export default function LifetimeIncomePage() {
 
   if (subLoading) {
     return (
-      <div className="p-8 space-y-6">
-        <Skeleton className="h-12 w-64" />
+      <div className="p-4 sm:p-6 lg:p-8 space-y-6">
+        <Skeleton className="h-12 w-full sm:w-64" />
         <Skeleton className="h-96 w-full" />
       </div>
     );
   }
 
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-6">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold flex items-center gap-2">
-          <TrendingUp className="h-8 w-8 text-emerald-600" />
-          Net Worth Projected
+        <h1 className="text-2xl sm:text-3xl font-bold flex flex-wrap items-center gap-2">
+          <TrendingUp className="h-6 w-6 sm:h-8 sm:w-8 text-emerald-600" />
+          <span>Net Worth Projected</span>
         </h1>
-        <p className="text-slate-600 mt-3 text-base">
+        <p className="text-slate-600 mt-3 text-sm sm:text-base">
           Model your complete financial future by combining all income sources with expenses to project your lifetime net worth trajectory
         </p>
       </div>
@@ -175,17 +175,17 @@ export default function LifetimeIncomePage() {
       </Card>
 
       {/* Quick Actions */}
-      <div className="flex gap-3">
+      <div className="flex flex-wrap gap-3">
         <Link href="/profile">
-          <Button variant="outline" className="border-blue-200 text-blue-700 hover:bg-blue-50">
+          <Button variant="outline" className="border-blue-200 text-blue-700 hover:bg-blue-50 text-sm">
             <DollarSign className="h-4 w-4 mr-2" />
-            Modify Income
+            <span className="whitespace-nowrap">Modify Income</span>
           </Button>
         </Link>
         <Link href="/profile">
-          <Button variant="outline" className="border-purple-200 text-purple-700 hover:bg-purple-50">
+          <Button variant="outline" className="border-purple-200 text-purple-700 hover:bg-purple-50 text-sm">
             <SettingsIcon className="h-4 w-4 mr-2" />
-            Modify Expenses
+            <span className="whitespace-nowrap">Modify Expenses</span>
           </Button>
         </Link>
       </div>
@@ -193,11 +193,11 @@ export default function LifetimeIncomePage() {
       {/* Calculation Parameters */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
             <Calculator className="h-5 w-5 text-slate-600" />
-            Projection Parameters
+            <span>Projection Parameters</span>
           </CardTitle>
-          <CardDescription>Set your current situation and assumptions</CardDescription>
+          <CardDescription className="text-sm">Set your current situation and assumptions</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -258,7 +258,7 @@ export default function LifetimeIncomePage() {
             <Button
               onClick={calculateProjection}
               disabled={isCalculating}
-              className="bg-emerald-600 hover:bg-emerald-700"
+              className="bg-emerald-600 hover:bg-emerald-700 w-full sm:w-auto"
             >
               {isCalculating ? (
                 <>
@@ -323,8 +323,8 @@ export default function LifetimeIncomePage() {
       {hasCalculated && (
         <Card className="bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-200">
           <CardHeader>
-            <CardTitle className="text-emerald-900 flex items-center gap-2">
-              💡 Tips to Strengthen Your Projection
+            <CardTitle className="text-emerald-900 flex items-center gap-2 text-lg sm:text-xl">
+              <span>💡 Tips to Strengthen Your Projection</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="text-sm text-emerald-800 space-y-3">

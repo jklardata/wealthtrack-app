@@ -35,7 +35,7 @@ export function ProjectionSummary({ projection }: ProjectionSummaryProps) {
         </CardHeader>
         <CardContent>
           <div className="space-y-1">
-            <p className="text-2xl font-bold text-emerald-600">
+            <p className="text-xl sm:text-2xl font-bold text-emerald-600 break-words">
               ${Math.round(peakNetWorth?.amount || 0).toLocaleString()}
             </p>
             <p className="text-sm text-slate-600">at age {peakNetWorth?.age || "N/A"}</p>
@@ -53,7 +53,7 @@ export function ProjectionSummary({ projection }: ProjectionSummaryProps) {
         </CardHeader>
         <CardContent>
           <div className="space-y-1">
-            <p className="text-2xl font-bold text-blue-600">
+            <p className="text-xl sm:text-2xl font-bold text-blue-600 break-words">
               ${Math.round(totalLifetimeIncome).toLocaleString()}
             </p>
             <p className="text-sm text-slate-600">across all sources</p>
@@ -89,12 +89,12 @@ export function ProjectionSummary({ projection }: ProjectionSummaryProps) {
         <CardContent>
           {depletionAge ? (
             <div className="space-y-1">
-              <p className="text-2xl font-bold text-red-600">Age {depletionAge}</p>
+              <p className="text-xl sm:text-2xl font-bold text-red-600">Age {depletionAge}</p>
               <p className="text-sm text-red-800">Portfolio depletes at this age</p>
             </div>
           ) : (
             <div className="space-y-1">
-              <p className="text-2xl font-bold text-green-600">
+              <p className="text-xl sm:text-2xl font-bold text-green-600 break-words">
                 ${Math.round(finalPortfolioValue).toLocaleString()}
               </p>
               <p className="text-sm text-green-800">Portfolio at end of projection</p>
