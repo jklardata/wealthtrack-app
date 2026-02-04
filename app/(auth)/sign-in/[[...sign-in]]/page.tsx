@@ -22,11 +22,11 @@ export default function SignInPage() {
         <div className="w-full max-w-md">
           {/* Welcome Text */}
           <div className="text-center mb-8">
-            <h1 className="text-[32px] font-semibold text-[#10182C] mb-3">
+            <h1 className="text-4xl sm:text-5xl font-medium tracking-tight text-[#10182C] mb-4">
               Welcome back
             </h1>
-            <p className="text-[15px] text-slate-600">
-              Financial independence at your fingertips
+            <p className="text-lg text-slate-600">
+              Model your data and improve your future
             </p>
           </div>
 
