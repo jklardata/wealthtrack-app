@@ -82,6 +82,10 @@ export default function LifetimeIncomePage() {
         if (data.data.current_age) {
           setCurrentAge(data.data.current_age);
         }
+        // Pre-populate longevity age from life expectancy assumption
+        if (data.data.life_expectancy_assumption) {
+          setLongevityAge(data.data.life_expectancy_assumption.toString());
+        }
       }
     } catch (error) {
       console.error("Error fetching settings:", error);

@@ -138,11 +138,28 @@ export default function EarlyRetirementPage() {
   const [activeModule, setActiveModule] = useState<string | null>(null);
 
   // -------------------------------------------------------------------------
-  // Fetch Net Worth Data to Pre-populate
+  // Fetch Net Worth Data and User Settings to Pre-populate
   // -------------------------------------------------------------------------
   useEffect(() => {
-    async function fetchNetWorth() {
+    async function fetchData() {
       try {
+        // Fetch user settings for age and retirement age
+        const settingsResponse = await fetch("/api/settings");
+        if (settingsResponse.ok) {
+          const settingsData = await settingsResponse.json();
+          if (settingsData.data) {
+            // Pre-populate age from profile if available
+            if (settingsData.data.current_age) {
+              setCurrentAge(settingsData.data.current_age);
+            }
+            // Pre-populate target retirement age from profile if available
+            if (settingsData.data.desired_retirement_age) {
+              setTargetRetirementAge(settingsData.data.desired_retirement_age);
+            }
+          }
+        }
+
+        // Fetch net worth data
         const response = await fetch("/api/net-worth");
         if (response.ok) {
           const result = await response.json();
@@ -182,13 +199,13 @@ export default function EarlyRetirementPage() {
           }
         }
       } catch (error) {
-        console.error("Error fetching net worth:", error);
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
     }
 
-    fetchNetWorth();
+    fetchData();
   }, []);
 
   // -------------------------------------------------------------------------

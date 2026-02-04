@@ -949,11 +949,12 @@ export default function PortfolioOptimizerPage() {
 
   const fetchData = useCallback(async () => {
     try {
-      // Fetch questions, optimization, and active scenario in parallel
-      const [questionsRes, optimizationRes, scenarioRes] = await Promise.all([
+      // Fetch questions, optimization, active scenario, and user settings in parallel
+      const [questionsRes, optimizationRes, scenarioRes, settingsRes] = await Promise.all([
         fetch("/api/optimize-portfolio?action=questions"),
         fetch("/api/optimize-portfolio"),
         fetch("/api/scenarios?active=true"),
+        fetch("/api/settings"),
       ]);
 
       const questionsData = await questionsRes.json();
@@ -976,6 +977,16 @@ export default function PortfolioOptimizerPage() {
           score: optimizationData.settings.risk_score || 50,
           timeHorizon: optimizationData.settings.time_horizon || 10,
         });
+      } else {
+        // Pre-populate from user profile if no saved optimization exists
+        const settingsData = await settingsRes.json();
+        if (settingsData.data?.risk_tolerance) {
+          setRiskProfile({
+            tolerance: settingsData.data.risk_tolerance as RiskTolerance,
+            score: 50, // Default score, will be refined with questionnaire
+            timeHorizon: 10, // Default time horizon
+          });
+        }
       }
 
       if (optimizationData.optimization) {
