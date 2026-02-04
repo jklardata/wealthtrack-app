@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -705,10 +705,21 @@ export default function RetirementScenariosPage() {
                 <CardTitle className="text-xl">Year-by-Year Projection Data</CardTitle>
                 <Button
                   onClick={() => {
-                    // Convert chartData to CSV
-                    const headers = ['Age', 'Year', ...selectedScenarios.map(id =>
+                    // Convert chartData to CSV with additional columns
+                    const scenarioNames = selectedScenarios.map(id =>
                       scenarios.find(s => s.id === id)?.name || ''
-                    )];
+                    );
+
+                    const headers = [
+                      'Age',
+                      'Year',
+                      ...scenarioNames.flatMap(name => [
+                        `${name} - Portfolio`,
+                        `${name} - Annual Contribution`,
+                        `${name} - Expected Return (%)`,
+                        `${name} - Annual Expenses`
+                      ])
+                    ];
 
                     const csvRows = [headers.join(',')];
 
@@ -716,9 +727,21 @@ export default function RetirementScenariosPage() {
                       const row = [
                         point.age,
                         point.year,
-                        ...selectedScenarios.map(id => {
+                        ...selectedScenarios.flatMap(id => {
                           const scenario = scenarios.find(s => s.id === id);
-                          return scenario ? (point[scenario.name] || 0) : 0;
+                          if (!scenario) return [0, 0, 0, 0];
+
+                          const portfolioValue = point[scenario.name] || 0;
+                          const isAccumulation = point.age < scenario.retirementAge;
+                          const contribution = isAccumulation ? scenario.annualContribution : 0;
+                          const expenses = isAccumulation ? 0 : scenario.annualExpenses;
+
+                          return [
+                            portfolioValue,
+                            contribution,
+                            scenario.expectedReturn,
+                            expenses
+                          ];
                         })
                       ];
                       csvRows.push(row.join(','));
@@ -745,34 +768,65 @@ export default function RetirementScenariosPage() {
                 <div className="overflow-x-auto max-h-[500px] overflow-y-auto border rounded-lg">
                   <table className="w-full text-sm">
                     <thead className="sticky top-0 bg-slate-100 z-10">
-                      <tr className="border-b">
-                        <th className="text-left p-3 font-semibold">Age</th>
-                        <th className="text-left p-3 font-semibold">Year</th>
+                      <tr className="border-b-2">
+                        <th rowSpan={2} className="text-left p-3 font-semibold border-r">Age</th>
+                        <th rowSpan={2} className="text-left p-3 font-semibold border-r">Year</th>
                         {scenarios
                           .filter((s) => selectedScenarios.includes(s.id))
                           .map((scenario) => (
                             <th
                               key={scenario.id}
-                              className="text-right p-3 font-semibold"
+                              colSpan={4}
+                              className="text-center p-3 font-semibold border-r"
                               style={{ color: COLORS[scenarios.indexOf(scenario) % COLORS.length] }}
                             >
                               {scenario.name}
                             </th>
                           ))}
                       </tr>
+                      <tr className="border-b">
+                        {scenarios
+                          .filter((s) => selectedScenarios.includes(s.id))
+                          .map((scenario) => (
+                            <React.Fragment key={scenario.id}>
+                              <th className="text-right p-2 text-xs font-medium text-slate-600">Portfolio</th>
+                              <th className="text-right p-2 text-xs font-medium text-slate-600">Contribution</th>
+                              <th className="text-right p-2 text-xs font-medium text-slate-600">Return %</th>
+                              <th className="text-right p-2 text-xs font-medium text-slate-600 border-r">Expenses</th>
+                            </React.Fragment>
+                          ))}
+                      </tr>
                     </thead>
                     <tbody>
                       {chartData.map((point, index) => (
                         <tr key={index} className="border-b hover:bg-slate-50">
-                          <td className="p-3 font-medium">{point.age}</td>
-                          <td className="p-3 text-slate-600">{point.year}</td>
+                          <td className="p-3 font-medium border-r">{point.age}</td>
+                          <td className="p-3 text-slate-600 border-r">{point.year}</td>
                           {scenarios
                             .filter((s) => selectedScenarios.includes(s.id))
-                            .map((scenario) => (
-                              <td key={scenario.id} className="p-3 text-right tabular-nums">
-                                {formatCurrency(point[scenario.name] || 0)}
-                              </td>
-                            ))}
+                            .map((scenario) => {
+                              const portfolioValue = point[scenario.name] || 0;
+                              const isAccumulation = point.age < scenario.retirementAge;
+                              const contribution = isAccumulation ? scenario.annualContribution : 0;
+                              const expenses = isAccumulation ? 0 : scenario.annualExpenses;
+
+                              return (
+                                <React.Fragment key={scenario.id}>
+                                  <td className="p-2 text-right tabular-nums text-xs">
+                                    {formatCurrency(portfolioValue)}
+                                  </td>
+                                  <td className="p-2 text-right tabular-nums text-xs text-emerald-600">
+                                    {contribution > 0 ? formatCurrency(contribution) : '-'}
+                                  </td>
+                                  <td className="p-2 text-right tabular-nums text-xs text-slate-600">
+                                    {scenario.expectedReturn}%
+                                  </td>
+                                  <td className="p-2 text-right tabular-nums text-xs text-red-600 border-r">
+                                    {expenses > 0 ? formatCurrency(expenses) : '-'}
+                                  </td>
+                                </React.Fragment>
+                              );
+                            })}
                         </tr>
                       ))}
                     </tbody>

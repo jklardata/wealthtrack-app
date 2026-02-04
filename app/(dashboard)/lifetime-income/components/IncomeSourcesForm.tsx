@@ -212,8 +212,8 @@ function WorkIncomeDialog({ onSuccess }: { onSuccess: () => void }) {
   const [formData, setFormData] = useState({
     name: "",
     annual_amount: "",
-    start_age_months: null as number | null,
-    stop_age_months: null as number | null,
+    start_age_years: null as number | null,
+    stop_age_years: null as number | null,
     growth_rate: "",
     pretax_deductions: "",
   });
@@ -229,8 +229,8 @@ function WorkIncomeDialog({ onSuccess }: { onSuccess: () => void }) {
           source_type: "work",
           name: formData.name,
           annual_amount: parseFloat(formData.annual_amount),
-          start_age_months: formData.start_age_months,
-          stop_age_months: formData.stop_age_months,
+          start_age_months: formData.start_age_years ? formData.start_age_years * 12 : null,
+          stop_age_months: formData.stop_age_years ? formData.stop_age_years * 12 : null,
           growth_rate: formData.growth_rate ? parseFloat(formData.growth_rate) / 100 : null,
           pretax_deductions: formData.pretax_deductions
             ? parseFloat(formData.pretax_deductions)
@@ -243,8 +243,8 @@ function WorkIncomeDialog({ onSuccess }: { onSuccess: () => void }) {
         setFormData({
           name: "",
           annual_amount: "",
-          start_age_months: null,
-          stop_age_months: null,
+          start_age_years: null,
+          stop_age_years: null,
           growth_rate: "",
           pretax_deductions: "",
         });
@@ -294,9 +294,9 @@ function WorkIncomeDialog({ onSuccess }: { onSuccess: () => void }) {
               <Label htmlFor="start_age">Start Age</Label>
               <AgeInput
                 id="start_age"
-                value={formData.start_age_months || undefined}
-                onChange={(ageMonths) =>
-                  setFormData({ ...formData, start_age_months: ageMonths })
+                value={formData.start_age_years || undefined}
+                onChange={(ageYears) =>
+                  setFormData({ ...formData, start_age_years: ageYears })
                 }
               />
             </div>
@@ -304,8 +304,8 @@ function WorkIncomeDialog({ onSuccess }: { onSuccess: () => void }) {
               <Label htmlFor="stop_age">Stop Age</Label>
               <AgeInput
                 id="stop_age"
-                value={formData.stop_age_months || undefined}
-                onChange={(ageMonths) => setFormData({ ...formData, stop_age_months: ageMonths })}
+                value={formData.stop_age_years || undefined}
+                onChange={(ageYears) => setFormData({ ...formData, stop_age_years: ageYears })}
               />
             </div>
             <div>
@@ -352,7 +352,7 @@ function SocialSecurityDialog({ onSuccess }: { onSuccess: () => void }) {
   const [formData, setFormData] = useState({
     name: "Social Security",
     annual_amount: "",
-    claiming_age_months: 67 * 12, // Default to 67 years
+    claiming_age_years: 67, // Default to 67 years
   });
 
   const handleAutoEstimate = () => {
@@ -373,7 +373,7 @@ function SocialSecurityDialog({ onSuccess }: { onSuccess: () => void }) {
           source_type: "social_security",
           name: formData.name,
           annual_amount: parseFloat(formData.annual_amount),
-          claiming_age_months: formData.claiming_age_months,
+          claiming_age_months: formData.claiming_age_years * 12,
           auto_estimate: autoEstimate,
           estimated_benefit: parseFloat(formData.annual_amount),
         }),
@@ -384,7 +384,7 @@ function SocialSecurityDialog({ onSuccess }: { onSuccess: () => void }) {
         setFormData({
           name: "Social Security",
           annual_amount: "",
-          claiming_age_months: 67 * 12,
+          claiming_age_years: 67,
         });
         setAutoEstimate(false);
         setCurrentIncome("");
@@ -452,9 +452,9 @@ function SocialSecurityDialog({ onSuccess }: { onSuccess: () => void }) {
               <Label htmlFor="claiming_age">Claiming Age</Label>
               <AgeInput
                 id="claiming_age"
-                value={formData.claiming_age_months}
-                onChange={(ageMonths) =>
-                  setFormData({ ...formData, claiming_age_months: ageMonths || 67 * 12 })
+                value={formData.claiming_age_years}
+                onChange={(ageYears) =>
+                  setFormData({ ...formData, claiming_age_years: ageYears || 67 })
                 }
               />
             </div>
@@ -476,8 +476,8 @@ function PassiveIncomeDialog({ onSuccess }: { onSuccess: () => void }) {
   const [formData, setFormData] = useState({
     name: "",
     annual_amount: "",
-    start_age_months: null as number | null,
-    stop_age_months: null as number | null,
+    start_age_years: null as number | null,
+    stop_age_years: null as number | null,
     growth_rate: "",
   });
 
@@ -492,8 +492,8 @@ function PassiveIncomeDialog({ onSuccess }: { onSuccess: () => void }) {
           source_type: "passive",
           name: formData.name,
           annual_amount: parseFloat(formData.annual_amount),
-          start_age_months: formData.start_age_months,
-          stop_age_months: formData.stop_age_months,
+          start_age_months: formData.start_age_years ? formData.start_age_years * 12 : null,
+          stop_age_months: formData.stop_age_years ? formData.stop_age_years * 12 : null,
           growth_rate: formData.growth_rate ? parseFloat(formData.growth_rate) / 100 : null,
         }),
       });
@@ -503,8 +503,8 @@ function PassiveIncomeDialog({ onSuccess }: { onSuccess: () => void }) {
         setFormData({
           name: "",
           annual_amount: "",
-          start_age_months: null,
-          stop_age_months: null,
+          start_age_years: null,
+          stop_age_years: null,
           growth_rate: "",
         });
         onSuccess();
@@ -553,9 +553,9 @@ function PassiveIncomeDialog({ onSuccess }: { onSuccess: () => void }) {
               <Label htmlFor="start_age">Start Age</Label>
               <AgeInput
                 id="start_age"
-                value={formData.start_age_months || undefined}
-                onChange={(ageMonths) =>
-                  setFormData({ ...formData, start_age_months: ageMonths })
+                value={formData.start_age_years || undefined}
+                onChange={(ageYears) =>
+                  setFormData({ ...formData, start_age_years: ageYears })
                 }
               />
             </div>
@@ -563,8 +563,8 @@ function PassiveIncomeDialog({ onSuccess }: { onSuccess: () => void }) {
               <Label htmlFor="stop_age">Stop Age (optional)</Label>
               <AgeInput
                 id="stop_age"
-                value={formData.stop_age_months || undefined}
-                onChange={(ageMonths) => setFormData({ ...formData, stop_age_months: ageMonths })}
+                value={formData.stop_age_years || undefined}
+                onChange={(ageYears) => setFormData({ ...formData, stop_age_years: ageYears })}
               />
             </div>
             <div>
