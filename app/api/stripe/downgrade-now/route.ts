@@ -3,13 +3,13 @@ import { NextResponse } from 'next/server';
 import { createServerSupabaseClient } from '@/lib/supabase';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-01-28.clover',
-});
-
 // WARNING: This immediately cancels the subscription and downgrades to free
 // Use this for testing only. In production, use cancel-subscription which cancels at period end.
 export async function POST() {
+  // Initialize Stripe inside handler to avoid build-time errors
+  const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: '2026-01-28.clover',
+  }) : null;
   try {
     const { userId } = await auth();
     if (!userId) {
@@ -30,7 +30,7 @@ export async function POST() {
     }
 
     // Cancel immediately in Stripe if there's a subscription ID
-    if (subscription.stripe_subscription_id) {
+    if (subscription.stripe_subscription_id && stripe) {
       try {
         await stripe.subscriptions.cancel(subscription.stripe_subscription_id);
       } catch (stripeError) {
