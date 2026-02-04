@@ -148,14 +148,30 @@ export default function LifetimeIncomePage() {
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl sm:text-3xl font-bold flex flex-wrap items-center gap-2">
-          <TrendingUp className="h-6 w-6 sm:h-8 sm:w-8 text-emerald-600" />
-          <span>Net Worth Projected</span>
-        </h1>
-        <p className="text-slate-600 mt-3 text-sm sm:text-base">
-          Model your complete financial future by combining all income sources with expenses to project your lifetime net worth trajectory
-        </p>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold flex flex-wrap items-center gap-2">
+            <TrendingUp className="h-6 w-6 sm:h-8 sm:w-8 text-emerald-600" />
+            <span>Net Worth Projected</span>
+          </h1>
+          <p className="text-slate-600 mt-3 text-sm sm:text-base">
+            Model your complete financial future by combining all income sources with expenses to project your lifetime net worth trajectory
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <Link href="/profile">
+            <Button variant="outline" className="border-emerald-300 text-emerald-700 hover:bg-emerald-50">
+              <DollarSign className="h-4 w-4 mr-2" />
+              Update Income & Expenses
+            </Button>
+          </Link>
+          <Link href="/profile">
+            <Button variant="outline" className="border-blue-300 text-blue-700 hover:bg-blue-50">
+              <SettingsIcon className="h-4 w-4 mr-2" />
+              Update Profile
+            </Button>
+          </Link>
+        </div>
       </div>
 
       {/* Explanation Card */}

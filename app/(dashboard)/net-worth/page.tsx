@@ -40,6 +40,7 @@ import {
   AlertTriangle,
   TrendingUp,
   DollarSign,
+  User,
 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
@@ -950,6 +951,12 @@ export default function NetWorthPage() {
                     <Plus className="h-5 w-5 mr-2" />
                     Add Your First Entry
                   </Button>
+                  <Link href="/profile">
+                    <Button size="lg" variant="outline" className="w-full sm:w-auto border-emerald-300 text-emerald-700 hover:bg-emerald-50">
+                      <User className="h-5 w-5 mr-2" />
+                      Update Profile
+                    </Button>
+                  </Link>
                   <Link href="/settings">
                     <Button size="lg" variant="outline" className="w-full sm:w-auto border-slate-300">
                       <Settings className="h-5 w-5 mr-2" />

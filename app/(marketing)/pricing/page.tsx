@@ -2,15 +2,23 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useAuth } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { Check, Minus, ArrowRight, Shield, Lock, Eye } from "lucide-react";
 import { STRIPE_PRICES } from "@/lib/stripe-config";
 
 export default function PricingPage() {
+  const { isSignedIn } = useAuth();
   const [billingInterval, setBillingInterval] = useState<"monthly" | "yearly">("monthly");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleProCheckout = async () => {
+    // Redirect to sign-up if not authenticated
+    if (!isSignedIn) {
+      window.location.href = "/sign-up";
+      return;
+    }
+
     setIsLoading(true);
     try {
       const priceId = billingInterval === "monthly"
@@ -32,7 +40,7 @@ export default function PricingPage() {
       }
     } catch (error) {
       console.error("Error creating checkout:", error);
-      alert("Failed to create checkout. Please try again or sign up first.");
+      alert("Failed to create checkout. Please try again.");
     } finally {
       setIsLoading(false);
     }
