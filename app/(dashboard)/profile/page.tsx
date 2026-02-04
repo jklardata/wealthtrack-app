@@ -158,7 +158,7 @@ export default function ProfilePage() {
               Basic Information
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div>
+              <div className="space-y-2">
                 <Label htmlFor="full_name">Full Name</Label>
                 <Input
                   id="full_name"
@@ -167,7 +167,7 @@ export default function ProfilePage() {
                   onChange={(e) => setFullName(e.target.value)}
                 />
               </div>
-              <div>
+              <div className="space-y-2">
                 <Label htmlFor="date_of_birth">Date of Birth</Label>
                 <Input
                   id="date_of_birth"
@@ -176,7 +176,7 @@ export default function ProfilePage() {
                   onChange={(e) => setDateOfBirth(e.target.value)}
                 />
               </div>
-              <div>
+              <div className="space-y-2">
                 <Label htmlFor="current_age">Current Age (years)</Label>
                 <Input
                   id="current_age"
@@ -186,7 +186,7 @@ export default function ProfilePage() {
                   onChange={(e) => setCurrentAge(e.target.value)}
                 />
               </div>
-              <div>
+              <div className="space-y-2">
                 <Label htmlFor="phone_number">Phone Number</Label>
                 <Input
                   id="phone_number"
@@ -196,7 +196,7 @@ export default function ProfilePage() {
                   onChange={(e) => setPhoneNumber(e.target.value)}
                 />
               </div>
-              <div>
+              <div className="space-y-2">
                 <Label htmlFor="marital_status">Marital Status</Label>
                 <Select value={maritalStatus} onValueChange={(v) => setMaritalStatus(v as MaritalStatus)}>
                   <SelectTrigger id="marital_status">
@@ -211,7 +211,7 @@ export default function ProfilePage() {
                   </SelectContent>
                 </Select>
               </div>
-              <div>
+              <div className="space-y-2">
                 <Label htmlFor="number_of_dependents">Number of Dependents</Label>
                 <Input
                   id="number_of_dependents"
@@ -222,7 +222,7 @@ export default function ProfilePage() {
                   onChange={(e) => setNumberOfDependents(e.target.value)}
                 />
               </div>
-              <div>
+              <div className="space-y-2">
                 <Label htmlFor="state_of_residence">State of Residence</Label>
                 <Select value={stateOfResidence} onValueChange={setStateOfResidence}>
                   <SelectTrigger id="state_of_residence">
@@ -237,7 +237,7 @@ export default function ProfilePage() {
                   </SelectContent>
                 </Select>
               </div>
-              <div>
+              <div className="space-y-2">
                 <Label htmlFor="employer_name">Employer Name</Label>
                 <Input
                   id="employer_name"
@@ -256,7 +256,7 @@ export default function ProfilePage() {
               Retirement Planning
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div>
+              <div className="space-y-2">
                 <Label htmlFor="desired_retirement_age">Desired Retirement Age</Label>
                 <Input
                   id="desired_retirement_age"
@@ -267,7 +267,7 @@ export default function ProfilePage() {
                 />
                 <p className="text-xs text-slate-500 mt-1">Used in Early Retirement calculator</p>
               </div>
-              <div>
+              <div className="space-y-2">
                 <Label htmlFor="life_expectancy">Life Expectancy Assumption</Label>
                 <Input
                   id="life_expectancy"
@@ -278,7 +278,7 @@ export default function ProfilePage() {
                 />
                 <p className="text-xs text-slate-500 mt-1">For retirement projections</p>
               </div>
-              <div>
+              <div className="space-y-2">
                 <Label htmlFor="risk_tolerance">Risk Tolerance</Label>
                 <Select value={riskTolerance} onValueChange={(v) => setRiskTolerance(v as RiskTolerance)}>
                   <SelectTrigger id="risk_tolerance">
@@ -304,7 +304,7 @@ export default function ProfilePage() {
               Tax Information
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
+              <div className="space-y-2">
                 <Label htmlFor="tax_filing_status">Tax Filing Status</Label>
                 <Select value={taxFilingStatus} onValueChange={(v) => setTaxFilingStatus(v as TaxFilingStatus)}>
                   <SelectTrigger id="tax_filing_status">

@@ -684,7 +684,7 @@ export default function NetWorthPage() {
   return (
     <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="space-y-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-medium text-slate-900">Net Worth Timeline</h1>
           <p className="text-sm sm:text-base text-slate-500 mt-1">

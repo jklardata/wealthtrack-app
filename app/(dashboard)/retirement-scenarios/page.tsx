@@ -189,6 +189,28 @@ export default function RetirementScenariosPage() {
     }
   }, []);
 
+  // Pre-populate from user profile settings
+  useEffect(() => {
+    async function fetchUserSettings() {
+      try {
+        const response = await fetch("/api/settings");
+        if (response.ok) {
+          const data = await response.json();
+          if (data.data) {
+            setFormData((prev) => ({
+              ...prev,
+              currentAge: data.data.current_age || prev.currentAge,
+              retirementAge: data.data.desired_retirement_age || prev.retirementAge,
+            }));
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching user settings:", error);
+      }
+    }
+    fetchUserSettings();
+  }, []);
+
   // Save scenarios to localStorage
   const saveScenarios = (newScenarios: Scenario[]) => {
     localStorage.setItem("retirementScenarios", JSON.stringify(newScenarios));

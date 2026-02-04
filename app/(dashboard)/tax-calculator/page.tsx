@@ -301,6 +301,55 @@ export default function TaxCalculatorPage() {
     fetchTaxReturns();
   }, []);
 
+  // Pre-populate from user profile settings
+  useEffect(() => {
+    async function fetchUserSettings() {
+      try {
+        const response = await fetch("/api/settings");
+        if (response.ok) {
+          const data = await response.json();
+          if (data.data) {
+            // Map tax_filing_status to filingStatus
+            if (data.data.tax_filing_status) {
+              const mapped = data.data.tax_filing_status.includes('married') ? 'married' : 'single';
+              setFilingStatus(mapped);
+            }
+
+            // Map state_of_residence to stateCode
+            if (data.data.state_of_residence) {
+              const stateMap: Record<string, string> = {
+                'California': 'ca',
+                'New York': 'ny',
+                'New Jersey': 'nj',
+                'Massachusetts': 'ma',
+                'Illinois': 'il',
+                'Pennsylvania': 'pa',
+                'Washington': 'wa',
+                'Colorado': 'co',
+                'Georgia': 'ga',
+                'North Carolina': 'nc',
+                'Arizona': 'az',
+                'Texas': 'none',
+                'Florida': 'none',
+                'Wyoming': 'none',
+                'Nevada': 'none',
+                'South Dakota': 'none',
+                'Tennessee': 'none',
+                'New Hampshire': 'none',
+                'Alaska': 'none',
+              };
+              const code = stateMap[data.data.state_of_residence] || 'other';
+              setStateCode(code);
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching user settings:", error);
+      }
+    }
+    fetchUserSettings();
+  }, []);
+
   // Get most recent tax return
   const mostRecentTaxReturn = useMemo(() => {
     if (taxReturns.length === 0) return null;
