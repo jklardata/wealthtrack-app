@@ -313,14 +313,13 @@ function CardForm({ card, onSubmit, onClose, isSubmitting }: CardFormProps) {
           <div className="space-y-2">
             <Label htmlFor="credit_card_family">Card Family</Label>
             <Select
-              value={formData.credit_card_family || ""}
+              value={formData.credit_card_family || undefined}
               onValueChange={(v) => handleChange("credit_card_family", v)}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select issuer..." />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">None</SelectItem>
                 {CREDIT_CARD_FAMILIES.map((family) => (
                   <SelectItem key={family} value={family}>
                     {family}
@@ -333,14 +332,13 @@ function CardForm({ card, onSubmit, onClose, isSubmitting }: CardFormProps) {
           <div className="space-y-2">
             <Label htmlFor="rewards_category">Rewards Category</Label>
             <Select
-              value={formData.rewards_category || ""}
+              value={formData.rewards_category || undefined}
               onValueChange={(v) => handleChange("rewards_category", v)}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select category..." />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">None</SelectItem>
                 {REWARDS_CATEGORIES.map((category) => (
                   <SelectItem key={category} value={category}>
                     {category}
