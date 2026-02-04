@@ -51,8 +51,8 @@ export const PRICING_TIERS = {
   },
   pro: {
     name: 'Pro',
-    monthlyPrice: 29,
-    yearlyPrice: 249,
+    monthlyPrice: 19,
+    yearlyPrice: 199,
     description: 'Advanced tools for serious planners',
     features: [
       'Everything in Free',
@@ -71,8 +71,8 @@ export const PRICING_TIERS = {
   // Legacy tier - maps to Pro for existing subscribers
   premium: {
     name: 'Pro',
-    monthlyPrice: 29,
-    yearlyPrice: 249,
+    monthlyPrice: 19,
+    yearlyPrice: 199,
     description: 'Advanced tools for serious planners',
     features: [
       'Everything in Free',
