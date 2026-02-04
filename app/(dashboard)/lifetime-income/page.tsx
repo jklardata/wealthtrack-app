@@ -21,16 +21,17 @@ export default function LifetimeIncomePage() {
   const [currentNetWorth, setCurrentNetWorth] = useState("");
   const [expectedReturn, setExpectedReturn] = useState("7");
   const [inflationRate, setInflationRate] = useState("3");
-  const [longevityAge, setLongevityAge] = useState("95");
+  const [longevityAge, setLongevityAge] = useState("65");
 
   const [projection, setProjection] = useState<ProjectionPoint[]>([]);
   const [isCalculating, setIsCalculating] = useState(false);
   const [hasCalculated, setHasCalculated] = useState(false);
 
-  // Fetch latest net worth entry to pre-populate
+  // Fetch latest net worth entry and user settings to pre-populate
   useEffect(() => {
     if (isPro) {
       fetchLatestNetWorth();
+      fetchUserSettings();
     }
   }, [isPro]);
 
@@ -44,6 +45,20 @@ export default function LifetimeIncomePage() {
       }
     } catch (error) {
       console.error("Error fetching net worth:", error);
+    }
+  };
+
+  const fetchUserSettings = async () => {
+    try {
+      const response = await fetch("/api/settings");
+      const data = await response.json();
+      if (response.ok && data.data) {
+        if (data.data.current_age) {
+          setCurrentAge(data.data.current_age);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching settings:", error);
     }
   };
 

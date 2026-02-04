@@ -96,6 +96,8 @@ export interface UserSettings {
   last_sync_at: string | null;
   credit_cards_last_sync_at: string | null;
   consulting_income_last_sync_at: string | null;
+  current_age: number | null;
+  desired_retirement_age: number | null;
   created_at: string;
   updated_at: string;
 }

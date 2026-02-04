@@ -55,6 +55,12 @@ export async function POST(request: NextRequest) {
     if ('credit_cards_sheet_id' in body) {
       updateData.credit_cards_sheet_id = body.credit_cards_sheet_id || null;
     }
+    if ('current_age' in body) {
+      updateData.current_age = body.current_age;
+    }
+    if ('desired_retirement_age' in body) {
+      updateData.desired_retirement_age = body.desired_retirement_age;
+    }
 
     // Upsert settings
     const { data, error } = await supabase

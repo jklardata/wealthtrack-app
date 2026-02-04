@@ -1,13 +1,13 @@
 /**
  * Age Utilities for Projected Net Worth
  *
- * Handles conversion between display format ("35y 6mos") and storage format (total months)
+ * Handles conversion between display format ("35y") and storage format (years as integer)
  */
 
 /**
- * Parse age string in format "35y 6mos" or "35y" or "6mos" to total months
- * @param ageString - Age string like "35y 6mos", "35y", or "6mos"
- * @returns Total months as integer
+ * Parse age string in format "35y" or plain number to years
+ * @param ageString - Age string like "35y" or "35"
+ * @returns Age in years as integer
  * @throws Error if format is invalid
  */
 export function parseAgeString(ageString: string): number {
@@ -17,34 +17,41 @@ export function parseAgeString(ageString: string): number {
 
   const trimmed = ageString.trim();
 
-  // Try to parse as plain number (assume years)
+  // Try to parse as plain number
   const plainNumber = Number(trimmed);
   if (!isNaN(plainNumber) && trimmed === String(plainNumber)) {
-    return Math.floor(plainNumber * 12);
+    return Math.floor(plainNumber);
   }
 
-  // Parse "35y 6mos" format
-  const yearMatch = trimmed.match(/(\d+)y/);
-  const monthMatch = trimmed.match(/(\d+)mos/);
+  // Parse "35y" format
+  const yearMatch = trimmed.match(/^(\d+)y$/);
 
-  if (!yearMatch && !monthMatch) {
-    throw new Error('Invalid age format. Use "35y 6mos", "35y", or "6mos"');
+  if (!yearMatch) {
+    throw new Error('Invalid age format. Use "35y" or "35"');
   }
 
-  const years = yearMatch ? parseInt(yearMatch[1], 10) : 0;
-  const months = monthMatch ? parseInt(monthMatch[1], 10) : 0;
+  const years = parseInt(yearMatch[1], 10);
 
-  if (months >= 12) {
-    throw new Error('Months must be less than 12');
-  }
-
-  return years * 12 + months;
+  return years;
 }
 
 /**
- * Format total months to age string "35y 6mos"
+ * Format years to age string "35y"
+ * @param years - Age in years as integer
+ * @returns Formatted age string like "35y"
+ */
+export function formatAgeYears(years: number): string {
+  if (typeof years !== 'number' || isNaN(years) || years < 0) {
+    return '0y';
+  }
+
+  return `${Math.floor(years)}y`;
+}
+
+/**
+ * Format total months to age string "35y" (for backwards compatibility)
  * @param totalMonths - Total months as integer
- * @returns Formatted age string like "35y 6mos" or "35y" or "6mos"
+ * @returns Formatted age string like "35y"
  */
 export function formatAgeMonths(totalMonths: number): string {
   if (typeof totalMonths !== 'number' || isNaN(totalMonths) || totalMonths < 0) {
@@ -52,35 +59,21 @@ export function formatAgeMonths(totalMonths: number): string {
   }
 
   const years = Math.floor(totalMonths / 12);
-  const months = totalMonths % 12;
-
-  if (years === 0 && months === 0) {
-    return '0y';
-  }
-
-  if (months === 0) {
-    return `${years}y`;
-  }
-
-  if (years === 0) {
-    return `${months}mos`;
-  }
-
-  return `${years}y ${months}mos`;
+  return `${years}y`;
 }
 
 /**
- * Convert age months to decimal years (e.g., 426 months -> 35.5 years)
+ * Convert age months to decimal years (for backwards compatibility)
  * @param totalMonths - Total months as integer
- * @returns Age in years as decimal
+ * @returns Age in years as integer
  */
 export function monthsToYears(totalMonths: number): number {
-  return totalMonths / 12;
+  return Math.floor(totalMonths / 12);
 }
 
 /**
- * Convert decimal years to months (e.g., 35.5 years -> 426 months)
- * @param years - Age in years as decimal
+ * Convert decimal years to months (for backwards compatibility)
+ * @param years - Age in years
  * @returns Total months as integer
  */
 export function yearsToMonths(years: number): number {
@@ -88,25 +81,30 @@ export function yearsToMonths(years: number): number {
 }
 
 /**
- * Get current age in months from birth date
+ * Get current age in years from birth date
  * @param birthDate - Birth date as Date or date string
- * @returns Current age in months
+ * @returns Current age in years
  */
-export function getCurrentAgeMonths(birthDate: Date | string): number {
+export function getCurrentAgeYears(birthDate: Date | string): number {
   const birth = typeof birthDate === 'string' ? new Date(birthDate) : birthDate;
   const now = new Date();
 
   const yearsDiff = now.getFullYear() - birth.getFullYear();
   const monthsDiff = now.getMonth() - birth.getMonth();
 
-  return yearsDiff * 12 + monthsDiff;
+  // Adjust if birthday hasn't occurred this year
+  if (monthsDiff < 0 || (monthsDiff === 0 && now.getDate() < birth.getDate())) {
+    return yearsDiff - 1;
+  }
+
+  return yearsDiff;
 }
 
 /**
  * Validate age is within reasonable bounds
- * @param ageMonths - Age in months
+ * @param age - Age in years
  * @returns True if valid, false otherwise
  */
-export function isValidAge(ageMonths: number): boolean {
-  return ageMonths >= 0 && ageMonths <= 1440; // 0 to 120 years
+export function isValidAge(age: number): boolean {
+  return age >= 0 && age <= 120;
 }
