@@ -112,10 +112,39 @@ export default function LifetimeIncomePage() {
           <TrendingUp className="h-8 w-8 text-emerald-600" />
           Net Worth Projected
         </h1>
-        <p className="text-slate-600 mt-2">
-          View your lifetime net worth trajectory based on your income and expenses
+        <p className="text-slate-600 mt-3 text-base">
+          Model your complete financial future by combining all income sources with expenses to project your lifetime net worth trajectory
         </p>
       </div>
+
+      {/* Explanation Card */}
+      <Card className="bg-gradient-to-br from-blue-50 to-emerald-50 border-blue-200">
+        <CardContent className="py-6">
+          <h3 className="font-semibold text-slate-900 mb-3">How This Works</h3>
+          <div className="space-y-3 text-sm text-slate-700">
+            <p>
+              This tool creates a comprehensive financial projection by integrating <span className="font-medium">all your income sources</span> (work, social security, passive income, windfalls) with <span className="font-medium">your expenses</span> over your lifetime.
+            </p>
+            <div className="grid md:grid-cols-3 gap-4 mt-4">
+              <div className="bg-white/60 p-3 rounded-lg">
+                <p className="font-medium text-slate-900 mb-1">📊 Income Sources</p>
+                <p className="text-xs">Configure work income, social security benefits, passive income streams, and one-time windfalls in your Profile</p>
+              </div>
+              <div className="bg-white/60 p-3 rounded-lg">
+                <p className="font-medium text-slate-900 mb-1">💰 Expenses</p>
+                <p className="text-xs">Set recurring expenses, medical costs, Medicare, and age-specific one-time expenses to model your spending</p>
+              </div>
+              <div className="bg-white/60 p-3 rounded-lg">
+                <p className="font-medium text-slate-900 mb-1">📈 Projection</p>
+                <p className="text-xs">See year-by-year portfolio growth accounting for contributions, withdrawals, investment returns, and inflation</p>
+              </div>
+            </div>
+            <p className="text-xs text-slate-600 mt-3">
+              The projection shows how your net worth evolves as income sources turn on and off at different ages, while accounting for inflation and investment growth.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Quick Actions */}
       <div className="flex gap-3">
@@ -144,7 +173,7 @@ export default function LifetimeIncomePage() {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="current_age">Age *</Label>
               <AgeInput
                 id="current_age"
@@ -152,7 +181,7 @@ export default function LifetimeIncomePage() {
                 onChange={(ageMonths) => setCurrentAge(ageMonths)}
               />
             </div>
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="current_net_worth">Current Net Worth *</Label>
               <Input
                 id="current_net_worth"
@@ -162,7 +191,7 @@ export default function LifetimeIncomePage() {
                 onChange={(e) => setCurrentNetWorth(e.target.value)}
               />
             </div>
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="expected_return">Expected Return (%)</Label>
               <Input
                 id="expected_return"
@@ -173,7 +202,7 @@ export default function LifetimeIncomePage() {
                 onChange={(e) => setExpectedReturn(e.target.value)}
               />
             </div>
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="inflation_rate">Inflation Rate (%)</Label>
               <Input
                 id="inflation_rate"
@@ -184,7 +213,7 @@ export default function LifetimeIncomePage() {
                 onChange={(e) => setInflationRate(e.target.value)}
               />
             </div>
-            <div>
+            <div className="space-y-2">
               <Label htmlFor="longevity_age">Project to Age</Label>
               <Input
                 id="longevity_age"

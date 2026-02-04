@@ -1469,8 +1469,10 @@ export default function PortfolioOptimizerPage() {
           {isPro ? (
             <Card className="bg-white border-slate-200 shadow-sm">
               <CardHeader>
-                <CardTitle className="font-medium text-slate-900">Allocation Difference</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-xl font-semibold text-slate-900" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+                  Allocation Difference
+                </CardTitle>
+                <CardDescription className="text-base text-slate-600" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
                   How much you need to adjust each asset class
                 </CardDescription>
               </CardHeader>
@@ -1488,19 +1490,38 @@ export default function PortfolioOptimizerPage() {
                     }))}
                     margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
                   >
-                    <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-                    <XAxis dataKey="name" className="text-xs" />
-                    <YAxis unit="%" className="text-xs" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
+                    <XAxis
+                      dataKey="name"
+                      stroke="#64748b"
+                      tick={{ fill: "#64748b", fontSize: 13, fontFamily: 'system-ui, -apple-system, sans-serif', fontWeight: 500 }}
+                    />
+                    <YAxis
+                      unit="%"
+                      stroke="#64748b"
+                      tick={{ fill: "#64748b", fontSize: 13, fontFamily: 'system-ui, -apple-system, sans-serif', fontWeight: 500 }}
+                    />
                     <Tooltip
                       formatter={(value) => `${Number(value).toFixed(1)}%`}
                       contentStyle={{
-                        backgroundColor: "hsl(var(--card))",
-                        border: "1px solid hsl(var(--border))",
+                        backgroundColor: "white",
+                        border: "1px solid #e2e8f0",
+                        borderRadius: "8px",
+                        boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+                        fontFamily: 'system-ui, -apple-system, sans-serif'
+                      }}
+                      labelStyle={{ color: "#0f172a", fontWeight: 600, fontFamily: 'system-ui, -apple-system, sans-serif' }}
+                    />
+                    <Legend
+                      wrapperStyle={{
+                        paddingTop: "15px",
+                        fontFamily: 'system-ui, -apple-system, sans-serif',
+                        fontSize: 14,
+                        fontWeight: 500
                       }}
                     />
-                    <Legend />
-                    <Bar dataKey="current" name="Current" fill="#6b7280" />
-                    <Bar dataKey="recommended" name="Recommended" fill="#a3e635" />
+                    <Bar dataKey="current" name="Current" fill="#64748b" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="recommended" name="Recommended" fill="#10b981" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>

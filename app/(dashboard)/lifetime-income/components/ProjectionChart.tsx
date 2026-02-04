@@ -18,7 +18,8 @@ import {
 } from "recharts";
 import type { ProjectionPoint } from "@/lib/types";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { TrendingUp } from "lucide-react";
+import { TrendingUp, Download } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface ProjectionChartProps {
   projection: ProjectionPoint[];
@@ -46,10 +47,14 @@ export function ProjectionChart({ projection }: ProjectionChartProps) {
     );
   }
 
-  // Format data for chart
+  // Format data for chart - include all income sources
   const chartData = projection.map((point) => ({
     age: point.age,
     portfolioValue: point.portfolioValue,
+    workIncome: point.workIncome,
+    socialSecurityIncome: point.socialSecurityIncome,
+    passiveIncome: point.passiveIncome,
+    windfallIncome: point.windfallIncome,
     totalIncome: point.totalIncome,
     totalExpenses: point.totalExpenses,
     netCashFlow: point.netCashFlow,
@@ -245,6 +250,115 @@ export function ProjectionChart({ projection }: ProjectionChartProps) {
             </ResponsiveContainer>
             <p className="text-xs text-slate-500 mt-2">
               Positive = Adding to portfolio, Negative = Drawing from portfolio
+            </p>
+          </div>
+
+          {/* Projection Data Table */}
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-sm font-medium text-slate-900">Year-by-Year Projection Data</h3>
+              <Button
+                onClick={() => {
+                  // Convert chartData to CSV
+                  const headers = [
+                    'Age',
+                    'Work Income',
+                    'Social Security',
+                    'Passive Income',
+                    'Windfall',
+                    'Total Income',
+                    'Total Expenses',
+                    'Net Cash Flow',
+                    'Portfolio Value'
+                  ];
+
+                  const csvRows = [headers.join(',')];
+
+                  chartData.forEach(point => {
+                    const row = [
+                      point.age,
+                      point.workIncome,
+                      point.socialSecurityIncome,
+                      point.passiveIncome,
+                      point.windfallIncome,
+                      point.totalIncome,
+                      point.totalExpenses,
+                      point.netCashFlow,
+                      point.portfolioValue
+                    ];
+                    csvRows.push(row.join(','));
+                  });
+
+                  const csvContent = csvRows.join('\n');
+                  const blob = new Blob([csvContent], { type: 'text/csv' });
+                  const url = window.URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = `net-worth-projection-${new Date().toISOString().split('T')[0]}.csv`;
+                  document.body.appendChild(a);
+                  a.click();
+                  document.body.removeChild(a);
+                  window.URL.revokeObjectURL(url);
+                }}
+                size="sm"
+                className="bg-slate-700 hover:bg-slate-800"
+              >
+                <Download className="h-4 w-4 mr-2" />
+                Download CSV
+              </Button>
+            </div>
+            <div className="overflow-x-auto max-h-[400px] overflow-y-auto border rounded-lg">
+              <table className="w-full text-xs">
+                <thead className="sticky top-0 bg-slate-100 z-10">
+                  <tr className="border-b">
+                    <th className="text-left p-2 font-semibold">Age</th>
+                    <th className="text-right p-2 font-semibold text-blue-700">Work</th>
+                    <th className="text-right p-2 font-semibold text-purple-700">Social Sec.</th>
+                    <th className="text-right p-2 font-semibold text-emerald-700">Passive</th>
+                    <th className="text-right p-2 font-semibold text-amber-700">Windfall</th>
+                    <th className="text-right p-2 font-semibold">Total Income</th>
+                    <th className="text-right p-2 font-semibold text-emerald-800">Expenses</th>
+                    <th className="text-right p-2 font-semibold text-slate-700">Net Cash Flow</th>
+                    <th className="text-right p-2 font-semibold">Portfolio</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {chartData.map((point, index) => (
+                    <tr key={index} className="border-b hover:bg-slate-50">
+                      <td className="p-2 font-medium">{point.age}</td>
+                      <td className="p-2 text-right tabular-nums text-blue-700">
+                        ${Math.round(point.workIncome).toLocaleString()}
+                      </td>
+                      <td className="p-2 text-right tabular-nums text-purple-700">
+                        ${Math.round(point.socialSecurityIncome).toLocaleString()}
+                      </td>
+                      <td className="p-2 text-right tabular-nums text-emerald-700">
+                        ${Math.round(point.passiveIncome).toLocaleString()}
+                      </td>
+                      <td className="p-2 text-right tabular-nums text-amber-700">
+                        ${Math.round(point.windfallIncome).toLocaleString()}
+                      </td>
+                      <td className="p-2 text-right tabular-nums font-medium">
+                        ${Math.round(point.totalIncome).toLocaleString()}
+                      </td>
+                      <td className="p-2 text-right tabular-nums text-emerald-800">
+                        ${Math.round(point.totalExpenses).toLocaleString()}
+                      </td>
+                      <td className={`p-2 text-right tabular-nums font-medium ${
+                        point.netCashFlow >= 0 ? 'text-emerald-600' : 'text-red-600'
+                      }`}>
+                        {point.netCashFlow >= 0 ? '+' : ''}${Math.round(point.netCashFlow).toLocaleString()}
+                      </td>
+                      <td className="p-2 text-right tabular-nums font-semibold">
+                        ${Math.round(point.portfolioValue).toLocaleString()}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="text-xs text-slate-500 mt-2">
+              Complete year-by-year breakdown showing all income sources, expenses, and portfolio growth
             </p>
           </div>
         </div>
