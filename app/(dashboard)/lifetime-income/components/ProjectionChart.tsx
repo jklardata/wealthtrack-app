@@ -91,7 +91,9 @@ export function ProjectionChart({ projection }: ProjectionChartProps) {
                   tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
                 />
                 <Tooltip
-                  formatter={(value: number) => `$${value.toLocaleString()}`}
+                  formatter={(value: number | undefined) =>
+                    value !== undefined ? `$${value.toLocaleString()}` : ""
+                  }
                   labelFormatter={(age) => `Age: ${age}`}
                   contentStyle={{
                     backgroundColor: "white",
@@ -130,7 +132,9 @@ export function ProjectionChart({ projection }: ProjectionChartProps) {
                   tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
                 />
                 <Tooltip
-                  formatter={(value: number) => `$${value.toLocaleString()}`}
+                  formatter={(value: number | undefined) =>
+                    value !== undefined ? `$${value.toLocaleString()}` : ""
+                  }
                   labelFormatter={(age) => `Age: ${age}`}
                   contentStyle={{
                     backgroundColor: "white",
@@ -178,7 +182,8 @@ export function ProjectionChart({ projection }: ProjectionChartProps) {
                   tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
                 />
                 <Tooltip
-                  formatter={(value: number) => {
+                  formatter={(value: number | undefined) => {
+                    if (value === undefined) return "";
                     const sign = value >= 0 ? "+" : "";
                     return `${sign}$${value.toLocaleString()}`;
                   }}
