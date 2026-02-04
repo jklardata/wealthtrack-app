@@ -1,8 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useSubscription } from "@/hooks/use-subscription";
-import { LockedModule } from "@/components/locked-module";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -15,19 +13,17 @@ import { User, DollarSign, Calendar, Save } from "lucide-react";
 import type { UserSettings } from "@/lib/types";
 
 export default function ProfilePage() {
-  const { isPro, isLoading: subLoading } = useSubscription();
   const [settings, setSettings] = useState<UserSettings | null>(null);
   const [currentAge, setCurrentAge] = useState("");
   const [desiredRetirementAge, setDesiredRetirementAge] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   // Fetch user settings
   useEffect(() => {
-    if (isPro) {
-      fetchSettings();
-    }
-  }, [isPro]);
+    fetchSettings();
+  }, []);
 
   const fetchSettings = async () => {
     try {
@@ -40,6 +36,8 @@ export default function ProfilePage() {
       }
     } catch (error) {
       console.error("Error fetching settings:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -71,28 +69,12 @@ export default function ProfilePage() {
     }
   };
 
-  if (subLoading) {
+  if (isLoading) {
     return (
       <div className="p-8 space-y-6">
         <Skeleton className="h-12 w-64" />
         <Skeleton className="h-96 w-full" />
       </div>
-    );
-  }
-
-  if (!isPro) {
-    return (
-      <LockedModule
-        title="Profile & Financial Planning"
-        description="Configure your income sources and expenses for lifetime projections"
-        icon={<User className="h-5 w-5 text-emerald-600" />}
-        benefits={[
-          "Track multiple income sources",
-          "Manage expense categories",
-          "Configure financial assumptions",
-          "Used for Net Worth Projected calculations"
-        ]}
-      />
     );
   }
 
@@ -149,7 +131,7 @@ export default function ProfilePage() {
             <Button
               onClick={handleSaveSettings}
               disabled={isSaving}
-              className="bg-emerald-600 hover:bg-emerald-700"
+              className="bg-slate-800 hover:bg-slate-900 text-white"
             >
               <Save className="h-4 w-4 mr-2" />
               {isSaving ? "Saving..." : "Save Settings"}

@@ -29,11 +29,9 @@ export default function LifetimeIncomePage() {
 
   // Fetch latest net worth entry and user settings to pre-populate
   useEffect(() => {
-    if (isPro) {
-      fetchLatestNetWorth();
-      fetchUserSettings();
-    }
-  }, [isPro]);
+    fetchLatestNetWorth();
+    fetchUserSettings();
+  }, []);
 
   const fetchLatestNetWorth = async () => {
     try {
@@ -103,23 +101,6 @@ export default function LifetimeIncomePage() {
         <Skeleton className="h-12 w-64" />
         <Skeleton className="h-96 w-full" />
       </div>
-    );
-  }
-
-  if (!isPro) {
-    return (
-      <LockedModule
-        title="Projected Net Worth"
-        description="Model your lifetime income from all sources and project your net worth trajectory"
-        icon={<TrendingUp className="h-5 w-5 text-emerald-600" />}
-        benefits={[
-          "Track multiple income sources (work, social security, passive, windfalls)",
-          "Model age-dependent expenses (medical, Medicare)",
-          "Year-by-year portfolio projections with charts",
-          "Social Security benefit estimation",
-          "Portfolio depletion warnings and peak net worth analysis"
-        ]}
-      />
     );
   }
 
@@ -236,11 +217,26 @@ export default function LifetimeIncomePage() {
         </CardContent>
       </Card>
 
-      {/* Results Summary */}
-      {hasCalculated && <ProjectionSummary projection={projection} />}
-
-      {/* Projection Chart */}
-      <ProjectionChart projection={projection} />
+      {/* Results Summary - Pro Only */}
+      {isPro ? (
+        <>
+          {hasCalculated && <ProjectionSummary projection={projection} />}
+          <ProjectionChart projection={projection} />
+        </>
+      ) : (
+        <LockedModule
+          title="Net Worth Projection Graphs"
+          description="View detailed charts and analysis of your lifetime net worth trajectory"
+          icon={<TrendingUp className="h-5 w-5 text-emerald-600" />}
+          benefits={[
+            "Year-by-year portfolio value visualization",
+            "Income vs expenses stacked charts",
+            "Net cash flow analysis",
+            "Portfolio depletion warnings",
+            "Peak net worth insights"
+          ]}
+        />
+      )}
 
       {/* Instructions */}
       {!hasCalculated && (

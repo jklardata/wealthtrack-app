@@ -177,25 +177,26 @@ function SourceList({
       {sources.map((source) => (
         <div
           key={source.id}
-          className="flex items-center justify-between p-3 border border-slate-200 rounded-md"
+          className="flex items-start justify-between p-3 border border-slate-200 rounded-md"
         >
-          <div>
+          <div className="flex-1 min-w-0">
             <p className="font-medium">{source.name}</p>
             <p className="text-sm text-slate-600">
               ${source.annual_amount.toLocaleString()}/year
-              {source.start_age_months && (
-                <span className="ml-2">
-                  from age {formatAgeMonths(source.start_age_months)}
-                </span>
-              )}
-              {source.stop_age_months && (
-                <span className="ml-2">
-                  to age {formatAgeMonths(source.stop_age_months)}
-                </span>
-              )}
             </p>
+            {(source.start_age_months || source.stop_age_months) && (
+              <p className="text-sm text-slate-500 mt-1">
+                {source.start_age_months && (
+                  <span>from age {formatAgeMonths(source.start_age_months)}</span>
+                )}
+                {source.start_age_months && source.stop_age_months && <span> </span>}
+                {source.stop_age_months && (
+                  <span>to age {formatAgeMonths(source.stop_age_months)}</span>
+                )}
+              </p>
+            )}
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 ml-2 flex-shrink-0">
             <Button variant="ghost" size="sm" onClick={onDelete.bind(null, source.id)}>
               <Trash2 className="h-4 w-4" />
             </Button>
@@ -257,7 +258,7 @@ function WorkIncomeDialog({ onSuccess }: { onSuccess: () => void }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700">
+        <Button size="sm" className="bg-emerald-700 hover:bg-emerald-800">
           <Plus className="h-4 w-4 mr-2" />
           Add Work Income
         </Button>
@@ -397,7 +398,7 @@ function SocialSecurityDialog({ onSuccess }: { onSuccess: () => void }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+        <Button size="sm" className="bg-slate-700 hover:bg-slate-800">
           <Plus className="h-4 w-4 mr-2" />
           Add Social Security
         </Button>
@@ -516,7 +517,7 @@ function PassiveIncomeDialog({ onSuccess }: { onSuccess: () => void }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" className="bg-purple-600 hover:bg-purple-700">
+        <Button size="sm" className="bg-emerald-700 hover:bg-emerald-800">
           <Plus className="h-4 w-4 mr-2" />
           Add Passive Income
         </Button>
@@ -630,7 +631,7 @@ function WindfallDialog({ onSuccess }: { onSuccess: () => void }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" className="bg-orange-600 hover:bg-orange-700">
+        <Button size="sm" className="bg-slate-700 hover:bg-slate-800">
           <Plus className="h-4 w-4 mr-2" />
           Add Windfall
         </Button>
