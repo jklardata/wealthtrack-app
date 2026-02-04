@@ -1290,8 +1290,14 @@ export default function DashboardPage() {
                 <YAxis stroke="#94a3b8" fontSize={11} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
                 <Tooltip formatter={(value) => formatCurrency(Number(value))} />
                 <Legend />
-                <Bar dataKey="income" name="Income" fill="#3b82f6" radius={[4, 4, 0, 0]} label={{ position: 'top', formatter: (value: number) => `$${(value / 1000).toFixed(0)}k`, fontSize: 10 }} />
-                <Bar dataKey="expenses" name="Expenses" fill="#d97706" radius={[4, 4, 0, 0]} label={{ position: 'top', formatter: (value: number) => `$${(value / 1000).toFixed(0)}k`, fontSize: 10 }} />
+                <Bar dataKey="income" name="Income" fill="#3b82f6" radius={[4, 4, 0, 0]} label={{ position: 'top', content: (props: any) => {
+                  const { x, y, width, value } = props;
+                  return <text x={x + width / 2} y={y - 5} fill="#64748b" textAnchor="middle" fontSize={10}>${(value / 1000).toFixed(0)}k</text>;
+                } }} />
+                <Bar dataKey="expenses" name="Expenses" fill="#d97706" radius={[4, 4, 0, 0]} label={{ position: 'top', content: (props: any) => {
+                  const { x, y, width, value } = props;
+                  return <text x={x + width / 2} y={y - 5} fill="#64748b" textAnchor="middle" fontSize={10}>${(value / 1000).toFixed(0)}k</text>;
+                } }} />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
