@@ -30,7 +30,7 @@ export default function Landing21() {
             Pricing
           </Link>
           <TrackedLink
-            href="/dashboard"
+            href="/sign-in"
             trackingAction="sign_in"
             trackingLocation="nav"
             trackingVariant={VARIANT}
@@ -57,7 +57,7 @@ export default function Landing21() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <TrackedLink
-              href="/dashboard"
+              href="/sign-up"
               trackingAction="get_started"
               trackingLocation="hero"
               trackingVariant={VARIANT}
@@ -511,7 +511,7 @@ export default function Landing21() {
             Free to start. No credit card required. See what clarity looks like before your next big financial decision.
           </p>
           <TrackedLink
-            href="/dashboard"
+            href="/sign-up"
             trackingAction="create_account"
             trackingLocation="cta_section"
             trackingVariant={VARIANT}
