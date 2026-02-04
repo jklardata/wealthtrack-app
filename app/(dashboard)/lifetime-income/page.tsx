@@ -187,6 +187,62 @@ export default function LifetimeIncomePage() {
         </CardContent>
       </Card>
 
+      {/* CTA Banner when no data */}
+      {(!currentNetWorth || incomeSources.length === 0 || expenses.length === 0) && (
+        <Card className="bg-gradient-to-r from-emerald-50 via-blue-50 to-purple-50 border-2 border-emerald-300">
+          <CardContent className="py-6">
+            <div className="flex flex-col md:flex-row items-start gap-4">
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-slate-900 mb-2">
+                  🚀 Get Started with Your Net Worth Projection
+                </h3>
+                <p className="text-sm text-slate-600 mb-4">
+                  To create an accurate lifetime projection, you need to:
+                </p>
+                <div className="grid md:grid-cols-2 gap-3 mb-4">
+                  {!currentNetWorth && (
+                    <div className="flex items-start gap-2 text-sm">
+                      <span className="text-red-500 font-bold">1.</span>
+                      <div>
+                        <p className="font-medium text-slate-900">Add Net Worth Data</p>
+                        <p className="text-xs text-slate-600">Track your assets and debts</p>
+                      </div>
+                    </div>
+                  )}
+                  {(incomeSources.length === 0 || expenses.length === 0) && (
+                    <div className="flex items-start gap-2 text-sm">
+                      <span className="text-red-500 font-bold">2.</span>
+                      <div>
+                        <p className="font-medium text-slate-900">Configure Income & Expenses</p>
+                        <p className="text-xs text-slate-600">Add all your income sources and monthly expenses</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  {!currentNetWorth && (
+                    <Link href="/net-worth">
+                      <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
+                        <TrendingUp className="h-4 w-4 mr-2" />
+                        Add Net Worth Entry
+                      </Button>
+                    </Link>
+                  )}
+                  {(incomeSources.length === 0 || expenses.length === 0) && (
+                    <Link href="/profile">
+                      <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                        <DollarSign className="h-4 w-4 mr-2" />
+                        Update Profile
+                      </Button>
+                    </Link>
+                  )}
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Quick Actions */}
       <div className="flex flex-wrap gap-3">
         <Link href="/profile">

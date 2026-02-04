@@ -10,7 +10,7 @@ export default function PricingPage() {
   const [billingInterval, setBillingInterval] = useState<"monthly" | "yearly">("monthly");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleTrialCheckout = async () => {
+  const handleProCheckout = async () => {
     setIsLoading(true);
     try {
       const priceId = billingInterval === "monthly"
@@ -20,10 +20,7 @@ export default function PricingPage() {
       const response = await fetch("/api/stripe/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          priceId,
-          trialDays: 14
-        }),
+        body: JSON.stringify({ priceId }),
       });
 
       const data = await response.json();
@@ -34,8 +31,8 @@ export default function PricingPage() {
         throw new Error(data.error || "Failed to create checkout session");
       }
     } catch (error) {
-      console.error("Error starting trial:", error);
-      alert("Failed to start trial. Please try again or sign up first.");
+      console.error("Error creating checkout:", error);
+      alert("Failed to create checkout. Please try again or sign up first.");
     } finally {
       setIsLoading(false);
     }
@@ -190,10 +187,10 @@ export default function PricingPage() {
             </p>
             <Button
               className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
-              onClick={handleTrialCheckout}
+              onClick={handleProCheckout}
               disabled={isLoading}
             >
-              {isLoading ? "Loading..." : "Start 14-day trial"}
+              {isLoading ? "Loading..." : "Sign Up for Pro"}
             </Button>
             <ul className="mt-8 space-y-3">
               <li className="flex items-start gap-3 text-sm text-slate-600">
