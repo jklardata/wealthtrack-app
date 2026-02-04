@@ -23,9 +23,12 @@ import { Button } from "@/components/ui/button";
 
 interface ProjectionChartProps {
   projection: ProjectionPoint[];
+  expectedReturn?: number;
+  incomeSources?: Array<{ name: string; source_type: string }>;
+  expenses?: Array<{ name: string; category_type: string }>;
 }
 
-export function ProjectionChart({ projection }: ProjectionChartProps) {
+export function ProjectionChart({ projection, expectedReturn = 7, incomeSources = [], expenses = [] }: ProjectionChartProps) {
   if (!projection || projection.length === 0) {
     return (
       <Card>
@@ -269,12 +272,27 @@ export function ProjectionChart({ projection }: ProjectionChartProps) {
                     'Total Income',
                     'Total Expenses',
                     'Net Cash Flow',
-                    'Portfolio Value'
+                    'Portfolio Value',
+                    'Expected Return %',
+                    'Income Sources',
+                    'Expense Categories'
                   ];
 
                   const csvRows = [headers.join(',')];
 
+                  const workSources = incomeSources.filter(s => s.source_type === 'work').map(s => s.name);
+                  const ssSources = incomeSources.filter(s => s.source_type === 'social_security').map(s => s.name);
+                  const passiveSources = incomeSources.filter(s => s.source_type === 'passive').map(s => s.name);
+                  const windfallSources = incomeSources.filter(s => s.source_type === 'windfall').map(s => s.name);
+                  const expenseNames = expenses.map(e => e.name);
+
                   chartData.forEach(point => {
+                    const activeIncome = [];
+                    if (point.workIncome > 0) activeIncome.push(...workSources);
+                    if (point.socialSecurityIncome > 0) activeIncome.push(...ssSources);
+                    if (point.passiveIncome > 0) activeIncome.push(...passiveSources);
+                    if (point.windfallIncome > 0) activeIncome.push(...windfallSources);
+
                     const row = [
                       point.age,
                       point.workIncome,
@@ -284,7 +302,10 @@ export function ProjectionChart({ projection }: ProjectionChartProps) {
                       point.totalIncome,
                       point.totalExpenses,
                       point.netCashFlow,
-                      point.portfolioValue
+                      point.portfolioValue,
+                      expectedReturn,
+                      `"${activeIncome.join(', ')}"`,
+                      `"${expenseNames.join(', ')}"`
                     ];
                     csvRows.push(row.join(','));
                   });
@@ -320,40 +341,58 @@ export function ProjectionChart({ projection }: ProjectionChartProps) {
                     <th className="text-right p-2 font-semibold text-emerald-800">Expenses</th>
                     <th className="text-right p-2 font-semibold text-slate-700">Net Cash Flow</th>
                     <th className="text-right p-2 font-semibold">Portfolio</th>
+                    <th className="text-center p-2 font-semibold text-slate-600">Return %</th>
+                    <th className="text-left p-2 font-semibold text-slate-600">Active Sources</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {chartData.map((point, index) => (
-                    <tr key={index} className="border-b hover:bg-slate-50">
-                      <td className="p-2 font-medium">{point.age}</td>
-                      <td className="p-2 text-right tabular-nums text-blue-700">
-                        ${Math.round(point.workIncome).toLocaleString()}
-                      </td>
-                      <td className="p-2 text-right tabular-nums text-purple-700">
-                        ${Math.round(point.socialSecurityIncome).toLocaleString()}
-                      </td>
-                      <td className="p-2 text-right tabular-nums text-emerald-700">
-                        ${Math.round(point.passiveIncome).toLocaleString()}
-                      </td>
-                      <td className="p-2 text-right tabular-nums text-amber-700">
-                        ${Math.round(point.windfallIncome).toLocaleString()}
-                      </td>
-                      <td className="p-2 text-right tabular-nums font-medium">
-                        ${Math.round(point.totalIncome).toLocaleString()}
-                      </td>
-                      <td className="p-2 text-right tabular-nums text-emerald-800">
-                        ${Math.round(point.totalExpenses).toLocaleString()}
-                      </td>
-                      <td className={`p-2 text-right tabular-nums font-medium ${
-                        point.netCashFlow >= 0 ? 'text-emerald-600' : 'text-red-600'
-                      }`}>
-                        {point.netCashFlow >= 0 ? '+' : ''}${Math.round(point.netCashFlow).toLocaleString()}
-                      </td>
-                      <td className="p-2 text-right tabular-nums font-semibold">
-                        ${Math.round(point.portfolioValue).toLocaleString()}
-                      </td>
-                    </tr>
-                  ))}
+                  {chartData.map((point, index) => {
+                    const workSources = incomeSources.filter(s => s.source_type === 'work' && point.workIncome > 0).map(s => s.name);
+                    const ssSources = incomeSources.filter(s => s.source_type === 'social_security' && point.socialSecurityIncome > 0).map(s => s.name);
+                    const passiveSources = incomeSources.filter(s => s.source_type === 'passive' && point.passiveIncome > 0).map(s => s.name);
+                    const windfallSources = incomeSources.filter(s => s.source_type === 'windfall' && point.windfallIncome > 0).map(s => s.name);
+                    const activeIncome = [...workSources, ...ssSources, ...passiveSources, ...windfallSources];
+                    const expenseNames = expenses.filter(e => point.totalExpenses > 0).map(e => e.name);
+                    const allSources = [...activeIncome, ...expenseNames.map(name => `Exp: ${name}`)].join(', ');
+
+                    return (
+                      <tr key={index} className="border-b hover:bg-slate-50">
+                        <td className="p-2 font-medium">{point.age}</td>
+                        <td className="p-2 text-right tabular-nums text-blue-700">
+                          ${Math.round(point.workIncome).toLocaleString()}
+                        </td>
+                        <td className="p-2 text-right tabular-nums text-purple-700">
+                          ${Math.round(point.socialSecurityIncome).toLocaleString()}
+                        </td>
+                        <td className="p-2 text-right tabular-nums text-emerald-700">
+                          ${Math.round(point.passiveIncome).toLocaleString()}
+                        </td>
+                        <td className="p-2 text-right tabular-nums text-amber-700">
+                          ${Math.round(point.windfallIncome).toLocaleString()}
+                        </td>
+                        <td className="p-2 text-right tabular-nums font-medium">
+                          ${Math.round(point.totalIncome).toLocaleString()}
+                        </td>
+                        <td className="p-2 text-right tabular-nums text-emerald-800">
+                          ${Math.round(point.totalExpenses).toLocaleString()}
+                        </td>
+                        <td className={`p-2 text-right tabular-nums font-medium ${
+                          point.netCashFlow >= 0 ? 'text-emerald-600' : 'text-red-600'
+                        }`}>
+                          {point.netCashFlow >= 0 ? '+' : ''}${Math.round(point.netCashFlow).toLocaleString()}
+                        </td>
+                        <td className="p-2 text-right tabular-nums font-semibold">
+                          ${Math.round(point.portfolioValue).toLocaleString()}
+                        </td>
+                        <td className="p-2 text-center tabular-nums text-slate-600">
+                          {expectedReturn}%
+                        </td>
+                        <td className="p-2 text-xs text-slate-600 max-w-xs truncate" title={allSources}>
+                          {allSources || '-'}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

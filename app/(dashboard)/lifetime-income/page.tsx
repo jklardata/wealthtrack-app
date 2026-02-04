@@ -26,12 +26,40 @@ export default function LifetimeIncomePage() {
   const [projection, setProjection] = useState<ProjectionPoint[]>([]);
   const [isCalculating, setIsCalculating] = useState(false);
   const [hasCalculated, setHasCalculated] = useState(false);
+  const [incomeSources, setIncomeSources] = useState<any[]>([]);
+  const [expenses, setExpenses] = useState<any[]>([]);
 
   // Fetch latest net worth entry and user settings to pre-populate
   useEffect(() => {
     fetchLatestNetWorth();
     fetchUserSettings();
+    fetchIncomeSources();
+    fetchExpenses();
   }, []);
+
+  const fetchIncomeSources = async () => {
+    try {
+      const response = await fetch("/api/income-sources");
+      const data = await response.json();
+      if (response.ok) {
+        setIncomeSources(data.data || []);
+      }
+    } catch (error) {
+      console.error("Error fetching income sources:", error);
+    }
+  };
+
+  const fetchExpenses = async () => {
+    try {
+      const response = await fetch("/api/expenses");
+      const data = await response.json();
+      if (response.ok) {
+        setExpenses(data.data || []);
+      }
+    } catch (error) {
+      console.error("Error fetching expenses:", error);
+    }
+  };
 
   const fetchLatestNetWorth = async () => {
     try {
@@ -172,13 +200,23 @@ export default function LifetimeIncomePage() {
           <CardDescription>Set your current situation and assumptions</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="space-y-2">
               <Label htmlFor="current_age">Age *</Label>
               <AgeInput
                 id="current_age"
                 value={currentAge || undefined}
                 onChange={(ageMonths) => setCurrentAge(ageMonths)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="longevity_age">Project to Age *</Label>
+              <Input
+                id="longevity_age"
+                type="number"
+                placeholder="95"
+                value={longevityAge}
+                onChange={(e) => setLongevityAge(e.target.value)}
               />
             </div>
             <div className="space-y-2">
@@ -202,6 +240,8 @@ export default function LifetimeIncomePage() {
                 onChange={(e) => setExpectedReturn(e.target.value)}
               />
             </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
             <div className="space-y-2">
               <Label htmlFor="inflation_rate">Inflation Rate (%)</Label>
               <Input
@@ -211,16 +251,6 @@ export default function LifetimeIncomePage() {
                 placeholder="3.0"
                 value={inflationRate}
                 onChange={(e) => setInflationRate(e.target.value)}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="longevity_age">Project to Age</Label>
-              <Input
-                id="longevity_age"
-                type="number"
-                placeholder="95"
-                value={longevityAge}
-                onChange={(e) => setLongevityAge(e.target.value)}
               />
             </div>
           </div>
@@ -250,7 +280,12 @@ export default function LifetimeIncomePage() {
       {isPro ? (
         <>
           {hasCalculated && <ProjectionSummary projection={projection} />}
-          <ProjectionChart projection={projection} />
+          <ProjectionChart
+            projection={projection}
+            expectedReturn={parseFloat(expectedReturn)}
+            incomeSources={incomeSources}
+            expenses={expenses}
+          />
         </>
       ) : (
         <LockedModule
@@ -280,6 +315,46 @@ export default function LifetimeIncomePage() {
               <li>Click "Calculate Projection" to see your lifetime net worth trajectory</li>
               <li>Adjust assumptions and modify income/expenses to model different scenarios</li>
             </ol>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Tips Section */}
+      {hasCalculated && (
+        <Card className="bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-200">
+          <CardHeader>
+            <CardTitle className="text-emerald-900 flex items-center gap-2">
+              💡 Tips to Strengthen Your Projection
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-sm text-emerald-800 space-y-3">
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="bg-white/60 p-3 rounded-lg">
+                <p className="font-medium text-emerald-900 mb-2">📊 Add More Income Sources</p>
+                <ul className="text-xs space-y-1 list-disc list-inside">
+                  <li>Include all expected work income with start/stop ages</li>
+                  <li>Add Social Security benefits (use auto-estimate or manual entry)</li>
+                  <li>Don't forget passive income: rentals, dividends, side businesses</li>
+                  <li>Include one-time windfalls: inheritance, bonuses, property sales</li>
+                </ul>
+              </div>
+              <div className="bg-white/60 p-3 rounded-lg">
+                <p className="font-medium text-emerald-900 mb-2">💰 Refine Your Expenses</p>
+                <ul className="text-xs space-y-1 list-disc list-inside">
+                  <li>Break down recurring expenses by category for accuracy</li>
+                  <li>Add age ranges for expenses that start/stop at specific ages</li>
+                  <li>Include healthcare costs (medical pre-65, Medicare 65+)</li>
+                  <li>Model one-time expenses: home purchases, college tuition, travel</li>
+                </ul>
+              </div>
+            </div>
+            <div className="bg-white/60 p-3 rounded-lg">
+              <p className="font-medium text-emerald-900 mb-2">🎯 Use the Data Table</p>
+              <p className="text-xs">
+                Scroll to the <span className="font-medium">Year-by-Year Projection Data</span> table below to see exactly which income sources and expenses contribute to each year's numbers.
+                Download the CSV to analyze trends, share with advisors, or track changes over time.
+              </p>
+            </div>
           </CardContent>
         </Card>
       )}

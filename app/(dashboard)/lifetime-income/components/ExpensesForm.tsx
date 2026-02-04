@@ -207,8 +207,8 @@ function ExpenseDialog({
   const [formData, setFormData] = useState({
     name: "",
     monthly_amount: "",
-    start_age_months: null as number | null,
-    end_age_months: null as number | null,
+    start_age_years: null as number | null,
+    end_age_years: null as number | null,
     notes: "",
   });
 
@@ -223,8 +223,8 @@ function ExpenseDialog({
           category_type: type,
           name: formData.name,
           monthly_amount: parseFloat(formData.monthly_amount),
-          start_age_months: formData.start_age_months,
-          end_age_months: formData.end_age_months,
+          start_age_months: formData.start_age_years ? formData.start_age_years * 12 : null,
+          end_age_months: formData.end_age_years ? formData.end_age_years * 12 : null,
           notes: formData.notes || null,
         }),
       });
@@ -234,8 +234,8 @@ function ExpenseDialog({
         setFormData({
           name: "",
           monthly_amount: "",
-          start_age_months: null,
-          end_age_months: null,
+          start_age_years: null,
+          end_age_years: null,
           notes: "",
         });
         onSuccess();
@@ -251,7 +251,7 @@ function ExpenseDialog({
         return {
           title: "Add Recurring Expense",
           buttonClass: "bg-slate-600 hover:bg-slate-700",
-          showAgeRange: false,
+          showAgeRange: true,
         };
       case "onetime":
         return {
@@ -319,9 +319,9 @@ function ExpenseDialog({
                   <Label htmlFor="start_age">Start Age</Label>
                   <AgeInput
                     id="start_age"
-                    value={formData.start_age_months || undefined}
-                    onChange={(ageMonths) =>
-                      setFormData({ ...formData, start_age_months: ageMonths })
+                    value={formData.start_age_years || undefined}
+                    onChange={(ageYears) =>
+                      setFormData({ ...formData, start_age_years: ageYears })
                     }
                   />
                 </div>
@@ -329,9 +329,9 @@ function ExpenseDialog({
                   <Label htmlFor="end_age">End Age</Label>
                   <AgeInput
                     id="end_age"
-                    value={formData.end_age_months || undefined}
-                    onChange={(ageMonths) =>
-                      setFormData({ ...formData, end_age_months: ageMonths })
+                    value={formData.end_age_years || undefined}
+                    onChange={(ageYears) =>
+                      setFormData({ ...formData, end_age_years: ageYears })
                     }
                   />
                 </div>
