@@ -1,11 +1,9 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Clock, Sparkles } from "lucide-react";
-
-export const metadata = {
-  title: "Blog - SoloFI",
-  description: "Financial insights, tax strategies, and wealth-building tips for self-employed professionals and independent consultants.",
-};
 
 interface Article {
   slug: string;
@@ -115,6 +113,37 @@ const ARTICLES: Article[] = [
 ];
 
 export default function BlogPage() {
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState("");
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+
+    setIsSubmitting(true);
+    setSubmitMessage("");
+
+    try {
+      const response = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, source: "blog_page" }),
+      });
+
+      if (response.ok) {
+        setSubmitMessage("Subscribed!");
+        setEmail("");
+      } else {
+        setSubmitMessage("Error. Please try again.");
+      }
+    } catch (error) {
+      setSubmitMessage("Error. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const featuredArticles = ARTICLES.filter((a) => a.featured);
   const regularArticles = ARTICLES.filter((a) => !a.featured);
 
@@ -255,16 +284,28 @@ export default function BlogPage() {
           <p className="text-slate-600 mb-8">
             Join 10,000+ self-employed professionals getting weekly tips on taxes, investing, and building wealth.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto">
+          <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto">
             <input
               type="email"
               placeholder="you@example.com"
-              className="flex-1 px-4 py-3 bg-white border border-slate-300 rounded-lg focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 text-slate-900 placeholder:text-slate-400"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={isSubmitting || submitMessage === "Subscribed!"}
+              className="flex-1 px-4 py-3 bg-white border border-slate-300 rounded-lg focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 text-slate-900 placeholder:text-slate-400 disabled:opacity-50"
             />
-            <Button className="bg-emerald-600 text-white hover:bg-emerald-700">
-              Subscribe
+            <Button
+              type="submit"
+              disabled={isSubmitting || submitMessage === "Subscribed!"}
+              className="bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-50"
+            >
+              {isSubmitting ? "Subscribing..." : submitMessage || "Subscribe"}
             </Button>
-          </div>
+          </form>
+          {submitMessage && (
+            <p className={`text-sm mt-2 ${submitMessage === "Subscribed!" ? "text-emerald-600" : "text-red-600"}`}>
+              {submitMessage}
+            </p>
+          )}
           <p className="text-xs text-slate-500 mt-4">
             No spam. Unsubscribe anytime.
           </p>

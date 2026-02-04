@@ -19,9 +19,11 @@ export default function Landing21() {
 
       {/* Nav */}
       <nav className="max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex justify-between items-center">
-        <span className="text-lg sm:text-xl font-semibold text-slate-900">
-          <span className="text-emerald-600">Solo</span>FI
-        </span>
+        <Link href="https://solofi.io">
+          <span className="text-lg sm:text-xl font-semibold text-slate-900 cursor-pointer hover:opacity-80 transition-opacity">
+            <span className="text-emerald-600">Solo</span>FI
+          </span>
+        </Link>
         <div className="flex items-center gap-2 sm:gap-4">
           <Link href="/blog" className="hidden sm:block text-slate-600 hover:text-slate-900 text-sm">
             Resources

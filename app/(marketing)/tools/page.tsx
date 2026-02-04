@@ -97,7 +97,7 @@ export default function ToolsPage() {
             <Link href="/blog" className="text-sm text-slate-600 hover:text-slate-900 hidden md:block">
               Blog
             </Link>
-            <Link href="/dashboard">
+            <Link href="/sign-up">
               <Button className="bg-emerald-600 text-white hover:bg-emerald-700">
                 Get Started
               </Button>
@@ -243,7 +243,7 @@ export default function ToolsPage() {
             SoloFI helps self-employed professionals track net worth, optimize taxes, and plan for financial independence.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/dashboard">
+            <Link href="/sign-up">
               <Button size="lg" className="bg-emerald-600 text-white hover:bg-emerald-700">
                 Get Started Free
                 <ArrowRight className="ml-2 h-4 w-4" />

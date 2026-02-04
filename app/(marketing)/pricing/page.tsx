@@ -19,7 +19,7 @@ export default function PricingPage() {
     <div className="min-h-screen bg-slate-50">
       {/* Nav */}
       <nav className="max-w-6xl mx-auto px-6 py-6 flex justify-between items-center">
-        <Link href="/landing/21">
+        <Link href="https://solofi.io">
           <span className="text-xl font-semibold text-slate-900">
             <span className="text-emerald-600">Solo</span>fi
           </span>

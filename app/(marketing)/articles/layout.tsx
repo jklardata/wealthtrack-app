@@ -21,7 +21,7 @@ export default function ArticlesLayout({
           <Link href="/tools/tax-savings" className="text-sm text-slate-600 hover:text-slate-900 hidden md:block">
             Free Tools
           </Link>
-          <Link href="/dashboard">
+          <Link href="/sign-up">
             <Button className="bg-emerald-600 text-white hover:bg-emerald-700">
               Get Started
             </Button>
