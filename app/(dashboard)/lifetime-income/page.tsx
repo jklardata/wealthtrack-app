@@ -259,22 +259,6 @@ export default function LifetimeIncomePage() {
         </Card>
       )}
 
-      {/* Quick Actions */}
-      <div className="flex flex-wrap gap-3">
-        <Link href="/profile">
-          <Button variant="outline" className="border-blue-200 text-blue-700 hover:bg-blue-50 text-sm">
-            <DollarSign className="h-4 w-4 mr-2" />
-            <span className="whitespace-nowrap">Modify Income</span>
-          </Button>
-        </Link>
-        <Link href="/profile">
-          <Button variant="outline" className="border-purple-200 text-purple-700 hover:bg-purple-50 text-sm">
-            <SettingsIcon className="h-4 w-4 mr-2" />
-            <span className="whitespace-nowrap">Modify Expenses</span>
-          </Button>
-        </Link>
-      </div>
-
       {/* Calculation Parameters */}
       <Card>
         <CardHeader>

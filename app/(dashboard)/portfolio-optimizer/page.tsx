@@ -1209,6 +1209,41 @@ export default function PortfolioOptimizerPage() {
         </div>
       </div>
 
+      {/* Educational Introduction */}
+      <Card className="bg-gradient-to-br from-blue-50 via-white to-indigo-50 border-blue-200 shadow-sm">
+        <CardContent className="pt-6">
+          <div className="space-y-4">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                <Target className="h-5 w-5 text-blue-600" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-slate-900 mb-2">
+                  Understanding Portfolio Optimization
+                </h3>
+                <div className="text-sm text-slate-700 space-y-3 leading-relaxed">
+                  <p>
+                    Portfolio optimization is a systematic approach to constructing an investment portfolio that aims to maximize expected returns for a given level of risk tolerance. This tool leverages <strong>Modern Portfolio Theory (MPT)</strong>, a framework developed by Harry Markowitz that demonstrates how diversification across asset classes can reduce overall portfolio volatility while maintaining or improving returns.
+                  </p>
+                  <p>
+                    The core principle is simple yet powerful: different asset classes don&apos;t move in perfect correlation with each other. When stocks decline, bonds may hold steady or even appreciate. When traditional markets struggle, real estate or commodities may provide stability. By strategically allocating your capital across multiple asset classes—stocks, bonds, cash, real estate, and commodities—you create a portfolio that&apos;s more resilient to market turbulence.
+                  </p>
+                  <p>
+                    <strong>Why optimize your current allocation?</strong> Most investors accumulate assets over time without a cohesive strategy, leading to unintentional concentrations in certain areas. You might discover you&apos;re overweight in stocks during a bull market or holding too much cash that&apos;s eroding to inflation. Optimization identifies these imbalances and provides specific, actionable recommendations to realign your portfolio with your risk tolerance and financial goals.
+                  </p>
+                  <p>
+                    <strong>Risk management through asset allocation</strong> is the primary determinant of long-term portfolio performance—more influential than individual security selection or market timing. Our optimizer analyzes your current holdings, assesses your risk profile through a comprehensive questionnaire, and calculates an efficient frontier allocation that balances growth potential with downside protection. The result is a personalized roadmap showing exactly how to rebalance: which positions to increase, which to trim, and by how much.
+                  </p>
+                  <p className="text-slate-600 italic">
+                    Think of portfolio optimization as a financial health checkup. Just as you wouldn&apos;t wait until a medical emergency to visit a doctor, you shouldn&apos;t wait for a market crash to examine whether your portfolio is properly diversified. Regular optimization ensures your asset allocation evolves with both market conditions and your changing financial circumstances.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Error Message */}
       {error && (
         <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-500">
@@ -1414,22 +1449,6 @@ export default function PortfolioOptimizerPage() {
                   trades={optimization.rebalancing_trades}
                   totalValue={optimization.total_portfolio_value}
                 />
-
-                {optimization.rebalancing_trades.length > 0 && (
-                  <div className="mt-6 flex justify-end">
-                    {savedOptimization?.applied ? (
-                      <div className="flex items-center gap-2 text-green-600">
-                        <CheckCircle2 className="h-5 w-5" />
-                        <span>Marked as applied on {new Date(savedOptimization.applied_date!).toLocaleDateString()}</span>
-                      </div>
-                    ) : (
-                      <Button onClick={markAsApplied} variant="outline">
-                        <CheckCircle2 className="h-4 w-4 mr-2" />
-                        Mark as Applied
-                      </Button>
-                    )}
-                  </div>
-                )}
               </CardContent>
             </Card>
           ) : (
@@ -1498,7 +1517,7 @@ export default function PortfolioOptimizerPage() {
                         (optimization.recommended_allocation[key as keyof Allocation] -
                           optimization.current_allocation[key as keyof Allocation]) *
                         100,
-                    }))}
+                    })).sort((a, b) => b.current - a.current)}
                     margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />

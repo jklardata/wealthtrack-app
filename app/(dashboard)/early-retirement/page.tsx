@@ -308,6 +308,44 @@ export default function EarlyRetirementPage() {
           </p>
         </div>
 
+        {/* Educational Introduction */}
+        <Card className="bg-gradient-to-br from-orange-50 via-white to-amber-50 border-orange-200 shadow-sm">
+          <CardContent className="pt-6">
+            <div className="space-y-4">
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                  <Flame className="h-5 w-5 text-orange-600" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-slate-900 mb-2">
+                    The Self-Employed Path to Early Retirement
+                  </h3>
+                  <div className="text-sm text-slate-700 space-y-3 leading-relaxed">
+                    <p>
+                      <strong>If you&apos;re self-employed, you control the two most powerful levers for early retirement: income growth and expense optimization.</strong> Unlike traditional employees constrained by salary schedules and corporate benefit structures, you can directly influence how much you earn and how efficiently you deploy that capital. This flexibility makes early retirement not just possible, but potentially accelerated—if you understand the mechanics and commit to disciplined execution.
+                    </p>
+                    <p>
+                      The FIRE movement (Financial Independence, Retire Early) has validated what many self-employed professionals intuitively understand: your savings rate determines your timeline more than your absolute income. Here&apos;s the math that matters: at a 50% savings rate, you can retire in approximately 17 years. Increase that to 70%, and you&apos;re looking at under 9 years. For self-employed individuals who can scale income without proportionally scaling lifestyle, these aggressive savings rates aren&apos;t theoretical—they&apos;re achievable through strategic business decisions and intentional lifestyle design.
+                    </p>
+                    <p>
+                      <strong>Your income trajectory is uniquely non-linear.</strong> A traditional employee might see 3-5% annual raises. You can double your effective income by landing one major client, launching a leveraged product, or optimizing pricing strategy. But here&apos;s the critical insight: increasing income only accelerates retirement if you resist lifestyle inflation. That extra $50,000 in annual revenue becomes 3-4 additional years of financial runway when invested, or zero additional freedom when absorbed into a larger home or luxury vehicle.
+                    </p>
+                    <p>
+                      <strong>Savings rate is the compounding force multiplier.</strong> Consider two self-employed professionals: One earns $150,000 annually and saves 30% ($45,000). Another earns $100,000 but saves 50% ($50,000). The lower earner retires earlier because they&apos;ve optimized the relationship between earning and spending. For self-employed individuals, this often means strategic decisions around business expenses (is that office necessary, or does remote work suffice?), tax-advantaged retirement account contributions (maximize Solo 401(k) and SEP-IRA limits), and ruthless evaluation of recurring subscriptions and tools that don&apos;t directly generate revenue.
+                    </p>
+                    <p>
+                      The FIRE framework provides additional nuance: <strong>CoastFI</strong> (the point where you can stop saving because invested assets will grow to retirement needs), <strong>BaristaFI</strong> (semi-retirement where part-time work covers living expenses while investments compound), and <strong>FatFIRE</strong> (retirement with a more comfortable lifestyle budget). As a self-employed professional, you have the flexibility to design hybrid scenarios: perhaps you dial down client work by 50% once you hit CoastFI, maintaining creative fulfillment while your portfolio does the heavy lifting.
+                    </p>
+                    <p className="text-slate-600 italic">
+                      Think of early retirement planning as engineering your escape velocity. Your income is the initial thrust, but your savings rate determines whether you break free from the gravitational pull of perpetual work. Every percentage point increase in savings rate translates to months or years of reclaimed life. The control center below helps you model these variables, explore scenarios, and identify the specific combination of income, savings, and timeline that aligns with your definition of financial independence. The path exists—you just need to illuminate it with data.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Input Panel */}
         <Card className="bg-white border-slate-200 shadow-sm">
           <CardContent className="pt-4 pb-3">
