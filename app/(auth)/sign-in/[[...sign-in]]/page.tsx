@@ -33,6 +33,7 @@ export default function SignInPage() {
           {/* Clerk Sign In Component */}
           <div className="flex justify-center">
             <SignIn
+              afterSignInUrl="https://app.solofi.io/dashboard"
               appearance={{
                 elements: {
                   rootBox: "w-full",
