@@ -6,11 +6,6 @@ import { ArrowRight, Check, Calculator, PieChart, Building2, TrendingUp, Shield,
 import { LandingAnalytics, TrackedLink } from "@/components/analytics";
 import { useState } from "react";
 
-export const metadata = {
-  title: "SoloFI - Financial Decision Engine for Self-Employed Professionals",
-  description: "SoloFI helps self-employed professionals model tax strategies, retirement outcomes, and portfolio decisions.",
-};
-
 // Force deployment refresh
 
 const VARIANT = "landing_21_decision_engine";
