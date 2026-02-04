@@ -15,6 +15,15 @@ import { TrendingUp, Calculator, RefreshCw, Settings as SettingsIcon, DollarSign
 import Link from "next/link";
 import type { ProjectionPoint } from "@/lib/types";
 
+function formatCurrency(value: number): string {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(value);
+}
+
 export default function LifetimeIncomePage() {
   const { isPro, isLoading: subLoading } = useSubscription();
   const [currentAge, setCurrentAge] = useState<number | null>(null);
@@ -284,6 +293,122 @@ export default function LifetimeIncomePage() {
       {isPro ? (
         <>
           {hasCalculated && <ProjectionSummary projection={projection} />}
+          {hasCalculated && projection.length > 0 && (
+            <Card className="bg-gradient-to-br from-blue-50 to-emerald-50 border-blue-200">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <span>💼 Financial Advisor Assessment</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 text-sm">
+                {(() => {
+                  const finalValue = projection[projection.length - 1]?.portfolioValue || 0;
+                  const peakEntry = projection.reduce((max, entry) =>
+                    entry.portfolioValue > max.portfolioValue ? entry : max, projection[0]
+                  );
+                  const peakAge = peakEntry?.age || 0;
+                  const peakValue = peakEntry?.portfolioValue || 0;
+                  const depletionAge = projection.find(p => p.portfolioValue <= 0)?.age;
+                  const currentValue = parseFloat(currentNetWorth) || 0;
+                  const totalGrowth = finalValue - currentValue;
+                  const averageAnnualGrowth = totalGrowth / (projection.length || 1);
+
+                  return (
+                    <div className="space-y-4">
+                      {/* Overall Assessment */}
+                      <div className="p-4 bg-white/60 rounded-lg">
+                        <h4 className="font-semibold text-slate-900 mb-2">📊 Overall Financial Picture</h4>
+                        {depletionAge ? (
+                          <div className="space-y-2">
+                            <p className="text-red-700 font-medium">
+                              ⚠️ Portfolio Depletion Warning: Your assets are projected to run out around age {depletionAge}.
+                            </p>
+                            <p className="text-slate-700">
+                              This is a critical finding. At your current spending and income levels, you're withdrawing more than your portfolio can sustain. You have three levers to pull: increase income, reduce expenses, or delay major expenditures. The earlier you act, the less drastic the changes need to be.
+                            </p>
+                          </div>
+                        ) : finalValue < currentValue * 0.5 ? (
+                          <div className="space-y-2">
+                            <p className="text-amber-700 font-medium">
+                              ⚠️ Declining Trajectory: Your portfolio is projected to decline significantly by age {parseInt(longevityAge)}.
+                            </p>
+                            <p className="text-slate-700">
+                              While you're not running out of money, your net worth is heading in the wrong direction. This often happens when retirement spending exceeds the sustainable withdrawal rate. Consider adjusting your assumptions—either increase income sources, reduce planned expenses, or revisit your return expectations.
+                            </p>
+                          </div>
+                        ) : finalValue > currentValue * 2 ? (
+                          <div className="space-y-2">
+                            <p className="text-emerald-700 font-medium">
+                              ✅ Strong Growth Trajectory: Your portfolio is projected to more than double to {formatCurrency(finalValue)} by age {parseInt(longevityAge)}.
+                            </p>
+                            <p className="text-slate-700">
+                              This is an excellent position. Your income exceeds your expenses by enough that compound growth does the heavy lifting. You're building real wealth, not just maintaining it. This gives you optionality—you can retire earlier, increase lifestyle spending, or leave a larger legacy.
+                            </p>
+                          </div>
+                        ) : (
+                          <div className="space-y-2">
+                            <p className="text-blue-700 font-medium">
+                              ✓ Stable Financial Path: Your portfolio maintains positive growth to {formatCurrency(finalValue)} by age {parseInt(longevityAge)}.
+                            </p>
+                            <p className="text-slate-700">
+                              You're on a sustainable path. Your income and investment returns are keeping pace with expenses and inflation. This is solid financial planning—nothing flashy, but you're building security. Continue monitoring and adjusting as life circumstances change.
+                            </p>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Key Milestones */}
+                      <div className="p-4 bg-white/60 rounded-lg">
+                        <h4 className="font-semibold text-slate-900 mb-2">🎯 Key Milestones</h4>
+                        <div className="space-y-2 text-slate-700">
+                          <p>
+                            <span className="font-medium">Peak Net Worth:</span> {formatCurrency(peakValue)} around age {peakAge}
+                          </p>
+                          {peakAge < parseInt(longevityAge) && (
+                            <p className="text-slate-600 text-xs mt-1">
+                              Your portfolio peaks at age {peakAge}, then begins drawing down. This is normal in retirement—you're converting assets into lifestyle. The question is whether the drawdown rate is sustainable through age {longevityAge}.
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* What This Means For You */}
+                      <div className="p-4 bg-white/60 rounded-lg">
+                        <h4 className="font-semibold text-slate-900 mb-2">💡 What This Means For You</h4>
+                        <div className="space-y-2 text-slate-700">
+                          {averageAnnualGrowth > 50000 ? (
+                            <p>
+                              You're adding roughly {formatCurrency(averageAnnualGrowth)} to your net worth annually on average. That's strong momentum. The key is maintaining this pace—make sure your income sources are reliable and your expense assumptions are realistic. Life has a way of costing more than spreadsheets predict.
+                            </p>
+                          ) : averageAnnualGrowth > 0 ? (
+                            <p>
+                              Your net worth is growing at about {formatCurrency(averageAnnualGrowth)} per year on average. It's positive, which is good, but modest. Small changes to income or expenses can have outsized impacts on your long-term trajectory. Run a few scenarios—what if you earn 10% more? Spend 10% less? The math might surprise you.
+                            </p>
+                          ) : (
+                            <p>
+                              Your portfolio is declining at roughly {formatCurrency(Math.abs(averageAnnualGrowth))} annually. This isn't sustainable indefinitely. Think of your net worth as your financial runway—how long before you run out? Use this projection as a wake-up call to make proactive changes while you still have time and options.
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Action Items */}
+                      <div className="p-4 bg-emerald-100 border border-emerald-300 rounded-lg">
+                        <h4 className="font-semibold text-emerald-900 mb-2">🚀 Recommended Actions</h4>
+                        <ul className="space-y-1 text-emerald-900 text-xs">
+                          <li>• Review your income sources in Profile—are they realistic and complete?</li>
+                          <li>• Stress-test your assumptions: What if returns are 2% lower? Expenses 20% higher?</li>
+                          <li>• Check that Social Security is included if you'll be eligible</li>
+                          <li>• Model different scenarios: early retirement, part-time work, geographic arbitrage</li>
+                          <li>• Update this projection annually as circumstances change</li>
+                        </ul>
+                      </div>
+                    </div>
+                  );
+                })()}
+              </CardContent>
+            </Card>
+          )}
           <ProjectionChart
             projection={projection}
             expectedReturn={parseFloat(expectedReturn)}

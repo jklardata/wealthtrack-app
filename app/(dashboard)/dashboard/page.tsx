@@ -712,12 +712,12 @@ export default function DashboardPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-slate-600 mb-4">Free tools to optimize your finances</p>
-                <Link href="/tools/tax-savings">
+                <a href="https://solofi.io/tools" target="_blank" rel="noopener noreferrer">
                   <Button variant="outline" size="sm" className="w-full border-amber-200 text-amber-700 hover:bg-amber-50">
                     <Calculator className="h-3 w-3 mr-1" />
                     Try Free Tools
                   </Button>
-                </Link>
+                </a>
               </CardContent>
             </Card>
           </div>

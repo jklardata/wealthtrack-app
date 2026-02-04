@@ -930,11 +930,14 @@ export default function TaxCalculatorPage() {
                 />
               </div>
               <p className="text-xs text-slate-500">
-                Your max: {formatCurrency(maxSolo401k)} ($23k employee + 25% employer)
+                2025 limit: {formatCurrency(TAX_CONSTANTS.sepIraMaxDollar)} combined ($23.5k employee + up to $45.5k employer)
+              </p>
+              <p className="text-xs text-slate-500">
+                Your max based on income: {formatCurrency(maxSolo401k)}
               </p>
               {retirement401k > maxSolo401k && (
                 <p className="text-xs text-amber-500">
-                  Contribution exceeds limit. Using {formatCurrency(effectiveSolo401k)}.
+                  Contribution exceeds income-based limit. Using {formatCurrency(effectiveSolo401k)}.
                 </p>
               )}
             </div>
@@ -1507,6 +1510,93 @@ export default function TaxCalculatorPage() {
               )}
             </div>
           </div>
+
+          {/* Tax Savings Breakdown - Highlighting Actions Taken */}
+          {(calculations[0].taxSavingsFrom401k > 0 || calculations[0].taxSavingsFromHSA > 0 ||
+            calculations[0].taxSavingsFromExpenses > 0 || calculations[0].taxSavingsFromTLH > 0 ||
+            calculations[0].feieExclusion > 0 || calculations[0].qbiDeduction > 0) && (
+            <div className="mt-4 p-4 rounded-lg bg-emerald-50 border border-emerald-200">
+              <div className="flex items-center gap-2 mb-3">
+                <CheckCircle className="h-5 w-5 text-emerald-600" />
+                <h4 className="font-semibold text-emerald-900">Your Tax-Saving Actions</h4>
+              </div>
+              <p className="text-sm text-emerald-800 mb-3">
+                Here's how each strategy you're using lowers your tax bill:
+              </p>
+              <div className="space-y-2">
+                {calculations[0].taxSavingsFrom401k > 0 && (
+                  <div className="flex items-center justify-between p-2 bg-white/60 rounded">
+                    <span className="text-sm text-slate-700">
+                      💰 Contributing {formatCurrency(calculations[0].retirement401k)} to Solo 401k/SEP IRA
+                    </span>
+                    <span className="text-sm font-semibold text-emerald-600">
+                      Saves ~{formatCurrency(calculations[0].taxSavingsFrom401k)}
+                    </span>
+                  </div>
+                )}
+                {calculations[0].taxSavingsFromHSA > 0 && (
+                  <div className="flex items-center justify-between p-2 bg-white/60 rounded">
+                    <span className="text-sm text-slate-700">
+                      🏥 Contributing {formatCurrency(calculations[0].hsaContribution)} to HSA
+                    </span>
+                    <span className="text-sm font-semibold text-emerald-600">
+                      Saves ~{formatCurrency(calculations[0].taxSavingsFromHSA)}
+                    </span>
+                  </div>
+                )}
+                {calculations[0].taxSavingsFromExpenses > 0 && (
+                  <div className="flex items-center justify-between p-2 bg-white/60 rounded">
+                    <span className="text-sm text-slate-700">
+                      📊 Deducting {formatCurrency(expenses)} in business expenses
+                    </span>
+                    <span className="text-sm font-semibold text-emerald-600">
+                      Saves ~{formatCurrency(calculations[0].taxSavingsFromExpenses)}
+                    </span>
+                  </div>
+                )}
+                {calculations[0].qbiDeduction > 0 && (
+                  <div className="flex items-center justify-between p-2 bg-white/60 rounded">
+                    <span className="text-sm text-slate-700">
+                      🏢 Claiming {formatCurrency(calculations[0].qbiDeduction)} QBI deduction
+                    </span>
+                    <span className="text-sm font-semibold text-emerald-600">
+                      Saves ~{formatCurrency(calculations[0].qbiDeduction * 0.32)}
+                    </span>
+                  </div>
+                )}
+                {calculations[0].taxSavingsFromTLH > 0 && (
+                  <div className="flex items-center justify-between p-2 bg-white/60 rounded">
+                    <span className="text-sm text-slate-700">
+                      📉 Tax loss harvesting {formatCurrency(calculations[0].taxLossHarvesting)}
+                    </span>
+                    <span className="text-sm font-semibold text-emerald-600">
+                      Saves ~{formatCurrency(calculations[0].taxSavingsFromTLH)}
+                    </span>
+                  </div>
+                )}
+                {calculations[0].feieExclusion > 0 && (
+                  <div className="flex items-center justify-between p-2 bg-white/60 rounded">
+                    <span className="text-sm text-slate-700">
+                      ✈️ Claiming FEIE ({formatCurrency(calculations[0].feieExclusion)} excluded)
+                    </span>
+                    <span className="text-sm font-semibold text-emerald-600">
+                      Saves ~{formatCurrency(calculations[0].feieExclusion * 0.18)}
+                    </span>
+                  </div>
+                )}
+                <div className="flex items-center justify-between p-3 bg-emerald-600 text-white rounded font-semibold mt-2">
+                  <span className="text-sm">Combined Annual Tax Savings</span>
+                  <span className="text-base">{formatCurrency(calculations[0].totalTaxSavings)}</span>
+                </div>
+              </div>
+              {quarterlyTax > 0 && (
+                <p className="text-xs text-emerald-800 mt-3 pt-3 border-t border-emerald-200">
+                  💡 Your quarterly estimated tax payment is {formatCurrency(quarterlyTax)} (federal + SE tax).
+                  These savings reduce what you owe compared to not taking these actions.
+                </p>
+              )}
+            </div>
+          )}
         </CardContent>
       </Card>
 
