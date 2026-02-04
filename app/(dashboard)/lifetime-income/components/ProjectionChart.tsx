@@ -5,6 +5,9 @@ import {
   Line,
   AreaChart,
   Area,
+  BarChart,
+  Bar,
+  ComposedChart,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -88,15 +91,14 @@ export function ProjectionChart({ projection }: ProjectionChartProps) {
                 <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
                 <XAxis
                   dataKey="age"
-                  label={{ value: "Age", position: "insideBottom", offset: -5, fill: "#64748b" }}
+                  label={{ value: "Age", position: "insideBottom", offset: -5, fill: "#64748b", fontFamily: "system-ui, -apple-system, sans-serif" }}
                   stroke="#cbd5e1"
-                  tick={{ fill: "#64748b", fontSize: 12 }}
+                  tick={{ fill: "#64748b", fontSize: 12, fontFamily: "system-ui, -apple-system, sans-serif" }}
                 />
                 <YAxis
-                  label={{ value: "Portfolio Value ($)", angle: -90, position: "insideLeft", fill: "#64748b" }}
                   stroke="#cbd5e1"
-                  tick={{ fill: "#64748b", fontSize: 12 }}
-                  tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
+                  tick={false}
+                  axisLine={false}
                 />
                 <Tooltip
                   formatter={(value: number | undefined) =>
@@ -128,69 +130,94 @@ export function ProjectionChart({ projection }: ProjectionChartProps) {
 
           {/* Income vs Expenses Chart */}
           <div>
-            <h3 className="text-sm font-medium mb-3">Annual Income vs Expenses</h3>
+            <h3 className="text-sm font-medium mb-3 text-slate-900">Annual Income vs Expenses</h3>
             <ResponsiveContainer width="100%" height={300}>
-              <AreaChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+              <ComposedChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }} barGap={8}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
                 <XAxis
                   dataKey="age"
-                  label={{ value: "Age", position: "insideBottom", offset: -5 }}
-                  stroke="#64748b"
+                  label={{ value: "Age", position: "insideBottom", offset: -5, fill: "#64748b", fontFamily: "system-ui, -apple-system, sans-serif" }}
+                  stroke="#cbd5e1"
+                  tick={{ fill: "#64748b", fontSize: 12, fontFamily: "system-ui, -apple-system, sans-serif" }}
                 />
                 <YAxis
-                  label={{ value: "Annual Amount ($)", angle: -90, position: "insideLeft" }}
-                  stroke="#64748b"
-                  tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
+                  stroke="#cbd5e1"
+                  tick={false}
+                  axisLine={false}
                 />
                 <Tooltip
                   formatter={(value: number | undefined) =>
-                    value !== undefined ? `$${value.toLocaleString()}` : ""
+                    value !== undefined ? `$${Math.round(value).toLocaleString()}` : ""
                   }
                   labelFormatter={(age) => `Age: ${age}`}
                   contentStyle={{
                     backgroundColor: "white",
                     border: "1px solid #e2e8f0",
-                    borderRadius: "6px",
+                    borderRadius: "8px",
+                    boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
                   }}
+                  labelStyle={{ color: "#0f172a", fontWeight: 600 }}
                 />
-                <Legend />
-                <Area
-                  type="monotone"
-                  dataKey="totalIncome"
-                  stackId="1"
-                  stroke="#3b82f6"
+                <Legend wrapperStyle={{ paddingTop: "10px" }} />
+                {/* Stacked Bar Chart for Income Sources */}
+                <Bar
+                  dataKey="workIncome"
+                  stackId="income"
                   fill="#3b82f6"
-                  fillOpacity={0.6}
-                  name="Total Income"
+                  name="Work Income"
+                  radius={[0, 0, 0, 0]}
                 />
-                <Area
+                <Bar
+                  dataKey="socialSecurityIncome"
+                  stackId="income"
+                  fill="#8b5cf6"
+                  name="Social Security"
+                  radius={[0, 0, 0, 0]}
+                />
+                <Bar
+                  dataKey="passiveIncome"
+                  stackId="income"
+                  fill="#10b981"
+                  name="Passive Income"
+                  radius={[0, 0, 0, 0]}
+                />
+                <Bar
+                  dataKey="windfallIncome"
+                  stackId="income"
+                  fill="#f59e0b"
+                  name="Windfall"
+                  radius={[4, 4, 0, 0]}
+                />
+                {/* Dotted Line for Expenses */}
+                <Line
                   type="monotone"
                   dataKey="totalExpenses"
-                  stackId="2"
-                  stroke="#ef4444"
-                  fill="#ef4444"
-                  fillOpacity={0.6}
+                  stroke="#047857"
+                  strokeWidth={3}
+                  strokeDasharray="5 5"
+                  dot={false}
                   name="Total Expenses"
                 />
-              </AreaChart>
+              </ComposedChart>
             </ResponsiveContainer>
           </div>
 
           {/* Net Cash Flow Chart */}
           <div>
-            <h3 className="text-sm font-medium mb-3">Net Cash Flow</h3>
+            <h3 className="text-sm font-medium mb-3 text-slate-900">Net Cash Flow</h3>
             <ResponsiveContainer width="100%" height={250}>
-              <AreaChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+              <AreaChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
                 <XAxis
                   dataKey="age"
-                  label={{ value: "Age", position: "insideBottom", offset: -5 }}
-                  stroke="#64748b"
+                  label={{ value: "Age", position: "insideBottom", offset: -5, fill: "#64748b", fontFamily: "system-ui, -apple-system, sans-serif" }}
+                  stroke="#cbd5e1"
+                  tick={{ fill: "#64748b", fontSize: 12, fontFamily: "system-ui, -apple-system, sans-serif" }}
                 />
                 <YAxis
-                  label={{ value: "Net Cash Flow ($)", angle: -90, position: "insideLeft" }}
-                  stroke="#64748b"
-                  tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
+                  stroke="#cbd5e1"
+                  tick={false}
+                  axisLine={false}
                 />
                 <Tooltip
                   formatter={(value: number | undefined) => {

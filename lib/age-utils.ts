@@ -5,8 +5,8 @@
  */
 
 /**
- * Parse age string in format "35y" or plain number to years
- * @param ageString - Age string like "35y" or "35"
+ * Parse age string - just a plain number
+ * @param ageString - Age string like "35"
  * @returns Age in years as integer
  * @throws Error if format is invalid
  */
@@ -17,49 +17,40 @@ export function parseAgeString(ageString: string): number {
 
   const trimmed = ageString.trim();
 
-  // Try to parse as plain number
+  // Parse as plain number
   const plainNumber = Number(trimmed);
-  if (!isNaN(plainNumber) && trimmed === String(plainNumber)) {
-    return Math.floor(plainNumber);
+  if (isNaN(plainNumber)) {
+    throw new Error('Invalid age format. Enter a number like "35"');
   }
 
-  // Parse "35y" format
-  const yearMatch = trimmed.match(/^(\d+)y$/);
-
-  if (!yearMatch) {
-    throw new Error('Invalid age format. Use "35y" or "35"');
-  }
-
-  const years = parseInt(yearMatch[1], 10);
-
-  return years;
+  return Math.floor(plainNumber);
 }
 
 /**
- * Format years to age string "35y"
+ * Format years to age string (plain number)
  * @param years - Age in years as integer
- * @returns Formatted age string like "35y"
+ * @returns Formatted age string like "35"
  */
 export function formatAgeYears(years: number): string {
   if (typeof years !== 'number' || isNaN(years) || years < 0) {
-    return '0y';
+    return '0';
   }
 
-  return `${Math.floor(years)}y`;
+  return `${Math.floor(years)}`;
 }
 
 /**
- * Format total months to age string "35y" (for backwards compatibility)
+ * Format total months to age string (for backwards compatibility)
  * @param totalMonths - Total months as integer
- * @returns Formatted age string like "35y"
+ * @returns Formatted age string like "35"
  */
 export function formatAgeMonths(totalMonths: number): string {
   if (typeof totalMonths !== 'number' || isNaN(totalMonths) || totalMonths < 0) {
-    return '0y';
+    return '0';
   }
 
   const years = Math.floor(totalMonths / 12);
-  return `${years}y`;
+  return `${years}`;
 }
 
 /**

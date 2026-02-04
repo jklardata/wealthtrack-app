@@ -15,7 +15,7 @@ interface AgeInputProps extends Omit<React.ComponentProps<"input">, "value" | "o
 /**
  * AgeInput Component
  *
- * Accepts age in years as value, displays as "35y" format
+ * Accepts age in years as value, displays as plain number
  * Parses user input on blur and converts to years
  */
 export function AgeInput({
@@ -24,7 +24,7 @@ export function AgeInput({
   error,
   errorMessage,
   className,
-  placeholder = "35y",
+  placeholder = "35",
   ...props
 }: AgeInputProps) {
   const [displayValue, setDisplayValue] = React.useState("");
@@ -86,7 +86,7 @@ export function AgeInput({
       />
       {(isInvalid || errorMessage) && (
         <p className="text-xs text-red-500">
-          {errorMessage || 'Invalid format. Use "35y" or "35"'}
+          {errorMessage || 'Invalid format. Enter a number like "35"'}
         </p>
       )}
     </div>

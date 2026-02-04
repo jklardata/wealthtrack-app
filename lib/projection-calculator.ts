@@ -18,19 +18,18 @@ export function calculateProjection(input: ProjectionInput): ProjectionPoint[] {
     currentNetWorth,
     expectedReturn,
     inflationRate,
-    longevityAge = 95,
+    longevityAge = 65,
     incomeSources,
     expenses,
   } = input;
 
   const projection: ProjectionPoint[] = [];
-  const longevityMonths = longevityAge * 12;
   let portfolioValue = currentNetWorth;
 
-  // Iterate year by year from current age to longevity
-  for (let ageMonths = currentAge; ageMonths <= longevityMonths; ageMonths += 12) {
-    const year = Math.floor((ageMonths - currentAge) / 12);
-    const age = Math.floor(ageMonths / 12);
+  // Iterate year by year from current age to longevity age (in years)
+  for (let age = currentAge; age <= longevityAge; age++) {
+    const year = age - currentAge;
+    const ageMonths = age * 12; // Convert to months for income/expense calculations
 
     // Calculate income for this year
     const workIncome = calculateWorkIncome(incomeSources, ageMonths, year, inflationRate);
