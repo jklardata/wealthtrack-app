@@ -28,7 +28,7 @@ export default function PricingPage() {
           <Link href="/blog" className="text-slate-600 hover:text-slate-900 text-sm">
             Resources
           </Link>
-          <Link href="/dashboard">
+          <Link href="/sign-in">
             <Button variant="ghost" className="text-slate-600">
               Sign in
             </Button>
@@ -90,7 +90,7 @@ export default function PricingPage() {
               Track your net worth, understand your tax situation, and explore retirement scenarios.
               Everything you need to see where you stand today.
             </p>
-            <Link href="/dashboard">
+            <Link href="/sign-up">
               <Button variant="outline" className="w-full border-slate-300 text-slate-700 hover:bg-slate-50">
                 Get started free
               </Button>
@@ -155,7 +155,7 @@ export default function PricingPage() {
               Model complex decisions before you make them. Compare entity structures, optimize tax timing,
               and simulate retirement scenarios with precision.
             </p>
-            <Link href="/dashboard">
+            <Link href="/sign-up">
               <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
                 Start 14-day trial
               </Button>
@@ -534,7 +534,7 @@ export default function PricingPage() {
             Upgrade to Pro when you're ready to model a specific decision.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/dashboard">
+            <Link href="/sign-up">
               <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-white px-8">
                 Get started free
                 <ArrowRight className="ml-2 h-4 w-4" />
