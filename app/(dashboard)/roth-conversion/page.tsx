@@ -546,29 +546,43 @@ export default function RothConversionPage() {
     const headers = [
       "Year",
       "Age",
+      "Income",
       "Conversion Amount",
       "Taxable Income",
       "Estimated Taxes",
+      "Effective Tax Rate %",
+      "Marginal Tax Rate %",
+      "Healthcare Cost",
+      "ACA Subsidy Eligible",
+      "IRMAA Triggered",
       "Traditional Balance",
       "Roth Balance",
       "Taxable Balance",
       "Total Portfolio",
       "Withdrawal Amount",
-      "Effective Tax Rate",
+      "RMD Amount",
+      "Scenario",
     ];
 
     const rows = projections.map(p => [
       p.year,
       p.age,
+      p.income,
       p.conversionAmount,
       p.taxableIncome,
       p.estimatedTaxes,
+      p.effectiveTaxRate.toFixed(2),
+      p.marginalTaxRate.toFixed(2),
+      p.healthcareCost,
+      p.age < 65 ? (p.healthcareSubsidyEligible ? "Yes" : "No") : "N/A",
+      p.age >= 65 ? (p.irmaaThreshold ? "Yes" : "No") : "N/A",
       p.traditionalBalance,
       p.rothBalance,
       p.taxableBalance,
       p.totalPortfolio,
       p.withdrawalAmount,
-      p.effectiveTaxRate,
+      p.rmdAmount,
+      p.scenarioLabel,
     ]);
 
     const csv = [headers, ...rows].map(row => row.join(",")).join("\n");
@@ -1157,58 +1171,107 @@ export default function RothConversionPage() {
               Strategy Insights
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-3">
-              <p className="text-base font-bold text-slate-900">
-                • Most tax-efficient conversion years:
+          <CardContent className="space-y-5">
+            {/* Optimal Conversion Window */}
+            <div className="p-4 bg-emerald-50 border-2 border-emerald-200 rounded-lg">
+              <p className="text-base font-bold text-emerald-900 mb-2">
+                • Your optimal conversion window is ages {retirementAge} to {Math.min(72, lifeExpectancy)}
               </p>
-              <p className="text-base font-medium text-slate-700 pl-4">
+              <p className="text-sm font-medium text-emerald-800 leading-relaxed">
                 {analysis.optimalYears.length > 0
-                  ? `Focus conversions in ${analysis.optimalYears.slice(0, 5).join(", ")}. These are your lowest-income years where you can fill up the 12% and 22% brackets without jumping to higher rates.`
-                  : "Based on your inputs, conversions may not provide significant tax savings. Consider increasing conversion amounts or adjusting timing."}
+                  ? `Focus conversions in years ${analysis.optimalYears.slice(0, 5).join(", ")} when your effective tax rate is lowest. These gap years between retirement and RMDs/Social Security offer the best opportunity to fill the 12% and 22% brackets.`
+                  : "Consider increasing conversion amounts to take advantage of low-income years during early retirement."}
               </p>
+            </div>
 
-              <p className="text-base font-bold text-slate-900">
-                • Estimated lifetime tax impact:
+            {/* Lifetime Tax Savings */}
+            <div className="p-4 bg-blue-50 border-2 border-blue-200 rounded-lg">
+              <p className="text-base font-bold text-blue-900 mb-2">
+                • Estimated lifetime tax savings: {formatCurrency(Math.abs(analysis.lifetimeTaxSavings))}
               </p>
-              <p className="text-base font-medium text-slate-700 pl-4">
+              <p className="text-sm font-medium text-blue-800 leading-relaxed">
                 {analysis.lifetimeTaxSavings > 0
-                  ? `You could save approximately ${formatCurrency(analysis.lifetimeTaxSavings)} in lifetime taxes by converting during low-income years instead of paying higher rates on RMDs later.`
-                  : `With current assumptions, this conversion strategy would result in ${formatCurrency(Math.abs(analysis.lifetimeTaxSavings))} more in lifetime taxes. Consider reducing conversion amounts or timing differently.`}
+                  ? `By converting during low-income years, you avoid paying higher tax rates on future RMDs. This strategy pays for itself and generates ${formatCurrency(analysis.lifetimeTaxSavings)} in net tax savings over your lifetime.`
+                  : `This strategy would increase lifetime taxes by ${formatCurrency(Math.abs(analysis.lifetimeTaxSavings))}. Consider reducing conversion amounts or adjusting timing.`}
               </p>
+            </div>
 
-              <p className="text-base font-bold text-slate-900">
-                • Impact on early retirement withdrawals:
+            {/* RMD Reduction */}
+            <div className="p-4 bg-purple-50 border-2 border-purple-200 rounded-lg">
+              <p className="text-base font-bold text-purple-900 mb-2">
+                • Future RMD exposure reduced by {formatPercent(analysis.rmdReduction)}
               </p>
-              <p className="text-base font-medium text-slate-700 pl-4">
-                Once you've converted funds to Roth, you gain tax-free withdrawal flexibility. This is particularly valuable if you retire early and want to manage your tax bracket during the years before Social Security begins. You can withdraw from Roth accounts without triggering additional income taxes.
+              <p className="text-sm font-medium text-purple-800 leading-relaxed">
+                Converting now reduces your Traditional IRA balance, which means smaller forced withdrawals starting at age 72. This gives you more control over taxable income in your 70s and 80s, potentially keeping you in lower tax brackets.
               </p>
+            </div>
 
-              <p className="text-base font-bold text-slate-900">
-                • Reduction in future required minimum distributions:
-              </p>
-              <p className="text-base font-medium text-slate-700 pl-4">
-                By converting, you reduce your traditional IRA balance by approximately {formatPercent(analysis.rmdReduction)}, which means smaller forced withdrawals at age 72 when RMDs begin. This gives you more control over your taxable income in your 70s and 80s.
-              </p>
+            {/* Healthcare Impact */}
+            {currentAge && currentAge < 65 && (
+              <div className="p-4 bg-amber-50 border-2 border-amber-200 rounded-lg">
+                <p className="text-base font-bold text-amber-900 mb-2">
+                  • Healthcare subsidy considerations (pre-Medicare)
+                </p>
+                <p className="text-sm font-medium text-amber-800 leading-relaxed">
+                  {(() => {
+                    const subsidyYears = projections.filter(p => p.age < 65 && p.healthcareSubsidyEligible);
+                    const riskYears = projections.filter(p => p.age < 65 && !p.healthcareSubsidyEligible && p.taxableIncome > 0);
+                    if (subsidyYears.length > riskYears.length) {
+                      return `You maintain ACA subsidy eligibility in ${subsidyYears.length} of your pre-Medicare years by keeping income below ${formatCurrency(filingStatus === "single" ? ACA_MAGI_LIMIT_SINGLE : ACA_MAGI_LIMIT_MARRIED)}. This could save $5,000-$15,000 annually in healthcare costs.`;
+                    } else if (riskYears.length > 0) {
+                      return `Warning: Conversions may push you above the ACA subsidy cliff (${formatCurrency(filingStatus === "single" ? ACA_MAGI_LIMIT_SINGLE : ACA_MAGI_LIMIT_MARRIED)} MAGI) in ${riskYears.length} years, potentially costing $5,000-$15,000/year in lost subsidies. Consider reducing conversion amounts during pre-Medicare years.`;
+                    } else {
+                      return `Your income is projected to exceed ACA subsidy limits before age 65. If you're purchasing marketplace insurance, this strategy maintains that status.`;
+                    }
+                  })()}
+                </p>
+              </div>
+            )}
 
-              <p className="text-base font-bold text-slate-900">
-                • Sensitivity to future tax changes:
-              </p>
-              <p className="text-base font-medium text-slate-700 pl-4">
-                {futureTaxAssumption === "higher"
-                  ? "You're assuming higher future tax rates, which strongly favors converting now. Paying 22% today to avoid 28% later is a clear win."
-                  : futureTaxAssumption === "lower"
-                  ? "You're assuming lower future tax rates, which reduces the benefit of converting. Make sure this assumption is based on solid reasoning—most advisors expect rates to increase."
-                  : "You're assuming tax rates stay the same. Given current deficit levels, many advisors view this as optimistic. Consider running scenarios with higher future rates."}
-              </p>
+            {/* IRMAA Risk */}
+            {(() => {
+              const irmaaYears = projections.filter(p => p.age >= 65 && p.irmaaThreshold);
+              if (irmaaYears.length > 0) {
+                return (
+                  <div className="p-4 bg-red-50 border-2 border-red-200 rounded-lg">
+                    <p className="text-base font-bold text-red-900 mb-2">
+                      • Conversion risk: IRMAA surcharges triggered in {irmaaYears.length} years
+                    </p>
+                    <p className="text-sm font-medium text-red-800 leading-relaxed">
+                      Your conversions push income above the Medicare IRMAA threshold (${formatCurrency(filingStatus === "single" ? IRMAA_THRESHOLD_SINGLE : IRMAA_THRESHOLD_MARRIED)}) in years {irmaaYears.slice(0, 5).map(y => y.year).join(", ")}.
+                      This triggers surcharges of $800-$6,000+ per year on Medicare premiums. Remember: IRMAA uses a 2-year lookback, so high-income years at age 63-64 affect Medicare costs at 65-66.
+                    </p>
+                  </div>
+                );
+              }
+              return null;
+            })()}
 
-              <p className="text-base font-bold text-slate-900">
-                • Break-even analysis:
+            {/* Break-even Analysis */}
+            <div className="p-4 bg-slate-50 border-2 border-slate-200 rounded-lg">
+              <p className="text-base font-bold text-slate-900 mb-2">
+                • Break-even timeline: {analysis.breakEvenYear > 0
+                  ? `Age ${projections.find(p => p.year === analysis.breakEvenYear)?.age || "N/A"}`
+                  : "Not achieved within time horizon"}
               </p>
-              <p className="text-base font-medium text-slate-700 pl-4">
+              <p className="text-sm font-medium text-slate-700 leading-relaxed">
                 {analysis.breakEvenYear > 0
-                  ? `Based on this model, you break even on conversion taxes around age ${projections.find(p => p.year === analysis.breakEvenYear)?.age}. After that point, all additional tax savings flow directly to your benefit.`
-                  : "The model doesn't show a clear break-even point within your time horizon. This suggests conversions may not be optimal with current parameters."}
+                  ? `Tax savings from lower future RMDs exceed conversion costs paid by age ${projections.find(p => p.year === analysis.breakEvenYear)?.age}. After this point, all additional savings flow to your benefit. Earlier break-even is better.`
+                  : "The model doesn't show net savings within your planning horizon. Consider adjusting conversion amounts or timing, or verify that your future tax rate assumption is realistic."}
+              </p>
+            </div>
+
+            {/* Tax Rate Sensitivity */}
+            <div className="p-4 bg-indigo-50 border-2 border-indigo-200 rounded-lg">
+              <p className="text-base font-bold text-indigo-900 mb-2">
+                • Future tax rate assumption: {futureTaxAssumption === "higher" ? "Higher rates expected" : futureTaxAssumption === "lower" ? "Lower rates expected" : "Same rates expected"}
+              </p>
+              <p className="text-sm font-medium text-indigo-800 leading-relaxed">
+                {futureTaxAssumption === "higher"
+                  ? "Converting now while rates are relatively low (12%-22%) to avoid potentially higher rates (15%-28%+) later is a sound strategy. Many advisors expect tax increases given federal debt levels."
+                  : futureTaxAssumption === "lower"
+                  ? "Be cautious with this assumption. Lower future tax rates reduce conversion benefits significantly. Most financial advisors expect rates to increase, not decrease."
+                  : "Assuming unchanged tax rates is optimistic given current federal deficits. Consider running scenarios with higher future rates to stress-test your strategy."}
               </p>
             </div>
           </CardContent>
@@ -1257,42 +1320,102 @@ export default function RothConversionPage() {
                   <TableRow className="border-b-2 border-black">
                     <TableHead className="font-black text-slate-900">Year</TableHead>
                     <TableHead className="font-black text-slate-900">Age</TableHead>
+                    <TableHead className="font-black text-slate-900">Income</TableHead>
                     <TableHead className="font-black text-slate-900">Conversion</TableHead>
                     <TableHead className="font-black text-slate-900">Taxable Income</TableHead>
                     <TableHead className="font-black text-slate-900">Est. Taxes</TableHead>
+                    <TableHead className="font-black text-slate-900">Eff. Tax %</TableHead>
+                    <TableHead className="font-black text-slate-900">Marg. Tax %</TableHead>
+                    <TableHead className="font-black text-slate-900">Healthcare</TableHead>
+                    <TableHead className="font-black text-slate-900">Subsidy</TableHead>
+                    <TableHead className="font-black text-slate-900">IRMAA</TableHead>
                     <TableHead className="font-black text-slate-900">Traditional</TableHead>
                     <TableHead className="font-black text-slate-900">Roth</TableHead>
                     <TableHead className="font-black text-slate-900">Taxable</TableHead>
-                    <TableHead className="font-black text-slate-900">Total Portfolio</TableHead>
+                    <TableHead className="font-black text-slate-900">Total</TableHead>
                     <TableHead className="font-black text-slate-900">Withdrawal</TableHead>
-                    <TableHead className="font-black text-slate-900">Eff. Tax Rate</TableHead>
+                    <TableHead className="font-black text-slate-900">RMD</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {projections.map((p, idx) => (
-                    <TableRow
-                      key={idx}
-                      className={p.conversionAmount > 0 && p.effectiveTaxRate < 20 ? "bg-emerald-50" : ""}
-                    >
-                      <TableCell className="font-semibold">{p.year}</TableCell>
-                      <TableCell className="font-semibold">{p.age}</TableCell>
-                      <TableCell className="font-semibold">{formatCurrency(p.conversionAmount)}</TableCell>
-                      <TableCell className="font-semibold">{formatCurrency(p.taxableIncome)}</TableCell>
-                      <TableCell className="font-semibold">{formatCurrency(p.estimatedTaxes)}</TableCell>
-                      <TableCell className="font-semibold">{formatCurrency(p.traditionalBalance)}</TableCell>
-                      <TableCell className="font-semibold">{formatCurrency(p.rothBalance)}</TableCell>
-                      <TableCell className="font-semibold">{formatCurrency(p.taxableBalance)}</TableCell>
-                      <TableCell className="font-semibold">{formatCurrency(p.totalPortfolio)}</TableCell>
-                      <TableCell className="font-semibold">{formatCurrency(p.withdrawalAmount)}</TableCell>
-                      <TableCell className="font-semibold">{formatPercent(p.effectiveTaxRate)}</TableCell>
-                    </TableRow>
-                  ))}
+                  {projections.map((p, idx) => {
+                    // Determine row highlighting
+                    let rowClass = "";
+                    if (p.conversionAmount > 0 && p.effectiveTaxRate < 20) {
+                      rowClass = "bg-emerald-50"; // Optimal conversion year
+                    } else if (p.irmaaThreshold) {
+                      rowClass = "bg-red-50"; // IRMAA risk
+                    } else if (p.age < 65 && !p.healthcareSubsidyEligible && p.taxableIncome > 0) {
+                      rowClass = "bg-amber-50"; // ACA subsidy lost
+                    }
+
+                    return (
+                      <TableRow key={idx} className={rowClass}>
+                        <TableCell className="font-semibold">{p.year}</TableCell>
+                        <TableCell className="font-semibold">{p.age}</TableCell>
+                        <TableCell className="font-semibold">{p.income > 0 ? formatCurrency(p.income) : "—"}</TableCell>
+                        <TableCell className="font-semibold">{p.conversionAmount > 0 ? formatCurrency(p.conversionAmount) : "—"}</TableCell>
+                        <TableCell className="font-semibold">{formatCurrency(p.taxableIncome)}</TableCell>
+                        <TableCell className="font-semibold">{formatCurrency(p.estimatedTaxes)}</TableCell>
+                        <TableCell className="font-semibold">{formatPercent(p.effectiveTaxRate)}</TableCell>
+                        <TableCell className="font-semibold">{formatPercent(p.marginalTaxRate)}</TableCell>
+                        <TableCell className="font-semibold">{formatCurrency(p.healthcareCost)}</TableCell>
+                        <TableCell className="font-semibold text-center">
+                          {p.age < 65 ? (
+                            p.healthcareSubsidyEligible ? (
+                              <span className="text-green-700 font-bold">✓</span>
+                            ) : (
+                              <span className="text-red-700 font-bold">✗</span>
+                            )
+                          ) : (
+                            <span className="text-slate-400">—</span>
+                          )}
+                        </TableCell>
+                        <TableCell className="font-semibold text-center">
+                          {p.age >= 65 ? (
+                            p.irmaaThreshold ? (
+                              <span className="text-red-700 font-bold">⚠</span>
+                            ) : (
+                              <span className="text-green-700 font-bold">✓</span>
+                            )
+                          ) : (
+                            <span className="text-slate-400">—</span>
+                          )}
+                        </TableCell>
+                        <TableCell className="font-semibold">{formatCurrency(p.traditionalBalance)}</TableCell>
+                        <TableCell className="font-semibold">{formatCurrency(p.rothBalance)}</TableCell>
+                        <TableCell className="font-semibold">{formatCurrency(p.taxableBalance)}</TableCell>
+                        <TableCell className="font-semibold">{formatCurrency(p.totalPortfolio)}</TableCell>
+                        <TableCell className="font-semibold">{p.withdrawalAmount > 0 ? formatCurrency(p.withdrawalAmount) : "—"}</TableCell>
+                        <TableCell className="font-semibold">{p.rmdAmount > 0 ? formatCurrency(p.rmdAmount) : "—"}</TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </div>
-            <p className="text-xs text-slate-500 mt-4">
-              Rows highlighted in green indicate years with optimal conversion opportunities (low effective tax rates).
-            </p>
+            <div className="mt-4 space-y-2 text-xs text-slate-600">
+              <p className="font-semibold">Row highlighting:</p>
+              <div className="flex flex-wrap gap-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 bg-emerald-50 border border-emerald-200"></div>
+                  <span>Optimal conversion year (low tax rate)</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 bg-amber-50 border border-amber-200"></div>
+                  <span>ACA subsidy lost</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 bg-red-50 border border-red-200"></div>
+                  <span>IRMAA surcharge triggered</span>
+                </div>
+              </div>
+              <p className="mt-2">
+                <strong>Subsidy:</strong> ✓ = ACA eligible, ✗ = Above income limit, — = Medicare age
+                &nbsp;|&nbsp;
+                <strong>IRMAA:</strong> ✓ = No surcharge, ⚠ = Surcharge triggered, — = Pre-Medicare
+              </p>
+            </div>
           </CardContent>
         </Card>
       )}
