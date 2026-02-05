@@ -701,7 +701,7 @@ export default function TaxCalculatorPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl sm:text-3xl font-medium text-slate-900 flex items-center gap-2">
+        <h1 className="text-4xl sm:text-5xl font-black text-slate-900 flex items-center gap-3">
           <Calculator className="h-6 w-6 sm:h-7 sm:w-7 text-emerald-600 flex-shrink-0" />
           <span className="leading-tight">Tax-Optimized Take-Home Calculator</span>
         </h1>

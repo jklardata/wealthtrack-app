@@ -309,8 +309,8 @@ export default function RetirementScenariosPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-semibold text-slate-900">Retirement Scenario Planner</h1>
-            <p className="text-slate-600 mt-2">
+            <h1 className="text-5xl font-black text-slate-900">Retirement Scenario Planner</h1>
+            <p className="text-lg font-semibold text-slate-700 mt-2">
               Model multiple retirement paths side-by-side. Compare outcomes, test assumptions, and find your optimal strategy.
               {!isPro && (
                 <span className="block mt-1 text-sm text-amber-600 font-medium">

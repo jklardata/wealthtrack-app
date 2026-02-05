@@ -1344,7 +1344,7 @@ export default function PortfolioOptimizerPage() {
 
           {/* Allocation Comparison - Full Width */}
           <Card className="bg-white border-2 border-black shadow-sm">
-            <CardHeader className="bg-gradient-to-r from-emerald-50 to-blue-50 border-b border-2 border-black">
+            <CardHeader className="bg-gradient-to-r from-emerald-50 to-blue-50">
               <CardTitle className="flex items-center gap-2">
                 <Target className="h-5 w-5 text-emerald-600" />
                 Current vs Recommended Allocation
@@ -1367,7 +1367,7 @@ export default function PortfolioOptimizerPage() {
                     totalValue={optimization.total_portfolio_value}
                   />
                 </div>
-                <div className="p-4 rounded-xl bg-gradient-to-br from-primary/5 to-green-500/5 border border-primary/20">
+                <div className="p-4 rounded-xl bg-gradient-to-br from-primary/5 to-green-500/5">
                   <AllocationChart
                     allocation={optimization.recommended_allocation}
                     title="✨ Recommended Portfolio"

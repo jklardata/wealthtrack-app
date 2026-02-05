@@ -299,7 +299,7 @@ export default function EarlyRetirementPage() {
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-2xl sm:text-3xl font-medium text-slate-900 flex items-center gap-2">
+          <h1 className="text-4xl sm:text-5xl font-black text-slate-900 flex items-center gap-3">
             <Rocket className="h-7 w-7 text-emerald-600" />
             Early Retirement Control Center
           </h1>
@@ -345,7 +345,7 @@ export default function EarlyRetirementPage() {
         </Card>
 
         {/* Input Panel */}
-        <Card className="bg-white border-slate-200 shadow-sm">
+        <Card className="bg-white border-2 border-black shadow-sm">
           <CardContent className="pt-4 pb-3">
             {/* Row 1: Core inputs */}
             <div className="grid grid-cols-3 md:grid-cols-6 gap-3 mb-4">
@@ -562,18 +562,6 @@ export default function EarlyRetirementPage() {
           </div>
         )}
 
-        {/* Withdrawal Stress Simulator - Full width */}
-        {isPro ? (
-          <WithdrawalStressSimulator simulation={withdrawalSimulation} />
-        ) : (
-          <LockedModule
-            title="Withdrawal Stress Simulator"
-            description="Monte Carlo simulation of withdrawal scenarios"
-            icon={<Zap className="h-5 w-5 text-emerald-600" />}
-            benefits={["Monte Carlo simulations", "Success probability", "Worst-case scenarios"]}
-          />
-        )}
-
         {/* Semi-Retirement Bridge */}
         {isPro ? (
           <SemiRetirementBridgeModule
@@ -698,7 +686,7 @@ function FIReadinessDashboard({
   const currentIndex = getStageIndex(readiness.stage);
 
   return (
-    <Card className="bg-white border-slate-200 shadow-sm">
+    <Card className="bg-white border-2 border-black shadow-sm">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
           <Target className="h-5 w-5 text-emerald-600" />
@@ -810,7 +798,7 @@ function WithdrawalStressSimulator({
   const chartData = simulation.projections;
 
   return (
-    <Card className="bg-white border-slate-200 shadow-sm">
+    <Card className="bg-white border-2 border-black shadow-sm">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
           <Shield className="h-5 w-5 text-emerald-600" />
@@ -967,7 +955,7 @@ function LifestyleBudgetModule({
   };
 
   return (
-    <Card className="bg-white border-slate-200 shadow-sm">
+    <Card className="bg-white border-2 border-black shadow-sm">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
           <DollarSign className="h-5 w-5 text-emerald-600" />
@@ -1077,7 +1065,7 @@ function CoastFICalculator({
   );
 
   return (
-    <Card className="bg-white border-slate-200 shadow-sm">
+    <Card className="bg-white border-2 border-black shadow-sm">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
           <TrendingUp className="h-5 w-5 text-emerald-600" />
@@ -1202,7 +1190,7 @@ function SemiRetirementBridgeModule({
   };
 
   return (
-    <Card className="bg-white border-slate-200 shadow-sm">
+    <Card className="bg-white border-2 border-black shadow-sm">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
           <ArrowRight className="h-5 w-5 text-emerald-600" />
@@ -1332,7 +1320,7 @@ function GeoArbitrageLink({
   const currentSavings = baselinePortfolio - requiredPortfolio;
 
   return (
-    <Card className="bg-white border-slate-200 shadow-sm">
+    <Card className="bg-white border-2 border-black shadow-sm">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
           <MapPin className="h-5 w-5 text-emerald-600" />
@@ -1426,7 +1414,7 @@ function GeoArbitrageLink({
 
 function BurnRateClockModule({ burnRate }: { burnRate: BurnRateResult }) {
   return (
-    <Card className="bg-white border-slate-200 shadow-sm">
+    <Card className="bg-white border-2 border-black shadow-sm">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
           <Flame className="h-5 w-5 text-emerald-600" />
@@ -1498,7 +1486,7 @@ function FreedomMilestonesModule({ milestones }: { milestones: FIMilestone[] }) 
   };
 
   return (
-    <Card className="bg-white border-slate-200 shadow-sm">
+    <Card className="bg-white border-2 border-black shadow-sm">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
           <Sparkles className="h-5 w-5 text-emerald-600" />
@@ -1518,7 +1506,7 @@ function FreedomMilestonesModule({ milestones }: { milestones: FIMilestone[] }) 
                   className={`p-3 rounded-lg border cursor-help transition-all hover:shadow-md ${
                     milestone.isAchieved
                       ? "bg-emerald-50 border-emerald-200"
-                      : "bg-slate-50 border-slate-200"
+                      : "bg-slate-50 border-2 border-black"
                   }`}
                 >
                   {/* Icon & Status */}
@@ -1713,7 +1701,7 @@ function RothConversionLadderModule({
   ];
 
   return (
-    <Card className="bg-white border-slate-200 shadow-sm">
+    <Card className="bg-white border-2 border-black shadow-sm">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
           <RefreshCcw className="h-5 w-5 text-emerald-600" />

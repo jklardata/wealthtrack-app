@@ -512,7 +512,7 @@ export default function GeoArbitragePage() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-medium text-slate-900 flex items-center gap-2">
+          <h1 className="text-4xl sm:text-5xl font-black text-slate-900 flex items-center gap-3">
             <Globe className="h-6 w-6 sm:h-7 sm:w-7 text-emerald-600 flex-shrink-0" />
             <span className="leading-tight">Geographic Arbitrage</span>
           </h1>
@@ -527,7 +527,7 @@ export default function GeoArbitragePage() {
     <div className="space-y-6">
       {/* Header with Description */}
       <div>
-        <h1 className="text-2xl sm:text-3xl font-medium text-slate-900 flex items-center gap-2">
+        <h1 className="text-4xl sm:text-5xl font-black text-slate-900 flex items-center gap-3">
           <Globe className="h-6 w-6 sm:h-7 sm:w-7 text-emerald-600 flex-shrink-0" />
           <span className="leading-tight">Geographic Arbitrage</span>
         </h1>

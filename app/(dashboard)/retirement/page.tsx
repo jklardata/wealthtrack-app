@@ -284,7 +284,7 @@ function RetirementPageContent() {
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-2xl sm:text-3xl font-medium text-slate-900 flex items-center gap-2">
+          <h1 className="text-4xl sm:text-5xl font-black text-slate-900 flex items-center gap-3">
             <Calculator className="h-6 w-6 sm:h-7 sm:w-7 text-emerald-600 flex-shrink-0" />
             Retirement Calculator
         </h1>
@@ -333,9 +333,9 @@ function RetirementPageContent() {
       )}
 
       {/* Input Section - Retirement Location & Spending (moved to top) */}
-      <Card className="bg-white border-slate-200 shadow-sm">
+      <Card className="bg-white border-2 border-black shadow-sm">
         <CardHeader>
-          <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
+          <CardTitle className="text-2xl font-black text-slate-900 flex items-center gap-3">
             <MapPin className="h-5 w-5 text-emerald-600" />
             Retirement Location & Spending
           </CardTitle>
@@ -483,7 +483,7 @@ function RetirementPageContent() {
 
             {latestEntry && (
               <div className="space-y-4">
-                <div className="p-4 rounded-lg bg-slate-50 border border-slate-200 space-y-3">
+                <div className="p-4 rounded-lg bg-slate-50 border border-2 border-black space-y-3">
                   <h4 className="text-sm font-medium text-slate-900">Your Financial Snapshot</h4>
                   <div className="flex justify-between text-sm">
                     <span className="text-slate-500">Current Net Worth</span>
@@ -577,7 +577,7 @@ function RetirementPageContent() {
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-2">
                 <Landmark className="h-5 w-5 text-amber-500" />
-                <CardTitle className="text-lg">Tax Optimization Strategies</CardTitle>
+                <CardTitle className="text-2xl font-black">Tax Optimization Strategies</CardTitle>
                 <span className="text-xs text-slate-500 bg-muted px-2 py-0.5 rounded">For US Taxpayers</span>
               </div>
               <ChevronDown id="tax-strategies-chevron" className="h-5 w-5 text-slate-500 transition-transform" />
@@ -737,7 +737,7 @@ function RetirementPageContent() {
       {isPro ? (
         <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
           {/* Spending Category Weights */}
-          <Card className="bg-white border-slate-200 shadow-sm">
+          <Card className="bg-white border-2 border-black shadow-sm">
           <CardHeader>
             <div className="flex justify-between items-center">
               <CardTitle className="text-lg font-medium text-slate-900">Spending Category Weights</CardTitle>
@@ -788,7 +788,7 @@ function RetirementPageContent() {
 
         {/* Cost Breakdown */}
         {selectedCity && results && errors.length === 0 && (
-          <Card className="bg-white border-slate-200 shadow-sm">
+          <Card className="bg-white border-2 border-black shadow-sm">
             <CardHeader>
               <CardTitle className="text-lg font-medium text-slate-900">
                 Cost Breakdown in {selectedCity.city_name}
@@ -866,7 +866,7 @@ function RetirementPageContent() {
         <>
           {/* Key Metrics */}
           <div className="grid gap-3 sm:gap-4 grid-cols-2 md:grid-cols-4">
-            <Card className="bg-white border-slate-200 shadow-sm">
+            <Card className="bg-white border-2 border-black shadow-sm">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium text-slate-500">
                   Adjusted Spending
@@ -882,7 +882,7 @@ function RetirementPageContent() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200 shadow-sm">
+            <Card className="bg-white border-2 border-black shadow-sm">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium text-slate-500">
                   Safe Withdrawal
@@ -898,7 +898,7 @@ function RetirementPageContent() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200 shadow-sm">
+            <Card className="bg-white border-2 border-black shadow-sm">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium text-slate-500">
                   Required Net Worth
@@ -914,7 +914,7 @@ function RetirementPageContent() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white border-slate-200 shadow-sm">
+            <Card className="bg-white border-2 border-black shadow-sm">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium text-slate-500">
                   Years to Retirement
@@ -936,9 +936,9 @@ function RetirementPageContent() {
           </div>
 
           {/* Projection Chart */}
-          <Card className="bg-white border-slate-200 shadow-sm overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-emerald-50 to-blue-50 border-b border-slate-200">
-              <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
+          <Card className="bg-white border-2 border-black shadow-sm overflow-hidden">
+            <CardHeader className="bg-gradient-to-r from-emerald-50 to-blue-50 border-b border-2 border-black">
+              <CardTitle className="text-2xl font-black text-slate-900 flex items-center gap-3">
                 <TrendingUp className="h-5 w-5 text-emerald-600" />
                 Net Worth Projection
               </CardTitle>
@@ -1149,9 +1149,9 @@ function RetirementPageContent() {
           </Card>
 
           {/* All Cities Comparison */}
-          <Card className="bg-white border-slate-200 shadow-sm">
+          <Card className="bg-white border-2 border-black shadow-sm">
             <CardHeader>
-              <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
+              <CardTitle className="text-2xl font-black text-slate-900 flex items-center gap-3">
                 <Globe className="h-5 w-5 text-emerald-600" />
                 All Cities Comparison
               </CardTitle>
