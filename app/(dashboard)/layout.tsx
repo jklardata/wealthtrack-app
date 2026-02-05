@@ -23,6 +23,7 @@ import {
   LineChart,
   Activity,
   MessageSquare,
+  RefreshCw,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -43,6 +44,7 @@ const navItems = [
   { href: "/withdrawal-stress-test", label: "Withdrawal Stress Test", icon: Activity },
   { href: "/tax-calculator", label: "Tax Calculator", icon: Receipt },
   { href: "/tax-optimization", label: "Tax Optimization", icon: Lightbulb },
+  { href: "/roth-conversion", label: "Roth Conversion", icon: RefreshCw },
   { href: "/geo-arbitrage", label: "Geo Arbitrage", icon: Globe },
   { href: "/blog", label: "Resources", icon: BookOpen },
   { href: "/founder-notes", label: "Founder Notes", icon: MessageSquare },

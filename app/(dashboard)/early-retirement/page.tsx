@@ -580,27 +580,25 @@ export default function EarlyRetirementPage() {
           />
         )}
 
-        {/* Roth Conversion Ladder */}
-        {isPro ? (
-          <RothConversionLadderModule
-            currentAge={currentAge}
-            targetRetirementAge={targetRetirementAge}
-            traditionalBalance={traditionalBalance}
-            setTraditionalBalance={setTraditionalBalance}
-            currentMarginalRate={currentMarginalRate}
-            setCurrentMarginalRate={setCurrentMarginalRate}
-            retirementMarginalRate={retirementMarginalRate}
-            setRetirementMarginalRate={setRetirementMarginalRate}
-            annualExpenses={annualExpenses}
-          />
-        ) : (
-          <LockedModule
-            title="Roth Conversion Ladder"
-            description="Optimize your Roth conversion strategy"
-            icon={<Wallet className="h-5 w-5 text-emerald-600" />}
-            benefits={["Tax-optimized conversions", "5-year rule planning", "Marginal rate optimization"]}
-          />
-        )}
+        {/* Roth Conversion Callout */}
+        <Card className="bg-gradient-to-r from-purple-50 to-indigo-50 border-2 border-purple-300">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-semibold text-slate-900 mb-1">Optimize Your Roth Conversion Strategy</h3>
+                <p className="text-sm text-slate-600">
+                  Model conversion timing, tax bracket management, and lifetime tax savings with our comprehensive Roth Conversion tool.
+                </p>
+              </div>
+              <Link href="/roth-conversion">
+                <Button className="bg-purple-600 hover:bg-purple-700 whitespace-nowrap ml-4">
+                  <RefreshCw className="h-4 w-4 mr-2" />
+                  Roth Tool
+                </Button>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Module 6: Geo-Arbitrage Link */}
         {isPro ? (
