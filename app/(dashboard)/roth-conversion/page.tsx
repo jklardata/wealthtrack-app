@@ -626,7 +626,7 @@ export default function RothConversionPage() {
                 <Tooltip
                   contentStyle={{ backgroundColor: "#fff", border: "2px solid #000", borderRadius: "8px", padding: "12px" }}
                   labelStyle={{ fontWeight: "bold", fontSize: "14px" }}
-                  formatter={(value: any, name: string) => {
+                  formatter={(value: any, name: string | undefined) => {
                     if (name === "Traditional IRA") return [formatCurrency(value), name];
                     if (name === "Roth IRA") return [formatCurrency(value), name];
                     if (name === "Taxable") return [formatCurrency(value), name];
