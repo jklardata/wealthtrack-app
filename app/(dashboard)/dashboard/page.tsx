@@ -533,7 +533,7 @@ export default function DashboardPage() {
               </Card>
             ))}
           </div>
-          <Card className="bg-white border-slate-200">
+          <Card className="bg-white border-2 border-black">
             <CardHeader>
               <Skeleton className="h-6 w-40" />
             </CardHeader>
@@ -566,7 +566,7 @@ export default function DashboardPage() {
         <div className="max-w-7xl mx-auto space-y-6">
           {/* Header */}
           <div>
-            <h1 className="text-2xl sm:text-3xl font-medium text-slate-900">Dashboard</h1>
+            <h1 className="text-4xl sm:text-5xl font-black text-slate-900">Dashboard</h1>
             <p className="text-sm sm:text-base text-slate-500 mt-1">
               Regular net worth tracking is the foundation of sound financial planning. Update your <Link href="/net-worth" className="text-emerald-600 hover:text-emerald-700 underline">Net Worth Timeline</Link> monthly to monitor progress, analyze portfolio allocation and concentration risk, model tax-optimized withdrawal strategies, and project retirement outcomes based on your unique financial situation.
             </p>
@@ -744,7 +744,7 @@ export default function DashboardPage() {
       {/* Header with Date Filters */}
       <div className="flex flex-col gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-medium text-slate-900">Dashboard</h1>
+          <h1 className="text-4xl sm:text-5xl font-black text-slate-900">Dashboard</h1>
           <p className="text-sm sm:text-base text-slate-500 mt-1">
             Regular net worth tracking is the foundation of sound financial planning. Update your <Link href="/net-worth" className="text-emerald-600 hover:text-emerald-700 underline">Net Worth Timeline</Link> monthly to monitor progress, analyze portfolio allocation and concentration risk, model tax-optimized withdrawal strategies, and project retirement outcomes based on your unique financial situation.
           </p>
@@ -816,46 +816,46 @@ export default function DashboardPage() {
 
       {/* Stats Cards - Compact */}
       <div className="grid gap-2 sm:gap-3 grid-cols-2 lg:grid-cols-4">
-        <Card className="bg-white border-slate-200 shadow-sm">
+        <Card className="bg-white border-2 border-black shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between pb-2 p-3 sm:p-6 sm:pb-2">
-            <CardTitle className="text-xs sm:text-sm font-medium text-slate-500 uppercase tracking-wide">
+            <CardTitle className="text-sm sm:text-base font-black text-slate-700 uppercase tracking-wide">
               Net Worth
             </CardTitle>
-            <DollarSign className="h-4 w-4 text-emerald-600" />
+            <DollarSign className="h-5 w-5 text-emerald-600" />
           </CardHeader>
           <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
-            <div className="text-lg sm:text-2xl font-semibold text-slate-900 font-mono">
+            <div className="text-2xl sm:text-3xl font-black text-slate-900 font-mono">
               {latestEntry ? formatCurrency(latestEntry.net_worth) : "$0"}
             </div>
             {latestEntry && (
-              <p className="text-xs text-emerald-600 mt-1">
+              <p className="text-sm font-semibold text-emerald-600 mt-1">
                 as of {formatDateShort(latestEntry.date)}
               </p>
             )}
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-slate-200 shadow-sm">
+        <Card className="bg-white border-2 border-black shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between pb-2 p-3 sm:p-6 sm:pb-2">
-            <CardTitle className="text-xs sm:text-sm font-medium text-slate-500 uppercase tracking-wide">
+            <CardTitle className="text-sm sm:text-base font-black text-slate-700 uppercase tracking-wide">
               Monthly Change
             </CardTitle>
             {monthlyChange >= 0 ? (
-              <TrendingUp className="h-4 w-4 text-emerald-600" />
+              <TrendingUp className="h-5 w-5 text-emerald-600" />
             ) : (
-              <TrendingDown className="h-4 w-4 text-red-500" />
+              <TrendingDown className="h-5 w-5 text-red-500" />
             )}
           </CardHeader>
           <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
             <div
-              className={`text-lg sm:text-2xl font-semibold font-mono ${
+              className={`text-2xl sm:text-3xl font-black font-mono ${
                 monthlyChange >= 0 ? "text-emerald-600" : "text-red-500"
               }`}
             >
               {monthlyChange >= 0 ? "+" : ""}
               {formatCurrency(monthlyChange)}
             </div>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-sm font-semibold text-slate-600 mt-1">
               {monthlyChange >= 0 ? "+" : ""}
               {monthlyChangePercent}% from last
             </p>
@@ -863,21 +863,21 @@ export default function DashboardPage() {
         </Card>
 
         {/* YTD Change */}
-        <Card className="bg-white border-slate-200 shadow-sm">
+        <Card className="bg-white border-2 border-black shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between pb-2 p-3 sm:p-6 sm:pb-2">
-            <CardTitle className="text-xs sm:text-sm font-medium text-slate-500 uppercase tracking-wide">
+            <CardTitle className="text-sm sm:text-base font-black text-slate-700 uppercase tracking-wide">
               YTD Change
             </CardTitle>
-            <TrendingUp className="h-4 w-4 text-emerald-500" />
+            <TrendingUp className="h-5 w-5 text-emerald-500" />
           </CardHeader>
           <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
-            <div className={`text-lg sm:text-2xl font-semibold font-mono ${
+            <div className={`text-2xl sm:text-3xl font-black font-mono ${
               growthMetrics.ytd.amount >= 0 ? "text-emerald-600" : "text-red-500"
             }`}>
               {growthMetrics.ytd.amount >= 0 ? "+" : ""}
               {formatCurrency(growthMetrics.ytd.amount)}
             </div>
-            <p className={`text-xs mt-1 ${
+            <p className={`text-sm font-semibold mt-1 ${
               growthMetrics.ytd.percent >= 0 ? "text-emerald-600" : "text-red-500"
             }`}>
               {growthMetrics.ytd.percent >= 0 ? "+" : ""}
@@ -887,21 +887,21 @@ export default function DashboardPage() {
         </Card>
 
         {/* Avg Monthly $ */}
-        <Card className="bg-white border-slate-200 shadow-sm">
+        <Card className="bg-white border-2 border-black shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between pb-2 p-3 sm:p-6 sm:pb-2">
-            <CardTitle className="text-xs sm:text-sm font-medium text-slate-500 uppercase tracking-wide">
+            <CardTitle className="text-sm sm:text-base font-black text-slate-700 uppercase tracking-wide">
               Avg Monthly $
             </CardTitle>
-            <TrendingUp className="h-4 w-4 text-blue-500" />
+            <TrendingUp className="h-5 w-5 text-blue-500" />
           </CardHeader>
           <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
-            <div className={`text-lg sm:text-2xl font-semibold font-mono ${
+            <div className={`text-2xl sm:text-3xl font-black font-mono ${
               growthMetrics.avgMonthlyGrowth >= 0 ? "text-blue-600" : "text-red-500"
             }`}>
               {growthMetrics.avgMonthlyGrowth >= 0 ? "+" : ""}
               {formatCurrency(growthMetrics.avgMonthlyGrowth)}
             </div>
-            <p className="text-xs text-slate-500 mt-1">Average monthly growth</p>
+            <p className="text-sm font-semibold text-slate-600 mt-1">Average monthly growth</p>
           </CardContent>
         </Card>
       </div>
@@ -909,15 +909,15 @@ export default function DashboardPage() {
 
 
       {/* Net Worth Chart */}
-      <Card className="bg-white border-slate-200 shadow-sm">
+      <Card className="bg-white border-2 border-black shadow-sm">
         <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <CardTitle className="text-slate-900">Net Worth Over Time</CardTitle>
-            <div className="text-xs text-slate-600 mt-1 space-y-1.5">
+            <CardTitle className="text-2xl font-black text-slate-900">Net Worth Over Time</CardTitle>
+            <div className="text-base font-medium text-slate-700 mt-2 space-y-2">
               <p>
                 This chart tells your wealth story. The trend matters more than the absolute number—you're looking for that upward slope that shows consistent progress, even through market volatility.
               </p>
-              <p className="text-slate-500">
+              <p className="text-slate-600">
                 Visualize your total net worth (solid line) and individual asset categories (dashed lines). Click any legend item to hide/show that category. Click a data point to edit that entry.
               </p>
             </div>
@@ -1098,11 +1098,11 @@ export default function DashboardPage() {
       {/* Asset Allocation and Net Worth Momentum */}
       <div className="grid gap-4 lg:grid-cols-2">
         {/* Asset Allocation */}
-        <Card className="bg-white border-slate-200 shadow-sm">
+        <Card className="bg-white border-2 border-black shadow-sm">
 
           <CardHeader>
-            <CardTitle className="text-slate-900">Asset Allocation</CardTitle>
-            <div className="text-xs text-slate-600 mt-1">
+            <CardTitle className="text-2xl font-black text-slate-900">Asset Allocation</CardTitle>
+            <div className="text-base font-medium text-slate-700 mt-2">
               <p>
                 A balanced mix of stocks, bonds, and alternative assets smooths the ride and positions you for long-term growth regardless of market conditions.
               </p>
@@ -1214,43 +1214,43 @@ export default function DashboardPage() {
 
       {/* Net Worth Momentum */}
         {momentumMetrics && (
-          <Card className="bg-white border-slate-200 shadow-sm">
+          <Card className="bg-white border-2 border-black shadow-sm">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <TrendingUpIcon className="h-5 w-5 text-emerald-600" />
+              <CardTitle className="flex items-center gap-3 text-2xl font-black">
+                <TrendingUpIcon className="h-6 w-6 text-emerald-600" />
                 Net Worth Momentum
               </CardTitle>
-              <div className="text-xs text-slate-600 mt-1 space-y-1.5">
+              <div className="text-base font-medium text-slate-700 mt-2 space-y-2">
                 <p>
                   This is where you separate luck from strategy. Are you building wealth through disciplined saving, or are you relying solely on market performance?
                 </p>
-                <p className="text-slate-500">
+                <p className="text-slate-600">
                   The most successful self-employed professionals control what they can control: their savings rate. Market returns are the bonus, not the plan.
                 </p>
               </div>
             </CardHeader>
             <CardContent>
-              <div className="space-y-3">
-                <div className="p-3 rounded-lg bg-slate-50">
-                  <p className="text-sm text-slate-500 mb-1">Current Velocity</p>
-                  <p className="text-xl font-semibold text-emerald-600">
+              <div className="space-y-4">
+                <div className="p-4 rounded-lg bg-slate-50 border-2 border-slate-200">
+                  <p className="text-base font-bold text-slate-700 mb-1">Current Velocity</p>
+                  <p className="text-2xl font-black text-emerald-600">
                     {formatVelocity(momentumMetrics.velocity)}
                   </p>
-                  <p className="text-xs text-slate-500 mt-1">Your average monthly net worth increase based on recent trend</p>
+                  <p className="text-sm font-medium text-slate-600 mt-2">Your average monthly net worth increase based on recent trend</p>
                 </div>
-                <div className="p-3 rounded-lg bg-slate-50">
-                  <p className="text-sm text-slate-500 mb-1">12-Month Change</p>
-                  <p className="text-xl font-semibold text-slate-900">
+                <div className="p-4 rounded-lg bg-slate-50 border-2 border-slate-200">
+                  <p className="text-base font-bold text-slate-700 mb-1">12-Month Change</p>
+                  <p className="text-2xl font-black text-slate-900">
                     {formatCurrency(momentumMetrics.contribution12mo.totalChange)}
                   </p>
-                  <p className="text-xs text-slate-500 mt-1">Total net worth change over the last 12 months</p>
+                  <p className="text-sm font-medium text-slate-600 mt-2">Total net worth change over the last 12 months</p>
                 </div>
-                <div className="p-3 rounded-lg bg-slate-50">
-                  <p className="text-sm text-slate-500 mb-1">Net Contributions</p>
-                  <p className="text-xl font-semibold text-blue-600">
+                <div className="p-4 rounded-lg bg-slate-50 border-2 border-slate-200">
+                  <p className="text-base font-bold text-slate-700 mb-1">Net Contributions</p>
+                  <p className="text-2xl font-black text-blue-600">
                     {formatCurrency(momentumMetrics.contribution12mo.netContributions)}
                   </p>
-                  <p className="text-xs text-slate-500 mt-1">New money you added (or withdrew) from your portfolio in the last year</p>
+                  <p className="text-sm font-medium text-slate-600 mt-2">New money you added (or withdrew) from your portfolio in the last year</p>
                 </div>
                 <div className="mt-3 p-3 rounded-lg bg-emerald-50 border border-emerald-100">
                   <p className="text-xs text-emerald-900 space-y-1">
@@ -1267,10 +1267,10 @@ export default function DashboardPage() {
 
       {/* Income vs Expenses Chart */}
       {chartData.length > 0 && chartData.some(d => d.netWorth > 0) && (
-        <Card className="bg-white border-slate-200 shadow-sm">
+        <Card className="bg-white border-2 border-black shadow-sm">
           <CardHeader>
-            <CardTitle className="text-slate-900">Monthly Income vs Expenses</CardTitle>
-            <p className="text-sm text-slate-500 mt-1">
+            <CardTitle className="text-2xl font-black text-slate-900">Monthly Income vs Expenses</CardTitle>
+            <p className="text-base font-medium text-slate-600 mt-2">
               Track your cash flow over time to understand your savings rate
             </p>
           </CardHeader>
@@ -1308,35 +1308,35 @@ export default function DashboardPage() {
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Current Monthly Cash Flow */}
         {latestEntry && latestEntry.pre_tax_income > 0 && latestEntry.monthly_expenses > 0 && (
-          <Card className="bg-white border-slate-200 shadow-sm">
+          <Card className="bg-white border-2 border-black shadow-sm">
             <CardHeader>
-              <CardTitle className="text-slate-900">Current Monthly Cash Flow</CardTitle>
-              <p className="text-sm text-slate-500 mt-1">
+              <CardTitle className="text-2xl font-black text-slate-900">Current Monthly Cash Flow</CardTitle>
+              <p className="text-base font-medium text-slate-600 mt-2">
                 Recorded on {new Date(latestEntry.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
               </p>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="p-4 rounded-lg bg-green-50 border border-green-200">
-                    <div className="text-sm text-green-700 mb-1">Monthly Income</div>
-                    <div className="text-2xl font-bold text-green-900">
+                  <div className="p-4 rounded-lg bg-green-50 border-2 border-green-300">
+                    <div className="text-base font-bold text-green-800 mb-1">Monthly Income</div>
+                    <div className="text-3xl font-black text-green-900">
                       {formatCurrency(latestEntry.pre_tax_income)}
                     </div>
                   </div>
-                  <div className="p-4 rounded-lg bg-red-50 border border-red-200">
-                    <div className="text-sm text-red-700 mb-1">Monthly Expenses</div>
-                    <div className="text-2xl font-bold text-red-900">
+                  <div className="p-4 rounded-lg bg-red-50 border-2 border-red-300">
+                    <div className="text-base font-bold text-red-800 mb-1">Monthly Expenses</div>
+                    <div className="text-3xl font-black text-red-900">
                       {formatCurrency(latestEntry.monthly_expenses)}
                     </div>
                   </div>
                 </div>
-                <div className="p-4 rounded-lg bg-gradient-to-br from-emerald-400 to-emerald-500 border-emerald-300">
-                  <div className="text-sm text-emerald-50 mb-1">Net Monthly Savings</div>
-                  <div className="text-3xl font-bold text-white">
+                <div className="p-5 rounded-lg bg-gradient-to-br from-emerald-400 to-emerald-500 border-2 border-emerald-600">
+                  <div className="text-base font-bold text-emerald-50 mb-2">Net Monthly Savings</div>
+                  <div className="text-4xl font-black text-white">
                     {formatCurrency(latestEntry.pre_tax_income - latestEntry.monthly_expenses)}
                   </div>
-                  <div className="text-sm text-emerald-50 mt-2">
+                  <div className="text-base font-bold text-emerald-50 mt-3">
                     Savings Rate: {((latestEntry.pre_tax_income - latestEntry.monthly_expenses) / latestEntry.pre_tax_income * 100).toFixed(1)}%
                   </div>
                 </div>
@@ -1347,13 +1347,13 @@ export default function DashboardPage() {
 
         {/* Next Best Actions */}
         {nextActions.length > 0 && (
-          <Card className="bg-white border-slate-200 shadow-sm">
+          <Card className="bg-white border-2 border-black shadow-sm">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Target className="h-5 w-5 text-emerald-600" />
+              <CardTitle className="flex items-center gap-3 text-2xl font-black">
+                <Target className="h-6 w-6 text-emerald-600" />
                 Next Best Question
               </CardTitle>
-              <p className="text-sm text-slate-500 mt-1">Questions worth exploring now</p>
+              <p className="text-base font-medium text-slate-600 mt-2">Questions worth exploring now</p>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -1378,8 +1378,8 @@ export default function DashboardPage() {
                         {action.icon === 'star' && <Sparkles className="h-5 w-5 text-emerald-700" />}
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-medium text-slate-900 mb-1">{action.title}</h4>
-                      <p className="text-sm text-slate-600 mb-2">{action.description}</p>
+                      <h4 className="text-lg font-black text-slate-900 mb-2">{action.title}</h4>
+                      <p className="text-base font-medium text-slate-700 mb-3">{action.description}</p>
                       <Link href={action.actionLink}>
                         <Button variant="outline" size="sm" className="text-xs">
                           {action.actionLabel}
