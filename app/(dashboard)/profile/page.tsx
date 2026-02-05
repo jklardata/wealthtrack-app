@@ -127,14 +127,14 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-6">
+    <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-5xl font-black flex items-center gap-3">
-          <User className="h-10 w-10 text-emerald-600" />
+        <h1 className="text-3xl md:text-5xl font-black flex items-center gap-2 md:gap-3">
+          <User className="h-8 w-8 md:h-10 md:w-10 text-emerald-600" />
           Profile
         </h1>
-        <p className="text-lg font-semibold text-slate-700 mt-2">
+        <p className="text-sm md:text-lg font-semibold text-slate-700 mt-2">
           Manage your personal information and financial projections settings
         </p>
       </div>

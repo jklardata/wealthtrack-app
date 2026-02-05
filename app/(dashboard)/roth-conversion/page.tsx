@@ -324,6 +324,9 @@ export default function RothConversionPage() {
             if (settings.current_age) setCurrentAge(settings.current_age);
             if (settings.desired_retirement_age) setRetirementAge(settings.desired_retirement_age);
             if (settings.life_expectancy_assumption) setLifeExpectancy(settings.life_expectancy_assumption);
+            if (settings.tax_filing_status) {
+              setFilingStatus(settings.tax_filing_status === "married" ? "married" : "single");
+            }
           }
         }
       } catch (error) {

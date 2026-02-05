@@ -824,7 +824,7 @@ export default function DashboardPage() {
             <DollarSign className="h-5 w-5 text-emerald-600" />
           </CardHeader>
           <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
-            <div className="text-2xl sm:text-3xl font-black text-slate-900 font-mono">
+            <div className="text-lg sm:text-2xl md:text-3xl font-black text-slate-900 font-mono break-words">
               {latestEntry ? formatCurrency(latestEntry.net_worth) : "$0"}
             </div>
             {latestEntry && (
@@ -848,7 +848,7 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
             <div
-              className={`text-2xl sm:text-3xl font-black font-mono ${
+              className={`text-lg sm:text-2xl md:text-3xl font-black font-mono break-words ${
                 monthlyChange >= 0 ? "text-emerald-600" : "text-red-500"
               }`}
             >
@@ -871,7 +871,7 @@ export default function DashboardPage() {
             <TrendingUp className="h-5 w-5 text-emerald-500" />
           </CardHeader>
           <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
-            <div className={`text-2xl sm:text-3xl font-black font-mono ${
+            <div className={`text-lg sm:text-2xl md:text-3xl font-black font-mono break-words ${
               growthMetrics.ytd.amount >= 0 ? "text-emerald-600" : "text-red-500"
             }`}>
               {growthMetrics.ytd.amount >= 0 ? "+" : ""}
@@ -895,7 +895,7 @@ export default function DashboardPage() {
             <TrendingUp className="h-5 w-5 text-blue-500" />
           </CardHeader>
           <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
-            <div className={`text-2xl sm:text-3xl font-black font-mono ${
+            <div className={`text-lg sm:text-2xl md:text-3xl font-black font-mono break-words ${
               growthMetrics.avgMonthlyGrowth >= 0 ? "text-blue-600" : "text-red-500"
             }`}>
               {growthMetrics.avgMonthlyGrowth >= 0 ? "+" : ""}
@@ -1231,13 +1231,59 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <div className="p-4 rounded-lg bg-slate-50 border-2 border-slate-200">
-                  <p className="text-base font-bold text-slate-700 mb-1">Current Velocity</p>
-                  <p className="text-2xl font-black text-emerald-600">
-                    {formatVelocity(momentumMetrics.velocity)}
-                  </p>
-                  <p className="text-sm font-medium text-slate-600 mt-2">Your average monthly net worth increase based on recent trend</p>
-                </div>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <div className="p-4 rounded-lg bg-slate-50 border-2 border-slate-200 cursor-pointer hover:bg-slate-100 hover:border-emerald-300 transition-all">
+                      <p className="text-base font-bold text-slate-700 mb-1 flex items-center gap-2">
+                        Current Velocity
+                        <span className="text-xs text-slate-500">(hover for trend)</span>
+                      </p>
+                      <p className="text-2xl font-black text-emerald-600">
+                        {formatVelocity(momentumMetrics.velocity)}
+                      </p>
+                      <p className="text-sm font-medium text-slate-600 mt-2">Your average monthly net worth increase based on recent trend</p>
+                    </div>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-80 p-4 bg-white border-2 border-black rounded-lg shadow-lg">
+                    <div className="space-y-3">
+                      <p className="font-bold text-sm text-slate-900">Net Worth Velocity Trend</p>
+                      <ResponsiveContainer width="100%" height={150}>
+                        <LineChart data={chartData.slice(-12)}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                          <XAxis
+                            dataKey="date"
+                            stroke="#94a3b8"
+                            fontSize={10}
+                            tickFormatter={(date) => {
+                              const d = new Date(date);
+                              return `${d.getMonth() + 1}/${d.getDate().toString().slice(-2)}`;
+                            }}
+                          />
+                          <YAxis
+                            stroke="#94a3b8"
+                            fontSize={10}
+                            tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
+                          />
+                          <Tooltip
+                            contentStyle={{ backgroundColor: "#fff", border: "2px solid #000", borderRadius: "8px", padding: "8px" }}
+                            labelStyle={{ fontWeight: "bold", fontSize: "12px" }}
+                            formatter={(value: any) => [formatCurrency(Number(value)), "Net Worth"]}
+                          />
+                          <Line
+                            type="monotone"
+                            dataKey="netWorth"
+                            stroke="#10b981"
+                            strokeWidth={2}
+                            dot={{ fill: "#10b981", r: 3 }}
+                          />
+                        </LineChart>
+                      </ResponsiveContainer>
+                      <p className="text-xs text-slate-600">
+                        Showing last 12 months of net worth progression. Velocity is calculated from the slope of this trend line.
+                      </p>
+                    </div>
+                  </PopoverContent>
+                </Popover>
                 <div className="p-4 rounded-lg bg-slate-50 border-2 border-slate-200">
                   <p className="text-base font-bold text-slate-700 mb-1">12-Month Change</p>
                   <p className="text-2xl font-black text-slate-900">

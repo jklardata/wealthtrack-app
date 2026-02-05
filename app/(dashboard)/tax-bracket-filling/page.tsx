@@ -341,6 +341,30 @@ export default function TaxBracketFillingPage() {
     }
   }, [filingStatus]);
 
+  // Fetch user settings from profile
+  useEffect(() => {
+    async function fetchSettings() {
+      try {
+        const response = await fetch("/api/settings");
+        if (response.ok) {
+          const data = await response.json();
+          if (data.data) {
+            const settings = data.data;
+            if (settings.current_age) setCurrentAge(settings.current_age);
+            if (settings.desired_retirement_age) setRetirementAge(settings.desired_retirement_age);
+            if (settings.life_expectancy_assumption) setLifeExpectancy(settings.life_expectancy_assumption);
+            if (settings.tax_filing_status) {
+              setFilingStatus(settings.tax_filing_status === "married" ? "married" : "single");
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching settings:", error);
+      }
+    }
+    fetchSettings();
+  }, []);
+
   // ========== Core Projection Calculations ==========
 
   const projections = useMemo((): YearlyProjection[] => {
