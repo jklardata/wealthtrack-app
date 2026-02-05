@@ -130,11 +130,11 @@ export default function ProfilePage() {
     <div className="p-8 max-w-7xl mx-auto space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold flex items-center gap-2">
-          <User className="h-8 w-8 text-emerald-600" />
+        <h1 className="text-5xl font-black flex items-center gap-3">
+          <User className="h-10 w-10 text-emerald-600" />
           Profile
         </h1>
-        <p className="text-slate-600 mt-2">
+        <p className="text-lg font-semibold text-slate-700 mt-2">
           Manage your personal information and financial projections settings
         </p>
       </div>

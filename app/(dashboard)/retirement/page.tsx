@@ -937,7 +937,7 @@ function RetirementPageContent() {
 
           {/* Projection Chart */}
           <Card className="bg-white border-2 border-black shadow-sm overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-emerald-50 to-blue-50 border-b border-2 border-black">
+            <CardHeader>
               <CardTitle className="text-2xl font-black text-slate-900 flex items-center gap-3">
                 <TrendingUp className="h-5 w-5 text-emerald-600" />
                 Net Worth Projection

@@ -119,22 +119,15 @@ export default function FounderNotesPage() {
       {/* Header */}
       <div className="space-y-4">
         <h1 className="text-5xl font-black text-slate-900">Founder Notes</h1>
-        <p className="text-xl font-semibold text-slate-700">
-          Building SoloFI in public. Real updates, no BS.
-        </p>
       </div>
 
       {/* Introduction */}
       <div className="space-y-3">
         <p className="text-lg font-medium text-slate-800 leading-relaxed">
-          I'm Justin. Built SoloFI because I was tired of paying $200/month for basic retirement calculators
-          when I left consulting to go solo. Most tools are designed for W-2 employees with steady paychecks—not
-          for people like us dealing with variable income, multiple revenue streams, and actually wanting to
-          understand the math.
+          I'm Justin. I built SoloFI because I was tired of paying $200/month for basic retirement calculators when I left consulting to go solo. Most tools are designed for W-2 employees with steady paychecks and not for DIY self-employed people like us dealing with variable income, multiple revenue streams, and actually wanting to understand the math.
         </p>
         <p className="text-lg font-medium text-slate-800 leading-relaxed">
-          Shipping fast, breaking things occasionally, fixing them quickly. Everything I build gets posted here.
-          Hit me up via the feedback widget if something sucks or you want something built.
+          Shipping fast, breaking things occasionally, fixing them quickly. Everything I build gets posted here. Message me on the feedback widget if something breaks or if you have a feature request.
         </p>
       </div>
 
