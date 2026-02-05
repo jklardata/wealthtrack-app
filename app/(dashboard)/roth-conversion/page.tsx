@@ -48,6 +48,13 @@ interface YearlyProjection {
   withdrawalAmount: number;
   effectiveTaxRate: number;
   rmdAmount: number;
+  // New fields for enhanced modeling
+  income: number;
+  healthcareCost: number;
+  healthcareSubsidyEligible: boolean;
+  irmaaThreshold: boolean;
+  marginalTaxRate: number;
+  scenarioLabel: string;
 }
 
 interface ConversionAnalysis {
@@ -58,7 +65,48 @@ interface ConversionAnalysis {
   avgEffectiveTaxRate: number;
 }
 
-const TAX_BRACKETS_2026 = [
+// New types for multi-scenario engine
+type ConversionStrategy =
+  | "none"
+  | "fixed"
+  | "bracket-fill"
+  | "variable-optimized"
+  | "gap-year"
+  | "feie-transition"
+  | "pre-medicare";
+
+interface ConversionScenario {
+  id: string;
+  name: string;
+  strategy: ConversionStrategy;
+  description: string;
+  parameters: {
+    fixedAmount?: number;
+    bracketTarget?: number;
+    startYear?: number;
+    endYear?: number;
+    feieReturnYear?: number;
+    medicareTargetIncome?: number;
+  };
+}
+
+interface ScenarioComparison {
+  scenarioId: string;
+  scenarioName: string;
+  lifetimeTaxPaid: number;
+  lifetimeTaxSavings: number;
+  finalTraditionalBalance: number;
+  finalRothBalance: number;
+  averageEffectiveRate: number;
+  rmdReduction: number;
+  conversionYears: number[];
+  optimalityScore: number;
+}
+
+type TaxBracket = { min: number; max: number; rate: number };
+type FilingStatus = "single" | "married";
+
+const TAX_BRACKETS_2026: TaxBracket[] = [
   { min: 0, max: 11600, rate: 0.10 },
   { min: 11600, max: 47150, rate: 0.12 },
   { min: 47150, max: 100525, rate: 0.22 },
@@ -67,6 +115,22 @@ const TAX_BRACKETS_2026 = [
   { min: 243725, max: 609350, rate: 0.35 },
   { min: 609350, max: Infinity, rate: 0.37 },
 ];
+
+const TAX_BRACKETS_2026_MARRIED: TaxBracket[] = [
+  { min: 0, max: 23200, rate: 0.10 },
+  { min: 23200, max: 94300, rate: 0.12 },
+  { min: 94300, max: 201050, rate: 0.22 },
+  { min: 201050, max: 383900, rate: 0.24 },
+  { min: 383900, max: 487450, rate: 0.32 },
+  { min: 487450, max: 731200, rate: 0.35 },
+  { min: 731200, max: Infinity, rate: 0.37 },
+];
+
+// Healthcare subsidy and IRMAA thresholds (2026 estimates)
+const ACA_MAGI_LIMIT_SINGLE = 60000;
+const ACA_MAGI_LIMIT_MARRIED = 80000;
+const IRMAA_THRESHOLD_SINGLE = 106000;
+const IRMAA_THRESHOLD_MARRIED = 212000;
 
 function calculateFederalTax(income: number, brackets = TAX_BRACKETS_2026): number {
   let tax = 0;
@@ -106,6 +170,65 @@ function calculateRMD(balance: number, age: number): number {
   return balance / factor;
 }
 
+// New helper functions for enhanced modeling
+
+function getMarginalTaxRate(income: number, brackets: TaxBracket[]): number {
+  for (const bracket of brackets) {
+    if (income >= bracket.min && income < bracket.max) {
+      return bracket.rate;
+    }
+  }
+  return brackets[brackets.length - 1].rate;
+}
+
+function checkHealthcareSubsidyEligibility(
+  magi: number,
+  filingStatus: FilingStatus
+): { eligible: boolean; incomeLimit: number } {
+  const limit = filingStatus === "single" ? ACA_MAGI_LIMIT_SINGLE : ACA_MAGI_LIMIT_MARRIED;
+  return {
+    eligible: magi <= limit,
+    incomeLimit: limit,
+  };
+}
+
+function checkIRMAAThreshold(
+  magi: number,
+  filingStatus: FilingStatus
+): { triggered: boolean; threshold: number } {
+  const threshold = filingStatus === "single" ? IRMAA_THRESHOLD_SINGLE : IRMAA_THRESHOLD_MARRIED;
+  return {
+    triggered: magi > threshold,
+    threshold,
+  };
+}
+
+function calculateBracketFillConversion(
+  baseIncome: number,
+  targetBracketTop: number,
+  traditionalBalance: number,
+  brackets: TaxBracket[]
+): number {
+  // Find current bracket
+  let currentBracket = brackets[0];
+  for (const bracket of brackets) {
+    if (baseIncome >= bracket.min && baseIncome < bracket.max) {
+      currentBracket = bracket;
+      break;
+    }
+  }
+
+  // Calculate room in current bracket
+  const roomInBracket = Math.min(currentBracket.max - baseIncome, targetBracketTop - baseIncome);
+
+  // Don't convert more than available balance
+  return Math.min(Math.max(0, roomInBracket), traditionalBalance);
+}
+
+function getTaxBrackets(filingStatus: FilingStatus): TaxBracket[] {
+  return filingStatus === "single" ? TAX_BRACKETS_2026 : TAX_BRACKETS_2026_MARRIED;
+}
+
 export default function RothConversionPage() {
   // User inputs
   const [currentAge, setCurrentAge] = useState<number | null>(35);
@@ -122,6 +245,12 @@ export default function RothConversionPage() {
   const [yearsToModel, setYearsToModel] = useState(40);
   const [inflationRate, setInflationRate] = useState(3);
   const [futureTaxAssumption, setFutureTaxAssumption] = useState<"higher" | "same" | "lower">("same");
+
+  // New Phase 1 state variables
+  const [filingStatus, setFilingStatus] = useState<FilingStatus>("single");
+  const [healthcareCostPreMedicare, setHealthcareCostPreMedicare] = useState(15000);
+  const [healthcareCostPostMedicare, setHealthcareCostPostMedicare] = useState(8000);
+  const [selectedStrategy, setSelectedStrategy] = useState<ConversionStrategy>("fixed");
 
   // Fetch user settings
   useEffect(() => {
@@ -153,12 +282,15 @@ export default function RothConversionPage() {
     let roth = rothBalance;
     let taxable = taxableBalance;
 
+    // Get tax brackets based on filing status
+    const baseBrackets = getTaxBrackets(filingStatus);
+
     // Adjust future tax brackets
-    let futureBrackets = TAX_BRACKETS_2026;
+    let futureBrackets = baseBrackets;
     if (futureTaxAssumption === "higher") {
-      futureBrackets = TAX_BRACKETS_2026.map(b => ({ ...b, rate: b.rate * 1.15 }));
+      futureBrackets = baseBrackets.map(b => ({ ...b, rate: b.rate * 1.15 }));
     } else if (futureTaxAssumption === "lower") {
-      futureBrackets = TAX_BRACKETS_2026.map(b => ({ ...b, rate: b.rate * 0.85 }));
+      futureBrackets = baseBrackets.map(b => ({ ...b, rate: b.rate * 0.85 }));
     }
 
     for (let i = 0; i < yearsToModel; i++) {
@@ -210,6 +342,12 @@ export default function RothConversionPage() {
       // Tax calculation
       const estimatedTaxes = calculateFederalTax(taxableIncome, futureBrackets);
       const effectiveTaxRate = taxableIncome > 0 ? (estimatedTaxes / taxableIncome) * 100 : 0;
+      const marginalTaxRate = getMarginalTaxRate(taxableIncome, futureBrackets);
+
+      // Healthcare calculations
+      const healthcareCost = age < 65 ? healthcareCostPreMedicare : healthcareCostPostMedicare;
+      const subsidyCheck = checkHealthcareSubsidyEligibility(taxableIncome, filingStatus);
+      const irmaaCheck = checkIRMAAThreshold(taxableIncome, filingStatus);
 
       // After-tax conversion and RMD
       if (conversionAmount > 0) {
@@ -241,6 +379,13 @@ export default function RothConversionPage() {
         withdrawalAmount,
         effectiveTaxRate,
         rmdAmount,
+        // New Phase 1 fields
+        income: isRetired ? 0 : earlyRetirementIncome,
+        healthcareCost,
+        healthcareSubsidyEligible: subsidyCheck.eligible,
+        irmaaThreshold: irmaaCheck.triggered,
+        marginalTaxRate: marginalTaxRate * 100,
+        scenarioLabel: selectedStrategy,
       });
     }
 
@@ -259,6 +404,10 @@ export default function RothConversionPage() {
     yearsToModel,
     inflationRate,
     futureTaxAssumption,
+    filingStatus,
+    healthcareCostPreMedicare,
+    healthcareCostPostMedicare,
+    selectedStrategy,
   ]);
 
   // Analysis
