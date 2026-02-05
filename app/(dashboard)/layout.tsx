@@ -21,6 +21,7 @@ import {
   BookOpen,
   User,
   LineChart,
+  Activity,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -38,6 +39,7 @@ const navItems = [
   { href: "/portfolio-optimizer", label: "Portfolio Optimizer", icon: PieChart },
   { href: "/retirement", label: "Retirement Calculator", icon: Calculator },
   { href: "/early-retirement", label: "Early Retirement", icon: Sunrise },
+  { href: "/withdrawal-stress-test", label: "Withdrawal Stress Test", icon: Activity },
   { href: "/tax-calculator", label: "Tax Calculator", icon: Receipt },
   { href: "/tax-optimization", label: "Tax Optimization", icon: Lightbulb },
   { href: "/geo-arbitrage", label: "Geo Arbitrage", icon: Globe },
@@ -54,7 +56,7 @@ function Sidebar({ className }: { className?: string }) {
   return (
     <div className={cn("flex flex-col h-full", className)}>
       <div className="p-6 border-b border-slate-200">
-        <Link href="/dashboard" className="flex items-center gap-2">
+        <Link href="https://solofi.io" className="flex items-center gap-2">
           <TrendingUp className="h-6 w-6 text-emerald-600" />
           <span className="text-lg font-semibold text-slate-900">
             <span className="text-emerald-600">Solo</span>fi
@@ -112,7 +114,7 @@ export default function DashboardLayout({
       {/* Mobile Header */}
       <div className="flex flex-1 flex-col">
         <header className="md:hidden flex items-center justify-between p-4 border-b border-slate-200 bg-white">
-          <Link href="/dashboard" className="flex items-center gap-2">
+          <Link href="https://solofi.io" className="flex items-center gap-2">
             <TrendingUp className="h-5 w-5 text-emerald-600" />
             <span className="font-semibold text-slate-900">
               <span className="text-emerald-600">Solo</span>fi

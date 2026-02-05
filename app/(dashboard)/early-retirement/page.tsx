@@ -69,6 +69,7 @@ import {
   RefreshCcw,
   Wallet,
   BarChart3,
+  Activity,
 } from "lucide-react";
 import type { NetWorthEntry } from "@/lib/types";
 import {
@@ -483,6 +484,26 @@ export default function EarlyRetirementPage() {
                 <Button className="bg-emerald-600 hover:bg-emerald-700 whitespace-nowrap ml-4">
                   <BarChart3 className="h-4 w-4 mr-2" />
                   Scenario Planner
+                </Button>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Withdrawal Stress Test Callout */}
+        <Card className="bg-gradient-to-r from-orange-50 to-amber-50 border-orange-200">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-semibold text-slate-900 mb-1">Test Your Withdrawal Strategy</h3>
+                <p className="text-sm text-slate-600">
+                  Run Monte Carlo simulations to understand the probability your retirement plan will succeed.
+                </p>
+              </div>
+              <Link href="/withdrawal-stress-test">
+                <Button className="bg-orange-600 hover:bg-orange-700 whitespace-nowrap ml-4">
+                  <Activity className="h-4 w-4 mr-2" />
+                  Stress Test
                 </Button>
               </Link>
             </div>
