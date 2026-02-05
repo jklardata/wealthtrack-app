@@ -38,6 +38,7 @@ import {
   Legend,
   ResponsiveContainer,
   ReferenceLine,
+  ReferenceArea,
 } from "recharts";
 import { TrendingUp, Download, ArrowRight, AlertTriangle, Lightbulb, Calculator, Settings } from "lucide-react";
 
@@ -901,7 +902,9 @@ export default function RothConversionPage() {
           <CardHeader>
             <CardTitle className="text-2xl font-black">Portfolio Projection with Roth Conversions</CardTitle>
             <p className="text-base font-medium text-slate-600 mt-2">
-              Track how your account balances evolve with conversions. Green shading indicates optimal conversion years.
+              Track how your account balances evolve with conversions. Green shading shows optimal gap year conversion windows.
+              Dashed lines mark Medicare eligibility, tax bracket thresholds, and healthcare subsidy limits.
+              Hover over the chart for detailed tax and healthcare status at each age.
             </p>
           </CardHeader>
           <CardContent>
@@ -936,13 +939,44 @@ export default function RothConversionPage() {
                 />
                 <Tooltip
                   contentStyle={{ backgroundColor: "#fff", border: "2px solid #000", borderRadius: "8px", padding: "12px" }}
-                  labelStyle={{ fontWeight: "bold", fontSize: "14px" }}
-                  formatter={(value: any, name: string | undefined) => {
-                    if (name === "Traditional IRA") return [formatCurrency(value), name];
-                    if (name === "Roth IRA") return [formatCurrency(value), name];
-                    if (name === "Taxable") return [formatCurrency(value), name];
-                    if (name === "Conversion") return [formatCurrency(value), name];
-                    return [value, name];
+                  labelStyle={{ fontWeight: "bold", fontSize: "14px", marginBottom: "8px" }}
+                  content={({ active, payload, label }) => {
+                    if (active && payload && payload.length > 0) {
+                      const data = payload[0].payload as YearlyProjection;
+                      return (
+                        <div className="bg-white border-2 border-black rounded-lg p-3 shadow-lg">
+                          <p className="font-bold text-sm mb-2">Age {label} ({data.year})</p>
+                          <div className="space-y-1 text-xs">
+                            <p className="font-semibold text-amber-700">Traditional IRA: {formatCurrency(data.traditionalBalance)}</p>
+                            <p className="font-semibold text-emerald-700">Roth IRA: {formatCurrency(data.rothBalance)}</p>
+                            <p className="font-semibold text-blue-700">Taxable: {formatCurrency(data.taxableBalance)}</p>
+                            <p className="font-bold text-slate-900 border-t border-slate-300 pt-1 mt-1">
+                              Total: {formatCurrency(data.totalPortfolio)}
+                            </p>
+                            {data.conversionAmount > 0 && (
+                              <p className="font-semibold text-purple-700">Conversion: {formatCurrency(data.conversionAmount)}</p>
+                            )}
+                            <div className="border-t border-slate-300 pt-1 mt-1">
+                              <p className="font-medium text-slate-700">Effective Tax: {data.effectiveTaxRate.toFixed(1)}%</p>
+                              <p className="font-medium text-slate-700">Marginal Tax: {data.marginalTaxRate.toFixed(1)}%</p>
+                              {data.income > 0 && (
+                                <p className="font-medium text-slate-700">Income: {formatCurrency(data.income)}</p>
+                              )}
+                              {data.age < 65 && data.healthcareSubsidyEligible && (
+                                <p className="font-medium text-green-700">✓ ACA Subsidy Eligible</p>
+                              )}
+                              {data.irmaaThreshold && (
+                                <p className="font-medium text-red-700">⚠ IRMAA Triggered</p>
+                              )}
+                              {data.rmdAmount > 0 && (
+                                <p className="font-medium text-orange-700">RMD: {formatCurrency(data.rmdAmount)}</p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    }
+                    return null;
                   }}
                 />
                 <Legend
@@ -983,6 +1017,122 @@ export default function RothConversionPage() {
                   dot={false}
                   name="Conversion"
                 />
+
+                {/* Shaded Regions */}
+                {/* Gap Years - Optimal conversion window (retirement to RMD start at 72) */}
+                {retirementAge && retirementAge < 72 && (
+                  <ReferenceArea
+                    x1={retirementAge}
+                    x2={72}
+                    fill="#10b981"
+                    fillOpacity={0.1}
+                    label={{
+                      value: "Gap Years (Optimal Conversions)",
+                      position: "insideTop",
+                      fill: "#059669",
+                      fontSize: 12,
+                      fontWeight: 700,
+                    }}
+                  />
+                )}
+
+                {/* RMD Years (72+) */}
+                {currentAge && (
+                  <ReferenceArea
+                    x1={Math.max(72, currentAge)}
+                    x2={lifeExpectancy}
+                    fill="#94a3b8"
+                    fillOpacity={0.08}
+                    label={{
+                      value: "RMD Years",
+                      position: "insideTop",
+                      fill: "#64748b",
+                      fontSize: 12,
+                      fontWeight: 700,
+                    }}
+                  />
+                )}
+
+                {/* Reference Lines */}
+                {/* Medicare Eligibility at 65 */}
+                <ReferenceLine
+                  x={65}
+                  stroke="#3b82f6"
+                  strokeWidth={2}
+                  strokeDasharray="5 5"
+                  label={{
+                    value: "Medicare (65)",
+                    fill: "#2563eb",
+                    fontSize: 12,
+                    fontWeight: 700,
+                    position: "top",
+                  }}
+                />
+
+                {/* Tax Bracket Thresholds - 12% bracket top (Single: $47,150, Married: $94,300) */}
+                <ReferenceLine
+                  y={filingStatus === "single" ? 47150 : 94300}
+                  stroke="#22c55e"
+                  strokeWidth={1.5}
+                  strokeDasharray="3 3"
+                  label={{
+                    value: "12% Bracket",
+                    fill: "#16a34a",
+                    fontSize: 11,
+                    fontWeight: 600,
+                    position: "right",
+                  }}
+                />
+
+                {/* 22% bracket top (Single: $100,525, Married: $201,050) */}
+                <ReferenceLine
+                  y={filingStatus === "single" ? 100525 : 201050}
+                  stroke="#eab308"
+                  strokeWidth={1.5}
+                  strokeDasharray="3 3"
+                  label={{
+                    value: "22% Bracket",
+                    fill: "#ca8a04",
+                    fontSize: 11,
+                    fontWeight: 600,
+                    position: "right",
+                  }}
+                />
+
+                {/* ACA Subsidy Threshold */}
+                {currentAge && currentAge < 65 && (
+                  <ReferenceLine
+                    y={filingStatus === "single" ? ACA_MAGI_LIMIT_SINGLE : ACA_MAGI_LIMIT_MARRIED}
+                    stroke="#f59e0b"
+                    strokeWidth={1.5}
+                    strokeDasharray="4 4"
+                    label={{
+                      value: "ACA Subsidy Limit",
+                      fill: "#d97706",
+                      fontSize: 11,
+                      fontWeight: 600,
+                      position: "right",
+                    }}
+                  />
+                )}
+
+                {/* IRMAA Threshold */}
+                {currentAge && currentAge >= 63 && (
+                  <ReferenceLine
+                    y={filingStatus === "single" ? IRMAA_THRESHOLD_SINGLE : IRMAA_THRESHOLD_MARRIED}
+                    stroke="#ef4444"
+                    strokeWidth={1.5}
+                    strokeDasharray="4 4"
+                    label={{
+                      value: "IRMAA Threshold",
+                      fill: "#dc2626",
+                      fontSize: 11,
+                      fontWeight: 600,
+                      position: "right",
+                    }}
+                  />
+                )}
+
                 {retirementAge && (
                   <ReferenceLine
                     x={retirementAge}
