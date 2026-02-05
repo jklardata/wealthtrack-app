@@ -22,6 +22,7 @@ import {
   User,
   LineChart,
   Activity,
+  MessageSquare,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -44,6 +45,7 @@ const navItems = [
   { href: "/tax-optimization", label: "Tax Optimization", icon: Lightbulb },
   { href: "/geo-arbitrage", label: "Geo Arbitrage", icon: Globe },
   { href: "/blog", label: "Resources", icon: BookOpen },
+  { href: "/founder-notes", label: "Founder Notes", icon: MessageSquare },
   { href: "/award-programs", label: "Award Programs", icon: Award, disabled: true },
   { href: "/pricing", label: "Pricing", icon: Sparkles },
   { href: "/profile", label: "Profile", icon: User },
