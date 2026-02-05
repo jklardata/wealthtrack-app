@@ -22,6 +22,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
+import {
   ComposedChart,
   Line,
   Area,
@@ -33,7 +39,7 @@ import {
   ResponsiveContainer,
   ReferenceLine,
 } from "recharts";
-import { TrendingUp, Download, ArrowRight, AlertTriangle, Lightbulb, Calculator } from "lucide-react";
+import { TrendingUp, Download, ArrowRight, AlertTriangle, Lightbulb, Calculator, Settings } from "lucide-react";
 
 interface YearlyProjection {
   year: number;
@@ -228,6 +234,59 @@ function calculateBracketFillConversion(
 function getTaxBrackets(filingStatus: FilingStatus): TaxBracket[] {
   return filingStatus === "single" ? TAX_BRACKETS_2026 : TAX_BRACKETS_2026_MARRIED;
 }
+
+// Scenario definitions for user selection
+const CONVERSION_SCENARIOS: ConversionScenario[] = [
+  {
+    id: "none",
+    name: "No Conversions (Baseline)",
+    strategy: "none",
+    description: "Make no Roth conversions. Use as baseline to compare other strategies.",
+    parameters: {},
+  },
+  {
+    id: "fixed",
+    name: "Fixed Annual Conversion",
+    strategy: "fixed",
+    description: "Convert a fixed dollar amount each year until retirement.",
+    parameters: { fixedAmount: 50000 },
+  },
+  {
+    id: "bracket-fill",
+    name: "Tax Bracket Fill",
+    strategy: "bracket-fill",
+    description: "Convert just enough to fill your current tax bracket without crossing into the next bracket.",
+    parameters: { bracketTarget: 100525 },
+  },
+  {
+    id: "gap-year",
+    name: "Gap Year Optimization",
+    strategy: "gap-year",
+    description: "Maximize conversions during low-income years between retirement and Social Security.",
+    parameters: {},
+  },
+  {
+    id: "variable-optimized",
+    name: "Variable Income Optimized",
+    strategy: "variable-optimized",
+    description: "Adapt conversion amounts based on your variable income each year.",
+    parameters: {},
+  },
+  {
+    id: "feie-transition",
+    name: "FEIE Return Transition",
+    strategy: "feie-transition",
+    description: "Aggressive conversions in the first 2-3 years after exiting FEIE.",
+    parameters: {},
+  },
+  {
+    id: "pre-medicare",
+    name: "Pre-Medicare Income Planning",
+    strategy: "pre-medicare",
+    description: "Keep income below thresholds to maintain ACA subsidies and avoid IRMAA.",
+    parameters: { medicareTargetIncome: 75000 },
+  },
+];
 
 export default function RothConversionPage() {
   // User inputs
@@ -588,6 +647,41 @@ export default function RothConversionPage() {
         </CardContent>
       </Card>
 
+      {/* Scenario Selector */}
+      <Card className="border-2 border-black">
+        <CardHeader>
+          <CardTitle className="text-2xl font-black flex items-center gap-3">
+            <Settings className="h-6 w-6 text-emerald-600" />
+            Select Conversion Strategy
+          </CardTitle>
+          <p className="text-base font-medium text-slate-600 mt-2">
+            Choose a conversion strategy to model. Each strategy optimizes for different retirement scenarios.
+          </p>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div>
+            <Label className="text-base font-bold">Conversion Strategy</Label>
+            <Select value={selectedStrategy} onValueChange={(v: ConversionStrategy) => setSelectedStrategy(v)}>
+              <SelectTrigger className="text-base font-semibold">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {CONVERSION_SCENARIOS.map((scenario) => (
+                  <SelectItem key={scenario.id} value={scenario.strategy}>
+                    {scenario.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="p-4 bg-slate-50 border-2 border-slate-200 rounded-lg">
+            <p className="text-sm font-medium text-slate-700 leading-relaxed">
+              {CONVERSION_SCENARIOS.find(s => s.strategy === selectedStrategy)?.description}
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Input Parameters */}
       <Card className="border-2 border-black">
         <CardHeader>
@@ -597,142 +691,207 @@ export default function RothConversionPage() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid md:grid-cols-3 gap-6">
-            {/* Age inputs */}
-            <div>
-              <Label className="text-base font-bold">Current Age</Label>
-              <Input
-                type="number"
-                value={currentAge || ""}
-                onChange={(e) => setCurrentAge(Number(e.target.value))}
-                className="text-base font-semibold"
-              />
-            </div>
-            <div>
-              <Label className="text-base font-bold">Target Retirement Age</Label>
-              <Input
-                type="number"
-                value={retirementAge}
-                onChange={(e) => setRetirementAge(Number(e.target.value))}
-                className="text-base font-semibold"
-              />
-            </div>
-            <div>
-              <Label className="text-base font-bold">Life Expectancy</Label>
-              <Input
-                type="number"
-                value={lifeExpectancy}
-                onChange={(e) => setLifeExpectancy(Number(e.target.value))}
-                className="text-base font-semibold"
-              />
-            </div>
+          <Tabs defaultValue="basic" className="w-full">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="basic" className="font-bold">Basic Inputs</TabsTrigger>
+              <TabsTrigger value="advanced" className="font-bold">Advanced</TabsTrigger>
+              <TabsTrigger value="healthcare" className="font-bold">Healthcare</TabsTrigger>
+            </TabsList>
 
-            {/* Account balances */}
-            <div>
-              <Label className="text-base font-bold">Traditional IRA Balance</Label>
-              <Input
-                type="number"
-                value={traditionalBalance}
-                onChange={(e) => setTraditionalBalance(Number(e.target.value))}
-                className="text-base font-semibold"
-              />
-            </div>
-            <div>
-              <Label className="text-base font-bold">Current Roth Balance</Label>
-              <Input
-                type="number"
-                value={rothBalance}
-                onChange={(e) => setRothBalance(Number(e.target.value))}
-                className="text-base font-semibold"
-              />
-            </div>
-            <div>
-              <Label className="text-base font-bold">Taxable Brokerage Balance</Label>
-              <Input
-                type="number"
-                value={taxableBalance}
-                onChange={(e) => setTaxableBalance(Number(e.target.value))}
-                className="text-base font-semibold"
-              />
-            </div>
+            {/* Basic Tab */}
+            <TabsContent value="basic" className="space-y-6 mt-6">
+              <div className="grid md:grid-cols-3 gap-6">
+                <div>
+                  <Label className="text-base font-bold">Current Age</Label>
+                  <Input
+                    type="number"
+                    value={currentAge || ""}
+                    onChange={(e) => setCurrentAge(Number(e.target.value))}
+                    className="text-base font-semibold"
+                  />
+                </div>
+                <div>
+                  <Label className="text-base font-bold">Target Retirement Age</Label>
+                  <Input
+                    type="number"
+                    value={retirementAge}
+                    onChange={(e) => setRetirementAge(Number(e.target.value))}
+                    className="text-base font-semibold"
+                  />
+                </div>
+                <div>
+                  <Label className="text-base font-bold">Life Expectancy</Label>
+                  <Input
+                    type="number"
+                    value={lifeExpectancy}
+                    onChange={(e) => setLifeExpectancy(Number(e.target.value))}
+                    className="text-base font-semibold"
+                  />
+                </div>
 
-            {/* Spending and returns */}
-            <div>
-              <Label className="text-base font-bold">Annual Spending in Retirement</Label>
-              <Input
-                type="number"
-                value={annualSpending}
-                onChange={(e) => setAnnualSpending(Number(e.target.value))}
-                className="text-base font-semibold"
-              />
-            </div>
-            <div>
-              <Label className="text-base font-bold">Expected Annual Return (%)</Label>
-              <Input
-                type="number"
-                value={expectedReturn}
-                onChange={(e) => setExpectedReturn(Number(e.target.value))}
-                className="text-base font-semibold"
-              />
-            </div>
-            <div>
-              <Label className="text-base font-bold">Early Retirement Income</Label>
-              <Input
-                type="number"
-                value={earlyRetirementIncome}
-                onChange={(e) => setEarlyRetirementIncome(Number(e.target.value))}
-                className="text-base font-semibold"
-              />
-              <p className="text-xs text-slate-500 mt-1">Part-time work, consulting, etc.</p>
-            </div>
+                <div>
+                  <Label className="text-base font-bold">Traditional IRA Balance</Label>
+                  <Input
+                    type="number"
+                    value={traditionalBalance}
+                    onChange={(e) => setTraditionalBalance(Number(e.target.value))}
+                    className="text-base font-semibold"
+                  />
+                </div>
+                <div>
+                  <Label className="text-base font-bold">Current Roth Balance</Label>
+                  <Input
+                    type="number"
+                    value={rothBalance}
+                    onChange={(e) => setRothBalance(Number(e.target.value))}
+                    className="text-base font-semibold"
+                  />
+                </div>
+                <div>
+                  <Label className="text-base font-bold">Taxable Brokerage Balance</Label>
+                  <Input
+                    type="number"
+                    value={taxableBalance}
+                    onChange={(e) => setTaxableBalance(Number(e.target.value))}
+                    className="text-base font-semibold"
+                  />
+                </div>
 
-            {/* Conversion parameters */}
-            <div>
-              <Label className="text-base font-bold">Annual Conversion Amount</Label>
-              <Input
-                type="number"
-                value={annualConversion}
-                onChange={(e) => setAnnualConversion(Number(e.target.value))}
-                className="text-base font-semibold"
-              />
-            </div>
-            <div>
-              <Label className="text-base font-bold">Years to Model</Label>
-              <Input
-                type="number"
-                value={yearsToModel}
-                onChange={(e) => setYearsToModel(Number(e.target.value))}
-                className="text-base font-semibold"
-              />
-            </div>
-            <div>
-              <Label className="text-base font-bold">Inflation Rate (%)</Label>
-              <Input
-                type="number"
-                value={inflationRate}
-                onChange={(e) => setInflationRate(Number(e.target.value))}
-                className="text-base font-semibold"
-              />
-            </div>
+                <div>
+                  <Label className="text-base font-bold">Annual Spending in Retirement</Label>
+                  <Input
+                    type="number"
+                    value={annualSpending}
+                    onChange={(e) => setAnnualSpending(Number(e.target.value))}
+                    className="text-base font-semibold"
+                  />
+                </div>
+                <div>
+                  <Label className="text-base font-bold">Expected Annual Return (%)</Label>
+                  <Input
+                    type="number"
+                    value={expectedReturn}
+                    onChange={(e) => setExpectedReturn(Number(e.target.value))}
+                    className="text-base font-semibold"
+                  />
+                </div>
+              </div>
+            </TabsContent>
 
-            {/* Future tax assumption */}
-            <div className="md:col-span-3">
-              <Label className="text-base font-bold">Future Tax Rate Assumption</Label>
-              <Select value={futureTaxAssumption} onValueChange={(v: any) => setFutureTaxAssumption(v)}>
-                <SelectTrigger className="text-base font-semibold">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="lower">Lower than today</SelectItem>
-                  <SelectItem value="same">Same as today</SelectItem>
-                  <SelectItem value="higher">Higher than today</SelectItem>
-                </SelectContent>
-              </Select>
-              <p className="text-xs text-slate-500 mt-1">
-                Most advisors expect higher future rates given federal debt levels
-              </p>
-            </div>
-          </div>
+            {/* Advanced Tab */}
+            <TabsContent value="advanced" className="space-y-6 mt-6">
+              <div className="grid md:grid-cols-3 gap-6">
+                <div>
+                  <Label className="text-base font-bold">Annual Conversion Amount</Label>
+                  <Input
+                    type="number"
+                    value={annualConversion}
+                    onChange={(e) => setAnnualConversion(Number(e.target.value))}
+                    className="text-base font-semibold"
+                  />
+                  <p className="text-xs text-slate-500 mt-1">Used for Fixed Annual strategy</p>
+                </div>
+                <div>
+                  <Label className="text-base font-bold">Years to Model</Label>
+                  <Input
+                    type="number"
+                    value={yearsToModel}
+                    onChange={(e) => setYearsToModel(Number(e.target.value))}
+                    className="text-base font-semibold"
+                  />
+                </div>
+                <div>
+                  <Label className="text-base font-bold">Inflation Rate (%)</Label>
+                  <Input
+                    type="number"
+                    value={inflationRate}
+                    onChange={(e) => setInflationRate(Number(e.target.value))}
+                    className="text-base font-semibold"
+                  />
+                </div>
+
+                <div>
+                  <Label className="text-base font-bold">Early Retirement Income</Label>
+                  <Input
+                    type="number"
+                    value={earlyRetirementIncome}
+                    onChange={(e) => setEarlyRetirementIncome(Number(e.target.value))}
+                    className="text-base font-semibold"
+                  />
+                  <p className="text-xs text-slate-500 mt-1">Part-time work, consulting, etc.</p>
+                </div>
+
+                <div className="md:col-span-2">
+                  <Label className="text-base font-bold">Future Tax Rate Assumption</Label>
+                  <Select value={futureTaxAssumption} onValueChange={(v: any) => setFutureTaxAssumption(v)}>
+                    <SelectTrigger className="text-base font-semibold">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="lower">Lower than today</SelectItem>
+                      <SelectItem value="same">Same as today</SelectItem>
+                      <SelectItem value="higher">Higher than today</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-slate-500 mt-1">
+                    Most advisors expect higher future rates given federal debt levels
+                  </p>
+                </div>
+              </div>
+            </TabsContent>
+
+            {/* Healthcare Tab */}
+            <TabsContent value="healthcare" className="space-y-6 mt-6">
+              <div className="grid md:grid-cols-3 gap-6">
+                <div>
+                  <Label className="text-base font-bold">Tax Filing Status</Label>
+                  <Select value={filingStatus} onValueChange={(v: FilingStatus) => setFilingStatus(v)}>
+                    <SelectTrigger className="text-base font-semibold">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="single">Single</SelectItem>
+                      <SelectItem value="married">Married Filing Jointly</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-slate-500 mt-1">
+                    Affects tax brackets, ACA subsidy limits, and IRMAA thresholds
+                  </p>
+                </div>
+
+                <div>
+                  <Label className="text-base font-bold">Pre-Medicare Healthcare Cost</Label>
+                  <Input
+                    type="number"
+                    value={healthcareCostPreMedicare}
+                    onChange={(e) => setHealthcareCostPreMedicare(Number(e.target.value))}
+                    className="text-base font-semibold"
+                  />
+                  <p className="text-xs text-slate-500 mt-1">Annual cost before age 65</p>
+                </div>
+
+                <div>
+                  <Label className="text-base font-bold">Post-Medicare Healthcare Cost</Label>
+                  <Input
+                    type="number"
+                    value={healthcareCostPostMedicare}
+                    onChange={(e) => setHealthcareCostPostMedicare(Number(e.target.value))}
+                    className="text-base font-semibold"
+                  />
+                  <p className="text-xs text-slate-500 mt-1">Annual cost after age 65</p>
+                </div>
+              </div>
+
+              <div className="p-4 bg-amber-50 border-2 border-amber-200 rounded-lg">
+                <p className="text-sm font-bold text-amber-900 mb-2">Healthcare Planning Notes</p>
+                <div className="space-y-1 text-sm font-medium text-amber-800">
+                  <p>• ACA subsidy eligibility ends at ${filingStatus === "single" ? "60,000" : "80,000"} MAGI</p>
+                  <p>• Medicare IRMAA surcharges start at ${filingStatus === "single" ? "106,000" : "212,000"} MAGI</p>
+                  <p>• IRMAA uses 2-year lookback, so plan conversions carefully before age 63</p>
+                </div>
+              </div>
+            </TabsContent>
+          </Tabs>
         </CardContent>
       </Card>
 
