@@ -1,12 +1,10 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Sparkles, Zap, Bug, Lightbulb, MessageSquare } from "lucide-react";
+import { Sparkles, Zap, Bug, Lightbulb } from "lucide-react";
 
 interface ChangelogEntry {
   date: string;
-  version?: string;
   title: string;
   type: "feature" | "improvement" | "fix" | "note";
   content: string;
@@ -96,76 +94,67 @@ const typeConfig = {
   feature: {
     icon: Sparkles,
     label: "New Feature",
-    color: "bg-emerald-100 text-emerald-700 border-emerald-200",
+    color: "bg-emerald-100 text-emerald-700 border-emerald-300",
   },
   improvement: {
     icon: Zap,
     label: "Improvement",
-    color: "bg-blue-100 text-blue-700 border-blue-200",
+    color: "bg-blue-100 text-blue-700 border-blue-300",
   },
   fix: {
     icon: Bug,
     label: "Bug Fix",
-    color: "bg-amber-100 text-amber-700 border-amber-200",
+    color: "bg-amber-100 text-amber-700 border-amber-300",
   },
   note: {
     icon: Lightbulb,
     label: "Note",
-    color: "bg-purple-100 text-purple-700 border-purple-200",
+    color: "bg-purple-100 text-purple-700 border-purple-300",
   },
 };
 
 export default function FounderNotesPage() {
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="max-w-5xl mx-auto space-y-10 py-4">
       {/* Header */}
-      <div className="space-y-3">
-        <div className="flex items-center gap-3">
-          <MessageSquare className="h-8 w-8 text-emerald-600" />
-          <h1 className="text-3xl font-bold text-slate-900">Founder Notes</h1>
-        </div>
-        <p className="text-slate-600 leading-relaxed">
-          Transparent updates on what I'm building, improving, and learning. Building Solofi in public as a solo founder.
+      <div className="space-y-4">
+        <h1 className="text-5xl font-black text-slate-900">Founder Notes</h1>
+        <p className="text-xl font-semibold text-slate-700">
+          Building SoloFI in public. Real updates, no BS.
         </p>
       </div>
 
-      {/* Introduction Card */}
-      <Card className="bg-gradient-to-br from-emerald-50 via-white to-teal-50 border-emerald-200 shadow-sm">
-        <CardContent className="pt-6">
-          <p className="text-sm text-slate-700 leading-relaxed">
-            👋 Hey there! I'm Justin, the founder building Solofi. This page is my commitment to transparency —
-            you'll find all updates, new features, improvements, and honest notes about the journey here.
-            As a solo founder, I ship fast and iterate based on your feedback. Have ideas? Reach out via the feedback widget!
-          </p>
-        </CardContent>
-      </Card>
+      {/* Introduction */}
+      <div className="space-y-3">
+        <p className="text-lg font-medium text-slate-800 leading-relaxed">
+          I'm Justin. Built SoloFI because I was tired of paying $200/month for basic retirement calculators
+          when I left consulting to go solo. Most tools are designed for W-2 employees with steady paychecks—not
+          for people like us dealing with variable income, multiple revenue streams, and actually wanting to
+          understand the math.
+        </p>
+        <p className="text-lg font-medium text-slate-800 leading-relaxed">
+          Shipping fast, breaking things occasionally, fixing them quickly. Everything I build gets posted here.
+          Hit me up via the feedback widget if something sucks or you want something built.
+        </p>
+      </div>
 
       {/* Changelog Entries */}
-      <div className="space-y-6">
+      <div className="space-y-8">
         {changelogData.map((entry, index) => {
           const TypeIcon = typeConfig[entry.type].icon;
 
           return (
-            <Card key={index} className="bg-white border-slate-200 shadow-sm hover:shadow-md transition-shadow">
-              <CardHeader>
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1 space-y-2">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <Badge variant="outline" className={typeConfig[entry.type].color}>
-                        <TypeIcon className="h-3 w-3 mr-1" />
-                        {typeConfig[entry.type].label}
-                      </Badge>
-                      {entry.version && (
-                        <Badge variant="outline" className="bg-slate-100 text-slate-700 border-slate-200">
-                          v{entry.version}
-                        </Badge>
-                      )}
-                    </div>
-                    <CardTitle className="text-xl font-semibold text-slate-900">
-                      {entry.title}
-                    </CardTitle>
-                  </div>
-                  <time className="text-sm text-slate-500 font-medium whitespace-nowrap">
+            <div
+              key={index}
+              className="border-2 border-black p-6 bg-white space-y-4"
+            >
+              <div className="flex items-start justify-between gap-4 flex-wrap">
+                <div className="flex items-center gap-3 flex-wrap">
+                  <Badge variant="outline" className={`${typeConfig[entry.type].color} border-2`}>
+                    <TypeIcon className="h-4 w-4 mr-1.5" />
+                    <span className="font-bold">{typeConfig[entry.type].label}</span>
+                  </Badge>
+                  <time className="text-base font-bold text-slate-600">
                     {new Date(entry.date).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
@@ -173,36 +162,30 @@ export default function FounderNotesPage() {
                     })}
                   </time>
                 </div>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <p className="text-slate-700 leading-relaxed">
-                  {entry.content}
-                </p>
-                {entry.details && entry.details.length > 0 && (
-                  <ul className="space-y-1.5 pl-4">
-                    {entry.details.map((detail, idx) => (
-                      <li key={idx} className="text-sm text-slate-600 flex items-start gap-2">
-                        <span className="text-emerald-500 mt-0.5">•</span>
-                        <span>{detail}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </CardContent>
-            </Card>
+              </div>
+
+              <h2 className="text-2xl font-black text-slate-900">
+                {entry.title}
+              </h2>
+
+              <p className="text-lg font-medium text-slate-800 leading-relaxed">
+                {entry.content}
+              </p>
+
+              {entry.details && entry.details.length > 0 && (
+                <ul className="space-y-2 pl-6">
+                  {entry.details.map((detail, idx) => (
+                    <li key={idx} className="text-base font-semibold text-slate-700 flex items-start gap-3">
+                      <span className="text-emerald-600 font-black mt-0.5">→</span>
+                      <span>{detail}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           );
         })}
       </div>
-
-      {/* Footer CTA */}
-      <Card className="bg-gradient-to-br from-blue-50 via-white to-indigo-50 border-blue-200 shadow-sm">
-        <CardContent className="pt-6 text-center">
-          <p className="text-sm text-slate-700 leading-relaxed">
-            Want to influence what gets built next? Use the feedback widget in the bottom right corner or reach out directly.
-            Your input shapes the roadmap.
-          </p>
-        </CardContent>
-      </Card>
     </div>
   );
 }
