@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { useSubscription } from "@/hooks/use-subscription";
+import { LockedModule } from "@/components/locked-module";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -107,6 +109,7 @@ function runMonteCarloSimulation(
 }
 
 export default function WithdrawalStressTestPage() {
+  const { isPro } = useSubscription();
   const [initialPortfolio, setInitialPortfolio] = useState(1000000);
   const [annualWithdrawal, setAnnualWithdrawal] = useState(40000);
   const [years, setYears] = useState(30);
@@ -372,24 +375,17 @@ export default function WithdrawalStressTestPage() {
         </div>
 
         {/* Chart */}
-        <Card className="bg-white border-slate-200 shadow-sm">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <div>
-                <CardTitle className="text-xl font-semibold text-slate-900">
-                  Retirement Success Probability Over Time
-                </CardTitle>
-                <CardDescription className="mt-1">
-                  Based on {iterations.toLocaleString()} Monte Carlo simulations
-                </CardDescription>
-              </div>
-              <Button onClick={handleExport} variant="outline" size="sm">
-                <Download className="h-4 w-4 mr-2" />
-                Export Data
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
+        {isPro ? (
+          <Card className="bg-white border-slate-200 shadow-sm">
+            <CardHeader>
+              <CardTitle className="text-xl font-semibold text-slate-900">
+                Retirement Success Probability Over Time
+              </CardTitle>
+              <CardDescription className="mt-1">
+                Based on {iterations.toLocaleString()} Monte Carlo simulations
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
             <ResponsiveContainer width="100%" height={400}>
               <ComposedChart data={simulationData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
                 <defs>
@@ -402,20 +398,20 @@ export default function WithdrawalStressTestPage() {
                 <XAxis
                   dataKey="year"
                   stroke="#94a3b8"
-                  tick={{ fill: "#64748b", fontSize: 12 }}
-                  label={{ value: "Years in Retirement", position: "insideBottom", offset: -10, fill: "#64748b" }}
+                  tick={{ fill: "#64748b", fontSize: 14, fontWeight: 500 }}
+                  label={{ value: "Years in Retirement", position: "insideBottom", offset: -10, fill: "#64748b", fontSize: 14, fontWeight: 500 }}
                 />
                 <YAxis
                   stroke="#94a3b8"
-                  tick={{ fill: "#64748b", fontSize: 12 }}
+                  tick={{ fill: "#64748b", fontSize: 14, fontWeight: 500 }}
                   tickFormatter={(value) => `${value}%`}
-                  label={{ value: "Success Rate", angle: -90, position: "insideLeft", fill: "#64748b" }}
+                  label={{ value: "Success Rate", angle: -90, position: "insideLeft", fill: "#64748b", fontSize: 14, fontWeight: 500 }}
                   domain={[0, 100]}
                 />
                 <Tooltip content={<CustomTooltip />} />
-                <ReferenceLine y={90} stroke="#10b981" strokeDasharray="3 3" label={{ value: "90%", fill: "#10b981", fontSize: 11 }} />
-                <ReferenceLine y={75} stroke="#f59e0b" strokeDasharray="3 3" label={{ value: "75%", fill: "#f59e0b", fontSize: 11 }} />
-                <ReferenceLine y={50} stroke="#ef4444" strokeDasharray="3 3" label={{ value: "50%", fill: "#ef4444", fontSize: 11 }} />
+                <ReferenceLine y={90} stroke="#10b981" strokeDasharray="3 3" label={{ value: "90%", fill: "#10b981", fontSize: 13, fontWeight: 600 }} />
+                <ReferenceLine y={75} stroke="#f59e0b" strokeDasharray="3 3" label={{ value: "75%", fill: "#f59e0b", fontSize: 13, fontWeight: 600 }} />
+                <ReferenceLine y={50} stroke="#ef4444" strokeDasharray="3 3" label={{ value: "50%", fill: "#ef4444", fontSize: 13, fontWeight: 600 }} />
                 <Area
                   type="monotone"
                   dataKey="successRate"
@@ -428,9 +424,9 @@ export default function WithdrawalStressTestPage() {
                   type="monotone"
                   dataKey="successRate"
                   stroke="#10b981"
-                  strokeWidth={3}
-                  dot={{ r: 4, fill: "#10b981", strokeWidth: 2, stroke: "#fff" }}
-                  activeDot={{ r: 6, fill: "#10b981" }}
+                  strokeWidth={4}
+                  dot={{ r: 5, fill: "#10b981", strokeWidth: 2, stroke: "#fff" }}
+                  activeDot={{ r: 7, fill: "#10b981" }}
                   isAnimationActive={true}
                   animationDuration={1500}
                   animationEasing="ease-in-out"
@@ -453,14 +449,36 @@ export default function WithdrawalStressTestPage() {
             </div>
           </CardContent>
         </Card>
+        ) : (
+          <LockedModule
+            title="Retirement Success Probability Over Time"
+            description="Monte Carlo simulation showing probability of portfolio success over your retirement timeline"
+            icon={<Activity className="h-5 w-5 text-emerald-600" />}
+            benefits={[
+              "Visual chart with success probability over time",
+              "Reference lines at 90%, 75%, and 50% thresholds",
+              "Animated, interactive visualization",
+              "Based on 1,000 Monte Carlo simulations"
+            ]}
+          />
+        )}
 
         {/* Data Table */}
-        <Card className="bg-white border-slate-200 shadow-sm">
-          <CardHeader>
-            <CardTitle className="text-lg">Detailed Simulation Results</CardTitle>
-            <CardDescription>Year-by-year breakdown of all variables</CardDescription>
-          </CardHeader>
-          <CardContent>
+        {isPro ? (
+          <Card className="bg-white border-slate-200 shadow-sm">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="text-lg">Detailed Simulation Results</CardTitle>
+                  <CardDescription>Year-by-year breakdown of all variables</CardDescription>
+                </div>
+                <Button onClick={handleExport} variant="outline" size="sm">
+                  <Download className="h-4 w-4 mr-2" />
+                  Export CSV
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent>
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
@@ -491,6 +509,19 @@ export default function WithdrawalStressTestPage() {
             </div>
           </CardContent>
         </Card>
+        ) : (
+          <LockedModule
+            title="Detailed Simulation Results"
+            description="Complete year-by-year breakdown with export functionality"
+            icon={<Download className="h-5 w-5 text-emerald-600" />}
+            benefits={[
+              "Year-by-year success rates",
+              "Median and percentile portfolio balances",
+              "Annual withdrawal tracking",
+              "CSV export for further analysis"
+            ]}
+          />
+        )}
       </div>
     </div>
   );

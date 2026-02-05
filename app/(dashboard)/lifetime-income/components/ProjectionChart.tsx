@@ -99,14 +99,14 @@ export function ProjectionChart({ projection, expectedReturn = 7, incomeSources 
                 <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
                 <XAxis
                   dataKey="age"
-                  label={{ value: "Age", position: "insideBottom", offset: -5, fill: "#64748b", fontFamily: "system-ui, -apple-system, sans-serif" }}
-                  stroke="#cbd5e1"
-                  tick={{ fill: "#64748b", fontSize: 12, fontFamily: "system-ui, -apple-system, sans-serif" }}
+                  label={{ value: "Age", position: "insideBottom", offset: -5, fill: "#64748b", fontSize: 14, fontWeight: 500 }}
+                  stroke="#94a3b8"
+                  tick={{ fill: "#64748b", fontSize: 14, fontWeight: 500 }}
                 />
                 <YAxis
-                  stroke="#cbd5e1"
-                  tick={false}
-                  axisLine={false}
+                  stroke="#94a3b8"
+                  tick={{ fill: "#64748b", fontSize: 13, fontWeight: 500 }}
+                  tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
                 />
                 <Tooltip
                   formatter={(value: number | undefined) =>
@@ -121,13 +121,13 @@ export function ProjectionChart({ projection, expectedReturn = 7, incomeSources 
                   }}
                   labelStyle={{ color: "#0f172a", fontWeight: 600 }}
                 />
-                <Legend wrapperStyle={{ paddingTop: "10px" }} />
+                <Legend wrapperStyle={{ paddingTop: "10px", fontSize: 12, fontWeight: 600 }} />
                 <ReferenceLine y={0} stroke="#ef4444" strokeDasharray="3 3" strokeWidth={2} />
                 <Line
                   type="monotone"
                   dataKey="portfolioValue"
                   stroke="#10b981"
-                  strokeWidth={3}
+                  strokeWidth={4}
                   dot={false}
                   name="Portfolio Value"
                   fill="url(#portfolioGradient)"
@@ -144,14 +144,14 @@ export function ProjectionChart({ projection, expectedReturn = 7, incomeSources 
                 <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
                 <XAxis
                   dataKey="age"
-                  label={{ value: "Age", position: "insideBottom", offset: -5, fill: "#64748b", fontFamily: "system-ui, -apple-system, sans-serif" }}
-                  stroke="#cbd5e1"
-                  tick={{ fill: "#64748b", fontSize: 12, fontFamily: "system-ui, -apple-system, sans-serif" }}
+                  label={{ value: "Age", position: "insideBottom", offset: -5, fill: "#64748b", fontSize: 14, fontWeight: 500 }}
+                  stroke="#94a3b8"
+                  tick={{ fill: "#64748b", fontSize: 14, fontWeight: 500 }}
                 />
                 <YAxis
-                  stroke="#cbd5e1"
-                  tick={false}
-                  axisLine={false}
+                  stroke="#94a3b8"
+                  tick={{ fill: "#64748b", fontSize: 13, fontWeight: 500 }}
+                  tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
                 />
                 <Tooltip
                   formatter={(value: number | undefined) =>
@@ -166,7 +166,7 @@ export function ProjectionChart({ projection, expectedReturn = 7, incomeSources 
                   }}
                   labelStyle={{ color: "#0f172a", fontWeight: 600 }}
                 />
-                <Legend wrapperStyle={{ paddingTop: "10px" }} />
+                <Legend wrapperStyle={{ paddingTop: "10px", fontSize: 12, fontWeight: 600 }} />
                 {/* Stacked Bar Chart for Income Sources */}
                 <Bar
                   dataKey="workIncome"
@@ -201,7 +201,7 @@ export function ProjectionChart({ projection, expectedReturn = 7, incomeSources 
                   type="monotone"
                   dataKey="totalExpenses"
                   stroke="#047857"
-                  strokeWidth={3}
+                  strokeWidth={4}
                   strokeDasharray="5 5"
                   dot={false}
                   name="Total Expenses"
@@ -218,14 +218,14 @@ export function ProjectionChart({ projection, expectedReturn = 7, incomeSources 
                 <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
                 <XAxis
                   dataKey="age"
-                  label={{ value: "Age", position: "insideBottom", offset: -5, fill: "#64748b", fontFamily: "system-ui, -apple-system, sans-serif" }}
-                  stroke="#cbd5e1"
-                  tick={{ fill: "#64748b", fontSize: 12, fontFamily: "system-ui, -apple-system, sans-serif" }}
+                  label={{ value: "Age", position: "insideBottom", offset: -5, fill: "#64748b", fontSize: 14, fontWeight: 500 }}
+                  stroke="#94a3b8"
+                  tick={{ fill: "#64748b", fontSize: 14, fontWeight: 500 }}
                 />
                 <YAxis
-                  stroke="#cbd5e1"
-                  tick={false}
-                  axisLine={false}
+                  stroke="#94a3b8"
+                  tick={{ fill: "#64748b", fontSize: 13, fontWeight: 500 }}
+                  tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
                 />
                 <Tooltip
                   formatter={(value: number | undefined) => {
