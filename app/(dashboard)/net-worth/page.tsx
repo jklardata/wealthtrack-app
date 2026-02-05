@@ -730,9 +730,6 @@ export default function NetWorthPage() {
                     <p>
                       <strong>The first of the month is an ideal tracking cadence.</strong> Capturing your financial snapshot on the same calendar day each month—typically the 1st—provides clean month-over-month comparisons and removes variance from different month lengths. It also creates a ritual: you start each month by taking stock of where you stand, reviewing last month&apos;s changes, and setting intentions for the weeks ahead. This consistency compounds into powerful insight over years.
                     </p>
-                    <p>
-                      Net worth tracking encompasses more than just your checking account. Include all assets: retirement accounts (401(k), IRA), brokerage holdings, real estate equity, cash reserves, and even points or miles with redemption value. On the liability side, track mortgages, student loans, credit card balances, and any other debt. The complete picture reveals opportunities: perhaps you&apos;re holding too much cash earning nothing when you could pay down high-interest debt, or maybe your home equity has grown substantially, opening refinancing or investment options.
-                    </p>
                     <p className="text-slate-600 italic">
                       As a financial advisor would tell you: net worth is a lagging indicator of the small decisions you make daily. Track it consistently, and you&apos;ll develop an intuition for which behaviors move the needle. That coffee habit? Probably irrelevant. That annual bonus you invested instead of spent? Compounding visibly each month. The data doesn&apos;t lie, and over time, it becomes your most trusted financial advisor.
                     </p>

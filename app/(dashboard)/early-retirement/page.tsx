@@ -333,9 +333,6 @@ export default function EarlyRetirementPage() {
                     <p>
                       <strong>Savings rate is the compounding force multiplier.</strong> Consider two self-employed professionals: One earns $150,000 annually and saves 30% ($45,000). Another earns $100,000 but saves 50% ($50,000). The lower earner retires earlier because they&apos;ve optimized the relationship between earning and spending. For self-employed individuals, this often means strategic decisions around business expenses (is that office necessary, or does remote work suffice?), tax-advantaged retirement account contributions (maximize Solo 401(k) and SEP-IRA limits), and ruthless evaluation of recurring subscriptions and tools that don&apos;t directly generate revenue.
                     </p>
-                    <p>
-                      The FIRE framework provides additional nuance: <strong>CoastFI</strong> (the point where you can stop saving because invested assets will grow to retirement needs), <strong>BaristaFI</strong> (semi-retirement where part-time work covers living expenses while investments compound), and <strong>FatFIRE</strong> (retirement with a more comfortable lifestyle budget). As a self-employed professional, you have the flexibility to design hybrid scenarios: perhaps you dial down client work by 50% once you hit CoastFI, maintaining creative fulfillment while your portfolio does the heavy lifting.
-                    </p>
                     <p className="text-slate-600 italic">
                       Think of early retirement planning as engineering your escape velocity. Your income is the initial thrust, but your savings rate determines whether you break free from the gravitational pull of perpetual work. Every percentage point increase in savings rate translates to months or years of reclaimed life. The control center below helps you model these variables, explore scenarios, and identify the specific combination of income, savings, and timeline that aligns with your definition of financial independence. The path exists—you just need to illuminate it with data.
                     </p>
@@ -488,6 +485,25 @@ export default function EarlyRetirementPage() {
                   Scenario Planner
                 </Button>
               </Link>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* FIRE Framework Explanation */}
+        <Card className="bg-gradient-to-br from-purple-50 via-white to-pink-50 border-purple-200 shadow-sm">
+          <CardContent className="pt-6">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                <Target className="h-5 w-5 text-purple-600" />
+              </div>
+              <div>
+                <h3 className="text-base font-semibold text-slate-900 mb-2">
+                  Understanding FIRE Strategies
+                </h3>
+                <p className="text-sm text-slate-700 leading-relaxed">
+                  The FIRE framework provides additional nuance: <strong>CoastFI</strong> (the point where you can stop saving because invested assets will grow to retirement needs), <strong>BaristaFI</strong> (semi-retirement where part-time work covers living expenses while investments compound), and <strong>FatFIRE</strong> (retirement with a more comfortable lifestyle budget). As a self-employed professional, you have the flexibility to design hybrid scenarios: perhaps you dial down client work by 50% once you hit CoastFI, maintaining creative fulfillment while your portfolio does the heavy lifting.
+                </p>
+              </div>
             </div>
           </CardContent>
         </Card>

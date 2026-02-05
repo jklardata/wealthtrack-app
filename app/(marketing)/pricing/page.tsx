@@ -1,16 +1,34 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { Check, Minus, ArrowRight, Shield, Lock, Eye } from "lucide-react";
-import { STRIPE_PRICES } from "@/lib/stripe-config";
+
+interface PriceIds {
+  pro: { monthly: string; yearly: string };
+}
 
 export default function PricingPage() {
   const { isSignedIn } = useAuth();
   const [billingInterval, setBillingInterval] = useState<"monthly" | "yearly">("monthly");
   const [isLoading, setIsLoading] = useState(false);
+  const [priceIds, setPriceIds] = useState<PriceIds | null>(null);
+
+  // Fetch price IDs from the server API
+  useEffect(() => {
+    async function fetchPriceIds() {
+      try {
+        const response = await fetch("/api/stripe/prices");
+        const data = await response.json();
+        setPriceIds(data);
+      } catch (error) {
+        console.error("Error fetching price IDs:", error);
+      }
+    }
+    fetchPriceIds();
+  }, []);
 
   const handleProCheckout = async () => {
     // Redirect to sign-up if not authenticated
@@ -21,9 +39,10 @@ export default function PricingPage() {
 
     setIsLoading(true);
     try {
-      const priceId = billingInterval === "monthly"
-        ? STRIPE_PRICES.pro.monthly
-        : STRIPE_PRICES.pro.yearly;
+      // Get price ID from fetched data
+      const priceId = priceIds
+        ? (billingInterval === "monthly" ? priceIds.pro.monthly : priceIds.pro.yearly)
+        : "";
 
       // Validate that price ID is configured
       if (!priceId) {
