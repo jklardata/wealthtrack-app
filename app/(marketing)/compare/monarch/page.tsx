@@ -71,7 +71,7 @@ export default function MonarchComparison() {
       ]}
       verdict={{
         title: "Monarch is excellent, but built for employees",
-        description: "Monarch Money is arguably the best Mint replacement for W-2 employees and households. But freelancers have unique needs - SE tax, quarterly payments, Solo 401k optimization - that Monarch simply doesn't address. SoloFI fills that gap.",
+        description: "Monarch Money is arguably the best Mint replacement for W-2 employees and households. But freelancers have unique needs—SE tax, quarterly payments, Solo 401k optimization—that Monarch simply doesn't address. SoloFI fills that gap.",
         chooseSolofi: [
           "Are self-employed or have freelance income",
           "Need quarterly tax estimation",

@@ -214,7 +214,7 @@ export default function WorkingRemotelyArticle() {
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-amber-400 font-bold">3.</span>
-                <span className="text-slate-700">Get proper visas - tourist visas usually don't allow remote work legally</span>
+                <span className="text-slate-700">Get proper visas—tourist visas usually don't allow remote work legally</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-amber-400 font-bold">4.</span>
@@ -222,7 +222,7 @@ export default function WorkingRemotelyArticle() {
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-amber-400 font-bold">5.</span>
-                <span className="text-slate-700">Consider your state tax residency carefully - some states continue taxing you</span>
+                <span className="text-slate-700">Consider your state tax residency carefully—some states continue taxing you</span>
               </li>
             </ul>
           </div>

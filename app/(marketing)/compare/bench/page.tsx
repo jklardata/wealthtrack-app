@@ -69,7 +69,7 @@ export default function BenchComparison() {
       ]}
       verdict={{
         title: "Bench is bookkeeping; SoloFI is financial optimization",
-        description: "Bench solves the problem of 'I hate doing my books.' SoloFI solves the problem of 'Am I optimizing my freelance finances?' Most solopreneurs with simple businesses don't need $300/month bookkeeping - they need smart tools to make better financial decisions.",
+        description: "Bench solves the problem of 'I hate doing my books.' SoloFI solves the problem of 'Am I optimizing my freelance finances?' Most solopreneurs with simple businesses don't need $300/month bookkeeping—they need smart tools to make better financial decisions.",
         chooseSolofi: [
           "Have straightforward freelance finances",
           "Can categorize your own transactions",

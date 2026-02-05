@@ -69,7 +69,7 @@ export default function CopilotComparison() {
       ]}
       verdict={{
         title: "Copilot is great, but not for freelancers",
-        description: "Copilot is one of the best-designed personal finance apps available. But it treats all income the same - it doesn't understand the unique challenges of self-employment. If you're a freelancer, SoloFI's specialized tools will save you more money.",
+        description: "Copilot is one of the best-designed personal finance apps available. But it treats all income the same—it doesn't understand the unique challenges of self-employment. If you're a freelancer, SoloFI's specialized tools will save you more money.",
         chooseSolofi: [
           "Have self-employment or freelance income",
           "Need to estimate quarterly taxes",

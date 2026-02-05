@@ -312,7 +312,7 @@ export default function BecomeFreelancerArticle() {
             <div className="rounded-xl border border-slate-200 bg-white/5 p-5">
               <h4 className="font-semibold mb-3 text-slate-900">Retirement</h4>
               <ul className="space-y-2 text-sm text-slate-500">
-                <li>Solo 401(k) - highest limits</li>
+                <li>Solo 401(k) (highest limits)</li>
                 <li>SEP-IRA as simpler alternative</li>
                 <li>Backdoor Roth IRA</li>
               </ul>

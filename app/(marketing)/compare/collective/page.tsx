@@ -67,7 +67,7 @@ export default function CollectiveComparison() {
       ]}
       verdict={{
         title: "Different tools for different situations",
-        description: "Collective is a premium done-for-you service that makes sense for high earners who value convenience. SoloFI helps you understand your options and optimize your entire financial picture - whether or not you go the S-Corp route.",
+        description: "Collective is a premium done-for-you service that makes sense for high earners who value convenience. SoloFI helps you understand your options and optimize your entire financial picture—whether or not you go the S-Corp route.",
         chooseSolofi: [
           "Want to understand S-Corp math before committing",
           "Earn $80K-$150K (Collective's fees eat your savings)",

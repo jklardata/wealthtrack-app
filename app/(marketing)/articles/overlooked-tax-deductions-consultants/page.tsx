@@ -406,7 +406,7 @@ export default function OverlookedDeductionsArticle() {
               Second, digitize and categorize receipts immediately. Apps like Expensify or QuickBooks let you snap a photo of every receipt and auto-categorize it. The IRS accepts digital records, and you'll never lose a receipt in a crumpled pile again. For mileage, use automatic tracking apps like MileIQ or Stride—they run in the background and log every trip, which you can then categorize as business or personal with a single swipe. Manual mileage logs are a nightmare; automated tracking takes zero effort.
             </p>
             <p className="text-slate-600 leading-relaxed">
-              Finally, document business purpose for meals and travel. The IRS wants to know who you met with and what you discussed, so get in the habit of writing it on the receipt or in the app description. "Lunch with Sarah - discussed Q1 marketing strategy" is perfect documentation. These practices sound tedious, but they become automatic within a month and can mean the difference between a $5,000 tax bill and a $500 refund.
+              Finally, document business purpose for meals and travel. The IRS wants to know who you met with and what you discussed, so get in the habit of writing it on the receipt or in the app description. "Lunch with Sarah—discussed Q1 marketing strategy" is perfect documentation. These practices sound tedious, but they become automatic within a month and can mean the difference between a $5,000 tax bill and a $500 refund.
             </p>
           </div>
         </section>

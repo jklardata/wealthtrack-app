@@ -545,11 +545,11 @@ export default function GeoArbitragePage() {
             <div className="space-y-2">
               <h3 className="font-semibold text-emerald-600">How to Use This Dashboard</h3>
               <ol className="text-sm text-slate-500 space-y-1 list-decimal list-inside">
-                <li><strong>Set your baseline city</strong> - where you currently live or earn income from</li>
-                <li><strong>Choose a city to compare</strong> - select a potential relocation destination</li>
-                <li><strong>Enter your financials</strong> - gross income, current spending, and net worth</li>
-                <li><strong>Review the hero metrics</strong> - see how many years faster you could reach FI</li>
-                <li><strong>Explore the table</strong> - click any row to see detailed spending breakdowns</li>
+                <li><strong>Set your baseline city</strong>: where you currently live or earn income from</li>
+                <li><strong>Choose a city to compare</strong>: select a potential relocation destination</li>
+                <li><strong>Enter your financials</strong>: gross income, current spending, and net worth</li>
+                <li><strong>Review the hero metrics</strong>: see how many years faster you could reach FI</li>
+                <li><strong>Explore the table</strong>: click any row to see detailed spending breakdowns</li>
               </ol>
               <p className="text-sm text-slate-500 mt-2">
                 <strong>Key insight:</strong> A city with a lower cost of living lets you save more,

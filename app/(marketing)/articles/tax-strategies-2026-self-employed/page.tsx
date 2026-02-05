@@ -226,7 +226,7 @@ export default function TaxStrategiesArticle() {
               <span className="w-6 h-6 bg-amber-500 text-black rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0">1</span>
               <div>
                 <strong className="text-slate-900">HSA (if eligible)</strong>
-                <p className="text-slate-500">Triple tax advantage - deductible, grows tax-free, tax-free withdrawals for medical</p>
+                <p className="text-slate-500">Triple tax advantage—deductible, grows tax-free, tax-free withdrawals for medical</p>
               </div>
             </li>
             <li className="flex items-start gap-3">

@@ -85,7 +85,7 @@ const QUESTIONS: Question[] = [
     id: 6,
     question: "How confident are you about your path to financial independence?",
     options: [
-      { text: "Very confident - I have a clear timeline", points: 4 },
+      { text: "Very confident—I have a clear timeline", points: 4 },
       { text: "Somewhat confident", points: 2 },
       { text: "Not very confident", points: 1 },
       { text: "I haven't really thought about FI", points: 0 },
@@ -148,7 +148,7 @@ const SCORE_CATEGORIES: ScoreCategory[] = [
     max: 7,
     title: "Time to Level Up",
     emoji: "sparkles",
-    description: "No judgment - most people start here! The good news? Small tracking habits lead to big financial wins.",
+    description: "No judgment—most people start here! The good news? Small tracking habits lead to big financial wins.",
     tips: [
       "List all your accounts in one place",
       "Check your net worth just once this month",

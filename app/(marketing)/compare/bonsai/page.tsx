@@ -71,7 +71,7 @@ export default function BonsaiComparison() {
       ]}
       verdict={{
         title: "Bonsai runs your business; SoloFI builds your wealth",
-        description: "Bonsai excels at the operational side of freelancing - contracts, invoices, client management. SoloFI excels at the financial optimization side - taxes, retirement, wealth building. Many freelancers benefit from using both.",
+        description: "Bonsai excels at the operational side of freelancing—contracts, invoices, client management. SoloFI excels at the financial optimization side—taxes, retirement, wealth building. Many freelancers benefit from using both.",
         chooseSolofi: [
           "Already have invoicing/contract tools (or don't need them)",
           "Want deep tax optimization features",
