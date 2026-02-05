@@ -161,9 +161,9 @@ function RiskQuestionnaire({
   const progress = ((currentQuestion + 1) / questions.length) * 100;
 
   return (
-    <Card className="bg-white border-slate-200 shadow-sm">
+    <Card className="bg-white border-2 border-black shadow-sm">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 font-medium text-slate-900">
+        <CardTitle className="flex items-center gap-3 text-2xl font-black text-slate-900">
           <Target className="h-5 w-5 text-emerald-600" />
           Risk Assessment
         </CardTitle>
@@ -189,7 +189,7 @@ function RiskQuestionnaire({
                 "w-full text-left p-4 rounded-lg border-2 transition-all",
                 selectedAnswer === option.score
                   ? "border-emerald-600 bg-emerald-50"
-                  : "border-slate-200 hover:border-emerald-300 hover:bg-slate-50"
+                  : "border-2 border-black hover:border-emerald-300 hover:bg-slate-50"
               )}
             >
               {option.text}
@@ -202,7 +202,7 @@ function RiskQuestionnaire({
             variant="outline"
             onClick={handleBack}
             disabled={currentQuestion === 0}
-            className="border-slate-200 text-slate-700 hover:bg-slate-100"
+            className="border-2 border-black text-slate-700 hover:bg-slate-100"
           >
             <ChevronLeft className="h-4 w-4 mr-1" />
             Back
@@ -487,7 +487,7 @@ function MarketValuationCard({ valuation }: { valuation: MarketValuation }) {
   return (
     <Card>
       <CardHeader className="pb-2">
-        <CardTitle className="text-base flex items-center gap-2">
+        <CardTitle className="text-xl font-black flex items-center gap-3">
           <Gauge className="h-4 w-4" />
           Market Valuation
         </CardTitle>
@@ -540,7 +540,7 @@ function AllocationBreakdownCard({
   return (
     <Card>
       <CardHeader className="pb-2">
-        <CardTitle className="text-base flex items-center gap-2">
+        <CardTitle className="text-xl font-black flex items-center gap-3">
           <Layers className="h-4 w-4" />
           Allocation Breakdown
         </CardTitle>
@@ -624,7 +624,7 @@ function StockBreakdownCard({
   return (
     <Card>
       <CardHeader className="pb-2">
-        <CardTitle className="text-base flex items-center gap-2">
+        <CardTitle className="text-xl font-black flex items-center gap-3">
           <TrendingUp className="h-4 w-4 text-emerald-600" />
           Stock Allocation Breakdown
         </CardTitle>
@@ -787,7 +787,7 @@ function TaxLocationStrategyCard({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg flex items-center gap-2">
+        <CardTitle className="text-2xl font-black flex items-center gap-3">
           <Landmark className="h-5 w-5 text-emerald-600" />
           Tax Location Strategy
         </CardTitle>
@@ -947,7 +947,7 @@ export default function PortfolioOptimizerPage() {
   const [activeScenario, setActiveScenario] = useState<Scenario | null>(null);
 
   // Landing page 21 design - ensuring consistency
-  const cardClass = "bg-white border-slate-200 shadow-sm";
+  const cardClass = "bg-white border-2 border-black shadow-sm";
   const headerClass = "text-slate-900 font-medium";
   const mutedTextClass = "text-slate-500";
   const primaryBtnClass = "bg-emerald-600 hover:bg-emerald-700 text-white";
@@ -1126,7 +1126,7 @@ export default function PortfolioOptimizerPage() {
       <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
         <div className="max-w-7xl mx-auto space-y-6">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-medium text-slate-900">Portfolio Optimizer</h1>
+          <h1 className="text-4xl sm:text-5xl font-black text-slate-900">Portfolio Optimizer</h1>
           <p className="text-sm sm:text-base text-slate-500 mt-1">
             Let&apos;s determine your risk profile to provide personalized recommendations
           </p>
@@ -1138,7 +1138,7 @@ export default function PortfolioOptimizerPage() {
             onComplete={handleQuestionnaireComplete}
           />
         ) : (
-          <Card className="bg-white border-slate-200 shadow-sm">
+          <Card className="bg-white border-2 border-black shadow-sm">
             <CardContent className="py-8 text-center">
               <p className="text-slate-500">Loading questionnaire...</p>
             </CardContent>
@@ -1181,7 +1181,7 @@ export default function PortfolioOptimizerPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-medium text-slate-900">Portfolio Optimizer</h1>
+          <h1 className="text-4xl sm:text-5xl font-black text-slate-900">Portfolio Optimizer</h1>
           <p className="text-sm sm:text-base text-slate-500 mt-1">
             AI-powered portfolio recommendations based on Modern Portfolio Theory
           </p>
@@ -1190,7 +1190,7 @@ export default function PortfolioOptimizerPage() {
           <Button
             variant="outline"
             onClick={() => setShowQuestionnaire(true)}
-            className="border-slate-200 text-slate-700 hover:bg-slate-100"
+            className="border-2 border-black text-slate-700 hover:bg-slate-100"
           >
             Retake Assessment
           </Button>
@@ -1255,7 +1255,7 @@ export default function PortfolioOptimizerPage() {
 
       {/* Risk Profile Card */}
       {riskProfile && (
-        <Card className="bg-white border-slate-200 shadow-sm">
+        <Card className="bg-white border-2 border-black shadow-sm">
           <CardContent className="py-4">
             <div className="flex flex-wrap items-center gap-6">
               <div className="flex items-center gap-3">
@@ -1284,7 +1284,7 @@ export default function PortfolioOptimizerPage() {
       {activeScenario && activeScenario.annual_withdrawal_requirement > 0 && (
         <Card className="border-emerald-200 bg-emerald-50/50">
           <CardHeader className="pb-2">
-            <CardTitle className="text-base flex items-center gap-2">
+            <CardTitle className="text-xl font-black flex items-center gap-3">
               <TrendingDown className="h-4 w-4 text-emerald-600" />
               Withdrawal Context: {activeScenario.name}
             </CardTitle>
@@ -1343,8 +1343,8 @@ export default function PortfolioOptimizerPage() {
           </div>
 
           {/* Allocation Comparison - Full Width */}
-          <Card className="bg-white border-slate-200 shadow-sm">
-            <CardHeader className="bg-gradient-to-r from-emerald-50 to-blue-50 border-b border-slate-200">
+          <Card className="bg-white border-2 border-black shadow-sm">
+            <CardHeader className="bg-gradient-to-r from-emerald-50 to-blue-50 border-b border-2 border-black">
               <CardTitle className="flex items-center gap-2">
                 <Target className="h-5 w-5 text-emerald-600" />
                 Current vs Recommended Allocation
@@ -1380,7 +1380,7 @@ export default function PortfolioOptimizerPage() {
 
           {/* Key Metrics */}
           {isPro ? (
-            <Card className="bg-white border-slate-200 shadow-sm">
+            <Card className="bg-white border-2 border-black shadow-sm">
               <CardHeader>
                 <CardTitle className="font-medium text-slate-900">Expected Performance</CardTitle>
                 <div className="text-sm text-slate-600 mt-2 space-y-2">
@@ -1414,7 +1414,7 @@ export default function PortfolioOptimizerPage() {
                   </div>
                 </div>
 
-                <div className="flex items-start gap-2 p-3 bg-slate-50 rounded-lg text-sm border border-slate-200">
+                <div className="flex items-start gap-2 p-3 bg-slate-50 rounded-lg text-sm border border-2 border-black">
                   <Info className="h-4 w-4 mt-0.5 flex-shrink-0 text-slate-400" />
                   <span className="text-slate-600">
                     The Sharpe Ratio measures risk-adjusted return. Higher is better.
@@ -1434,7 +1434,7 @@ export default function PortfolioOptimizerPage() {
 
           {/* Rebalancing Actions */}
           {isPro ? (
-            <Card className="bg-white border-slate-200 shadow-sm">
+            <Card className="bg-white border-2 border-black shadow-sm">
               <CardHeader>
                 <CardTitle className="font-medium text-slate-900">Rebalancing Actions</CardTitle>
                 <div className="text-sm text-slate-600 mt-2 space-y-2">
@@ -1499,7 +1499,7 @@ export default function PortfolioOptimizerPage() {
 
           {/* Allocation Difference Chart */}
           {isPro ? (
-            <Card className="bg-white border-slate-200 shadow-sm">
+            <Card className="bg-white border-2 border-black shadow-sm">
               <CardHeader>
                 <CardTitle className="text-xl font-semibold text-slate-900" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
                   Allocation Difference

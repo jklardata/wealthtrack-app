@@ -31,7 +31,7 @@ export default function WhyTrackNetWorthArticle() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
         <div className="absolute bottom-6 left-6 right-6">
           <span className="text-sm font-medium text-white bg-emerald-600 px-3 py-1 rounded-full">Wealth Building</span>
-          <h1 className="text-3xl md:text-4xl font-medium text-white mt-3">Why Tracking Your Net Worth Over Time is Useful</h1>
+          <h1 className="text-3xl md:text-5xl font-black text-white mt-3">Why Tracking Your Net Worth Over Time is Useful</h1>
           <div className="flex items-center gap-4 mt-3 text-white/70 text-sm">
             <span className="flex items-center gap-1">
               <Calendar className="h-4 w-4" />
@@ -54,7 +54,7 @@ export default function WhyTrackNetWorthArticle() {
 
         {/* Section 1 */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">What Gets Measured Gets Managed</h2>
+          <h2 className="text-3xl font-black border-b-2 border-black pb-3">What Gets Measured Gets Managed</h2>
           <div className="space-y-3">
             <p className="text-slate-600 leading-relaxed">
               This Peter Drucker principle applies perfectly to personal finance. When you track your net worth monthly, you naturally become more intentional about every financial decision. The simple act of logging in to update your accounts creates awareness—you see that restaurant splurge as a number that directly reduced your net worth, not just money disappearing from your checking account. Spending becomes more conscious because you're not just tracking expenses, you're tracking impact.
@@ -76,7 +76,7 @@ export default function WhyTrackNetWorthArticle() {
 
         {/* Section 2 */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">The Psychological Benefits</h2>
+          <h2 className="text-3xl font-black border-b-2 border-black pb-3">The Psychological Benefits</h2>
 
           <div className="grid md:grid-cols-3 gap-4">
             <div className="rounded-xl border border-slate-200 bg-white p-5">
@@ -122,7 +122,7 @@ export default function WhyTrackNetWorthArticle() {
 
         {/* Section 3 */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">The Practical Benefits</h2>
+          <h2 className="text-3xl font-black border-b-2 border-black pb-3">The Practical Benefits</h2>
 
           <div>
             <h3 className="text-lg font-medium text-slate-900 mb-2">1. Asset Allocation Awareness</h3>
@@ -148,7 +148,7 @@ export default function WhyTrackNetWorthArticle() {
 
         {/* Section 4 */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">How Often Should You Track?</h2>
+          <h2 className="text-3xl font-black border-b-2 border-black pb-3">How Often Should You Track?</h2>
           <p className="text-slate-600 leading-relaxed">
             Monthly is the sweet spot for most people:
           </p>
@@ -170,7 +170,7 @@ export default function WhyTrackNetWorthArticle() {
 
         {/* Section 5 */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">What to Track</h2>
+          <h2 className="text-3xl font-black border-b-2 border-black pb-3">What to Track</h2>
           <p className="text-slate-600 leading-relaxed">
             At minimum, track these categories:
           </p>
@@ -231,7 +231,7 @@ export default function WhyTrackNetWorthArticle() {
 
         {/* Section 6 */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Getting Started</h2>
+          <h2 className="text-3xl font-black border-b-2 border-black pb-3">Getting Started</h2>
           <p className="text-slate-600 leading-relaxed">
             The best time to start tracking was years ago. The second best time is today.
           </p>
@@ -257,7 +257,7 @@ export default function WhyTrackNetWorthArticle() {
 
         {/* Key Takeaways */}
         <section className="space-y-4">
-          <h2 className="text-2xl font-bold border-b border-slate-200 pb-2">Key Takeaways</h2>
+          <h2 className="text-3xl font-black border-b-2 border-black pb-3">Key Takeaways</h2>
           <div className="rounded-xl border border-amber-500/30 bg-emerald-600/10 p-6 space-y-3">
             <p className="text-slate-700 leading-relaxed">
               Net worth is the single most important number in personal finance because it's the only metric that captures your complete financial picture—assets minus liabilities, everything you own minus everything you owe. Income doesn't tell the story (you can earn $200K and be broke), and expenses don't either (you can spend $30K/year and be wealthy). Net worth is the scoreboard. What gets measured gets managed, and the simple act of tracking creates accountability and awareness that transforms decision-making.

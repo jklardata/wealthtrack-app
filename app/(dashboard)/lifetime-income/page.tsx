@@ -150,11 +150,11 @@ export default function LifetimeIncomePage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold flex flex-wrap items-center gap-2">
-            <TrendingUp className="h-6 w-6 sm:h-8 sm:w-8 text-emerald-600" />
+          <h1 className="text-4xl sm:text-5xl font-black flex flex-wrap items-center gap-3">
+            <TrendingUp className="h-8 w-8 sm:h-10 sm:w-10 text-emerald-600" />
             <span>Net Worth Projected</span>
           </h1>
-          <p className="text-slate-600 mt-3 text-sm sm:text-base">
+          <p className="text-slate-700 mt-3 text-base sm:text-lg font-semibold">
             Model your complete financial future by combining all income sources with expenses to project your lifetime net worth trajectory
           </p>
         </div>
@@ -262,7 +262,7 @@ export default function LifetimeIncomePage() {
       {/* Calculation Parameters */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+          <CardTitle className="flex items-center gap-3 text-xl sm:text-2xl font-black">
             <Calculator className="h-5 w-5 text-slate-600" />
             <span>Projection Parameters</span>
           </CardTitle>
@@ -352,7 +352,7 @@ export default function LifetimeIncomePage() {
           {hasCalculated && projection.length > 0 && (
             <Card className="bg-gradient-to-br from-blue-50 to-emerald-50 border-blue-200">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-lg">
+                <CardTitle className="flex items-center gap-3 text-xl font-black">
                   <span>💼 Financial Advisor Assessment</span>
                 </CardTitle>
               </CardHeader>
@@ -491,7 +491,7 @@ export default function LifetimeIncomePage() {
       {!hasCalculated && (
         <Card className="bg-blue-50 border-blue-200">
           <CardHeader>
-            <CardTitle className="text-blue-900">How to Use This Tool</CardTitle>
+            <CardTitle className="text-xl font-black text-blue-900">How to Use This Tool</CardTitle>
           </CardHeader>
           <CardContent className="text-sm text-blue-800 space-y-2">
             <ol className="list-decimal list-inside space-y-1">

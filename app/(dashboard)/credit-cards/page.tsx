@@ -417,7 +417,7 @@ function CreditCardItem({
               )} />
             </div>
             <div>
-              <CardTitle className="text-base">{card.card_name}</CardTitle>
+              <CardTitle className="text-lg font-bold">{card.card_name}</CardTitle>
               {card.last_four && (
                 <p className="text-xs text-slate-500">•••• {card.last_four}</p>
               )}
@@ -699,7 +699,7 @@ export default function CreditCardsPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
+          <h1 className="text-4xl sm:text-5xl font-black flex items-center gap-3">
             <CreditCardIcon className="h-6 w-6 sm:h-7 sm:w-7 text-primary flex-shrink-0" />
             <span className="leading-tight">Credit Cards</span>
           </h1>
@@ -723,7 +723,7 @@ export default function CreditCardsPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
+          <h1 className="text-4xl sm:text-5xl font-black flex items-center gap-3">
             <CreditCardIcon className="h-6 w-6 sm:h-7 sm:w-7 text-primary flex-shrink-0" />
             <span className="leading-tight">Credit Cards</span>
           </h1>
@@ -782,7 +782,7 @@ export default function CreditCardsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-medium text-slate-900 flex items-center gap-2">
+          <h1 className="text-4xl sm:text-5xl font-black text-slate-900 flex items-center gap-3">
             <CreditCardIcon className="h-6 w-6 sm:h-7 sm:w-7 text-emerald-600 flex-shrink-0" />
             <span className="leading-tight">Credit Cards</span>
           </h1>

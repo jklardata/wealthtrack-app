@@ -177,11 +177,11 @@ export default function BlogPage() {
               <span className="text-slate-700">Insights for the self-employed</span>
             </div>
 
-            <h1 className="text-5xl md:text-6xl font-medium tracking-tight mb-6 leading-[1.1] text-slate-900">
+            <h1 className="text-5xl md:text-7xl font-black tracking-tight mb-6 leading-[1.1] text-slate-900">
               Resources & Insights
             </h1>
 
-            <p className="text-xl text-slate-600 max-w-2xl">
+            <p className="text-xl text-slate-700 font-semibold max-w-2xl">
               Financial insights, tax strategies, and wealth-building tips for consultants, freelancers, and business owners.
             </p>
           </div>
@@ -212,7 +212,7 @@ export default function BlogPage() {
                     </div>
                   </div>
                   <div className="p-6">
-                    <h3 className="text-xl font-medium mb-3 text-slate-900 group-hover:text-emerald-600 transition-colors line-clamp-2">
+                    <h3 className="text-2xl font-bold mb-3 text-slate-900 group-hover:text-emerald-600 transition-colors line-clamp-2">
                       {article.title}
                     </h3>
                     <p className="text-slate-600 mb-4 line-clamp-2">
@@ -257,7 +257,7 @@ export default function BlogPage() {
                     </div>
                   </div>
                   <div className="p-4">
-                    <h3 className="font-medium mb-2 text-slate-900 group-hover:text-emerald-600 transition-colors line-clamp-2 text-sm">
+                    <h3 className="font-bold mb-2 text-slate-900 group-hover:text-emerald-600 transition-colors line-clamp-2 text-base">
                       {article.title}
                     </h3>
                     <div className="flex items-center gap-3 text-xs text-slate-500">
