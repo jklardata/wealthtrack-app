@@ -152,7 +152,7 @@ export default function LifetimeIncomePage() {
         <div>
           <h1 className="text-4xl sm:text-5xl font-black flex flex-wrap items-center gap-3">
             <TrendingUp className="h-8 w-8 sm:h-10 sm:w-10 text-emerald-600" />
-            <span>Net Worth Projected</span>
+            <span>Trajectory</span>
           </h1>
           <p className="text-slate-700 mt-3 text-base sm:text-lg font-semibold">
             Model your complete financial future by combining all income sources with expenses to project your lifetime net worth trajectory

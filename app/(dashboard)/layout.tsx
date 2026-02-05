@@ -35,8 +35,9 @@ import { FeedbackWidget } from "@/components/feedback-widget";
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/profile", label: "Profile", icon: User },
   { href: "/net-worth", label: "Net Worth", icon: TrendingUp },
-  { href: "/lifetime-income", label: "Net Worth Projected", icon: LineChart },
+  { href: "/lifetime-income", label: "Trajectory", icon: LineChart },
   { href: "/credit-cards", label: "Credit Cards", icon: CreditCard },
   { href: "/portfolio-optimizer", label: "Portfolio Optimizer", icon: PieChart },
   { href: "/retirement", label: "Retirement Calculator", icon: Calculator },
@@ -50,7 +51,6 @@ const navItems = [
   { href: "/founder-notes", label: "Founder Notes", icon: MessageSquare },
   { href: "/award-programs", label: "Award Programs", icon: Award, disabled: true },
   { href: "/pricing", label: "Pricing", icon: Sparkles },
-  { href: "/profile", label: "Profile", icon: User },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 
@@ -61,8 +61,8 @@ function Sidebar({ className }: { className?: string }) {
     <div className={cn("flex flex-col h-full", className)}>
       <div className="p-6 border-b border-slate-200">
         <Link href="https://solofi.io" className="flex items-center gap-2">
-          <TrendingUp className="h-6 w-6 text-emerald-600" />
-          <span className="text-lg font-semibold text-slate-900">
+          <TrendingUp className="h-8 w-8 text-emerald-600" />
+          <span className="text-2xl font-semibold text-slate-900">
             <span className="text-emerald-600">Solo</span>fi
           </span>
         </Link>
@@ -119,8 +119,8 @@ export default function DashboardLayout({
       <div className="flex flex-1 flex-col">
         <header className="md:hidden flex items-center justify-between p-4 border-b border-slate-200 bg-white">
           <Link href="https://solofi.io" className="flex items-center gap-2">
-            <TrendingUp className="h-5 w-5 text-emerald-600" />
-            <span className="font-semibold text-slate-900">
+            <TrendingUp className="h-7 w-7 text-emerald-600" />
+            <span className="text-xl font-semibold text-slate-900">
               <span className="text-emerald-600">Solo</span>fi
             </span>
           </Link>

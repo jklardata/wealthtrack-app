@@ -139,18 +139,20 @@ export default function ProfilePage() {
         </p>
       </div>
 
-      {/* Personal Information */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <User className="h-5 w-5 text-emerald-600" />
-            Personal Information
-          </CardTitle>
-          <CardDescription>
-            Your personal details help personalize financial planning across all tools
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
+      {/* Main Grid Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Personal Information */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <User className="h-5 w-5 text-emerald-600" />
+              Personal Information
+            </CardTitle>
+            <CardDescription>
+              Your personal details help personalize financial planning across all tools
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
           {/* Basic Information */}
           <div>
             <h3 className="text-sm font-semibold text-slate-900 mb-3 flex items-center gap-2">
@@ -323,27 +325,27 @@ export default function ProfilePage() {
             </div>
           </div>
 
-          {/* Save Button */}
-          <div className="flex items-center gap-3 pt-4 border-t">
-            <Button
-              onClick={handleSaveSettings}
-              disabled={isSaving}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white"
-            >
-              <Save className="h-4 w-4 mr-2" />
-              {isSaving ? "Saving..." : "Save All Settings"}
-            </Button>
-            {saveMessage && (
-              <span className={`text-sm ${saveMessage.includes("success") ? "text-emerald-600" : "text-red-600"}`}>
-                {saveMessage}
-              </span>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+            {/* Save Button */}
+            <div className="flex items-center gap-3 pt-4 border-t">
+              <Button
+                onClick={handleSaveSettings}
+                disabled={isSaving}
+                className="bg-emerald-600 hover:bg-emerald-700 text-white"
+              >
+                <Save className="h-4 w-4 mr-2" />
+                {isSaving ? "Saving..." : "Save All Settings"}
+              </Button>
+              {saveMessage && (
+                <span className={`text-sm ${saveMessage.includes("success") ? "text-emerald-600" : "text-red-600"}`}>
+                  {saveMessage}
+                </span>
+              )}
+            </div>
+          </CardContent>
+        </Card>
 
-      {/* Income & Expenses Forms */}
-      <Card>
+        {/* Income & Expenses Forms */}
+        <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <DollarSign className="h-5 w-5 text-blue-600" />
@@ -367,7 +369,8 @@ export default function ProfilePage() {
             </TabsContent>
           </Tabs>
         </CardContent>
-      </Card>
+        </Card>
+      </div>
     </div>
   );
 }

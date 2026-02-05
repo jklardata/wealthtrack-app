@@ -108,7 +108,7 @@ function calculateRMD(balance: number, age: number): number {
 
 export default function RothConversionPage() {
   // User inputs
-  const [currentAge, setCurrentAge] = useState<number | null>(null);
+  const [currentAge, setCurrentAge] = useState<number | null>(35);
   const [retirementAge, setRetirementAge] = useState(55);
   const [lifeExpectancy, setLifeExpectancy] = useState(95);
   const [traditionalBalance, setTraditionalBalance] = useState(500000);
@@ -127,12 +127,15 @@ export default function RothConversionPage() {
   useEffect(() => {
     async function fetchSettings() {
       try {
-        const response = await fetch("/api/user-settings");
+        const response = await fetch("/api/settings");
         if (response.ok) {
           const data = await response.json();
-          if (data.current_age) setCurrentAge(data.current_age);
-          if (data.desired_retirement_age) setRetirementAge(data.desired_retirement_age);
-          if (data.life_expectancy) setLifeExpectancy(data.life_expectancy);
+          if (data.data) {
+            const settings = data.data;
+            if (settings.current_age) setCurrentAge(settings.current_age);
+            if (settings.desired_retirement_age) setRetirementAge(settings.desired_retirement_age);
+            if (settings.life_expectancy_assumption) setLifeExpectancy(settings.life_expectancy_assumption);
+          }
         }
       } catch (error) {
         console.error("Error fetching settings:", error);

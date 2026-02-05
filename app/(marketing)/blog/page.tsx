@@ -170,14 +170,14 @@ export default function BlogPage() {
 
       {/* Hero */}
       <section className="bg-gradient-to-br from-emerald-50 via-white to-slate-50 border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-6 py-16 md:py-24">
+        <div className="max-w-7xl mx-auto px-6 py-12 md:py-16">
           <div className="max-w-4xl">
-            <div className="inline-flex items-center gap-2 border border-emerald-200 bg-emerald-50 px-4 py-2 rounded-full text-sm mb-8">
+            <div className="inline-flex items-center gap-2 border border-emerald-200 bg-emerald-50 px-4 py-2 rounded-full text-sm mb-6">
               <Sparkles className="h-4 w-4 text-emerald-600" />
               <span className="text-slate-700">Insights for the self-employed</span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-black tracking-tight mb-6 leading-[1.1] text-slate-900">
+            <h1 className="text-5xl md:text-7xl font-black tracking-tight mb-4 leading-[1.1] text-slate-900">
               Resources & Insights
             </h1>
 
@@ -189,7 +189,7 @@ export default function BlogPage() {
       </section>
 
       {/* Featured Articles */}
-      <section className="py-16 bg-white">
+      <section className="py-12 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-8">
             Featured
