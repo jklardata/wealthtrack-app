@@ -127,6 +127,9 @@ export default function QuarterlyEstimatedTaxesPage() {
   const [q3Paid, setQ3Paid] = useState("0");
   const [q4Paid, setQ4Paid] = useState("0");
 
+  // Method Selection (user can override auto-selection)
+  const [selectedMethod, setSelectedMethod] = useState<"auto" | "prior-year" | "current-year">("auto");
+
   // UI State
   const [loading, setLoading] = useState(true);
 
@@ -236,9 +239,17 @@ export default function QuarterlyEstimatedTaxesPage() {
     const totalCurrentYearTax = federalTax + seTax.total + stateTax;
     const currentYearSafeHarbor = totalCurrentYearTax * 0.9;
 
-    // Use lower of two (taxpayer-favorable)
-    const usePriorYear =
-      priorYearSafeHarbor < currentYearSafeHarbor && priorYearTotalTax > 0;
+    // Determine which method to use based on user selection
+    let usePriorYear: boolean;
+    if (selectedMethod === "prior-year") {
+      usePriorYear = priorYearTotalTax > 0;
+    } else if (selectedMethod === "current-year") {
+      usePriorYear = false;
+    } else {
+      // Auto: use lower of two (taxpayer-favorable)
+      usePriorYear = priorYearSafeHarbor < currentYearSafeHarbor && priorYearTotalTax > 0;
+    }
+
     const recommendedQuarterly =
       (usePriorYear ? priorYearSafeHarbor : currentYearSafeHarbor) / 4;
 
@@ -248,8 +259,8 @@ export default function QuarterlyEstimatedTaxesPage() {
       recommendedQuarterly: Math.ceil(recommendedQuarterly),
       method: usePriorYear ? "prior-year" : "current-year",
       reasoning: usePriorYear
-        ? `Using ${Math.round(priorYearMultiplier * 100)}% of prior year tax (lower amount)`
-        : "Using 90% of current year estimated tax",
+        ? `Using ${Math.round(priorYearMultiplier * 100)}% of prior year tax${selectedMethod === "auto" ? " (lower amount)" : ""}`
+        : `Using 90% of current year estimated tax${selectedMethod === "auto" ? "" : ""}`,
     };
   }, [
     expectedGrossIncome,
@@ -261,6 +272,7 @@ export default function QuarterlyEstimatedTaxesPage() {
     itemizedDeductions,
     priorYearAGI,
     priorYearTotalTax,
+    selectedMethod,
   ]);
 
   // Quarterly payment status
@@ -538,81 +550,6 @@ export default function QuarterlyEstimatedTaxesPage() {
           </CardContent>
         </Card>
 
-        {/* Quarterly Timeline Visualization */}
-        <Card className="bg-white border-2 border-black">
-          <CardHeader>
-            <CardTitle className="text-2xl font-black flex items-center gap-2">
-              <Calendar className="h-6 w-6 text-emerald-600" />
-              2025 Quarterly Payment Timeline
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex h-12 rounded-lg overflow-hidden gap-1">
-              {quarterlyPayments.map((payment) => {
-                const statusColors = {
-                  paid: "#10b981",
-                  upcoming: "#3b82f6",
-                  overdue: "#ef4444",
-                };
-
-                return (
-                  <Tooltip key={payment.quarter}>
-                    <TooltipTrigger asChild>
-                      <div
-                        className="flex-1 flex flex-col items-center justify-center cursor-help rounded-lg relative"
-                        style={{
-                          backgroundColor: statusColors[payment.status],
-                        }}
-                      >
-                        {payment.status === "paid" && (
-                          <CheckCircle className="h-5 w-5 text-white mb-1" />
-                        )}
-                        <span className="text-sm font-bold text-white">Q{payment.quarter}</span>
-                        <span className="text-xs text-white/80">
-                          {payment.dueDate.toLocaleDateString("en-US", {
-                            month: "short",
-                            day: "numeric",
-                          })}
-                        </span>
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent className="max-w-xs">
-                      <p className="font-bold">Quarter {payment.quarter} - 2025</p>
-                      <p className="text-sm">Due: {formatDate(payment.dueDate)}</p>
-                      <p className="text-sm">Amount: {formatCurrency(payment.amount)}</p>
-                      <p className="text-sm">Paid: {formatCurrency(payment.amountPaid)}</p>
-                      <p className="text-sm">Status: {payment.status}</p>
-                      {payment.status === "upcoming" && (
-                        <p className="text-sm text-emerald-600">Due in {payment.daysUntil} days</p>
-                      )}
-                      {payment.status === "overdue" && (
-                        <p className="text-sm text-red-600">
-                          Overdue by {Math.abs(payment.daysUntil)} days
-                        </p>
-                      )}
-                    </TooltipContent>
-                  </Tooltip>
-                );
-              })}
-            </div>
-
-            <div className="flex justify-center gap-4 mt-4 text-xs">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded bg-emerald-600"></div>
-                <span>Paid</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded bg-blue-600"></div>
-                <span>Upcoming</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded bg-red-600"></div>
-                <span>Overdue</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
         {/* Input Controls Card */}
         <Card className="bg-white border-2 border-black">
           <CardHeader>
@@ -622,7 +559,7 @@ export default function QuarterlyEstimatedTaxesPage() {
           <CardContent className="space-y-6">
             {/* Prior Year Data */}
             <div>
-              <h3 className="text-lg font-bold mb-3 flex items-center gap-2">
+              <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
                 <Info className="h-5 w-5 text-blue-600" />
                 Prior Year Tax Data (Auto-filled)
               </h3>
@@ -650,7 +587,7 @@ export default function QuarterlyEstimatedTaxesPage() {
 
             {/* Current Year Projections */}
             <div>
-              <h3 className="text-lg font-bold mb-3">Current Year Projections</h3>
+              <h3 className="text-lg font-bold mb-6">Current Year Projections</h3>
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="expectedGrossIncome">Expected Gross Income</Label>
@@ -697,7 +634,7 @@ export default function QuarterlyEstimatedTaxesPage() {
 
             {/* Deductions */}
             <div>
-              <h3 className="text-lg font-bold mb-3">Retirement & Deductions</h3>
+              <h3 className="text-lg font-bold mb-6">Retirement & Deductions</h3>
               <div className="grid md:grid-cols-3 gap-4">
                 <div>
                   <Label htmlFor="retirement401k">401(k) / SEP IRA Contribution</Label>
@@ -743,6 +680,23 @@ export default function QuarterlyEstimatedTaxesPage() {
             </p>
           </CardHeader>
           <CardContent className="space-y-4">
+            {/* Method Selector */}
+            <div className="flex items-center gap-3">
+              <Label htmlFor="methodSelector" className="text-sm font-bold whitespace-nowrap">
+                Calculation Method:
+              </Label>
+              <Select value={selectedMethod} onValueChange={(v: any) => setSelectedMethod(v)}>
+                <SelectTrigger id="methodSelector" className="w-[280px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="auto">Auto (Use Lower Amount)</SelectItem>
+                  <SelectItem value="prior-year">Prior Year Method</SelectItem>
+                  <SelectItem value="current-year">Current Year Method</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
             <div className="grid md:grid-cols-2 gap-4">
               {/* Prior Year Method */}
               <div
@@ -924,6 +878,81 @@ export default function QuarterlyEstimatedTaxesPage() {
                   </CardContent>
                 </Card>
               ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Quarterly Timeline Visualization */}
+        <Card className="bg-white border-2 border-black">
+          <CardHeader>
+            <CardTitle className="text-2xl font-black flex items-center gap-2">
+              <Calendar className="h-6 w-6 text-emerald-600" />
+              2025 Quarterly Payment Timeline
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex h-12 rounded-lg overflow-hidden gap-1">
+              {quarterlyPayments.map((payment) => {
+                const statusColors = {
+                  paid: "#10b981",
+                  upcoming: "#3b82f6",
+                  overdue: "#ef4444",
+                };
+
+                return (
+                  <Tooltip key={payment.quarter}>
+                    <TooltipTrigger asChild>
+                      <div
+                        className="flex-1 flex flex-col items-center justify-center cursor-help rounded-lg relative"
+                        style={{
+                          backgroundColor: statusColors[payment.status],
+                        }}
+                      >
+                        {payment.status === "paid" && (
+                          <CheckCircle className="h-6 w-6 text-white mb-1" />
+                        )}
+                        <span className="text-base font-bold text-white">Q{payment.quarter}</span>
+                        <span className="text-sm text-white/80">
+                          {payment.dueDate.toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                          })}
+                        </span>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-xs">
+                      <p className="font-bold">Quarter {payment.quarter} - 2025</p>
+                      <p className="text-sm">Due: {formatDate(payment.dueDate)}</p>
+                      <p className="text-sm">Amount: {formatCurrency(payment.amount)}</p>
+                      <p className="text-sm">Paid: {formatCurrency(payment.amountPaid)}</p>
+                      <p className="text-sm">Status: {payment.status}</p>
+                      {payment.status === "upcoming" && (
+                        <p className="text-sm text-emerald-600">Due in {payment.daysUntil} days</p>
+                      )}
+                      {payment.status === "overdue" && (
+                        <p className="text-sm text-red-600">
+                          Overdue by {Math.abs(payment.daysUntil)} days
+                        </p>
+                      )}
+                    </TooltipContent>
+                  </Tooltip>
+                );
+              })}
+            </div>
+
+            <div className="flex justify-center gap-4 mt-4 text-sm font-semibold">
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 rounded bg-emerald-600"></div>
+                <span>Paid</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 rounded bg-blue-600"></div>
+                <span>Upcoming</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 rounded bg-red-600"></div>
+                <span>Overdue</span>
+              </div>
             </div>
           </CardContent>
         </Card>
