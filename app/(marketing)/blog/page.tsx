@@ -19,6 +19,17 @@ interface Article {
 
 const ARTICLES: Article[] = [
   {
+    slug: "roth-conversion-strategy-engine-launch",
+    title: "Building a Roth Conversion Strategy Engine: Why Early Retirement Changes Everything",
+    excerpt: "Deep dive into building production-ready tax optimization tools for early retirees. Why gap years are goldmines, how we model lifetime tax exposure, and implementing Pro feature gating.",
+    category: "Product Update",
+    categoryColor: "bg-emerald-500",
+    readTime: "12 min read",
+    date: "February 2026",
+    image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&h=450&fit=crop",
+    featured: true,
+  },
+  {
     slug: "tax-strategies-2026-self-employed",
     title: "Tax Strategies in 2026 for Self-Employed Workers",
     excerpt: "Self-employment comes with a significant tax burden—but also unique opportunities for tax optimization. Here are the most effective strategies for 2026.",
