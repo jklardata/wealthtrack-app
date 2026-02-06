@@ -1694,51 +1694,49 @@ export default function TaxCalculatorPage() {
         </Card>
       </div>
 
-      {/* Quarterly Estimates & Recommendations */}
+      {/* Tax Tools & Recommendations */}
       <div className="grid gap-6 lg:grid-cols-2">
-        {/* Quarterly Estimated Taxes */}
+        {/* Tax Planning Tools */}
         <Card>
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">
               <Receipt className="h-5 w-5 text-emerald-600" />
-              Quarterly Estimated Taxes
+              Tax Planning Tools
             </CardTitle>
+            <CardDescription>
+              Advanced calculators and optimization strategies
+            </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="p-4 rounded-lg bg-muted/50">
-                <p className="text-sm text-slate-500">Federal + SE Tax</p>
-                <p className="text-2xl font-bold">{formatCurrency(quarterlyTax)}</p>
-                <p className="text-xs text-slate-500">per quarter</p>
-              </div>
-              <div className="p-4 rounded-lg bg-muted/50">
-                <p className="text-sm text-slate-500">State Tax</p>
-                <p className="text-2xl font-bold">{formatCurrency(bestStrategy.stateTax / 4)}</p>
-                <p className="text-xs text-slate-500">per quarter</p>
-              </div>
-            </div>
-
-            <div className="space-y-2 text-sm">
-              <p className="font-medium">2025 Quarterly Due Dates:</p>
-              <div className="grid grid-cols-2 gap-2 text-slate-500">
-                <div>Q1: April 15, 2025</div>
-                <div>Q2: June 16, 2025</div>
-                <div>Q3: September 15, 2025</div>
-                <div>Q4: January 15, 2026</div>
-              </div>
-            </div>
-
-            <div className="p-3 rounded-lg bg-amber-500/10 border border-amber-500/20 text-sm">
-              <div className="flex items-start gap-2">
-                <AlertTriangle className="h-4 w-4 text-amber-500 mt-0.5" />
-                <div>
-                  <p className="font-medium text-amber-500">Avoid Underpayment Penalty</p>
-                  <p className="text-slate-500 text-xs mt-1">
-                    Pay at least 90% of current year tax or 100% of prior year tax (110% if AGI &gt; $150k).
-                  </p>
+          <CardContent className="space-y-3">
+            <a href="/quarterly-estimated-taxes">
+              <div className="p-4 rounded-lg border-2 border-black hover:bg-emerald-50 transition-colors cursor-pointer">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Receipt className="h-5 w-5 text-emerald-600" />
+                    <div>
+                      <p className="font-bold text-slate-900">Quarterly Estimated Taxes</p>
+                      <p className="text-sm text-slate-600">Calculate safe harbor, track payments, avoid penalties</p>
+                    </div>
+                  </div>
+                  <ArrowRight className="h-5 w-5 text-slate-400" />
                 </div>
               </div>
-            </div>
+            </a>
+
+            <a href="/tax-optimization">
+              <div className="p-4 rounded-lg border-2 border-black hover:bg-blue-50 transition-colors cursor-pointer">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <TrendingUp className="h-5 w-5 text-blue-600" />
+                    <div>
+                      <p className="font-bold text-slate-900">Tax Optimization</p>
+                      <p className="text-sm text-slate-600">Multi-year strategies to minimize lifetime taxes</p>
+                    </div>
+                  </div>
+                  <ArrowRight className="h-5 w-5 text-slate-400" />
+                </div>
+              </div>
+            </a>
           </CardContent>
         </Card>
 

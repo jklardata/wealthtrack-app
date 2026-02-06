@@ -113,6 +113,7 @@ export default function QuarterlyEstimatedTaxesPage() {
   const [retirement401k, setRetirement401k] = useState("23500");
   const [hsaContribution, setHsaContribution] = useState("4300");
   const [itemizedDeductions, setItemizedDeductions] = useState("0");
+  const [feieExclusion, setFeieExclusion] = useState("0");
 
   // Quarterly Income (for annualized method - Pro feature)
   const [useAnnualizedMethod, setUseAnnualizedMethod] = useState(false);
@@ -217,6 +218,10 @@ export default function QuarterlyEstimatedTaxesPage() {
     const expenses = parseFloat(expectedBusinessExpenses) || 0;
     const netIncome = grossIncome - expenses;
 
+    // FEIE exclusion (Foreign Earned Income Exclusion)
+    const feie = parseFloat(feieExclusion) || 0;
+
+    // SE tax is calculated on FULL net income (FEIE doesn't reduce SE tax)
     const seTax = calculateSETax(netIncome);
     const seDeduction = seTax.total * 0.5; // Deduct half of SE tax
     const retirement = parseFloat(retirement401k) || 0;
@@ -228,13 +233,15 @@ export default function QuarterlyEstimatedTaxesPage() {
         : TAX_CONSTANTS.standardDeductionMarried;
     const deduction = Math.max(itemized, standardDeduction);
 
+    // Federal taxable income is reduced by FEIE
     const taxableIncome = Math.max(
       0,
-      netIncome - seDeduction - retirement - hsa - deduction
+      netIncome - feie - seDeduction - retirement - hsa - deduction
     );
     const federalTax = calculateFederalTax(taxableIncome, filingStatus);
     const stateTaxRate = STATE_TAX_RATES[stateCode.toLowerCase()]?.rate || 0.05;
-    const stateTax = (netIncome - retirement - hsa) * stateTaxRate;
+    // State tax base is also reduced by FEIE
+    const stateTax = Math.max(0, netIncome - feie - retirement - hsa) * stateTaxRate;
 
     const totalCurrentYearTax = federalTax + seTax.total + stateTax;
     const currentYearSafeHarbor = totalCurrentYearTax * 0.9;
@@ -270,6 +277,7 @@ export default function QuarterlyEstimatedTaxesPage() {
     retirement401k,
     hsaContribution,
     itemizedDeductions,
+    feieExclusion,
     priorYearAGI,
     priorYearTotalTax,
     selectedMethod,
@@ -635,7 +643,7 @@ export default function QuarterlyEstimatedTaxesPage() {
             {/* Deductions */}
             <div>
               <h3 className="text-lg font-bold mb-6">Retirement & Deductions</h3>
-              <div className="grid md:grid-cols-3 gap-4">
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div>
                   <Label htmlFor="retirement401k">401(k) / SEP IRA Contribution</Label>
                   <Input
@@ -652,6 +660,16 @@ export default function QuarterlyEstimatedTaxesPage() {
                     type="number"
                     value={hsaContribution}
                     onChange={(e) => setHsaContribution(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="feieExclusion">FEIE Exclusion</Label>
+                  <Input
+                    id="feieExclusion"
+                    type="number"
+                    value={feieExclusion}
+                    onChange={(e) => setFeieExclusion(e.target.value)}
+                    placeholder="0"
                   />
                 </div>
                 <div>
@@ -859,6 +877,14 @@ export default function QuarterlyEstimatedTaxesPage() {
                         <Button
                           size="sm"
                           onClick={() => {
+                            const currentValue =
+                              payment.quarter === 1
+                                ? q1Paid
+                                : payment.quarter === 2
+                                ? q2Paid
+                                : payment.quarter === 3
+                                ? q3Paid
+                                : q4Paid;
                             const setter =
                               payment.quarter === 1
                                 ? setQ1Paid
@@ -867,7 +893,11 @@ export default function QuarterlyEstimatedTaxesPage() {
                                 : payment.quarter === 3
                                 ? setQ3Paid
                                 : setQ4Paid;
-                            setter(payment.amount.toString());
+                            // Keep manually entered value, or set to full amount if empty/zero
+                            const valueToSet = (parseFloat(currentValue) || 0) > 0
+                              ? currentValue
+                              : payment.amount.toString();
+                            setter(valueToSet);
                           }}
                           className="h-8 px-2 text-xs"
                         >
