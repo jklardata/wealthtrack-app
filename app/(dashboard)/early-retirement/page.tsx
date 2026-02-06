@@ -467,8 +467,13 @@ export default function EarlyRetirementPage() {
           </CardContent>
         </Card>
 
-        {/* Freedom Milestones - Right under filters */}
-        <FreedomMilestonesModule milestones={milestones} />
+        {/* Combined Lifestyle Budget & Freedom Milestones - Right under filters */}
+        <CombinedLifestyleMilestonesModule
+          milestones={milestones}
+          selectedMode={lifestyleMode}
+          setSelectedMode={setLifestyleMode}
+          withdrawalRate={withdrawalRate}
+        />
 
         {/* Scenario Planner Callout */}
         <Card className="bg-gradient-to-r from-emerald-50 to-blue-50 border-emerald-200">
@@ -529,22 +534,6 @@ export default function EarlyRetirementPage() {
           </CardContent>
         </Card>
 
-        {/* Retirement Lifestyle Budget - Full Width */}
-        {isPro ? (
-          <LifestyleBudgetModule
-            budgets={lifestyleBudgets}
-            selectedMode={lifestyleMode}
-            setSelectedMode={setLifestyleMode}
-            withdrawalRate={withdrawalRate}
-          />
-        ) : (
-          <LockedModule
-            title="Retirement Lifestyle Budget"
-            description="Model different spending scenarios and FIRE lifestyle targets"
-            icon={<Coffee className="h-5 w-5 text-emerald-600" />}
-            benefits={["Lean/Base/Chubby/Fat FI budgets", "Lifestyle comparisons", "Spending breakdowns", "Portfolio requirements"]}
-          />
-        )}
 
         {/* Roth Conversion Callout */}
         <Card className="bg-gradient-to-r from-purple-50 to-indigo-50 border-2 border-purple-300">
@@ -566,21 +555,6 @@ export default function EarlyRetirementPage() {
           </CardContent>
         </Card>
 
-        {/* Module 6: Geo-Arbitrage Link */}
-        {isPro ? (
-          <GeoArbitrageLink
-            costOfLivingMultiplier={costOfLivingMultiplier}
-            setCostOfLivingMultiplier={setCostOfLivingMultiplier}
-            requiredPortfolio={fiReadiness.requiredPortfolio}
-          />
-        ) : (
-          <LockedModule
-            title="Geographic Flexibility"
-            description="Explore cost-of-living arbitrage opportunities"
-            icon={<MapPin className="h-5 w-5 text-emerald-600" />}
-            benefits={["Location-based FI planning", "Cost-of-living adjustments", "Geo-arbitrage calculator"]}
-          />
-        )}
 
         {/* Module 7: Burn Rate Clock */}
         {isPro ? (
@@ -1077,6 +1051,283 @@ function LifestyleBudgetModule({
             <p>• <strong>Monthly Budget:</strong> {formatCurrency(currentBudget.totalAnnual)} ÷ 12 = <strong className="text-emerald-700">{formatCurrency(currentBudget.totalMonthly)}</strong></p>
             <p className="text-slate-500 pt-2 border-t border-slate-200">
               The 4% rule suggests you can withdraw 4% of your portfolio annually (adjusted for inflation) with a high probability it will last 30+ years.
+            </p>
+          </div>
+        </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+// ============================================================================
+// COMBINED LIFESTYLE BUDGET & FREEDOM MILESTONES MODULE
+// ============================================================================
+
+function CombinedLifestyleMilestonesModule({
+  milestones,
+  selectedMode,
+  setSelectedMode,
+  withdrawalRate,
+}: {
+  milestones: FIMilestone[];
+  selectedMode: LifestyleMode;
+  setSelectedMode: (mode: LifestyleMode) => void;
+  withdrawalRate: number;
+}) {
+  // Extract relevant milestones from the array
+  const leanMilestone = milestones.find(m => m.name === "Lean FI");
+  const fullMilestone = milestones.find(m => m.name === "Full FI");
+  const fatMilestone = milestones.find(m => m.name === "Fat FI");
+
+  // Map milestones to lifestyle modes (using adjusted thresholds)
+  // Lean FI → Lean, Full FI → Base, extrapolate for Chubby and Fat
+  const lifestyleData: Record<LifestyleMode, {
+    portfolioTarget: number;
+    annualSpending: number;
+    isAchieved: boolean;
+    progress: number;
+  }> = {
+    lean: {
+      portfolioTarget: leanMilestone?.portfolioTarget || 750000,
+      annualSpending: (leanMilestone?.portfolioTarget || 750000) * (withdrawalRate / 100),
+      isAchieved: leanMilestone?.isAchieved || false,
+      progress: leanMilestone?.progress || 0,
+    },
+    base: {
+      portfolioTarget: fullMilestone?.portfolioTarget || 1750000,
+      annualSpending: (fullMilestone?.portfolioTarget || 1750000) * (withdrawalRate / 100),
+      isAchieved: fullMilestone?.isAchieved || false,
+      progress: fullMilestone?.progress || 0,
+    },
+    chubby: {
+      // Interpolate between Full FI and Fat FI
+      portfolioTarget: ((fullMilestone?.portfolioTarget || 1750000) + (fatMilestone?.portfolioTarget || 7500000)) / 2,
+      annualSpending: (((fullMilestone?.portfolioTarget || 1750000) + (fatMilestone?.portfolioTarget || 7500000)) / 2) * (withdrawalRate / 100),
+      isAchieved: false,
+      progress: Math.min(((fullMilestone?.progress || 0) + (fatMilestone?.progress || 0)) / 2, 100),
+    },
+    fat: {
+      portfolioTarget: fatMilestone?.portfolioTarget || 7500000,
+      annualSpending: (fatMilestone?.portfolioTarget || 7500000) * (withdrawalRate / 100),
+      isAchieved: fatMilestone?.isAchieved || false,
+      progress: fatMilestone?.progress || 0,
+    },
+  };
+
+  const currentLifestyle = lifestyleData[selectedMode];
+
+  // Calculate monthly spending
+  const monthlySpending = currentLifestyle.annualSpending / 12;
+
+  // Simplified category breakdown (proportional to annual spending)
+  const categories = [
+    { name: "Housing", percent: 35, color: "#3b82f6", annual: currentLifestyle.annualSpending * 0.35 },
+    { name: "Food", percent: 15, color: "#10b981", annual: currentLifestyle.annualSpending * 0.15 },
+    { name: "Transportation", percent: 12, color: "#f59e0b", annual: currentLifestyle.annualSpending * 0.12 },
+    { name: "Healthcare", percent: 10, color: "#ef4444", annual: currentLifestyle.annualSpending * 0.10 },
+    { name: "Entertainment", percent: 8, color: "#8b5cf6", annual: currentLifestyle.annualSpending * 0.08 },
+    { name: "Utilities", percent: 8, color: "#ec4899", annual: currentLifestyle.annualSpending * 0.08 },
+    { name: "Insurance", percent: 7, color: "#06b6d4", annual: currentLifestyle.annualSpending * 0.07 },
+    { name: "Other", percent: 5, color: "#6b7280", annual: currentLifestyle.annualSpending * 0.05 },
+  ];
+
+  const modeIcons: Record<LifestyleMode, React.ReactNode> = {
+    lean: <Zap className="h-4 w-4" />,
+    base: <Coffee className="h-4 w-4" />,
+    chubby: <TrendingUp className="h-4 w-4" />,
+    fat: <Sparkles className="h-4 w-4" />,
+  };
+
+  const modeLabels: Record<LifestyleMode, string> = {
+    lean: "Lean FI",
+    base: "Base FI",
+    chubby: "Chubby FI",
+    fat: "Fat FI",
+  };
+
+  const modeDescriptions: Record<LifestyleMode, string> = {
+    lean: "Minimalist lifestyle, low-cost locations",
+    base: "Comfortable middle-class lifestyle",
+    chubby: "Upper-middle-class with luxuries",
+    fat: "Affluent lifestyle, no compromises",
+  };
+
+  return (
+    <Card className="bg-white border-2 border-black shadow-sm">
+      <CardHeader className="pb-3">
+        <CardTitle className="text-2xl font-black text-slate-900 flex items-center gap-2">
+          <Target className="h-6 w-6 text-emerald-600" />
+          Retirement Lifestyle & Freedom Milestones
+        </CardTitle>
+        <CardDescription className="text-base mt-2">
+          Model different FIRE spending scenarios with adjusted thresholds based on your cost-of-living and actual expenses
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        {/* Explainer Section */}
+        <div className="bg-gradient-to-br from-emerald-50 to-blue-50 border-2 border-emerald-200 rounded-lg p-5 space-y-3">
+          <p className="text-sm font-bold text-slate-800 leading-relaxed">
+            Each FIRE lifestyle represents a different annual spending level and required portfolio size. The thresholds below are adjusted based on your inputs (cost-of-living multiplier and actual expenses).
+          </p>
+          <div className="grid md:grid-cols-2 gap-3">
+            <div className={`${lifestyleData.lean.isAchieved ? 'bg-emerald-100/70' : 'bg-white/70'} rounded-lg p-3 border ${lifestyleData.lean.isAchieved ? 'border-emerald-400' : 'border-slate-200'}`}>
+              <div className="flex items-center gap-2 mb-2">
+                <Zap className="h-4 w-4 text-slate-600" />
+                <p className="text-sm font-black text-slate-900">Lean FI</p>
+                {lifestyleData.lean.isAchieved && <CheckCircle className="h-4 w-4 text-emerald-600 ml-auto" />}
+              </div>
+              <p className="text-xs text-slate-600 mb-1">{formatCurrency(lifestyleData.lean.annualSpending)}/year spending</p>
+              <p className="text-lg font-black text-emerald-600">{formatCurrency(lifestyleData.lean.portfolioTarget)} portfolio</p>
+              <p className="text-xs text-slate-500 mt-1">Minimalist lifestyle, low-cost locations</p>
+              {!lifestyleData.lean.isAchieved && (
+                <p className="text-xs font-semibold text-slate-600 mt-1">{lifestyleData.lean.progress.toFixed(0)}% complete</p>
+              )}
+            </div>
+            <div className={`${lifestyleData.base.isAchieved ? 'bg-emerald-100/70' : 'bg-white/70'} rounded-lg p-3 border ${lifestyleData.base.isAchieved ? 'border-emerald-400' : 'border-slate-200'}`}>
+              <div className="flex items-center gap-2 mb-2">
+                <Coffee className="h-4 w-4 text-slate-600" />
+                <p className="text-sm font-black text-slate-900">Base FI</p>
+                {lifestyleData.base.isAchieved && <CheckCircle className="h-4 w-4 text-emerald-600 ml-auto" />}
+              </div>
+              <p className="text-xs text-slate-600 mb-1">{formatCurrency(lifestyleData.base.annualSpending)}/year spending</p>
+              <p className="text-lg font-black text-emerald-600">{formatCurrency(lifestyleData.base.portfolioTarget)} portfolio</p>
+              <p className="text-xs text-slate-500 mt-1">Comfortable middle-class lifestyle</p>
+              {!lifestyleData.base.isAchieved && (
+                <p className="text-xs font-semibold text-slate-600 mt-1">{lifestyleData.base.progress.toFixed(0)}% complete</p>
+              )}
+            </div>
+            <div className={`${lifestyleData.chubby.isAchieved ? 'bg-emerald-100/70' : 'bg-white/70'} rounded-lg p-3 border ${lifestyleData.chubby.isAchieved ? 'border-emerald-400' : 'border-slate-200'}`}>
+              <div className="flex items-center gap-2 mb-2">
+                <TrendingUp className="h-4 w-4 text-slate-600" />
+                <p className="text-sm font-black text-slate-900">Chubby FI</p>
+                {lifestyleData.chubby.isAchieved && <CheckCircle className="h-4 w-4 text-emerald-600 ml-auto" />}
+              </div>
+              <p className="text-xs text-slate-600 mb-1">{formatCurrency(lifestyleData.chubby.annualSpending)}/year spending</p>
+              <p className="text-lg font-black text-emerald-600">{formatCurrency(lifestyleData.chubby.portfolioTarget)} portfolio</p>
+              <p className="text-xs text-slate-500 mt-1">Upper-middle-class with luxuries</p>
+              {!lifestyleData.chubby.isAchieved && (
+                <p className="text-xs font-semibold text-slate-600 mt-1">{lifestyleData.chubby.progress.toFixed(0)}% complete</p>
+              )}
+            </div>
+            <div className={`${lifestyleData.fat.isAchieved ? 'bg-emerald-100/70' : 'bg-white/70'} rounded-lg p-3 border ${lifestyleData.fat.isAchieved ? 'border-emerald-400' : 'border-slate-200'}`}>
+              <div className="flex items-center gap-2 mb-2">
+                <Sparkles className="h-4 w-4 text-slate-600" />
+                <p className="text-sm font-black text-slate-900">Fat FI</p>
+                {lifestyleData.fat.isAchieved && <CheckCircle className="h-4 w-4 text-emerald-600 ml-auto" />}
+              </div>
+              <p className="text-xs text-slate-600 mb-1">{formatCurrency(lifestyleData.fat.annualSpending)}/year spending</p>
+              <p className="text-lg font-black text-emerald-600">{formatCurrency(lifestyleData.fat.portfolioTarget)} portfolio</p>
+              <p className="text-xs text-slate-500 mt-1">Affluent lifestyle, no compromises</p>
+              {!lifestyleData.fat.isAchieved && (
+                <p className="text-xs font-semibold text-slate-600 mt-1">{lifestyleData.fat.progress.toFixed(0)}% complete</p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Mode Selector */}
+        <div>
+          <p className="text-sm font-bold text-slate-700 mb-3">Select Your Target Lifestyle:</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {(["lean", "base", "chubby", "fat"] as LifestyleMode[]).map((mode) => (
+            <button
+              key={mode}
+              onClick={() => setSelectedMode(mode)}
+              className={`p-4 rounded-xl border-2 transition-all ${
+                selectedMode === mode
+                  ? "border-emerald-600 bg-emerald-50 shadow-md"
+                  : "border-slate-300 hover:border-emerald-400 hover:bg-slate-50"
+              }`}
+            >
+              <div className="flex items-center justify-center gap-2 mb-2">
+                {modeIcons[mode]}
+                <span className={`font-bold ${selectedMode === mode ? "text-emerald-700" : "text-slate-700"}`}>
+                  {modeLabels[mode]}
+                </span>
+              </div>
+              <p className={`text-xl font-black mb-1 ${selectedMode === mode ? "text-emerald-600" : "text-slate-900"}`}>
+                {formatCurrency(lifestyleData[mode].portfolioTarget)}
+              </p>
+              <p className="text-xs text-slate-500">portfolio needed</p>
+            </button>
+          ))}
+        </div>
+        </div>
+
+        {/* Selected Budget Details */}
+        <div className="bg-slate-50 border-2 border-slate-200 rounded-lg p-5 space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b-2 border-slate-300">
+            <h3 className="text-lg font-black text-slate-900">
+              {modeLabels[selectedMode]} Budget Breakdown
+            </h3>
+            <div className="text-right">
+              <p className="text-2xl font-black text-emerald-600">
+                {formatCurrency(currentLifestyle.annualSpending)}<span className="text-sm text-slate-500">/year</span>
+              </p>
+              <p className="text-sm font-semibold text-slate-600">
+                {formatCurrency(monthlySpending)}/month
+              </p>
+            </div>
+          </div>
+
+        {/* Expense Breakdown */}
+        <div className="space-y-3">
+
+          {/* Stacked Bar */}
+          <div className="space-y-2">
+            <p className="text-sm font-bold text-slate-700">Monthly Spending Categories:</p>
+            <div className="h-10 rounded-lg overflow-hidden flex border-2 border-slate-300">
+              {categories.map((cat, i) => (
+                <Tooltip key={cat.name}>
+                  <TooltipTrigger asChild>
+                    <div
+                      style={{
+                        width: `${cat.percent}%`,
+                        backgroundColor: cat.color,
+                      }}
+                      className="h-full cursor-help hover:opacity-80 transition-opacity"
+                    />
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-white border-2 border-black rounded-lg shadow-lg">
+                    <p className="font-bold text-slate-900">{cat.name}</p>
+                    <p className="text-sm text-slate-600">{formatCurrency(cat.annual / 12)}/month ({cat.percent}%)</p>
+                    <p className="text-xs text-slate-500">{formatCurrency(cat.annual)}/year</p>
+                  </TooltipContent>
+                </Tooltip>
+              ))}
+            </div>
+          </div>
+
+          {/* Category Details */}
+          <div className="grid md:grid-cols-2 gap-3">
+            {categories.map((cat) => (
+              <div key={cat.name} className="flex items-center justify-between bg-white rounded-lg p-3 border border-slate-200">
+                <div className="flex items-center gap-3">
+                  <div
+                    className="w-4 h-4 rounded-full border-2 border-slate-300"
+                    style={{ backgroundColor: cat.color }}
+                  />
+                  <span className="font-semibold text-slate-900">{cat.name}</span>
+                </div>
+                <div className="text-right">
+                  <p className="font-bold text-slate-900">{formatCurrency(cat.annual / 12)}</p>
+                  <p className="text-xs text-slate-500">{cat.percent}% of budget</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 4% Rule Explanation */}
+        <div className="bg-white border-2 border-emerald-300 rounded-lg p-4 space-y-2">
+          <p className="text-sm font-bold text-slate-900">How the 4% Rule Works:</p>
+          <div className="space-y-1 text-xs text-slate-600">
+            <p>• <strong>Annual Spending:</strong> {formatCurrency(currentLifestyle.annualSpending)} ({modeLabels[selectedMode]} lifestyle)</p>
+            <p>• <strong>Portfolio Calculation:</strong> {formatCurrency(currentLifestyle.annualSpending)} ÷ {withdrawalRate}% = <strong className="text-emerald-700">{formatCurrency(currentLifestyle.portfolioTarget)}</strong></p>
+            <p>• <strong>Monthly Budget:</strong> {formatCurrency(currentLifestyle.annualSpending)} ÷ 12 = <strong className="text-emerald-700">{formatCurrency(monthlySpending)}</strong></p>
+            <p className="text-slate-500 pt-2 border-t border-slate-200">
+              The 4% rule suggests you can withdraw 4% of your portfolio annually (adjusted for inflation) with a high probability it will last 30+ years. These thresholds are adjusted for your cost-of-living multiplier.
             </p>
           </div>
         </div>
