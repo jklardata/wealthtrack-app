@@ -529,54 +529,20 @@ export default function EarlyRetirementPage() {
           </CardContent>
         </Card>
 
-        {/* FI Readiness + Lifestyle Budget side by side */}
+        {/* Retirement Lifestyle Budget - Full Width */}
         {isPro ? (
-          <div className="grid gap-6 lg:grid-cols-2">
-            <FIReadinessDashboard
-              readiness={fiReadiness}
-              portfolio={currentPortfolio}
-              expenses={annualExpenses}
-              withdrawalRate={withdrawalRate}
-            />
-            <LifestyleBudgetModule
-              budgets={lifestyleBudgets}
-              selectedMode={lifestyleMode}
-              setSelectedMode={setLifestyleMode}
-              withdrawalRate={withdrawalRate}
-            />
-          </div>
-        ) : (
-          <div className="grid gap-6 lg:grid-cols-2">
-            <LockedModule
-              title="FI Readiness"
-              description="Comprehensive FI readiness assessment"
-              icon={<Target className="h-5 w-5 text-emerald-600" />}
-              benefits={["FI stage tracking", "Readiness metrics", "Progress tracking"]}
-            />
-            <LockedModule
-              title="Lifestyle Budget"
-              description="Model different spending scenarios"
-              icon={<Coffee className="h-5 w-5 text-emerald-600" />}
-              benefits={["Lean/Base/Fat FI budgets", "Lifestyle comparisons", "Spending scenarios"]}
-            />
-          </div>
-        )}
-
-        {/* Semi-Retirement Bridge */}
-        {isPro ? (
-          <SemiRetirementBridgeModule
-            bridge={semiRetirementBridge}
-            semiRetirementIncome={semiRetirementIncome}
-            setSemiRetirementIncome={setSemiRetirementIncome}
-            semiRetirementYears={semiRetirementYears}
-            setSemiRetirementYears={setSemiRetirementYears}
+          <LifestyleBudgetModule
+            budgets={lifestyleBudgets}
+            selectedMode={lifestyleMode}
+            setSelectedMode={setLifestyleMode}
+            withdrawalRate={withdrawalRate}
           />
         ) : (
           <LockedModule
-            title="Semi-Retirement Bridge"
-            description="Plan a gradual transition to full retirement"
-            icon={<Clock className="h-5 w-5 text-emerald-600" />}
-            benefits={["Bridge strategy planning", "Part-time income modeling", "Gradual FI transition"]}
+            title="Retirement Lifestyle Budget"
+            description="Model different spending scenarios and FIRE lifestyle targets"
+            icon={<Coffee className="h-5 w-5 text-emerald-600" />}
+            benefits={["Lean/Base/Chubby/Fat FI budgets", "Lifestyle comparisons", "Spending breakdowns", "Portfolio requirements"]}
           />
         )}
 
@@ -954,92 +920,166 @@ function LifestyleBudgetModule({
 
   return (
     <Card className="bg-white border-2 border-black shadow-sm">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
-          <DollarSign className="h-5 w-5 text-emerald-600" />
+      <CardHeader className="pb-3">
+        <CardTitle className="text-2xl font-black text-slate-900 flex items-center gap-2">
+          <DollarSign className="h-6 w-6 text-emerald-600" />
           Retirement Lifestyle Budget
         </CardTitle>
-        <CardDescription>
-          2026 FIRE thresholds: Lean $0.5-1M, Base $1-2.5M, Chubby $2.5-5M, Fat $5M+
+        <CardDescription className="text-base mt-2">
+          Model different FIRE spending scenarios based on realistic 2026 budgets and the 4% withdrawal rule
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-6">
+        {/* Explainer Section */}
+        <div className="bg-gradient-to-br from-emerald-50 to-blue-50 border-2 border-emerald-200 rounded-lg p-5 space-y-3">
+          <p className="text-sm font-bold text-slate-800 leading-relaxed">
+            Each FIRE lifestyle represents a different annual spending level and required portfolio size. Choose your target based on your desired retirement lifestyle.
+          </p>
+          <div className="grid md:grid-cols-2 gap-3">
+            <div className="bg-white/70 rounded-lg p-3 border border-slate-200">
+              <div className="flex items-center gap-2 mb-2">
+                <Zap className="h-4 w-4 text-slate-600" />
+                <p className="text-sm font-black text-slate-900">Lean FI</p>
+              </div>
+              <p className="text-xs text-slate-600 mb-1">$30K/year spending</p>
+              <p className="text-lg font-black text-emerald-600">$750K portfolio</p>
+              <p className="text-xs text-slate-500 mt-1">Minimalist lifestyle, low-cost locations</p>
+            </div>
+            <div className="bg-white/70 rounded-lg p-3 border border-slate-200">
+              <div className="flex items-center gap-2 mb-2">
+                <Coffee className="h-4 w-4 text-slate-600" />
+                <p className="text-sm font-black text-slate-900">Base FI</p>
+              </div>
+              <p className="text-xs text-slate-600 mb-1">$70K/year spending</p>
+              <p className="text-lg font-black text-emerald-600">$1.75M portfolio</p>
+              <p className="text-xs text-slate-500 mt-1">Comfortable middle-class lifestyle</p>
+            </div>
+            <div className="bg-white/70 rounded-lg p-3 border border-slate-200">
+              <div className="flex items-center gap-2 mb-2">
+                <TrendingUp className="h-4 w-4 text-slate-600" />
+                <p className="text-sm font-black text-slate-900">Chubby FI</p>
+              </div>
+              <p className="text-xs text-slate-600 mb-1">$150K/year spending</p>
+              <p className="text-lg font-black text-emerald-600">$3.75M portfolio</p>
+              <p className="text-xs text-slate-500 mt-1">Upper-middle-class with luxuries</p>
+            </div>
+            <div className="bg-white/70 rounded-lg p-3 border border-slate-200">
+              <div className="flex items-center gap-2 mb-2">
+                <Sparkles className="h-4 w-4 text-slate-600" />
+                <p className="text-sm font-black text-slate-900">Fat FI</p>
+              </div>
+              <p className="text-xs text-slate-600 mb-1">$300K/year spending</p>
+              <p className="text-lg font-black text-emerald-600">$7.5M portfolio</p>
+              <p className="text-xs text-slate-500 mt-1">Affluent lifestyle, no compromises</p>
+            </div>
+          </div>
+        </div>
+
         {/* Mode Selector */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+        <div>
+          <p className="text-sm font-bold text-slate-700 mb-3">Select Your Target Lifestyle:</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {(["lean", "base", "chubby", "fat"] as LifestyleMode[]).map((mode) => (
             <button
               key={mode}
               onClick={() => setSelectedMode(mode)}
-              className={`p-3 rounded-lg border-2 transition-all ${
+              className={`p-4 rounded-xl border-2 transition-all ${
                 selectedMode === mode
-                  ? "border-primary bg-emerald-600/5"
-                  : "border-muted hover:border-muted-foreground/30"
+                  ? "border-emerald-600 bg-emerald-50 shadow-md"
+                  : "border-slate-300 hover:border-emerald-400 hover:bg-slate-50"
               }`}
             >
-              <div className="flex items-center justify-center gap-2">
+              <div className="flex items-center justify-center gap-2 mb-2">
                 {modeIcons[mode]}
-                <span className="font-medium">{budgets[mode].modeLabel}</span>
+                <span className={`font-bold ${selectedMode === mode ? "text-emerald-700" : "text-slate-700"}`}>
+                  {budgets[mode].modeLabel}
+                </span>
               </div>
-              <p className="text-xl font-bold mt-1">
+              <p className={`text-xl font-black mb-1 ${selectedMode === mode ? "text-emerald-600" : "text-slate-900"}`}>
                 {formatCurrency(budgets[mode].requiredPortfolio)}
               </p>
-              <p className="text-xs text-slate-500">required</p>
+              <p className="text-xs text-slate-500">portfolio needed</p>
             </button>
           ))}
         </div>
+        </div>
+
+        {/* Selected Budget Details */}
+        <div className="bg-slate-50 border-2 border-slate-200 rounded-lg p-5 space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b-2 border-slate-300">
+            <h3 className="text-lg font-black text-slate-900">
+              {currentBudget.modeLabel} Budget Breakdown
+            </h3>
+            <div className="text-right">
+              <p className="text-2xl font-black text-emerald-600">
+                {formatCurrency(currentBudget.totalAnnual)}<span className="text-sm text-slate-500">/year</span>
+              </p>
+              <p className="text-sm font-semibold text-slate-600">
+                {formatCurrency(currentBudget.totalMonthly)}/month
+              </p>
+            </div>
+          </div>
 
         {/* Expense Breakdown */}
-        <div className="space-y-2">
-          <div className="flex justify-between text-sm">
-            <span className="font-medium">Monthly Budget</span>
-            <span className="font-bold">
-              {formatCurrency(currentBudget.totalMonthly)}
-            </span>
-          </div>
+        <div className="space-y-3">
 
           {/* Stacked Bar */}
-          <div className="h-8 rounded-lg overflow-hidden flex">
-            {currentBudget.categories.map((cat, i) => (
-              <Tooltip key={cat.name}>
-                <TooltipTrigger asChild>
-                  <div
-                    style={{
-                      width: `${cat.percent}%`,
-                      backgroundColor: cat.color,
-                    }}
-                    className="h-full cursor-help"
-                  />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p className="font-medium">{cat.name}</p>
-                  <p>{formatCurrency(cat.annual / 12)}/mo ({cat.percent}%)</p>
-                </TooltipContent>
-              </Tooltip>
-            ))}
+          <div className="space-y-2">
+            <p className="text-sm font-bold text-slate-700">Monthly Spending Categories:</p>
+            <div className="h-10 rounded-lg overflow-hidden flex border-2 border-slate-300">
+              {currentBudget.categories.map((cat, i) => (
+                <Tooltip key={cat.name}>
+                  <TooltipTrigger asChild>
+                    <div
+                      style={{
+                        width: `${cat.percent}%`,
+                        backgroundColor: cat.color,
+                      }}
+                      className="h-full cursor-help hover:opacity-80 transition-opacity"
+                    />
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-white border-2 border-black rounded-lg shadow-lg">
+                    <p className="font-bold text-slate-900">{cat.name}</p>
+                    <p className="text-sm text-slate-600">{formatCurrency(cat.annual / 12)}/month ({cat.percent}%)</p>
+                    <p className="text-xs text-slate-500">{formatCurrency(cat.annual)}/year</p>
+                  </TooltipContent>
+                </Tooltip>
+              ))}
+            </div>
           </div>
 
-          {/* Legend */}
-          <div className="grid grid-cols-2 gap-2 text-xs">
+          {/* Category Details */}
+          <div className="grid md:grid-cols-2 gap-3">
             {currentBudget.categories.map((cat) => (
-              <div key={cat.name} className="flex items-center gap-2">
-                <div
-                  className="w-3 h-3 rounded-full"
-                  style={{ backgroundColor: cat.color }}
-                />
-                <span>{cat.name}</span>
-                <span className="text-slate-500 ml-auto">
-                  {formatCurrency(cat.annual / 12)}
-                </span>
+              <div key={cat.name} className="flex items-center justify-between bg-white rounded-lg p-3 border border-slate-200">
+                <div className="flex items-center gap-3">
+                  <div
+                    className="w-4 h-4 rounded-full border-2 border-slate-300"
+                    style={{ backgroundColor: cat.color }}
+                  />
+                  <span className="font-semibold text-slate-900">{cat.name}</span>
+                </div>
+                <div className="text-right">
+                  <p className="font-bold text-slate-900">{formatCurrency(cat.annual / 12)}</p>
+                  <p className="text-xs text-slate-500">{cat.percent}% of budget</p>
+                </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Formula with actual numbers */}
-        <div className="text-xs text-slate-500 space-y-1 pt-3 border-t">
-          <p><strong className="text-foreground">Annual Spending:</strong> {formatCurrency(currentBudget.totalAnnual)} ({currentBudget.modeLabel} lifestyle)</p>
-          <p><strong className="text-foreground">Required Portfolio:</strong> {formatCurrency(currentBudget.totalAnnual)} ÷ {withdrawalRate}% = <strong className="text-foreground">{formatCurrency(currentBudget.requiredPortfolio)}</strong></p>
-          <p><strong className="text-foreground">Monthly Budget:</strong> {formatCurrency(currentBudget.totalAnnual)} ÷ 12 = <strong className="text-foreground">{formatCurrency(currentBudget.totalMonthly)}/mo</strong></p>
+        {/* 4% Rule Explanation */}
+        <div className="bg-white border-2 border-emerald-300 rounded-lg p-4 space-y-2">
+          <p className="text-sm font-bold text-slate-900">How the 4% Rule Works:</p>
+          <div className="space-y-1 text-xs text-slate-600">
+            <p>• <strong>Annual Spending:</strong> {formatCurrency(currentBudget.totalAnnual)} ({currentBudget.modeLabel} lifestyle)</p>
+            <p>• <strong>Portfolio Calculation:</strong> {formatCurrency(currentBudget.totalAnnual)} ÷ {withdrawalRate}% = <strong className="text-emerald-700">{formatCurrency(currentBudget.requiredPortfolio)}</strong></p>
+            <p>• <strong>Monthly Budget:</strong> {formatCurrency(currentBudget.totalAnnual)} ÷ 12 = <strong className="text-emerald-700">{formatCurrency(currentBudget.totalMonthly)}</strong></p>
+            <p className="text-slate-500 pt-2 border-t border-slate-200">
+              The 4% rule suggests you can withdraw 4% of your portfolio annually (adjusted for inflation) with a high probability it will last 30+ years.
+            </p>
+          </div>
+        </div>
         </div>
       </CardContent>
     </Card>
