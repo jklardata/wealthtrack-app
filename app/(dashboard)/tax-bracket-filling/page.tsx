@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
+import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -40,7 +41,8 @@ import {
   ReferenceLine,
   ReferenceArea,
 } from "recharts";
-import { TrendingUp, Download, Settings, AlertTriangle, Lightbulb, Target, Edit } from "lucide-react";
+import { TrendingUp, Download, Settings, AlertTriangle, Lightbulb, Target, Edit, Lock, Sparkles } from "lucide-react";
+import type { EntitlementTier } from "@/lib/types";
 
 // ========== TypeScript Interfaces ==========
 
@@ -332,6 +334,9 @@ export default function TaxBracketFillingPage() {
   // Years to model
   const [yearsToModel, setYearsToModel] = useState<number>(40);
 
+  // Subscription tier for Pro gating
+  const [subscriptionTier, setSubscriptionTier] = useState<EntitlementTier>("free");
+
   // Update target bracket when filing status changes
   useEffect(() => {
     if (filingStatus === "married") {
@@ -341,13 +346,17 @@ export default function TaxBracketFillingPage() {
     }
   }, [filingStatus]);
 
-  // Fetch user settings from profile
+  // Fetch user settings from profile and subscription status
   useEffect(() => {
     async function fetchSettings() {
       try {
-        const response = await fetch("/api/settings");
-        if (response.ok) {
-          const data = await response.json();
+        const [settingsRes, subscriptionRes] = await Promise.all([
+          fetch("/api/settings"),
+          fetch("/api/stripe/subscription"),
+        ]);
+
+        if (settingsRes.ok) {
+          const data = await settingsRes.json();
           if (data.data) {
             const settings = data.data;
             if (settings.current_age) setCurrentAge(settings.current_age);
@@ -358,12 +367,21 @@ export default function TaxBracketFillingPage() {
             }
           }
         }
+
+        if (subscriptionRes.ok) {
+          const subData = await subscriptionRes.json();
+          if (subData.entitlement_tier) {
+            setSubscriptionTier(subData.entitlement_tier);
+          }
+        }
       } catch (error) {
         console.error("Error fetching settings:", error);
       }
     }
     fetchSettings();
   }, []);
+
+  const isPro = subscriptionTier === "pro" || subscriptionTier === "premium";
 
   // ========== Core Projection Calculations ==========
 
@@ -1328,14 +1346,35 @@ export default function TaxBracketFillingPage() {
 
       {/* Advisory Summary */}
       {projections.length > 0 && (
-        <Card className="bg-gradient-to-br from-emerald-50 via-white to-teal-50 border-2 border-black">
+        <Card className={isPro ? "bg-gradient-to-br from-emerald-50 via-white to-teal-50 border-2 border-black" : "bg-slate-100 border-2 border-slate-300"}>
           <CardHeader>
-            <CardTitle className="text-2xl font-black flex items-center gap-3">
-              <Lightbulb className="h-6 w-6 text-emerald-600" />
+            <CardTitle className={`text-2xl font-black flex items-center gap-3 ${!isPro && "text-slate-400"}`}>
+              {!isPro && <Lock className="h-6 w-6 text-slate-400" />}
+              {isPro && <Lightbulb className="h-6 w-6 text-emerald-600" />}
               Strategy Analysis & Recommendations
+              {!isPro && <span className="ml-2 text-sm font-bold text-amber-600 bg-amber-100 px-3 py-1 rounded-full border-2 border-amber-300">Pro Only</span>}
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-5">
+          {!isPro ? (
+            <CardContent>
+              <div className="text-center py-12">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-200 mb-4">
+                  <Lock className="h-8 w-8 text-slate-400" />
+                </div>
+                <h3 className="text-xl font-black text-slate-700 mb-2">Unlock Strategic Analysis</h3>
+                <p className="text-base font-semibold text-slate-600 mb-6 max-w-md mx-auto">
+                  Get personalized recommendations on underutilized tax years, optimal filling windows, lifetime tax savings estimates, and risk assessments.
+                </p>
+                <Link href="/upgrade">
+                  <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-lg px-8 py-6">
+                    <Sparkles className="h-5 w-5 mr-2" />
+                    Upgrade to Pro
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          ) : (
+            <CardContent className="space-y-5">
             {/* Underutilized Years */}
             {analysis.underutilizedYears.length > 0 && (
               <div className="p-4 bg-amber-50 border-2 border-amber-200 rounded-lg">
@@ -1436,20 +1475,46 @@ export default function TaxBracketFillingPage() {
               </p>
             </div>
           </CardContent>
+          )}
         </Card>
       )}
 
       {/* Year-by-Year Table */}
       {projections.length > 0 && (
-        <Card className="border-2 border-black">
+        <Card className={isPro ? "border-2 border-black" : "bg-slate-100 border-2 border-slate-300"}>
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-2xl font-black">Detailed Year-by-Year Projection</CardTitle>
-            <Button onClick={exportToCSV} className="bg-emerald-600 hover:bg-emerald-700">
-              <Download className="h-4 w-4 mr-2" />
-              Export to CSV
-            </Button>
+            <CardTitle className={`text-2xl font-black flex items-center gap-3 ${!isPro && "text-slate-400"}`}>
+              {!isPro && <Lock className="h-6 w-6 text-slate-400" />}
+              Detailed Year-by-Year Projection
+              {!isPro && <span className="ml-2 text-sm font-bold text-amber-600 bg-amber-100 px-3 py-1 rounded-full border-2 border-amber-300">Pro Only</span>}
+            </CardTitle>
+            {isPro && (
+              <Button onClick={exportToCSV} className="bg-emerald-600 hover:bg-emerald-700">
+                <Download className="h-4 w-4 mr-2" />
+                Export to CSV
+              </Button>
+            )}
           </CardHeader>
-          <CardContent>
+          {!isPro ? (
+            <CardContent>
+              <div className="text-center py-12">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-200 mb-4">
+                  <Lock className="h-8 w-8 text-slate-400" />
+                </div>
+                <h3 className="text-xl font-black text-slate-700 mb-2">Unlock Detailed Projections</h3>
+                <p className="text-base font-semibold text-slate-600 mb-6 max-w-md mx-auto">
+                  Get complete year-by-year breakdowns with income, conversions, gains realized, taxes paid, and full account balance tracking.
+                </p>
+                <Link href="/upgrade">
+                  <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-lg px-8 py-6">
+                    <Sparkles className="h-5 w-5 mr-2" />
+                    Upgrade to Pro
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          ) : (
+            <CardContent>
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader className="sticky top-0 bg-white">
@@ -1527,10 +1592,12 @@ export default function TaxBracketFillingPage() {
               </div>
             </div>
           </CardContent>
+          )}
         </Card>
       )}
 
       {/* Educational Panels */}
+      {isPro && (
       <div className="grid md:grid-cols-2 gap-6">
         <Card className="bg-blue-50 border-2 border-blue-300">
           <CardHeader>
@@ -1616,6 +1683,7 @@ export default function TaxBracketFillingPage() {
           </CardContent>
         </Card>
       </div>
+      )}
 
       {/* Disclaimer */}
       <Card className="bg-slate-50 border-2 border-slate-300">

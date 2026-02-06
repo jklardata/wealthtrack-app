@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
+import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -40,7 +41,8 @@ import {
   ReferenceLine,
   ReferenceArea,
 } from "recharts";
-import { Map, Download, Lightbulb, TrendingUp, AlertTriangle, Target } from "lucide-react";
+import { Map, Download, Lightbulb, TrendingUp, AlertTriangle, Target, Lock, Sparkles } from "lucide-react";
+import type { EntitlementTier } from "@/lib/types";
 
 // ========== TypeScript Interfaces ==========
 
@@ -187,13 +189,20 @@ export default function LifetimeTaxMapPage() {
   const [strategyScenario, setStrategyScenario] = useState("mixed");
   const [futureTaxAssumption, setFutureTaxAssumption] = useState<FutureTaxAssumption>("same");
 
-  // Fetch user settings
+  // Subscription tier for Pro gating
+  const [subscriptionTier, setSubscriptionTier] = useState<EntitlementTier>("free");
+
+  // Fetch user settings and subscription status
   useEffect(() => {
     async function fetchSettings() {
       try {
-        const response = await fetch("/api/settings");
-        if (response.ok) {
-          const data = await response.json();
+        const [settingsRes, subscriptionRes] = await Promise.all([
+          fetch("/api/settings"),
+          fetch("/api/stripe/subscription"),
+        ]);
+
+        if (settingsRes.ok) {
+          const data = await settingsRes.json();
           if (data.data) {
             const settings = data.data;
             if (settings.current_age) setCurrentAge(settings.current_age);
@@ -204,12 +213,21 @@ export default function LifetimeTaxMapPage() {
             }
           }
         }
+
+        if (subscriptionRes.ok) {
+          const subData = await subscriptionRes.json();
+          if (subData.entitlement_tier) {
+            setSubscriptionTier(subData.entitlement_tier);
+          }
+        }
       } catch (error) {
         console.error("Error fetching settings:", error);
       }
     }
     fetchSettings();
   }, []);
+
+  const isPro = subscriptionTier === "pro" || subscriptionTier === "premium";
 
   // ========== Core Projection Calculations ==========
 
@@ -894,14 +912,35 @@ export default function LifetimeTaxMapPage() {
       </Card>
 
       {/* Advisory Summary */}
-      <Card className="border-2 border-black bg-gradient-to-br from-amber-50 via-white to-emerald-50">
+      <Card className={isPro ? "border-2 border-black bg-gradient-to-br from-amber-50 via-white to-emerald-50" : "bg-slate-100 border-2 border-slate-300"}>
         <CardHeader>
-          <CardTitle className="text-3xl font-black flex items-center gap-3">
-            <Lightbulb className="h-8 w-8 text-amber-600" />
+          <CardTitle className={`text-3xl font-black flex items-center gap-3 ${!isPro && "text-slate-400"}`}>
+            {!isPro && <Lock className="h-8 w-8 text-slate-400" />}
+            {isPro && <Lightbulb className="h-8 w-8 text-amber-600" />}
             Strategic Insights from Your Lifetime Tax Map
+            {!isPro && <span className="ml-2 text-sm font-bold text-amber-600 bg-amber-100 px-3 py-1 rounded-full border-2 border-amber-300">Pro Only</span>}
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-6">
+        {!isPro ? (
+          <CardContent>
+            <div className="text-center py-12">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-200 mb-4">
+                <Lock className="h-8 w-8 text-slate-400" />
+              </div>
+              <h3 className="text-xl font-black text-slate-700 mb-2">Unlock Strategic Insights</h3>
+              <p className="text-base font-semibold text-slate-600 mb-6 max-w-md mx-auto">
+                Get lifetime tax burden projections, low-tax opportunity windows, gap year conversion insights, high-risk year analysis, and strategy impact assessments.
+              </p>
+              <Link href="/upgrade">
+                <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-lg px-8 py-6">
+                  <Sparkles className="h-5 w-5 mr-2" />
+                  Upgrade to Pro
+                </Button>
+              </Link>
+            </div>
+          </CardContent>
+        ) : (
+          <CardContent className="space-y-6">
           {/* Lifetime Tax Summary */}
           <div className="p-6 bg-white border-2 border-black rounded-lg">
             <p className="text-lg font-bold text-slate-900 mb-3">Projected Lifetime Tax Burden</p>
@@ -991,23 +1030,51 @@ export default function LifetimeTaxMapPage() {
             </p>
           </div>
         </CardContent>
+        )}
       </Card>
 
       {/* Detailed Year-by-Year Table */}
-      <Card className="border-2 border-black">
+      <Card className={isPro ? "border-2 border-black" : "bg-slate-100 border-2 border-slate-300"}>
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
-            <CardTitle className="text-2xl font-black">Year-by-Year Tax Projection Detail</CardTitle>
-            <p className="text-sm font-semibold text-slate-600 mt-1">
-              Complete breakdown of income sources, taxes, and balances for every year
-            </p>
+            <CardTitle className={`text-2xl font-black flex items-center gap-3 ${!isPro && "text-slate-400"}`}>
+              {!isPro && <Lock className="h-6 w-6 text-slate-400" />}
+              Year-by-Year Tax Projection Detail
+              {!isPro && <span className="ml-2 text-sm font-bold text-amber-600 bg-amber-100 px-3 py-1 rounded-full border-2 border-amber-300">Pro Only</span>}
+            </CardTitle>
+            {isPro && (
+              <p className="text-sm font-semibold text-slate-600 mt-1">
+                Complete breakdown of income sources, taxes, and balances for every year
+              </p>
+            )}
           </div>
-          <Button onClick={exportToCSV} className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold">
-            <Download className="h-4 w-4 mr-2" />
-            Export CSV
-          </Button>
+          {isPro && (
+            <Button onClick={exportToCSV} className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold">
+              <Download className="h-4 w-4 mr-2" />
+              Export CSV
+            </Button>
+          )}
         </CardHeader>
-        <CardContent>
+        {!isPro ? (
+          <CardContent>
+            <div className="text-center py-12">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-200 mb-4">
+                <Lock className="h-8 w-8 text-slate-400" />
+              </div>
+              <h3 className="text-xl font-black text-slate-700 mb-2">Unlock Detailed Projections</h3>
+              <p className="text-base font-semibold text-slate-600 mb-6 max-w-md mx-auto">
+                Get complete year-by-year projections with income sources, conversions, gains, taxes, cumulative lifetime taxes, and account balances.
+              </p>
+              <Link href="/upgrade">
+                <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-lg px-8 py-6">
+                  <Sparkles className="h-5 w-5 mr-2" />
+                  Upgrade to Pro
+                </Button>
+              </Link>
+            </div>
+          </CardContent>
+        ) : (
+          <CardContent>
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
@@ -1065,9 +1132,11 @@ export default function LifetimeTaxMapPage() {
             </Table>
           </div>
         </CardContent>
+        )}
       </Card>
 
       {/* Educational Panels */}
+      {isPro && (
       <div className="grid md:grid-cols-2 gap-6">
         {/* Panel 1: Lifetime vs Annual */}
         <Card className="border-2 border-black">
@@ -1218,6 +1287,7 @@ export default function LifetimeTaxMapPage() {
           </CardContent>
         </Card>
       </div>
+      )}
 
       {/* Disclaimer */}
       <Card className="border-2 border-amber-600 bg-amber-50">
