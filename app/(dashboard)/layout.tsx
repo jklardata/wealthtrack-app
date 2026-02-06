@@ -25,6 +25,7 @@ import {
   MessageSquare,
   RefreshCw,
   Target,
+  Map,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -48,6 +49,7 @@ const navItems = [
   { href: "/tax-optimization", label: "Tax Optimization", icon: Lightbulb },
   { href: "/roth-conversion", label: "Roth Conversion", icon: RefreshCw },
   { href: "/tax-bracket-filling", label: "Tax Bracket Filling", icon: Target },
+  { href: "/lifetime-tax-map", label: "Lifetime Tax Map", icon: Map },
   { href: "/geo-arbitrage", label: "Geo Arbitrage", icon: Globe },
   { href: "/blog", label: "Resources", icon: BookOpen },
   { href: "/founder-notes", label: "Founder Notes", icon: MessageSquare },
