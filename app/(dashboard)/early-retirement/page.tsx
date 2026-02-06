@@ -473,6 +473,8 @@ export default function EarlyRetirementPage() {
           selectedMode={lifestyleMode}
           setSelectedMode={setLifestyleMode}
           withdrawalRate={withdrawalRate}
+          annualIncome={annualIncome}
+          currentPortfolio={currentPortfolio}
         />
 
         {/* Scenario Planner Callout */}
@@ -515,25 +517,6 @@ export default function EarlyRetirementPage() {
           </CardContent>
         </Card>
 
-        {/* FIRE Framework Explanation */}
-        <Card className="bg-gradient-to-br from-purple-50 via-white to-pink-50 border-purple-200 shadow-sm">
-          <CardContent className="pt-6">
-            <div className="flex items-start gap-3">
-              <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
-                <Target className="h-5 w-5 text-purple-600" />
-              </div>
-              <div>
-                <h3 className="text-base font-semibold text-slate-900 mb-2">
-                  Understanding FIRE Strategies
-                </h3>
-                <p className="text-sm text-slate-700 leading-relaxed">
-                  The FIRE framework provides additional nuance: <strong>CoastFI</strong> (the point where you can stop saving because invested assets will grow to retirement needs), <strong>BaristaFI</strong> (semi-retirement where part-time work covers living expenses while investments compound), and <strong>FatFIRE</strong> (retirement with a more comfortable lifestyle budget). As a self-employed professional, you have the flexibility to design hybrid scenarios: perhaps you dial down client work by 50% once you hit CoastFI, maintaining creative fulfillment while your portfolio does the heavy lifting.
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
 
         {/* Roth Conversion Callout */}
         <Card className="bg-gradient-to-r from-purple-50 to-indigo-50 border-2 border-purple-300">
@@ -556,17 +539,6 @@ export default function EarlyRetirementPage() {
         </Card>
 
 
-        {/* Module 7: Burn Rate Clock */}
-        {isPro ? (
-          <BurnRateClockModule burnRate={burnRate} />
-        ) : (
-          <LockedModule
-            title="Burn Rate Clock"
-            description="Track your spending rate and runway"
-            icon={<Flame className="h-5 w-5 text-emerald-600" />}
-            benefits={["Real-time burn rate", "Portfolio runway", "Emergency fund analysis"]}
-          />
-        )}
 
         {/* Feedback Widget */}
         <div className="flex justify-center">
@@ -1069,11 +1041,15 @@ function CombinedLifestyleMilestonesModule({
   selectedMode,
   setSelectedMode,
   withdrawalRate,
+  annualIncome,
+  currentPortfolio,
 }: {
   milestones: FIMilestone[];
   selectedMode: LifestyleMode;
   setSelectedMode: (mode: LifestyleMode) => void;
   withdrawalRate: number;
+  annualIncome: number;
+  currentPortfolio: number;
 }) {
   // Extract relevant milestones from the array
   const leanMilestone = milestones.find(m => m.name === "Lean FI");
@@ -1081,22 +1057,27 @@ function CombinedLifestyleMilestonesModule({
   const fatMilestone = milestones.find(m => m.name === "Fat FI");
 
   // Map milestones to lifestyle modes (using adjusted thresholds)
-  // Lean FI → Lean, Full FI → Base, extrapolate for Chubby and Fat
+  // Account for income: if you have income, it reduces the portfolio withdrawal needed
+  // Adjusted portfolio needed = (Annual Spending - Annual Income) / Withdrawal Rate
+  // If income covers spending, portfolio target is just the base milestone target
   const lifestyleData: Record<LifestyleMode, {
     portfolioTarget: number;
     annualSpending: number;
+    adjustedPortfolioNeeded: number;
     isAchieved: boolean;
     progress: number;
   }> = {
     lean: {
       portfolioTarget: leanMilestone?.portfolioTarget || 750000,
       annualSpending: (leanMilestone?.portfolioTarget || 750000) * (withdrawalRate / 100),
+      adjustedPortfolioNeeded: Math.max(0, ((leanMilestone?.portfolioTarget || 750000) * (withdrawalRate / 100) - annualIncome) / (withdrawalRate / 100)),
       isAchieved: leanMilestone?.isAchieved || false,
       progress: leanMilestone?.progress || 0,
     },
     base: {
       portfolioTarget: fullMilestone?.portfolioTarget || 1750000,
       annualSpending: (fullMilestone?.portfolioTarget || 1750000) * (withdrawalRate / 100),
+      adjustedPortfolioNeeded: Math.max(0, ((fullMilestone?.portfolioTarget || 1750000) * (withdrawalRate / 100) - annualIncome) / (withdrawalRate / 100)),
       isAchieved: fullMilestone?.isAchieved || false,
       progress: fullMilestone?.progress || 0,
     },
@@ -1104,12 +1085,14 @@ function CombinedLifestyleMilestonesModule({
       // Interpolate between Full FI and Fat FI
       portfolioTarget: ((fullMilestone?.portfolioTarget || 1750000) + (fatMilestone?.portfolioTarget || 7500000)) / 2,
       annualSpending: (((fullMilestone?.portfolioTarget || 1750000) + (fatMilestone?.portfolioTarget || 7500000)) / 2) * (withdrawalRate / 100),
+      adjustedPortfolioNeeded: Math.max(0, ((((fullMilestone?.portfolioTarget || 1750000) + (fatMilestone?.portfolioTarget || 7500000)) / 2) * (withdrawalRate / 100) - annualIncome) / (withdrawalRate / 100)),
       isAchieved: false,
       progress: Math.min(((fullMilestone?.progress || 0) + (fatMilestone?.progress || 0)) / 2, 100),
     },
     fat: {
       portfolioTarget: fatMilestone?.portfolioTarget || 7500000,
       annualSpending: (fatMilestone?.portfolioTarget || 7500000) * (withdrawalRate / 100),
+      adjustedPortfolioNeeded: Math.max(0, ((fatMilestone?.portfolioTarget || 7500000) * (withdrawalRate / 100) - annualIncome) / (withdrawalRate / 100)),
       isAchieved: fatMilestone?.isAchieved || false,
       progress: fatMilestone?.progress || 0,
     },
@@ -1121,15 +1104,16 @@ function CombinedLifestyleMilestonesModule({
   const monthlySpending = currentLifestyle.annualSpending / 12;
 
   // Simplified category breakdown (proportional to annual spending)
+  // Using shades of green, black, and grey
   const categories = [
-    { name: "Housing", percent: 35, color: "#3b82f6", annual: currentLifestyle.annualSpending * 0.35 },
+    { name: "Housing", percent: 35, color: "#059669", annual: currentLifestyle.annualSpending * 0.35 },
     { name: "Food", percent: 15, color: "#10b981", annual: currentLifestyle.annualSpending * 0.15 },
-    { name: "Transportation", percent: 12, color: "#f59e0b", annual: currentLifestyle.annualSpending * 0.12 },
-    { name: "Healthcare", percent: 10, color: "#ef4444", annual: currentLifestyle.annualSpending * 0.10 },
-    { name: "Entertainment", percent: 8, color: "#8b5cf6", annual: currentLifestyle.annualSpending * 0.08 },
-    { name: "Utilities", percent: 8, color: "#ec4899", annual: currentLifestyle.annualSpending * 0.08 },
-    { name: "Insurance", percent: 7, color: "#06b6d4", annual: currentLifestyle.annualSpending * 0.07 },
-    { name: "Other", percent: 5, color: "#6b7280", annual: currentLifestyle.annualSpending * 0.05 },
+    { name: "Transportation", percent: 12, color: "#34d399", annual: currentLifestyle.annualSpending * 0.12 },
+    { name: "Healthcare", percent: 10, color: "#4b5563", annual: currentLifestyle.annualSpending * 0.10 },
+    { name: "Entertainment", percent: 8, color: "#6ee7b7", annual: currentLifestyle.annualSpending * 0.08 },
+    { name: "Utilities", percent: 8, color: "#6b7280", annual: currentLifestyle.annualSpending * 0.08 },
+    { name: "Insurance", percent: 7, color: "#1f2937", annual: currentLifestyle.annualSpending * 0.07 },
+    { name: "Other", percent: 5, color: "#9ca3af", annual: currentLifestyle.annualSpending * 0.05 },
   ];
 
   const modeIcons: Record<LifestyleMode, React.ReactNode> = {
@@ -1160,8 +1144,11 @@ function CombinedLifestyleMilestonesModule({
           <Target className="h-6 w-6 text-emerald-600" />
           Retirement Lifestyle & Freedom Milestones
         </CardTitle>
-        <CardDescription className="text-base mt-2">
-          Model different FIRE spending scenarios with adjusted thresholds based on your cost-of-living and actual expenses
+        <CardDescription className="text-base mt-2 space-y-2">
+          <p>Model different FIRE spending scenarios with adjusted thresholds based on your cost-of-living and actual expenses.</p>
+          <p className="text-sm text-slate-600 leading-relaxed">
+            The FIRE framework provides additional nuance: <strong>CoastFI</strong> (the point where you can stop saving because invested assets will grow to retirement needs), <strong>BaristaFI</strong> (semi-retirement where part-time work covers living expenses while investments compound), and <strong>FatFIRE</strong> (retirement with a more comfortable lifestyle budget). As a self-employed professional, you have the flexibility to design hybrid scenarios—perhaps you dial down client work by 50% once you hit CoastFI, maintaining creative fulfillment while your portfolio does the heavy lifting.
+          </p>
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -1272,12 +1259,12 @@ function CombinedLifestyleMilestonesModule({
           </div>
 
         {/* Expense Breakdown */}
-        <div className="space-y-3">
+        <div className="space-y-2">
 
           {/* Stacked Bar */}
-          <div className="space-y-2">
-            <p className="text-sm font-bold text-slate-700">Monthly Spending Categories:</p>
-            <div className="h-10 rounded-lg overflow-hidden flex border-2 border-slate-300">
+          <div className="space-y-1">
+            <p className="text-xs font-bold text-slate-700">Monthly Spending Categories:</p>
+            <div className="h-6 rounded-lg overflow-hidden flex border border-slate-300">
               {categories.map((cat, i) => (
                 <Tooltip key={cat.name}>
                   <TooltipTrigger asChild>
@@ -1300,7 +1287,7 @@ function CombinedLifestyleMilestonesModule({
           </div>
 
           {/* Category Details */}
-          <div className="grid md:grid-cols-2 gap-3">
+          <div className="grid md:grid-cols-2 gap-2">
             {categories.map((cat) => (
               <div key={cat.name} className="flex items-center justify-between bg-white rounded-lg p-3 border border-slate-200">
                 <div className="flex items-center gap-3">
@@ -1319,14 +1306,22 @@ function CombinedLifestyleMilestonesModule({
           </div>
         </div>
 
-        {/* 4% Rule Explanation */}
-        <div className="bg-white border-2 border-emerald-300 rounded-lg p-4 space-y-2">
-          <p className="text-sm font-bold text-slate-900">How the 4% Rule Works:</p>
-          <div className="space-y-1 text-xs text-slate-600">
-            <p>• <strong>Annual Spending:</strong> {formatCurrency(currentLifestyle.annualSpending)} ({modeLabels[selectedMode]} lifestyle)</p>
-            <p>• <strong>Portfolio Calculation:</strong> {formatCurrency(currentLifestyle.annualSpending)} ÷ {withdrawalRate}% = <strong className="text-emerald-700">{formatCurrency(currentLifestyle.portfolioTarget)}</strong></p>
-            <p>• <strong>Monthly Budget:</strong> {formatCurrency(currentLifestyle.annualSpending)} ÷ 12 = <strong className="text-emerald-700">{formatCurrency(monthlySpending)}</strong></p>
-            <p className="text-slate-500 pt-2 border-t border-slate-200">
+        {/* 4% Rule Explanation - Enhanced */}
+        <div className="bg-gradient-to-br from-emerald-50 to-green-100 border-2 border-emerald-400 rounded-lg p-5 space-y-3 shadow-sm">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center">
+              <DollarSign className="h-5 w-5 text-white" />
+            </div>
+            <p className="text-base font-black text-slate-900">How the 4% Rule Works:</p>
+          </div>
+          <div className="space-y-2 text-sm text-slate-700">
+            <p>• <strong className="text-slate-900">Annual Spending:</strong> {formatCurrency(currentLifestyle.annualSpending)} ({modeLabels[selectedMode]} lifestyle)</p>
+            <p>• <strong className="text-slate-900">Portfolio Calculation:</strong> {formatCurrency(currentLifestyle.annualSpending)} ÷ {withdrawalRate}% = <strong className="text-emerald-700 text-base">{formatCurrency(currentLifestyle.portfolioTarget)}</strong></p>
+            <p>• <strong className="text-slate-900">Monthly Budget:</strong> {formatCurrency(currentLifestyle.annualSpending)} ÷ 12 = <strong className="text-emerald-700 text-base">{formatCurrency(monthlySpending)}</strong></p>
+            {annualIncome > 0 && (
+              <p>• <strong className="text-slate-900">With Your Income:</strong> Portfolio needed drops to <strong className="text-emerald-700 text-base">{formatCurrency(currentLifestyle.adjustedPortfolioNeeded)}</strong> (income covers {formatCurrency(annualIncome)}/year)</p>
+            )}
+            <p className="text-slate-600 pt-2 border-t-2 border-emerald-300 text-xs italic">
               The 4% rule suggests you can withdraw 4% of your portfolio annually (adjusted for inflation) with a high probability it will last 30+ years. These thresholds are adjusted for your cost-of-living multiplier.
             </p>
           </div>
