@@ -13,6 +13,48 @@ interface ChangelogEntry {
 
 const changelogData: ChangelogEntry[] = [
   {
+    date: "2026-02-06",
+    title: "Roth Conversion Strategy Engine Launch",
+    type: "feature",
+    content: "Built a production-ready Roth conversion modeling tool that goes way beyond basic calculators. This is the first tool where I'm implementing Pro gating—strategic insights and detailed projections are Pro-only, but everyone gets the core visualization and education.",
+    details: [
+      "Full lifetime projection modeling with healthcare subsidy and IRMAA threshold detection",
+      "Educational guide explaining why gap years between retirement and Social Security are goldmines for conversions",
+      "Year-by-year breakdown showing exactly when conversions make sense and when they don't",
+      "Strategic insights analyzing optimal conversion windows, lifetime tax savings, and break-even timelines (Pro)",
+      "Variable income modeling for consultants with fluctuating earnings",
+      "Pro gating implementation: free users see the power, Pro users get the full analysis"
+    ]
+  },
+  {
+    date: "2026-02-06",
+    title: "Tax Bracket Filling Strategy Engine Launch",
+    type: "feature",
+    content: "Shipped a comprehensive bracket filling tool that models 8 different optimization strategies. This is about filling unused tax capacity during low-income years—it's strategic tax planning at scale.",
+    details: [
+      "8 strategic scenarios: baseline, Roth-only, gains-only, mixed strategy, variable income, gap year, FEIE exit, pre-Medicare",
+      "Full-page dominant visualization showing how income layers affect bracket utilization",
+      "Healthcare subsidy cliff detection (ACA MAGI limits) and Medicare IRMAA threshold warnings",
+      "Advisory summary with color-coded insights on underutilized years and optimization opportunities (Pro)",
+      "Educational panels explaining bracket filling mechanics, variable income impacts, and common mistakes (Pro)",
+      "17-column detailed projection table with smart row highlighting (Pro)"
+    ]
+  },
+  {
+    date: "2026-02-06",
+    title: "Lifetime Tax Map Visualization Engine Launch",
+    type: "feature",
+    content: "Built the most comprehensive tax visualization tool on the platform. This unifies everything—Roth conversions, bracket filling, capital gains, withdrawals, Social Security—into a single lifetime timeline showing cumulative tax exposure across decades.",
+    details: [
+      "Multi-layer timeline chart showing income streams stacked over your entire retirement horizon",
+      "Cumulative lifetime taxes line tracking total tax burden from today through life expectancy",
+      "Gap year shading highlighting optimal conversion windows between retirement and RMDs",
+      "Reference lines for retirement, Medicare (65), RMDs (72), and Social Security claim age",
+      "Strategic insights section analyzing low-tax years, high-risk periods, and strategy impact (Pro)",
+      "Educational panels on lifetime vs annual tax planning, gap year arbitrage, and FEIE transitions (Pro)"
+    ]
+  },
+  {
     date: "2026-02-04",
     title: "Withdrawal Stress Test Launch",
     type: "feature",
