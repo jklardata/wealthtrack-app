@@ -169,8 +169,8 @@ function NetWorthTooltip({ active, payload }: CustomTooltipProps) {
   ].filter((a) => a.value > 0);
 
   return (
-    <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-lg min-w-[200px]">
-      <div className="text-sm text-slate-500 mb-2">{data.date}</div>
+    <div className="bg-white border-2 border-black rounded-lg p-4 shadow-lg min-w-[200px]">
+      <div className="text-sm font-bold text-slate-700 mb-2">{data.date}</div>
       <div className="text-lg font-semibold text-slate-900 mb-3">
         {formatCurrency(data.netWorth)}
       </div>
