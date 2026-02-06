@@ -14,6 +14,22 @@ interface ChangelogEntry {
 const changelogData: ChangelogEntry[] = [
   {
     date: "2026-02-06",
+    title: "Quarterly Estimated Tax Optimizer Launch",
+    type: "feature",
+    content: "Built a comprehensive quarterly estimated tax calculator for self-employed professionals. This solves one of the most stressful parts of going solo—figuring out how much to pay each quarter and avoiding underpayment penalties. Safe harbor calculations, payment tracking, and Pro features for variable income optimization.",
+    details: [
+      "Safe harbor calculator showing both prior year (100%/110%) and current year (90%) methods",
+      "Visual quarterly payment timeline with color-coded status (paid, upcoming, overdue)",
+      "Auto-population from prior year tax returns and user settings",
+      "Payment tracking with progress bars and quick 'Mark Paid' buttons",
+      "Annualized Income Installment Method for variable/seasonal income (Pro)",
+      "Underpayment penalty calculator with quarterly breakdown (Pro)",
+      "Educational panels explaining safe harbor rules, annualized method, and common mistakes",
+      "Full integration with existing tax calculation engine"
+    ]
+  },
+  {
+    date: "2026-02-06",
     title: "Roth Conversion Strategy Engine Launch",
     type: "feature",
     content: "Built a production-ready Roth conversion modeling tool that goes way beyond basic calculators. This is the first tool where I'm implementing Pro gating—strategic insights and detailed projections are Pro-only, but everyone gets the core visualization and education.",
