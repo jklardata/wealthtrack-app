@@ -134,24 +134,24 @@ export default function SettingsPage() {
     }
   };
 
-  const handleSyncToSheets = async () => {
+  const handleSyncFromSheet = async () => {
     setSyncing(true);
     setSyncMessage(null);
 
     try {
-      const response = await fetch("/api/sync-to-sheets", {
+      const response = await fetch("/api/sync", {
         method: "POST",
       });
 
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.error || "Failed to sync data");
+        throw new Error(result.error || "Failed to sync");
       }
 
       setSyncMessage({
         type: "success",
-        text: `Successfully synced ${result.synced} entries to Google Sheets!`,
+        text: `Synced ${result.synced} entries from "${result.sheetTitle}"`,
       });
 
       // Redirect to Net Worth Timeline after successful sync
@@ -161,7 +161,7 @@ export default function SettingsPage() {
     } catch (error) {
       setSyncMessage({
         type: "error",
-        text: error instanceof Error ? error.message : "Failed to sync data",
+        text: error instanceof Error ? error.message : "Failed to sync",
       });
     } finally {
       setSyncing(false);
@@ -546,80 +546,21 @@ export default function SettingsPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* Create Template Button - Prominent CTA */}
-          <div className="bg-gradient-to-r from-primary/10 to-yellow-500/10 border border-primary/20 rounded-lg p-6">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div className="flex items-start gap-4">
-                <div className="p-3 rounded-lg bg-primary/20">
-                  <FileSpreadsheet className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-lg">Quick Start</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Create a pre-configured Google Sheet template with all the right columns.
-                    It will be automatically shared and connected.
-                  </p>
-                </div>
-              </div>
-              <Button
-                onClick={handleCreateTemplate}
-                disabled={creating}
-                className="bg-primary hover:bg-primary/90 whitespace-nowrap"
-                size="lg"
-              >
-                {creating ? (
-                  <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Creating...
-                  </>
-                ) : (
-                  <>
-                    <Plus className="h-4 w-4 mr-2" />
-                    Create Template Sheet
-                  </>
-                )}
-              </Button>
-            </div>
-            {createdSheetUrl && (
-              <div className="mt-4 p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
-                <p className="text-sm text-green-500 flex items-center gap-2">
-                  <Check className="h-4 w-4" />
-                  Sheet created successfully!
-                </p>
-                <a
-                  href={createdSheetUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-primary hover:text-primary/80 flex items-center gap-1 mt-2"
-                >
-                  <ExternalLink className="h-4 w-4" />
-                  Open your new spreadsheet
-                </a>
-              </div>
-            )}
-          </div>
-
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">
-                Or connect existing sheet
-              </span>
-            </div>
-          </div>
-
           {/* Manual Setup Instructions */}
           <div className="bg-muted/50 rounded-lg p-4 space-y-3">
-            <h4 className="font-medium">Manual Setup:</h4>
+            <h4 className="font-medium">Setup Instructions:</h4>
             <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
               <li>
-                Create a Google Sheet with these columns in row 1:
+                Create a new Google Sheet and copy these column headers into row 1:
                 <br />
-                <code className="text-xs bg-muted px-1 py-0.5 rounded">
-                  Date | Stocks | Bonds | Cash | Real Estate | Points Value | Other Assets | Total Debts | Notes
-                </code>
+                <div className="mt-2 bg-white dark:bg-slate-800 border rounded p-2">
+                  <code className="text-xs select-all">
+                    Date	Stocks	Bonds	Cash	Real Estate	Points Value	Commodities	Other Assets	Total Debts	Notes	Pre-tax Monthly Income	Monthly Expenses
+                  </code>
+                </div>
+                <p className="text-xs mt-1 text-muted-foreground">
+                  Click to select, then Ctrl+C (or Cmd+C) to copy. Paste into row 1 of your sheet.
+                </p>
               </li>
               <li>Add your data starting from row 2</li>
               <li>
@@ -717,7 +658,7 @@ export default function SettingsPage() {
               {saving ? "Saving..." : "Save Settings"}
             </Button>
             <Button
-              onClick={handleSyncToSheets}
+              onClick={handleSyncFromSheet}
               disabled={!sheetId || syncing || saving}
               className="bg-emerald-600 hover:bg-emerald-700 text-white"
             >

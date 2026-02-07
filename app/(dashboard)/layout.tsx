@@ -48,7 +48,7 @@ const navItems = [
   { href: "/withdrawal-stress-test", label: "Withdrawal Stress Test", icon: Activity },
   { href: "/tax-calculator", label: "Tax Calculator", icon: Receipt },
   { href: "/tax-optimization", label: "Tax Optimization", icon: Lightbulb },
-  { href: "/quarterly-estimated-taxes", label: "Quarterly Estimated Taxes", icon: Calendar },
+  { href: "/quarterly-estimated-taxes", label: "Quarterly Estimated Taxes", icon: Calendar, disabled: true },
   { href: "/roth-conversion", label: "Roth Conversion", icon: RefreshCw },
   { href: "/tax-bracket-filling", label: "Tax Bracket Filling", icon: Target },
   { href: "/lifetime-tax-map", label: "Lifetime Tax Map", icon: Map },
