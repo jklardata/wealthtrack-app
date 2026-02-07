@@ -553,7 +553,7 @@ export default function SettingsPage() {
               <li>
                 Create a new Google Sheet and copy these column headers into row 1:
                 <br />
-                <div className="mt-2 bg-white dark:bg-slate-800 border rounded p-2">
+                <div className="mt-2 bg-transparent border rounded p-2">
                   <code className="text-xs select-all">
                     Date	Stocks	Bonds	Cash	Real Estate	Points Value	Commodities	Other Assets	Total Debts	Notes	Pre-tax Monthly Income	Monthly Expenses
                   </code>

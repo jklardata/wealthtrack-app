@@ -79,10 +79,10 @@ export function ProFeatureGate({
 
           <div className="text-center space-y-2">
             <p className="text-lg font-medium text-slate-900">
-              Starting at <span className="text-2xl text-emerald-600">$29</span>/month
+              Starting at <span className="text-2xl text-emerald-600">$19</span>/month
             </p>
             <p className="text-sm text-slate-500">
-              or $249/year (save 28%)
+              or $199/year (save 17%)
             </p>
           </div>
         </CardContent>
