@@ -129,7 +129,7 @@ export default function QuarterlyEstimatedTaxesPage() {
   const [q4Paid, setQ4Paid] = useState("0");
 
   // Method Selection (user can override auto-selection)
-  const [selectedMethod, setSelectedMethod] = useState<"auto" | "prior-year" | "current-year">("auto");
+  const [selectedMethod, setSelectedMethod] = useState<"auto" | "prior-year" | "current-year">("prior-year");
 
   // UI State
   const [loading, setLoading] = useState(true);
@@ -247,27 +247,44 @@ export default function QuarterlyEstimatedTaxesPage() {
     const currentYearSafeHarbor = totalCurrentYearTax * 0.9;
 
     // Determine which method to use based on user selection
-    let usePriorYear: boolean;
+    let recommendedAnnual: number;
+    let actualMethod: "prior-year" | "current-year";
+
     if (selectedMethod === "prior-year") {
-      usePriorYear = priorYearTotalTax > 0;
+      // Prior Year: Use lower of prior year safe harbor OR current year (with FEIE/deductions)
+      // This allows FEIE and retirement deductions to reduce the payment
+      if (priorYearTotalTax > 0 && priorYearSafeHarbor < currentYearSafeHarbor) {
+        recommendedAnnual = priorYearSafeHarbor;
+        actualMethod = "prior-year";
+      } else {
+        recommendedAnnual = currentYearSafeHarbor;
+        actualMethod = "current-year";
+      }
     } else if (selectedMethod === "current-year") {
-      usePriorYear = false;
+      // Current Year: Always use current year estimate (with deductions)
+      recommendedAnnual = currentYearSafeHarbor;
+      actualMethod = "current-year";
     } else {
       // Auto: use lower of two (taxpayer-favorable)
-      usePriorYear = priorYearSafeHarbor < currentYearSafeHarbor && priorYearTotalTax > 0;
+      if (priorYearSafeHarbor < currentYearSafeHarbor && priorYearTotalTax > 0) {
+        recommendedAnnual = priorYearSafeHarbor;
+        actualMethod = "prior-year";
+      } else {
+        recommendedAnnual = currentYearSafeHarbor;
+        actualMethod = "current-year";
+      }
     }
 
-    const recommendedQuarterly =
-      (usePriorYear ? priorYearSafeHarbor : currentYearSafeHarbor) / 4;
+    const recommendedQuarterly = recommendedAnnual / 4;
 
     return {
       priorYearSafeHarbor,
       currentYearSafeHarbor,
       recommendedQuarterly: Math.ceil(recommendedQuarterly),
-      method: usePriorYear ? "prior-year" : "current-year",
-      reasoning: usePriorYear
-        ? `Using ${Math.round(priorYearMultiplier * 100)}% of prior year tax${selectedMethod === "auto" ? " (lower amount)" : ""}`
-        : `Using 90% of current year estimated tax${selectedMethod === "auto" ? "" : ""}`,
+      method: actualMethod,
+      reasoning: actualMethod === "prior-year"
+        ? `Using ${Math.round(priorYearMultiplier * 100)}% of prior year tax${selectedMethod === "prior-year" && recommendedAnnual < currentYearSafeHarbor ? "" : selectedMethod === "auto" ? " (lower amount)" : ""}`
+        : `Using 90% of current year estimated tax${selectedMethod === "prior-year" ? " (lower than prior year)" : ""}`,
     };
   }, [
     expectedGrossIncome,
@@ -366,14 +383,28 @@ export default function QuarterlyEstimatedTaxesPage() {
       // Calculate tax on annualized income
       const expenses = parseFloat(expectedBusinessExpenses) || 0;
       const netIncome = annualizedIncome - expenses;
+
+      // FEIE and deductions (same as safe harbor calculation)
+      const feie = parseFloat(feieExclusion) || 0;
       const seTax = calculateSETax(netIncome);
       const seDeduction = seTax.total * 0.5; // Deduct half of SE tax
+      const retirement = parseFloat(retirement401k) || 0;
+      const hsa = parseFloat(hsaContribution) || 0;
+      const itemized = parseFloat(itemizedDeductions) || 0;
+      const standardDeduction =
+        filingStatus === "single"
+          ? TAX_CONSTANTS.standardDeductionSingle
+          : TAX_CONSTANTS.standardDeductionMarried;
+      const deduction = Math.max(itemized, standardDeduction);
+
       const taxableIncome = Math.max(
         0,
-        netIncome - seDeduction - (parseFloat(retirement401k) || 0)
+        netIncome - feie - seDeduction - retirement - hsa - deduction
       );
       const federalTax = calculateFederalTax(taxableIncome, filingStatus);
-      const estimatedTax = federalTax + seTax.total;
+      const stateTaxRate = STATE_TAX_RATES[stateCode.toLowerCase()]?.rate || 0.05;
+      const stateTax = Math.max(0, netIncome - feie - retirement - hsa) * stateTaxRate;
+      const estimatedTax = federalTax + seTax.total + stateTax;
 
       // Cumulative tax owed through this quarter
       const cumulativeTax = (estimatedTax * (idx + 1)) / 4;
@@ -403,7 +434,11 @@ export default function QuarterlyEstimatedTaxesPage() {
     q4Income,
     expectedBusinessExpenses,
     retirement401k,
+    hsaContribution,
+    itemizedDeductions,
+    feieExclusion,
     filingStatus,
+    stateCode,
   ]);
 
   // Underpayment penalty calculation (Pro feature)
@@ -419,12 +454,8 @@ export default function QuarterlyEstimatedTaxesPage() {
 
     const INTEREST_RATE = 0.08;
 
-    const targetAmount =
-      safeHarbor.method === "prior-year"
-        ? safeHarbor.priorYearSafeHarbor
-        : safeHarbor.currentYearSafeHarbor;
-
-    const quarterlyTarget = targetAmount / 4;
+    // Use the actual recommended quarterly payment (which includes FEIE adjustments)
+    const quarterlyTarget = safeHarbor.recommendedQuarterly;
     const payments = [
       parseFloat(q1Paid) || 0,
       parseFloat(q2Paid) || 0,
@@ -451,7 +482,7 @@ export default function QuarterlyEstimatedTaxesPage() {
     });
 
     const totalPaid = payments.reduce((sum, p) => sum + p, 0);
-    const safeHarborMet = totalPaid >= targetAmount;
+    const safeHarborMet = totalPaid >= quarterlyTarget * 4;
 
     return {
       totalPenalty: Math.round(totalPenalty),
@@ -567,7 +598,7 @@ export default function QuarterlyEstimatedTaxesPage() {
           <CardContent className="space-y-6">
             {/* Prior Year Data */}
             <div>
-              <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
+              <h3 className="text-lg font-bold mb-8 flex items-center gap-2">
                 <Info className="h-5 w-5 text-blue-600" />
                 Prior Year Tax Data (Auto-filled)
               </h3>
@@ -595,7 +626,7 @@ export default function QuarterlyEstimatedTaxesPage() {
 
             {/* Current Year Projections */}
             <div>
-              <h3 className="text-lg font-bold mb-6">Current Year Projections</h3>
+              <h3 className="text-lg font-bold mb-8">Current Year Projections</h3>
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="expectedGrossIncome">Expected Gross Income</Label>
@@ -642,7 +673,7 @@ export default function QuarterlyEstimatedTaxesPage() {
 
             {/* Deductions */}
             <div>
-              <h3 className="text-lg font-bold mb-6">Retirement & Deductions</h3>
+              <h3 className="text-lg font-bold mb-8">Retirement & Deductions</h3>
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div>
                   <Label htmlFor="retirement401k">401(k) / SEP IRA Contribution</Label>
@@ -893,11 +924,8 @@ export default function QuarterlyEstimatedTaxesPage() {
                                 : payment.quarter === 3
                                 ? setQ3Paid
                                 : setQ4Paid;
-                            // Keep manually entered value, or set to full amount if empty/zero
-                            const valueToSet = (parseFloat(currentValue) || 0) > 0
-                              ? currentValue
-                              : payment.amount.toString();
-                            setter(valueToSet);
+                            // Set to recommended quarterly amount
+                            setter(payment.amount.toString());
                           }}
                           className="h-8 px-2 text-xs"
                         >

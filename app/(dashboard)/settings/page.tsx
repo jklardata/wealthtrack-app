@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,6 +21,7 @@ import {
   Upload,
   FileText,
   Trash2,
+  RefreshCw,
 } from "lucide-react";
 import type { UserSettings, EntitlementTier, TaxReturn } from "@/lib/types";
 import { PRICING_TIERS } from "@/lib/stripe-config";
@@ -28,14 +30,17 @@ import Link from "next/link";
 const SERVICE_ACCOUNT_EMAIL = "wealthtrack-sheets@wealth-tracker-485215.iam.gserviceaccount.com";
 
 export default function SettingsPage() {
+  const router = useRouter();
   const [settings, setSettings] = useState<UserSettings | null>(null);
   const [sheetId, setSheetId] = useState("");
   const [creditCardsSheetId, setCreditCardsSheetId] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [syncing, setSyncing] = useState(false);
   const [creating, setCreating] = useState(false);
   const [creatingCreditCards, setCreatingCreditCards] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [syncMessage, setSyncMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [creditCardsMessage, setCreditCardsMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [createdSheetUrl, setCreatedSheetUrl] = useState<string | null>(null);
   const [createdCreditCardsSheetUrl, setCreatedCreditCardsSheetUrl] = useState<string | null>(null);
@@ -126,6 +131,40 @@ export default function SettingsPage() {
       setMessage({ type: "error", text: error instanceof Error ? error.message : "Failed to save" });
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleSyncToSheets = async () => {
+    setSyncing(true);
+    setSyncMessage(null);
+
+    try {
+      const response = await fetch("/api/sync-to-sheets", {
+        method: "POST",
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to sync data");
+      }
+
+      setSyncMessage({
+        type: "success",
+        text: `Successfully synced ${result.synced} entries to Google Sheets!`,
+      });
+
+      // Redirect to Net Worth Timeline after successful sync
+      setTimeout(() => {
+        router.push("/net-worth");
+      }, 1500);
+    } catch (error) {
+      setSyncMessage({
+        type: "error",
+        text: error instanceof Error ? error.message : "Failed to sync data",
+      });
+    } finally {
+      setSyncing(false);
     }
   };
 
@@ -650,14 +689,51 @@ export default function SettingsPage() {
             </div>
           )}
 
-          {/* Save Button */}
-          <Button
-            onClick={handleSave}
-            disabled={saving}
-            variant="outline"
-          >
-            {saving ? "Saving..." : "Save Settings"}
-          </Button>
+          {/* Sync Message */}
+          {syncMessage && (
+            <div
+              className={`flex items-center gap-2 p-3 rounded-lg ${
+                syncMessage.type === "success"
+                  ? "bg-green-500/10 text-green-500"
+                  : "bg-red-500/10 text-red-500"
+              }`}
+            >
+              {syncMessage.type === "success" ? (
+                <Check className="h-4 w-4" />
+              ) : (
+                <AlertCircle className="h-4 w-4" />
+              )}
+              {syncMessage.text}
+            </div>
+          )}
+
+          {/* Save and Sync Buttons */}
+          <div className="flex gap-3">
+            <Button
+              onClick={handleSave}
+              disabled={saving || syncing}
+              variant="outline"
+            >
+              {saving ? "Saving..." : "Save Settings"}
+            </Button>
+            <Button
+              onClick={handleSyncToSheets}
+              disabled={!sheetId || syncing || saving}
+              className="bg-emerald-600 hover:bg-emerald-700 text-white"
+            >
+              {syncing ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Syncing...
+                </>
+              ) : (
+                <>
+                  <RefreshCw className="h-4 w-4 mr-2" />
+                  Sync Net Worth Data
+                </>
+              )}
+            </Button>
+          </div>
         </CardContent>
       </Card>
 

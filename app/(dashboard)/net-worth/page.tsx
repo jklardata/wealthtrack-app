@@ -71,12 +71,13 @@ function getDefaultDate(): string {
 
 interface EntryFormProps {
   entry?: NetWorthEntry;
+  previousEntry?: NetWorthEntry;
   onSubmit: (data: NetWorthFormData) => Promise<void>;
   onClose: () => void;
   isSubmitting: boolean;
 }
 
-function EntryForm({ entry, onSubmit, onClose, isSubmitting }: EntryFormProps) {
+function EntryForm({ entry, previousEntry, onSubmit, onClose, isSubmitting }: EntryFormProps) {
   const [formData, setFormData] = useState<NetWorthFormData>({
     date: entry?.date || getDefaultDate(),
     stocks: entry?.stocks || 0,
@@ -91,6 +92,25 @@ function EntryForm({ entry, onSubmit, onClose, isSubmitting }: EntryFormProps) {
     monthly_expenses: entry?.monthly_expenses || 0,
     notes: entry?.notes || "",
   });
+
+  const handleDuplicatePrevious = () => {
+    if (previousEntry) {
+      setFormData({
+        date: getDefaultDate(), // Use today's date
+        stocks: previousEntry.stocks || 0,
+        bonds: previousEntry.bonds || 0,
+        cash: previousEntry.cash || 0,
+        real_estate: previousEntry.real_estate || 0,
+        points_value: previousEntry.points_value || 0,
+        commodities: previousEntry.commodities || 0,
+        other_assets: previousEntry.other_assets || 0,
+        total_debts: previousEntry.total_debts || 0,
+        pre_tax_income: previousEntry.pre_tax_income || 0,
+        monthly_expenses: previousEntry.monthly_expenses || 0,
+        notes: previousEntry.notes || "",
+      });
+    }
+  };
 
   const totalAssets =
     Number(formData.stocks) +
@@ -126,6 +146,17 @@ function EntryForm({ entry, onSubmit, onClose, isSubmitting }: EntryFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      {!entry && previousEntry && (
+        <Button
+          type="button"
+          variant="outline"
+          onClick={handleDuplicatePrevious}
+          className="w-full border-2 border-emerald-300 text-emerald-700 hover:bg-emerald-50"
+        >
+          <Copy className="h-4 w-4 mr-2" />
+          Duplicate Previous Entry ({formatDate(previousEntry.date)})
+        </Button>
+      )}
       <div className="space-y-2">
         <Label htmlFor="date">Date</Label>
         <Input
@@ -786,6 +817,7 @@ export default function NetWorthPage() {
               </DialogHeader>
               <EntryForm
                 entry={editingEntry}
+                previousEntry={entries.length > 0 ? entries[0] : undefined}
                 onSubmit={handleSubmit}
                 onClose={() => {
                   setIsDialogOpen(false);

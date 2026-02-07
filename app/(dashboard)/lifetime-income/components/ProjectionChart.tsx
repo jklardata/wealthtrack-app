@@ -87,8 +87,8 @@ export function ProjectionChart({ projection, expectedReturn = 7, incomeSources 
         <div className="space-y-8">
           {/* Main Portfolio Chart */}
           <div>
-            <h3 className="text-sm font-medium mb-3 text-slate-900">Portfolio Value Over Time</h3>
-            <ResponsiveContainer width="100%" height={400}>
+            <h3 className="text-lg font-bold mb-4 text-slate-900">Portfolio Value Over Time</h3>
+            <ResponsiveContainer width="100%" height={500}>
               <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                 <defs>
                   <linearGradient id="portfolioGradient" x1="0" y1="0" x2="0" y2="1">
@@ -96,39 +96,35 @@ export function ProjectionChart({ projection, expectedReturn = 7, incomeSources 
                     <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                 <XAxis
                   dataKey="age"
-                  label={{ value: "Age", position: "insideBottom", offset: -5, fill: "#64748b", fontSize: 14, fontWeight: 500 }}
+                  label={{ value: "Age", position: "insideBottom", offset: -5, fill: "#64748b", fontSize: 14, fontWeight: 600 }}
                   stroke="#94a3b8"
-                  tick={{ fill: "#64748b", fontSize: 14, fontWeight: 500 }}
+                  tick={{ fill: "#64748b", fontSize: 13, fontWeight: 600 }}
                 />
                 <YAxis
+                  label={{ value: "Portfolio Value ($)", angle: -90, position: "insideLeft", fill: "#64748b", fontSize: 14, fontWeight: 600 }}
                   stroke="#94a3b8"
-                  tick={{ fill: "#64748b", fontSize: 13, fontWeight: 500 }}
+                  tick={{ fill: "#64748b", fontSize: 13, fontWeight: 600 }}
                   tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
                 />
                 <Tooltip
+                  contentStyle={{ backgroundColor: "#fff", border: "2px solid #000", borderRadius: "8px", padding: "12px" }}
+                  labelStyle={{ fontWeight: "bold", fontSize: "14px", marginBottom: "8px" }}
                   formatter={(value: number | undefined) =>
                     value !== undefined ? `$${Math.round(value).toLocaleString()}` : ""
                   }
                   labelFormatter={(age) => `Age: ${age}`}
-                  contentStyle={{
-                    backgroundColor: "white",
-                    border: "1px solid #e2e8f0",
-                    borderRadius: "8px",
-                    boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-                  }}
-                  labelStyle={{ color: "#0f172a", fontWeight: 600 }}
                 />
-                <Legend wrapperStyle={{ paddingTop: "10px", fontSize: 12, fontWeight: 600 }} />
+                <Legend wrapperStyle={{ paddingTop: "20px", fontSize: "14px", fontWeight: 700 }} />
                 <ReferenceLine y={0} stroke="#ef4444" strokeDasharray="3 3" strokeWidth={2} />
                 <Line
                   type="monotone"
                   dataKey="portfolioValue"
                   stroke="#10b981"
                   strokeWidth={4}
-                  dot={false}
+                  dot={{ fill: "#10b981", strokeWidth: 2, r: 4 }}
                   name="Portfolio Value"
                   fill="url(#portfolioGradient)"
                 />
@@ -138,35 +134,31 @@ export function ProjectionChart({ projection, expectedReturn = 7, incomeSources 
 
           {/* Income vs Expenses Chart */}
           <div>
-            <h3 className="text-sm font-medium mb-3 text-slate-900">Annual Income vs Expenses</h3>
-            <ResponsiveContainer width="100%" height={300}>
+            <h3 className="text-lg font-bold mb-4 text-slate-900">Annual Income vs Expenses</h3>
+            <ResponsiveContainer width="100%" height={450}>
               <ComposedChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }} barGap={8}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                 <XAxis
                   dataKey="age"
-                  label={{ value: "Age", position: "insideBottom", offset: -5, fill: "#64748b", fontSize: 14, fontWeight: 500 }}
+                  label={{ value: "Age", position: "insideBottom", offset: -5, fill: "#64748b", fontSize: 14, fontWeight: 600 }}
                   stroke="#94a3b8"
-                  tick={{ fill: "#64748b", fontSize: 14, fontWeight: 500 }}
+                  tick={{ fill: "#64748b", fontSize: 13, fontWeight: 600 }}
                 />
                 <YAxis
+                  label={{ value: "Annual Amount ($)", angle: -90, position: "insideLeft", fill: "#64748b", fontSize: 14, fontWeight: 600 }}
                   stroke="#94a3b8"
-                  tick={{ fill: "#64748b", fontSize: 13, fontWeight: 500 }}
+                  tick={{ fill: "#64748b", fontSize: 13, fontWeight: 600 }}
                   tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
                 />
                 <Tooltip
+                  contentStyle={{ backgroundColor: "#fff", border: "2px solid #000", borderRadius: "8px", padding: "12px" }}
+                  labelStyle={{ fontWeight: "bold", fontSize: "14px", marginBottom: "8px" }}
                   formatter={(value: number | undefined) =>
                     value !== undefined ? `$${Math.round(value).toLocaleString()}` : ""
                   }
                   labelFormatter={(age) => `Age: ${age}`}
-                  contentStyle={{
-                    backgroundColor: "white",
-                    border: "1px solid #e2e8f0",
-                    borderRadius: "8px",
-                    boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-                  }}
-                  labelStyle={{ color: "#0f172a", fontWeight: 600 }}
                 />
-                <Legend wrapperStyle={{ paddingTop: "10px", fontSize: 12, fontWeight: 600 }} />
+                <Legend wrapperStyle={{ paddingTop: "20px", fontSize: "14px", fontWeight: 700 }} />
                 {/* Stacked Bar Chart for Income Sources */}
                 <Bar
                   dataKey="workIncome"
@@ -196,14 +188,14 @@ export function ProjectionChart({ projection, expectedReturn = 7, incomeSources 
                   name="Windfall"
                   radius={[4, 4, 0, 0]}
                 />
-                {/* Dotted Line for Expenses */}
+                {/* Line with dots for Expenses */}
                 <Line
                   type="monotone"
                   dataKey="totalExpenses"
-                  stroke="#047857"
+                  stroke="#dc2626"
                   strokeWidth={4}
                   strokeDasharray="5 5"
-                  dot={false}
+                  dot={{ fill: "#dc2626", strokeWidth: 2, r: 4 }}
                   name="Total Expenses"
                 />
               </ComposedChart>
@@ -212,46 +204,43 @@ export function ProjectionChart({ projection, expectedReturn = 7, incomeSources 
 
           {/* Net Cash Flow Chart */}
           <div>
-            <h3 className="text-sm font-medium mb-3 text-slate-900">Net Cash Flow</h3>
-            <ResponsiveContainer width="100%" height={250}>
-              <AreaChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
+            <h3 className="text-lg font-bold mb-4 text-slate-900">Net Cash Flow</h3>
+            <ResponsiveContainer width="100%" height={400}>
+              <BarChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }} barSize={20} barGap={4}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                 <XAxis
                   dataKey="age"
-                  label={{ value: "Age", position: "insideBottom", offset: -5, fill: "#64748b", fontSize: 14, fontWeight: 500 }}
+                  label={{ value: "Age", position: "insideBottom", offset: -5, fill: "#64748b", fontSize: 14, fontWeight: 600 }}
                   stroke="#94a3b8"
-                  tick={{ fill: "#64748b", fontSize: 14, fontWeight: 500 }}
+                  tick={{ fill: "#64748b", fontSize: 13, fontWeight: 600 }}
                 />
                 <YAxis
+                  label={{ value: "Net Cash Flow ($)", angle: -90, position: "insideLeft", fill: "#64748b", fontSize: 14, fontWeight: 600 }}
                   stroke="#94a3b8"
-                  tick={{ fill: "#64748b", fontSize: 13, fontWeight: 500 }}
+                  tick={{ fill: "#64748b", fontSize: 13, fontWeight: 600 }}
                   tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
                 />
                 <Tooltip
+                  contentStyle={{ backgroundColor: "#fff", border: "2px solid #000", borderRadius: "8px", padding: "12px" }}
+                  labelStyle={{ fontWeight: "bold", fontSize: "14px", marginBottom: "8px" }}
                   formatter={(value: number | undefined) => {
                     if (value === undefined) return "";
                     const sign = value >= 0 ? "+" : "";
-                    return `${sign}$${value.toLocaleString()}`;
+                    return `${sign}$${Math.round(value).toLocaleString()}`;
                   }}
                   labelFormatter={(age) => `Age: ${age}`}
-                  contentStyle={{
-                    backgroundColor: "white",
-                    border: "1px solid #e2e8f0",
-                    borderRadius: "6px",
-                  }}
                 />
+                <Legend wrapperStyle={{ paddingTop: "20px", fontSize: "14px", fontWeight: 700 }} />
                 <ReferenceLine y={0} stroke="#64748b" strokeWidth={2} />
-                <Area
-                  type="monotone"
+                <Bar
                   dataKey="netCashFlow"
-                  stroke="#8b5cf6"
                   fill="#8b5cf6"
-                  fillOpacity={0.5}
                   name="Net Cash Flow"
+                  radius={[4, 4, 0, 0]}
                 />
-              </AreaChart>
+              </BarChart>
             </ResponsiveContainer>
-            <p className="text-xs text-slate-500 mt-2">
+            <p className="text-sm font-medium text-slate-600 mt-3">
               Positive = Adding to portfolio, Negative = Drawing from portfolio
             </p>
           </div>

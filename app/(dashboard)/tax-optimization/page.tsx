@@ -190,36 +190,6 @@ function calculateSCorpSavings(
  * - Safe harbor: pay 100% of prior year tax (110% if AGI > $150k)
  * - Assumes income distribution is even throughout year
  */
-function calculateQuarterlyEstimates(
-  priorYearTax: number,
-  priorYearAGI: number,
-  expectedIncomeChange: number = 0
-): {
-  quarterlyPayment: number;
-  annualEstimate: number;
-  safeHarborAmount: number;
-  needsHigherSafeHarbor: boolean;
-} {
-  // Safe harbor threshold
-  const needsHigherSafeHarbor = priorYearAGI > 150000;
-  const safeHarborRate = needsHigherSafeHarbor ? 1.1 : 1.0;
-
-  // Safe harbor amount based on prior year
-  const safeHarborAmount = priorYearTax * safeHarborRate;
-
-  // Estimated current year tax (adjusted for income change)
-  const annualEstimate = priorYearTax * (1 + expectedIncomeChange);
-
-  // Quarterly payment (use higher of safe harbor or estimate)
-  const quarterlyPayment = Math.max(safeHarborAmount, annualEstimate) / 4;
-
-  return {
-    quarterlyPayment,
-    annualEstimate,
-    safeHarborAmount,
-    needsHigherSafeHarbor,
-  };
-}
 
 // ============================================
 // Empty State Component
@@ -887,198 +857,6 @@ function SelfEmploymentOptimization({
   );
 }
 
-// ============================================
-// Module 4: Quarterly Tax Estimator
-// ============================================
-
-function QuarterlyTaxEstimator({
-  taxReturn,
-}: {
-  taxReturn: TaxReturn;
-}) {
-  const [incomeChangePercent, setIncomeChangePercent] = useState(0);
-
-  // Calculate quarterly estimates
-  const estimates = useMemo(
-    () =>
-      calculateQuarterlyEstimates(
-        taxReturn.total_tax,
-        taxReturn.agi,
-        incomeChangePercent / 100
-      ),
-    [taxReturn.total_tax, taxReturn.agi, incomeChangePercent]
-  );
-
-  // Quarters with due dates
-  const quarters = [
-    { q: "Q1", period: "Jan-Mar", due: "April 15" },
-    { q: "Q2", period: "Apr-May", due: "June 15" },
-    { q: "Q3", period: "Jun-Aug", due: "September 15" },
-    { q: "Q4", period: "Sep-Dec", due: "January 15" },
-  ];
-
-  // Check if prior year had significant underpayment or large refund
-  const hadUnderpayment = taxReturn.amount_owed > 1000;
-  const hadLargeRefund = taxReturn.refund_amount > 3000;
-
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Calendar className="h-5 w-5 text-emerald-600" />
-          Quarterly Tax Estimator
-        </CardTitle>
-        <div className="text-sm text-slate-600 mt-2 space-y-2">
-          <p>
-            Quarterly estimated taxes are your commitment to the IRS—pay too little and you'll face penalties plus interest. Pay too much and you're giving the government an interest-free loan.
-          </p>
-          <p className="text-xs text-slate-500">
-            Estimated payments for {taxReturn.tax_year + 1} based on {taxReturn.tax_year} data. These calculations use the safe harbor method to avoid underpayment penalties while minimizing overpayment.
-          </p>
-        </div>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        {/* Warning Alerts */}
-        {hadUnderpayment && (
-          <div className="flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-lg">
-            <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
-            <div>
-              <p className="font-medium text-red-800">Underpayment Warning</p>
-              <p className="text-sm text-red-700">
-                You owed {formatCurrency(taxReturn.amount_owed)} for {taxReturn.tax_year}.
-                Consider increasing quarterly payments to avoid penalties.
-              </p>
-            </div>
-          </div>
-        )}
-
-        {hadLargeRefund && (
-          <div className="flex items-start gap-3 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <Info className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-            <div>
-              <p className="font-medium text-blue-800">Large Refund Note</p>
-              <p className="text-sm text-blue-700">
-                Your {formatCurrency(taxReturn.refund_amount)} refund means you overpaid.
-                Consider reducing estimated payments to keep more cash flow during the year.
-              </p>
-            </div>
-          </div>
-        )}
-
-        {/* Income Adjustment Slider */}
-        <div className="space-y-3">
-          <div className="flex justify-between text-sm">
-            <span className="text-slate-500">Expected Income Change</span>
-            <span className="font-medium">
-              {incomeChangePercent > 0 ? "+" : ""}
-              {incomeChangePercent}%
-            </span>
-          </div>
-          <Slider
-            value={[incomeChangePercent]}
-            onValueChange={([value]) => setIncomeChangePercent(value)}
-            min={-50}
-            max={50}
-            step={5}
-            className="w-full"
-          />
-          <div className="flex justify-between text-xs text-slate-500">
-            <span>-50% (Lower income)</span>
-            <span>Same</span>
-            <span>+50% (Higher income)</span>
-          </div>
-        </div>
-
-        {/* Safe Harbor Info */}
-        <div className="p-4 bg-muted/50 rounded-lg">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium">Safe Harbor Amount</span>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Info className="h-4 w-4 text-slate-500" />
-                </TooltipTrigger>
-                <TooltipContent className="max-w-xs">
-                  <p>
-                    Pay at least {estimates.needsHigherSafeHarbor ? "110%" : "100%"} of
-                    prior year tax to avoid underpayment penalties, regardless of actual
-                    current year liability.
-                  </p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
-          <p className="text-2xl font-bold">{formatCurrency(estimates.safeHarborAmount)}</p>
-          <p className="text-sm text-slate-500">
-            {estimates.needsHigherSafeHarbor
-              ? "110% of prior year (AGI > $150k)"
-              : "100% of prior year tax"}
-          </p>
-        </div>
-
-        {/* Quarterly Timeline */}
-        <div className="space-y-3">
-          <h4 className="text-sm font-medium">Recommended Quarterly Payments</h4>
-          <div className="grid gap-3">
-            {quarters.map((quarter, idx) => (
-              <div
-                key={quarter.q}
-                className="flex items-center justify-between p-3 border rounded-lg"
-              >
-                <div className="flex items-center gap-3">
-                  <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium ${
-                      idx === 0
-                        ? "bg-emerald-600 text-emerald-600-foreground"
-                        : "bg-muted text-slate-500"
-                    }`}
-                  >
-                    {quarter.q}
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">{quarter.period}</p>
-                    <p className="text-xs text-slate-500">Due: {quarter.due}</p>
-                  </div>
-                </div>
-                <p className="text-lg font-bold">
-                  {formatCurrency(estimates.quarterlyPayment)}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Annual Summary */}
-        <div className="grid gap-3 p-4 bg-muted/50 rounded-lg">
-          <div className="flex justify-between text-sm">
-            <span className="text-slate-500">Prior Year Tax ({taxReturn.tax_year})</span>
-            <span className="font-medium">{formatCurrency(taxReturn.total_tax)}</span>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-slate-500">Estimated {taxReturn.tax_year + 1} Tax</span>
-            <span className="font-medium">{formatCurrency(estimates.annualEstimate)}</span>
-          </div>
-          <div className="flex justify-between pt-2 border-t">
-            <span className="font-medium">Total Quarterly Payments</span>
-            <span className="text-lg font-bold">
-              {formatCurrency(estimates.quarterlyPayment * 4)}
-            </span>
-          </div>
-        </div>
-
-        {/* Assumptions */}
-        <div className="text-sm text-slate-500 space-y-1">
-          <p className="font-medium">Assumptions:</p>
-          <ul className="list-disc list-inside space-y-1 ml-2">
-            <li>Income distributed evenly throughout the year</li>
-            <li>Tax rates remain consistent with prior year</li>
-            <li>No major life changes (marriage, dependents, etc.)</li>
-          </ul>
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
 
 // ============================================
 // Module 5: Raw Tax Return Data (All Years)
@@ -1467,17 +1245,43 @@ export default function TaxOptimizationPage() {
         </div>
       )}
 
-      {/* Module 4: Quarterly Tax Estimator (full width) */}
-      {isPro ? (
-        <QuarterlyTaxEstimator taxReturn={mostRecentReturn!} />
-      ) : (
-        <LockedModule
-          title="Quarterly Tax Estimator"
-          description="Calculate estimated quarterly tax payments"
-          icon={<Calendar className="h-5 w-5 text-emerald-600" />}
-          benefits={["Quarterly payment calculator", "Safe harbor calculations", "Payment timeline"]}
-        />
-      )}
+      {/* Module 4: Quarterly Tax Calculator Link */}
+      <a href="/quarterly-estimated-taxes" className="block">
+        <Card className="border-2 border-black hover:bg-emerald-50 transition-colors cursor-pointer">
+          <CardContent className="p-6">
+            <div className="flex items-start gap-4">
+              <div className="p-3 bg-emerald-100 rounded-lg">
+                <Calendar className="h-6 w-6 text-emerald-700" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-xl font-bold text-slate-900 mb-2">
+                  Quarterly Estimated Tax Calculator
+                </h3>
+                <p className="text-sm text-slate-600 mb-3">
+                  Calculate safe harbor requirements, track quarterly payments, optimize for variable income, and avoid underpayment penalties
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="text-xs bg-emerald-100 text-emerald-800 px-2 py-1 rounded-full border border-emerald-300 font-medium">
+                    Safe Harbor Calculator
+                  </span>
+                  <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full border border-blue-300 font-medium">
+                    Payment Tracking
+                  </span>
+                  <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full border border-purple-300 font-medium">
+                    Annualized Income Method (Pro)
+                  </span>
+                  <span className="text-xs bg-amber-100 text-amber-800 px-2 py-1 rounded-full border border-amber-300 font-medium">
+                    Penalty Calculator (Pro)
+                  </span>
+                </div>
+              </div>
+              <div className="text-emerald-600 font-bold text-sm">
+                Go →
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </a>
 
       {/* Module 5: Raw Tax Return Data (All Years) */}
       <TaxReturnRawData taxReturns={taxReturns} />
