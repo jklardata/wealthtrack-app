@@ -20,6 +20,7 @@ import {
   MapPin,
 } from "lucide-react";
 import Link from "next/link";
+import { EmailCaptureCard } from "@/components/email-capture-card";
 import { analytics } from "@/lib/analytics";
 
 const VARIANT = "lead_magnet_fi_calculator";
@@ -581,6 +582,13 @@ export default function FICalculator() {
                 </CardContent>
               </Card>
             )}
+
+            {/* Email Capture */}
+            <EmailCaptureCard
+              toolName="FIRE Calculator"
+              resultsSummary={`FI Number: ${formatCurrency(currentScenario.fiNumber)} | Years to FI: ${formatYears(bestScenario.yearsToFI)}`}
+              className="mt-6"
+            />
 
             {/* CTA */}
             <Card className="shadow-lg bg-violet-600 text-white">

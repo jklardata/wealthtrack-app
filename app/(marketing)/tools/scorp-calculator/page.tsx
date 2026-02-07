@@ -28,6 +28,7 @@ import {
   TAX_CONSTANTS,
 } from "@/lib/tax-calculations";
 import { analytics, type CTALocation } from "@/lib/analytics";
+import { EmailCaptureCard } from "@/components/email-capture-card";
 
 const VARIANT = "lead_magnet_scorp_calculator";
 
@@ -683,6 +684,13 @@ export default function SCorpCalculator() {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Email Capture */}
+            <EmailCaptureCard
+              toolName="S-Corp Calculator"
+              resultsSummary={`Net savings: ${formatCurrency(analysis.netSavings)}`}
+              className="mt-6"
+            />
 
             {/* CTA */}
             <Card className="shadow-lg bg-emerald-600 text-white">

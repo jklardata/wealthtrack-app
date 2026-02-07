@@ -17,6 +17,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import Link from "next/link";
+import { EmailCaptureCard } from "@/components/email-capture-card";
 import { analytics } from "@/lib/analytics";
 
 const VARIANT = "lead_magnet_net_worth_quiz";
@@ -472,6 +473,13 @@ export default function NetWorthQuiz() {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Email Capture */}
+            <EmailCaptureCard
+              toolName="Net Worth Quiz"
+              resultsSummary={`Score: ${totalScore}/${maxScore} - ${category.title}`}
+              className="mt-6"
+            />
 
             {/* CTA */}
             <Card className="shadow-lg bg-indigo-600 text-white">

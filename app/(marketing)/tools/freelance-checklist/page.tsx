@@ -22,6 +22,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import Link from "next/link";
+import { EmailCaptureCard } from "@/components/email-capture-card";
 import { analytics } from "@/lib/analytics";
 
 const VARIANT = "lead_magnet_freelance_checklist";
@@ -379,6 +380,13 @@ export default function FreelanceChecklist() {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Email Capture */}
+            <EmailCaptureCard
+              toolName="Freelance Checklist"
+              resultsSummary={`${completedItems} of ${totalItems} tasks completed`}
+              className="mt-8 print:hidden"
+            />
 
             {/* CTA */}
             <Card className="mt-8 bg-orange-600 text-white print:hidden">

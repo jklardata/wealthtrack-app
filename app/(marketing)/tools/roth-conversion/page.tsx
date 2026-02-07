@@ -29,6 +29,7 @@ import {
   PiggyBank,
 } from "lucide-react";
 import Link from "next/link";
+import { EmailCaptureCard } from "@/components/email-capture-card";
 import { analytics } from "@/lib/analytics";
 
 const VARIANT = "lead_magnet_roth_conversion";
@@ -751,6 +752,13 @@ export default function RothConversionLeadMagnet() {
                   </div>
                 </div>
               )}
+
+              {/* Email Capture */}
+              <EmailCaptureCard
+                toolName="Roth Conversion Calculator"
+                resultsSummary={`Convert ${formatCurrency(results.optimalAnnualConversion)}/year | Tax savings: ${formatCurrency(results.taxSavingsVsLater)}`}
+                className="mt-6"
+              />
 
               {/* CTA */}
               <div className="text-center pt-4">

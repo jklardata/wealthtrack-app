@@ -26,6 +26,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import Link from "next/link";
+import { EmailCaptureCard } from "@/components/email-capture-card";
 import {
   calculateTaxSavings,
   formatCurrency,
@@ -636,6 +637,13 @@ export default function TaxSavingsLeadMagnet() {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Email Capture */}
+            <EmailCaptureCard
+              toolName="Tax Savings Calculator"
+              resultsSummary={`Total potential savings: ${formatCurrency(results.totalPotentialSavings)}`}
+              className="mt-6"
+            />
 
             {/* CTA */}
             <Card className="shadow-lg bg-emerald-600 text-white">
