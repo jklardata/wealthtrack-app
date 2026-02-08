@@ -33,24 +33,25 @@ export async function POST(request: NextRequest) {
       const buffer = Buffer.from(arrayBuffer);
 
       // Parse PDF and extract text
-      console.log(`Parsing PDF: ${file.name}`);
+      console.log(`Parsing PDF: ${file.name}, size: ${buffer.length} bytes`);
 
       // Dynamic import pdf-parse (CommonJS module)
       const pdf = require('pdf-parse');
       const data = await pdf(buffer);
       const text = data.text;
 
+      console.log(`Extracted ${text.length} characters, ${data.numpages} pages from PDF`);
+
       if (!text || text.length < 100) {
         return NextResponse.json({
           error: 'Could not extract text from PDF',
-          details: 'The PDF may be encrypted, scanned, or in an unsupported format',
+          details: `Only extracted ${text.length} characters. The PDF may be encrypted, scanned, or in an unsupported format.`,
         }, { status: 400 });
       }
 
-      console.log(`Extracted ${text.length} characters from PDF`);
-
       // Parse the tax return data
       const taxReturn = parseTurboTaxPDF(text, file.name);
+      console.log(`Parsed tax return: year=${taxReturn.tax_year}, AGI=${taxReturn.agi}`);
 
       if (!taxReturn.tax_year || taxReturn.tax_year < 2000) {
         return NextResponse.json({
@@ -90,10 +91,13 @@ export async function POST(request: NextRequest) {
 
     } catch (error: any) {
       console.error('PDF parsing error:', error);
+      console.error('Error stack:', error.stack);
 
       return NextResponse.json({
         error: 'Failed to parse PDF',
         details: error.message || 'Unknown error',
+        errorType: error.constructor?.name || 'Unknown',
+        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined,
       }, { status: 500 });
     }
 

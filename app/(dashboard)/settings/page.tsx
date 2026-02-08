@@ -273,7 +273,10 @@ export default function SettingsPage() {
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.error || "Failed to parse PDF");
+        const errorMsg = result.details
+          ? `${result.error}: ${result.details}`
+          : result.error || "Failed to parse PDF";
+        throw new Error(errorMsg);
       }
 
       setTaxMessage({
