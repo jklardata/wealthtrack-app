@@ -1,26 +1,12 @@
 import { auth } from '@clerk/nextjs/server';
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerSupabaseClient } from '@/lib/supabase';
-import { exec } from 'child_process';
-import { promisify } from 'util';
-import { writeFile, unlink, readFile } from 'fs/promises';
-import { join } from 'path';
-import { tmpdir } from 'os';
-import { randomUUID } from 'crypto';
-
-const execAsync = promisify(exec);
 
 /**
  * POST /api/tax-returns/upload-pdf
  *
- * Accepts TurboTax PDF files, parses them using the Python script,
- * and imports the data directly into the database.
- *
- * This eliminates the need for users to:
- * 1. Install Python dependencies
- * 2. Download the parser script
- * 3. Run CLI commands
- * 4. Manually upload CSV
+ * Accepts TurboTax PDF files and parses them using JavaScript (no Python needed).
+ * Extracts tax return data and imports directly into the database.
  */
 export async function POST(request: NextRequest) {
   try {
@@ -41,92 +27,69 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Only PDF files are supported' }, { status: 400 });
     }
 
-    // Generate unique filenames for temporary files
-    const tempId = randomUUID();
-    const pdfPath = join(tmpdir(), `turbotax_${tempId}.pdf`);
-    const csvPath = join(tmpdir(), `turbotax_${tempId}.csv`);
-
     try {
-      // Save PDF to temporary file
+      // Convert file to buffer
       const arrayBuffer = await file.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
-      await writeFile(pdfPath, buffer);
 
-      // Get the path to the Python parser script
-      const scriptPath = join(process.cwd(), 'scripts', 'turbotax_parser.py');
-
-      // Check if Python 3 is available
-      let pythonCommand = 'python3';
-      try {
-        await execAsync('python3 --version');
-      } catch {
-        // Try 'python' if 'python3' doesn't exist
-        try {
-          await execAsync('python --version');
-          pythonCommand = 'python';
-        } catch {
-          return NextResponse.json({
-            error: 'Python 3 is not installed on the server',
-            details: 'Please install Python 3 and the required dependencies (pdfplumber, pandas)',
-          }, { status: 500 });
-        }
-      }
-
-      // Run the Python parser
+      // Parse PDF and extract text
       console.log(`Parsing PDF: ${file.name}`);
-      const command = `${pythonCommand} "${scriptPath}" "${pdfPath}" -o "${csvPath}"`;
 
-      const { stdout, stderr } = await execAsync(command, {
-        timeout: 30000, // 30 second timeout
-      });
+      // Dynamic import pdf-parse (CommonJS module)
+      const pdf = require('pdf-parse');
+      const data = await pdf(buffer);
+      const text = data.text;
 
-      console.log('Parser output:', stdout);
-      if (stderr) {
-        console.warn('Parser warnings:', stderr);
+      if (!text || text.length < 100) {
+        return NextResponse.json({
+          error: 'Could not extract text from PDF',
+          details: 'The PDF may be encrypted, scanned, or in an unsupported format',
+        }, { status: 400 });
       }
 
-      // Read the generated CSV
-      const csvContent = await readFile(csvPath, 'utf-8');
+      console.log(`Extracted ${text.length} characters from PDF`);
 
-      // Parse CSV and import to database (reuse existing logic)
-      const result = await parseAndImportCSV(csvContent, userId);
+      // Parse the tax return data
+      const taxReturn = parseTurboTaxPDF(text, file.name);
 
-      // Clean up temporary files
-      await Promise.all([
-        unlink(pdfPath).catch(() => {}),
-        unlink(csvPath).catch(() => {}),
-      ]);
+      if (!taxReturn.tax_year || taxReturn.tax_year < 2000) {
+        return NextResponse.json({
+          error: 'Could not identify tax year',
+          details: 'Make sure this is a TurboTax Form 1040 PDF',
+        }, { status: 400 });
+      }
+
+      // Import to database
+      const supabase = createServerSupabaseClient();
+      const { error } = await supabase
+        .from('tax_returns')
+        .upsert(
+          {
+            user_id: userId,
+            ...taxReturn,
+            source: 'pdf_upload',
+          },
+          { onConflict: 'user_id,tax_year' }
+        );
+
+      if (error) {
+        console.error('Database error:', error);
+        return NextResponse.json({
+          error: 'Failed to save tax return',
+          details: error.message,
+        }, { status: 500 });
+      }
 
       return NextResponse.json({
         success: true,
-        imported: result.imported,
-        errors: result.errors,
+        imported: 1,
+        errors: [],
         filename: file.name,
+        data: taxReturn,
       });
 
     } catch (error: any) {
-      // Clean up on error
-      await Promise.all([
-        unlink(pdfPath).catch(() => {}),
-        unlink(csvPath).catch(() => {}),
-      ]);
-
       console.error('PDF parsing error:', error);
-
-      // Provide helpful error messages
-      if (error.message?.includes('pdfplumber')) {
-        return NextResponse.json({
-          error: 'PDF parsing library not installed',
-          details: 'Server needs Python package: pip install pdfplumber pandas',
-        }, { status: 500 });
-      }
-
-      if (error.message?.includes('timeout')) {
-        return NextResponse.json({
-          error: 'PDF parsing timed out',
-          details: 'The PDF file may be too large or complex',
-        }, { status: 500 });
-      }
 
       return NextResponse.json({
         error: 'Failed to parse PDF',
@@ -143,110 +106,174 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Helper: Parse CSV and import records
-async function parseAndImportCSV(csvText: string, userId: string) {
-  const supabase = createServerSupabaseClient();
-  const lines = csvText.trim().split('\n');
-
-  if (lines.length < 2) {
-    return { imported: 0, errors: ['CSV file is empty or has no data rows'] };
-  }
-
-  const headers = lines[0].split(',').map((h) => h.trim().toLowerCase());
-  const records: any[] = [];
-  const errors: string[] = [];
-
-  for (let i = 1; i < lines.length; i++) {
-    const values = parseCSVLine(lines[i]);
-    if (values.length !== headers.length) {
-      errors.push(`Row ${i + 1}: Column count mismatch`);
-      continue;
+/**
+ * Parse TurboTax PDF text and extract tax return data
+ */
+function parseTurboTaxPDF(text: string, filename: string): Record<string, any> {
+  // Helper function to extract amounts using regex
+  const parseAmount = (pattern: RegExp): number => {
+    const match = text.match(pattern);
+    if (match) {
+      const amountStr = match[1]
+        .replace(/,/g, '')
+        .replace(/\$/g, '')
+        .replace(/\(/g, '-')
+        .replace(/\)/g, '')
+        .trim();
+      const num = parseFloat(amountStr);
+      return isNaN(num) ? 0 : num;
     }
+    return 0;
+  };
 
-    const record: Record<string, string | number> = {};
-    headers.forEach((header, index) => {
-      record[header] = values[index];
-    });
+  // Helper function to parse by line number (TurboTax format: "... line XX . . . AMOUNT")
+  const parseByLine = (lineNum: string): number => {
+    // Pattern: dots followed by line number, then amount ending with period or newline
+    const patterns = [
+      new RegExp(`\\.{2,}\\s*${lineNum}\\s+([\\d,]+)\\.`, 'i'),
+      new RegExp(`\\.{2,}\\s*${lineNum}\\s+(-?[\\d,]+)(?:\\.|\\s|$)`, 'i'),
+      new RegExp(`line\\s+${lineNum}[^\\d]*([\\d,]+)`, 'i'),
+    ];
 
-    records.push(record);
-  }
-
-  if (records.length === 0) {
-    return { imported: 0, errors };
-  }
-
-  // Import records to database
-  let imported = 0;
-
-  for (const record of records) {
-    const { error } = await supabase
-      .from('tax_returns')
-      .upsert(
-        {
-          user_id: userId,
-          tax_year: parseInt(String(record.tax_year || '0')),
-          filing_status: String(record.filing_status || 'single'),
-          wages: parseFloat(String(record.wages || '0')),
-          interest_income: parseFloat(String(record.interest_income || '0')),
-          dividend_income: parseFloat(String(record.dividend_income || '0')),
-          qualified_dividends: parseFloat(String(record.qualified_dividends || '0')),
-          capital_gains: parseFloat(String(record.capital_gains || '0')),
-          ira_distributions: parseFloat(String(record.ira_distributions || '0')),
-          pension_income: parseFloat(String(record.pension_income || '0')),
-          social_security: parseFloat(String(record.social_security || '0')),
-          business_income: parseFloat(String(record.business_income || '0')),
-          other_income: parseFloat(String(record.other_income || '0')),
-          total_income: parseFloat(String(record.total_income || '0')),
-          agi: parseFloat(String(record.agi || '0')),
-          adjustments: parseFloat(String(record.adjustments || '0')),
-          deduction_type: record.deduction_type === 'itemized' ? 'itemized' : 'standard',
-          deduction_amount: parseFloat(String(record.deduction_amount || '0')),
-          qbi_deduction: parseFloat(String(record.qbi_deduction || '0')),
-          taxable_income: parseFloat(String(record.taxable_income || '0')),
-          total_tax: parseFloat(String(record.total_tax || '0')),
-          federal_withheld: parseFloat(String(record.federal_withheld || '0')),
-          estimated_payments: parseFloat(String(record.estimated_payments || '0')),
-          refund_amount: parseFloat(String(record.refund_amount || '0')),
-          amount_owed: parseFloat(String(record.amount_owed || '0')),
-          effective_tax_rate: parseFloat(String(record.effective_tax_rate || '0')),
-          se_income: parseFloat(String(record.se_income || '0')),
-          se_tax: parseFloat(String(record.se_tax || '0')),
-          se_deduction: parseFloat(String(record.se_deduction || '0')),
-          source: 'pdf_upload',
-          notes: record.notes ? String(record.notes) : null,
-        },
-        { onConflict: 'user_id,tax_year' }
-      );
-
-    if (error) {
-      errors.push(`Tax year ${record.tax_year}: ${error.message}`);
-    } else {
-      imported++;
+    for (const pattern of patterns) {
+      const amount = parseAmount(pattern);
+      if (amount !== 0) return amount;
     }
+    return 0;
+  };
+
+  // Extract tax year
+  const yearMatch = text.match(/(\d{4})\s*Form\s*1040/i) ||
+                    text.match(/Tax\s*Year\s*(\d{4})/i);
+  const tax_year = yearMatch ? parseInt(yearMatch[1]) : 0;
+
+  // Extract filing status
+  let filing_status = 'single';
+  if (/married\s+filing\s+jointly/i.test(text)) {
+    filing_status = 'married_filing_jointly';
+  } else if (/married\s+filing\s+separately/i.test(text)) {
+    filing_status = 'married_filing_separately';
+  } else if (/head\s+of\s+household/i.test(text)) {
+    filing_status = 'head_of_household';
+  } else if (/qualifying\s+(widow|surviving)/i.test(text)) {
+    filing_status = 'qualifying_widow';
   }
 
-  return { imported, errors };
-}
+  // Parse Form 1040 lines
+  // Line 1z/1a: Wages
+  const wages = parseByLine('1z') || parseByLine('1a');
 
-// Helper: Parse a CSV line handling quoted values
-function parseCSVLine(line: string): string[] {
-  const values: string[] = [];
-  let current = '';
-  let inQuotes = false;
+  // Line 2b: Taxable interest
+  const interest_income = parseByLine('2b');
 
-  for (let i = 0; i < line.length; i++) {
-    const char = line[i];
+  // Line 3a: Qualified dividends
+  const qualified_dividends = parseByLine('3a');
 
-    if (char === '"') {
-      inQuotes = !inQuotes;
-    } else if (char === ',' && !inQuotes) {
-      values.push(current.trim());
-      current = '';
-    } else {
-      current += char;
-    }
+  // Line 3b: Ordinary dividends
+  const dividend_income = parseByLine('3b');
+
+  // Line 4b: IRA distributions
+  const ira_distributions = Math.max(0, parseByLine('4b'));
+
+  // Line 5b: Pensions
+  const pension_income = parseByLine('5b');
+
+  // Line 6b: Social Security
+  const social_security = parseByLine('6b');
+
+  // Line 7: Capital gains (can be negative)
+  const capital_gains = parseByLine('7');
+
+  // Line 8: Other income
+  const other_income = parseByLine('8');
+
+  // Line 9: Total income
+  const total_income = parseByLine('9');
+
+  // Line 10: Adjustments
+  const adjustments = parseByLine('10');
+
+  // Line 11: AGI
+  const agi = parseByLine('11');
+
+  // Line 12: Standard/itemized deduction
+  const deduction_amount = parseByLine('12');
+
+  // Determine deduction type
+  const standardDeductions = [13850, 27700, 20800, 14600, 29200]; // Common amounts
+  const deduction_type = standardDeductions.includes(deduction_amount) ? 'standard' : 'itemized';
+
+  // Line 13: QBI deduction
+  const qbi_deduction = parseByLine('13');
+
+  // Line 15: Taxable income
+  const taxable_income = parseByLine('15');
+
+  // Line 24: Total tax
+  const total_tax = parseByLine('24');
+
+  // Line 25d: Federal withheld
+  const federal_withheld = parseByLine('25d') || parseByLine('25a');
+
+  // Line 26: Estimated payments
+  const estimated_payments = parseByLine('26');
+
+  // Line 34: Refund
+  const refund_amount = parseByLine('34');
+
+  // Line 37: Amount owed
+  let amount_owed = parseByLine('37');
+  if (refund_amount > 0) amount_owed = 0; // Can't have both
+
+  // Self-employment income (Schedule C line 31 or Schedule 1 line 3)
+  let business_income = parseAmount(/\b31\s+([-\d,]+)\./i);
+  if (business_income === 0) {
+    business_income = parseAmount(/Business\s+income[^.]*\.{2,}\s*3\s+([-\d,]+)\./i);
   }
-  values.push(current.trim());
 
-  return values;
+  // Self-employment tax (Schedule 2)
+  const se_tax = parseAmount(/Self-employment\s+tax[^.]*\.{2,}\s*\d+\s+([\d,]+)\./i);
+
+  // SE deduction (Schedule 1)
+  let se_deduction = parseAmount(/Deductible\s+part\s+of\s+self-employment\s+tax[^.]*\.{2,}\s*\d+\s+([\d,]+)\./i);
+  if (se_deduction === 0 && se_tax > 0) {
+    se_deduction = se_tax / 2; // Calculate if not found
+  }
+
+  const se_income = business_income > 0 ? business_income : 0;
+
+  // Calculate effective tax rate
+  const effective_tax_rate = agi > 0 ? total_tax / agi : 0;
+
+  return {
+    tax_year,
+    filing_status,
+    wages,
+    interest_income,
+    dividend_income,
+    qualified_dividends,
+    capital_gains,
+    ira_distributions,
+    pension_income,
+    social_security,
+    business_income,
+    other_income,
+    total_income,
+    agi,
+    adjustments,
+    deduction_type,
+    deduction_amount,
+    qbi_deduction,
+    taxable_income,
+    total_tax,
+    federal_withheld,
+    estimated_payments,
+    refund_amount,
+    amount_owed,
+    effective_tax_rate,
+    se_income,
+    se_tax,
+    se_deduction,
+    notes: `Imported from TurboTax PDF: ${filename}`,
+  };
 }
