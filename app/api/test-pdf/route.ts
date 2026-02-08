@@ -1,18 +1,19 @@
 import { NextResponse } from 'next/server';
 
 /**
- * Test endpoint to verify pdf-parse works in Next.js
+ * Test endpoint to verify pdfjs-dist works in Next.js serverless
  */
 export async function GET() {
   try {
-    // Test if pdf-parse can be loaded
-    const pdf = require('pdf-parse');
+    // Test if pdfjs-dist can be loaded
+    const pdfjsLib = require('pdfjs-dist/legacy/build/pdf.js');
 
     return NextResponse.json({
       success: true,
-      message: 'pdf-parse loaded successfully',
-      type: typeof pdf,
-      hasPdfFunction: typeof pdf === 'function',
+      message: 'pdfjs-dist loaded successfully',
+      type: typeof pdfjsLib,
+      hasGetDocument: typeof pdfjsLib.getDocument === 'function',
+      version: pdfjsLib.version || 'unknown',
     });
   } catch (error: any) {
     return NextResponse.json({

@@ -5,7 +5,7 @@ import { createServerSupabaseClient } from '@/lib/supabase';
 /**
  * POST /api/tax-returns/upload-pdf
  *
- * Accepts TurboTax PDF files and parses them using JavaScript (no Python needed).
+ * Accepts TurboTax PDF files and parses them using pdfjs-dist (Mozilla PDF.js).
  * Extracts tax return data and imports directly into the database.
  */
 export async function POST(request: NextRequest) {
@@ -35,22 +35,42 @@ export async function POST(request: NextRequest) {
       // Parse PDF and extract text
       console.log(`Parsing PDF: ${file.name}, size: ${buffer.length} bytes`);
 
-      // Dynamic import pdf-parse (CommonJS module)
-      const pdf = require('pdf-parse');
-      const data = await pdf(buffer);
-      const text = data.text;
+      // Use pdfjs-dist (Mozilla PDF.js)
+      const pdfjsLib = require('pdfjs-dist/legacy/build/pdf.js');
 
-      console.log(`Extracted ${text.length} characters, ${data.numpages} pages from PDF`);
+      // Load the PDF
+      const loadingTask = pdfjsLib.getDocument({
+        data: new Uint8Array(buffer),
+        useSystemFonts: true,
+      });
 
-      if (!text || text.length < 100) {
+      const pdfDocument = await loadingTask.promise;
+      const numPages = pdfDocument.numPages;
+
+      console.log(`PDF has ${numPages} pages`);
+
+      // Extract text from all pages
+      let fullText = '';
+      for (let pageNum = 1; pageNum <= numPages; pageNum++) {
+        const page = await pdfDocument.getPage(pageNum);
+        const textContent = await page.getTextContent();
+        const pageText = textContent.items
+          .map((item: any) => item.str)
+          .join(' ');
+        fullText += pageText + '\n';
+      }
+
+      console.log(`Extracted ${fullText.length} characters from ${numPages} pages`);
+
+      if (!fullText || fullText.length < 100) {
         return NextResponse.json({
           error: 'Could not extract text from PDF',
-          details: `Only extracted ${text.length} characters. The PDF may be encrypted, scanned, or in an unsupported format.`,
+          details: `Only extracted ${fullText.length} characters. The PDF may be encrypted, scanned, or in an unsupported format.`,
         }, { status: 400 });
       }
 
       // Parse the tax return data
-      const taxReturn = parseTurboTaxPDF(text, file.name);
+      const taxReturn = parseTurboTaxPDF(fullText, file.name);
       console.log(`Parsed tax return: year=${taxReturn.tax_year}, AGI=${taxReturn.agi}`);
 
       if (!taxReturn.tax_year || taxReturn.tax_year < 2000) {
