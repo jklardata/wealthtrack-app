@@ -1,15 +1,62 @@
+import { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Calculator, Calendar, Clock, AlertTriangle, DollarSign, PiggyBank, TrendingUp, Shield, AlertCircle } from "lucide-react";
 
-export const metadata = {
-  title: "The 30% Rule: Why You Should Set Aside This Much for Taxes - SoloFI",
+export const metadata: Metadata = {
+  title: "The 30% Rule: Why You Should Set Aside This Much for Taxes | SoloFI",
   description: "The simple rule that prevents tax-time panic for self-employed professionals. Learn why setting aside 30% of your income is the golden standard for consultants and freelancers.",
+  openGraph: {
+    title: "The 30% Rule: Why You Should Set Aside This Much for Taxes | SoloFI",
+    description: "The simple rule that prevents tax-time panic for self-employed professionals.",
+    url: "https://solofi.io/articles/30-percent-rule-self-employment-taxes",
+    siteName: "SoloFI",
+    images: [
+      {
+        url: "https://solofi.io/api/og?title=The%2030%%20Rule:%20Why%20You%20Should%20Set%20Aside%20This%20Much%20for%20Taxes&category=Taxes",
+        width: 1200,
+        height: 630,
+        alt: "The 30% Rule: Why You Should Set Aside This Much for Taxes",
+      },
+    ],
+    type: "article",
+  },
+  alternates: {
+    canonical: "https://solofi.io/articles/30-percent-rule-self-employment-taxes",
+  },
 };
 
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "The 30% Rule: Why You Should Set Aside This Much for Taxes",
+  description: "The simple rule that prevents tax-time panic for self-employed professionals.",
+  datePublished: "2025-12-01",
+  dateModified: "2025-12-01",
+  author: {
+    "@type": "Person",
+    name: "Justin Leu",
+    url: "https://solofi.io/about",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "SoloFI",
+    url: "https://solofi.io",
+  },
+  url: "https://solofi.io/articles/30-percent-rule-self-employment-taxes",
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://solofi.io/articles/30-percent-rule-self-employment-taxes",
+  },
+};
 export default function ThirtyPercentRuleArticle() {
   return (
     <article>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       {/* Back Button */}
       <div className="mb-6">
         <Link href="/blog">
@@ -430,6 +477,28 @@ export default function ThirtyPercentRuleArticle() {
                 <span className="text-slate-700">This simple rule prevents tax-time panic and saves thousands in penalties</span>
               </li>
             </ul>
+          </div>
+        </section>
+
+        
+        {/* Internal Links */}
+        <section className="rounded-xl border border-slate-200 bg-slate-50 p-6 space-y-4">
+          <h3 className="text-lg font-bold text-slate-900">Read next</h3>
+          <div className="grid sm:grid-cols-2 gap-6">
+            <div>
+              <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Related articles</p>
+              <ul className="space-y-2 text-sm">
+              <li key="tax-strategies-2026-self-employed"><Link href="/articles/tax-strategies-2026-self-employed" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Tax Strategies in 2026 for Self-Employed Workers</Link></li>
+              <li key="overlooked-tax-deductions-consultants"><Link href="/articles/overlooked-tax-deductions-consultants" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Top 10 Overlooked Tax Deductions for Consultants</Link></li>
+              </ul>
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Free tools</p>
+              <ul className="space-y-2 text-sm">
+              <li key="quarterly-tax"><Link href="/tools/quarterly-tax" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Quarterly Tax Estimator</Link></li>
+              <li key="tax-savings"><Link href="/tools/tax-savings" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Tax Savings Calculator</Link></li>
+              </ul>
+            </div>
           </div>
         </section>
 

@@ -15,8 +15,61 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SoloFI - Financial Independence for Consultants",
+  title: "SoloFI | Financial Independence for Consultants",
   description: "Build wealth. Reduce taxes. Retire on your terms. Built for self-employed professionals and independent consultants.",
+  openGraph: {
+    title: "SoloFI | Financial Independence for Consultants",
+    description: "Build wealth. Reduce taxes. Retire on your terms. Built for self-employed professionals and independent consultants.",
+    url: "https://solofi.io",
+    siteName: "SoloFI",
+    images: [
+      {
+        url: "https://solofi.io/api/og?title=Financial%20Independence%20for%20Consultants&category=Financial%20Planning",
+        width: 1200,
+        height: 630,
+        alt: "SoloFI - Financial Independence for Consultants",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SoloFI - Financial Independence for Consultants",
+    description: "Build wealth. Reduce taxes. Retire on your terms.",
+    images: ["https://solofi.io/api/og?title=Financial%20Independence%20for%20Consultants&category=Financial%20Planning"],
+  },
+  alternates: {
+    canonical: "https://solofi.io",
+  },
+};
+
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://solofi.io/#website",
+      url: "https://solofi.io",
+      name: "SoloFI",
+      description: "Financial decision engine for self-employed professionals",
+      potentialAction: {
+        "@type": "SearchAction",
+        target: "https://solofi.io/blog?q={search_term_string}",
+        "query-input": "required name=search_term_string",
+      },
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://solofi.io/#organization",
+      name: "SoloFI",
+      url: "https://solofi.io",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://solofi.io/favicon.ico",
+      },
+      sameAs: [],
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -27,6 +80,12 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" className="dark">
+        <head>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+          />
+        </head>
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >

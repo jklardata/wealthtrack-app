@@ -6,6 +6,9 @@ import { LandingAnalytics, TrackedLink } from "@/components/analytics";
 // Style 2: Bold/Energetic - Wise-inspired with gradients
 export const metadata = {
   title: "SoloFI - Take Control of Your Financial Future",
+  alternates: {
+    canonical: "https://solofi.io",
+  },
 };
 
 const VARIANT = "landing_2_bold";

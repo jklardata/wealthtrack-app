@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Shield, BarChart3, Users } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "About Solofi - Financial Planning for Independent Professionals",
+  title: "About SoloFI | Financial Planning for Independent Professionals",
   description: "Built by a self-employed consultant to solve the financial planning gap for independent professionals. No asset custody. No commissions. Just clarity.",
 };
 

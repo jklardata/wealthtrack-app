@@ -6,6 +6,9 @@ import { LandingAnalytics, TrackedLink } from "@/components/analytics";
 // Style 11: Deep Navy Premium - Trust and sophistication
 export const metadata = {
   title: "SoloFI - Sophisticated Financial Planning",
+  alternates: {
+    canonical: "https://solofi.io",
+  },
 };
 
 const VARIANT = "landing_11_navy";

@@ -6,6 +6,9 @@ import { LandingAnalytics, TrackedLink } from "@/components/analytics";
 // Style 16: Sunset Orange/Gold - Warm, energetic, ambitious
 export const metadata = {
   title: "SoloFI - Ignite Your Financial Independence",
+  alternates: {
+    canonical: "https://solofi.io",
+  },
 };
 
 const VARIANT = "landing_16_sunset";

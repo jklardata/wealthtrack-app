@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft, FileText, AlertTriangle, CreditCard, User, Ban, Shield, Scale, Mail } from "lucide-react";
 
 export const metadata = {
-  title: "Terms of Service - SoloFI",
+  title: "Terms of Service | SoloFI",
   description: "Terms of Service for SoloFI financial tracking application",
 };
 

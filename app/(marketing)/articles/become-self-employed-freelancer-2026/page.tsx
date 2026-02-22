@@ -2,15 +2,61 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "How to Become a Self-Employed Freelancer in 2026 - SoloFI",
+  title: "How to Become a Self-Employed Freelancer in 2026 | SoloFI",
   description: "Everything you need to know about making the leap to self-employment, from legal setup to finding your first clients.",
+  openGraph: {
+    title: "How to Become a Self-Employed Freelancer in 2026",
+    description: "Everything you need to know about making the leap to self-employment, from legal setup to finding your first clients.",
+    url: "https://solofi.io/articles/become-self-employed-freelancer-2026",
+    siteName: "SoloFI",
+    images: [
+      {
+        url: "https://solofi.io/api/og?title=How%20to%20Become%20a%20Self-Employed%20Freelancer%20in%202026&category=Getting%20Started",
+        width: 1200,
+        height: 630,
+        alt: "How to Become a Self-Employed Freelancer in 2026",
+      },
+    ],
+    type: "article",
+  },
+  alternates: {
+    canonical: "https://solofi.io/articles/become-self-employed-freelancer-2026",
+  },
 };
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Briefcase, Calendar, Clock, CheckCircle, AlertTriangle, Users, DollarSign, Building } from "lucide-react";
 
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "How to Become a Self-Employed Freelancer in 2026",
+  description: "Everything you need to know about making the leap to self-employment, from legal setup to finding your first clients.",
+  datePublished: "2026-01-05",
+  dateModified: "2026-01-05",
+  author: {
+    "@type": "Person",
+    name: "Justin Leu",
+    url: "https://solofi.io/about",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "SoloFI",
+    url: "https://solofi.io",
+  },
+  url: "https://solofi.io/articles/become-self-employed-freelancer-2026",
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://solofi.io/articles/become-self-employed-freelancer-2026",
+  },
+};
 export default function BecomeFreelancerArticle() {
   return (
     <article>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       {/* Back Button */}
       <div className="mb-6">
         <Link href="/blog">
@@ -425,6 +471,29 @@ export default function BecomeFreelancerArticle() {
                 <span className="text-slate-700">Build systems and processes as you grow</span>
               </li>
             </ul>
+          </div>
+        </section>
+
+        
+        {/* Internal Links */}
+        <section className="rounded-xl border border-slate-200 bg-slate-50 p-6 space-y-4">
+          <h3 className="text-lg font-bold text-slate-900">Read next</h3>
+          <div className="grid sm:grid-cols-2 gap-6">
+            <div>
+              <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Related articles</p>
+              <ul className="space-y-2 text-sm">
+              <li key="sole-proprietor-vs-llc"><Link href="/articles/sole-proprietor-vs-llc" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Sole Proprietor vs. LLC: Which Structure Saves You More?</Link></li>
+              <li key="30-percent-rule-self-employment-taxes"><Link href="/articles/30-percent-rule-self-employment-taxes" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">The 30% Rule for Self-Employment Taxes</Link></li>
+              <li key="best-bank-accounts-for-consultants"><Link href="/articles/best-bank-accounts-for-consultants" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Best Bank Accounts for Independent Consultants</Link></li>
+              </ul>
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Free tools</p>
+              <ul className="space-y-2 text-sm">
+              <li key="scorp-calculator"><Link href="/tools/scorp-calculator" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">S-Corp Calculator</Link></li>
+              <li key="quarterly-tax"><Link href="/tools/quarterly-tax" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Quarterly Tax Estimator</Link></li>
+              </ul>
+            </div>
           </div>
         </section>
 

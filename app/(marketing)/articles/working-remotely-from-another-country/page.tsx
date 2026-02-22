@@ -2,15 +2,61 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "A US Guide for Working Remotely From Another Country - SoloFI",
+  title: "A US Guide for Working Remotely From Another Country | SoloFI",
   description: "Dreaming of working from Portugal or Mexico? Here's what US-based remote workers need to know about taxes, visas, and logistics.",
+  openGraph: {
+    title: "A US Guide for Working Remotely From Another Country",
+    description: "Dreaming of working from Portugal or Mexico? Here's what US-based remote workers need to know.",
+    url: "https://solofi.io/articles/working-remotely-from-another-country",
+    siteName: "SoloFI",
+    images: [
+      {
+        url: "https://solofi.io/api/og?title=A%20US%20Guide%20for%20Working%20Remotely%20From%20Another%20Country&category=Remote%20Work",
+        width: 1200,
+        height: 630,
+        alt: "A US Guide for Working Remotely From Another Country",
+      },
+    ],
+    type: "article",
+  },
+  alternates: {
+    canonical: "https://solofi.io/articles/working-remotely-from-another-country",
+  },
 };
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Calendar, Clock, MapPin, AlertTriangle, Globe } from "lucide-react";
 
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "A US Guide for Working Remotely From Another Country",
+  description: "Dreaming of working from Portugal or Mexico? Here's what US-based remote workers need to know about taxes, visas, and logistics.",
+  datePublished: "2025-10-10",
+  dateModified: "2025-10-10",
+  author: {
+    "@type": "Person",
+    name: "Justin Leu",
+    url: "https://solofi.io/about",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "SoloFI",
+    url: "https://solofi.io",
+  },
+  url: "https://solofi.io/articles/working-remotely-from-another-country",
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://solofi.io/articles/working-remotely-from-another-country",
+  },
+};
 export default function WorkingRemotelyArticle() {
   return (
     <article>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       {/* Back Button */}
       <div className="mb-6">
         <Link href="/blog">
@@ -225,6 +271,28 @@ export default function WorkingRemotelyArticle() {
                 <span className="text-slate-700">Consider your state tax residency carefully—some states continue taxing you</span>
               </li>
             </ul>
+          </div>
+        </section>
+
+        
+        {/* Internal Links */}
+        <section className="rounded-xl border border-slate-200 bg-slate-50 p-6 space-y-4">
+          <h3 className="text-lg font-bold text-slate-900">Read next</h3>
+          <div className="grid sm:grid-cols-2 gap-6">
+            <div>
+              <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Related articles</p>
+              <ul className="space-y-2 text-sm">
+              <li key="how-feie-works"><Link href="/articles/how-feie-works" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">How the Foreign Earned Income Exclusion (FEIE) Works</Link></li>
+              <li key="best-bank-accounts-for-consultants"><Link href="/articles/best-bank-accounts-for-consultants" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Best Bank Accounts for Independent Consultants</Link></li>
+              </ul>
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Free tools</p>
+              <ul className="space-y-2 text-sm">
+              <li key="fi-calculator"><Link href="/tools/fi-calculator" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">FI Calculator</Link></li>
+              <li key="quarterly-tax"><Link href="/tools/quarterly-tax" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Quarterly Tax Estimator</Link></li>
+              </ul>
+            </div>
           </div>
         </section>
 

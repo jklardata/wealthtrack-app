@@ -6,6 +6,9 @@ import { LandingAnalytics, TrackedLink } from "@/components/analytics";
 // Style 15: Teal/Cyan - Fresh, modern, tech-forward
 export const metadata = {
   title: "SoloFI - Navigate Your Financial Future",
+  alternates: {
+    canonical: "https://solofi.io",
+  },
 };
 
 const VARIANT = "landing_15_teal";

@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft, Shield, Database, Lock, Users, Mail, Globe, FileText } from "lucide-react";
 
 export const metadata = {
-  title: "Privacy Policy - SoloFI",
+  title: "Privacy Policy | SoloFI",
   description: "Privacy Policy for SoloFI financial tracking application",
 };
 

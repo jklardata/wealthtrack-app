@@ -2,15 +2,61 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Best Bank Accounts for Remote Workers and Independent Consultants - SoloFI",
+  title: "Best Bank Accounts for Remote Workers and Independent Consultants | SoloFI",
   description: "The right bank account can save you money and headaches. Here are the best options for self-employed professionals in 2026.",
+  openGraph: {
+    title: "Best Bank Accounts for Remote Workers and Independent Consultants",
+    description: "The right bank account can save you money and headaches.",
+    url: "https://solofi.io/articles/best-bank-accounts-for-consultants",
+    siteName: "SoloFI",
+    images: [
+      {
+        url: "https://solofi.io/api/og?title=Best%20Bank%20Accounts%20for%20Remote%20Workers%20and%20Consultants&category=Banking",
+        width: 1200,
+        height: 630,
+        alt: "Best Bank Accounts for Remote Workers and Consultants",
+      },
+    ],
+    type: "article",
+  },
+  alternates: {
+    canonical: "https://solofi.io/articles/best-bank-accounts-for-consultants",
+  },
 };
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Building2, Calendar, Clock, Check, X, CreditCard, Wallet } from "lucide-react";
 
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "Best Bank Accounts for Remote Workers and Independent Consultants",
+  description: "The right bank account can save you money and headaches. Here are the best options for self-employed professionals in 2026.",
+  datePublished: "2025-10-20",
+  dateModified: "2025-10-20",
+  author: {
+    "@type": "Person",
+    name: "Justin Leu",
+    url: "https://solofi.io/about",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "SoloFI",
+    url: "https://solofi.io",
+  },
+  url: "https://solofi.io/articles/best-bank-accounts-for-consultants",
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://solofi.io/articles/best-bank-accounts-for-consultants",
+  },
+};
 export default function BankAccountsArticle() {
   return (
     <article>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       {/* Back Button */}
       <div className="mb-6">
         <Link href="/blog">
@@ -275,6 +321,27 @@ export default function BankAccountsArticle() {
                 <span className="text-slate-700">Keep 3-6 months expenses in a high-yield savings account</span>
               </li>
             </ul>
+          </div>
+        </section>
+
+        
+        {/* Internal Links */}
+        <section className="rounded-xl border border-slate-200 bg-slate-50 p-6 space-y-4">
+          <h3 className="text-lg font-bold text-slate-900">Read next</h3>
+          <div className="grid sm:grid-cols-2 gap-6">
+            <div>
+              <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Related articles</p>
+              <ul className="space-y-2 text-sm">
+              <li key="become-self-employed-freelancer-2026"><Link href="/articles/become-self-employed-freelancer-2026" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">How to Become a Self-Employed Freelancer in 2026</Link></li>
+              <li key="sole-proprietor-vs-llc"><Link href="/articles/sole-proprietor-vs-llc" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Sole Proprietor vs. LLC: Which Structure Saves You More?</Link></li>
+              </ul>
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Free tools</p>
+              <ul className="space-y-2 text-sm">
+              <li key="scorp-calculator"><Link href="/tools/scorp-calculator" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">S-Corp Calculator</Link></li>
+              </ul>
+            </div>
           </div>
         </section>
 

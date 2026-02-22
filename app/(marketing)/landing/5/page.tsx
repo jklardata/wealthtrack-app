@@ -6,6 +6,9 @@ import { LandingAnalytics, TrackedLink } from "@/components/analytics";
 // Style 5: Data-Driven - Numbers and stats upfront
 export const metadata = {
   title: "SoloFI - The Numbers Behind Financial Independence",
+  alternates: {
+    canonical: "https://solofi.io",
+  },
 };
 
 const VARIANT = "landing_5_data";

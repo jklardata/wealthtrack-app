@@ -15,6 +15,7 @@ const isPublicRoute = createRouteMatcher([
   '/pricing(.*)',
   '/api/stripe/webhooks',
   '/api/newsletter',
+  '/creative(.*)',
   '/', // Make root public for marketing site
 ]);
 

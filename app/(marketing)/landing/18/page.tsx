@@ -6,6 +6,9 @@ import { LandingAnalytics, TrackedLink } from "@/components/analytics";
 // Style 18: Slate/Gray Minimal - Ultra clean, sophisticated, Apple-inspired
 export const metadata = {
   title: "SoloFI - Financial Planning, Simplified",
+  alternates: {
+    canonical: "https://solofi.io",
+  },
 };
 
 const VARIANT = "landing_18_minimal";

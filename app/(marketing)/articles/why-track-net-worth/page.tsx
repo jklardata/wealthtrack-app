@@ -2,15 +2,61 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Why Tracking Your Net Worth Over Time is Useful - SoloFI",
+  title: "Why Tracking Your Net Worth Over Time is Useful | SoloFI",
   description: "Your net worth is the single most important number in personal finance. Here's why tracking it regularly can transform your financial life.",
+  openGraph: {
+    title: "Why Tracking Your Net Worth Over Time is Useful",
+    description: "Your net worth is the single most important number in personal finance.",
+    url: "https://solofi.io/articles/why-track-net-worth",
+    siteName: "SoloFI",
+    images: [
+      {
+        url: "https://solofi.io/api/og?title=Why%20Tracking%20Your%20Net%20Worth%20Over%20Time%20is%20Useful&category=Wealth%20Building",
+        width: 1200,
+        height: 630,
+        alt: "Why Tracking Your Net Worth Over Time is Useful",
+      },
+    ],
+    type: "article",
+  },
+  alternates: {
+    canonical: "https://solofi.io/articles/why-track-net-worth",
+  },
 };
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, PiggyBank, Calendar, Clock, TrendingUp, Target, Brain, BarChart3 } from "lucide-react";
 
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "Why Tracking Your Net Worth Over Time is Useful",
+  description: "Your net worth is the single most important number in personal finance. Here's why tracking it regularly can transform your financial life.",
+  datePublished: "2025-11-15",
+  dateModified: "2025-11-15",
+  author: {
+    "@type": "Person",
+    name: "Justin Leu",
+    url: "https://solofi.io/about",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "SoloFI",
+    url: "https://solofi.io",
+  },
+  url: "https://solofi.io/articles/why-track-net-worth",
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://solofi.io/articles/why-track-net-worth",
+  },
+};
 export default function WhyTrackNetWorthArticle() {
   return (
     <article>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       {/* Back Button */}
       <div className="mb-6">
         <Link href="/blog">
@@ -268,6 +314,27 @@ export default function WhyTrackNetWorthArticle() {
             <p className="text-slate-700 leading-relaxed">
               The best time to start tracking was years ago; the second best time is today. Every month you delay is one more data point lost and one more month of living in financial uncertainty instead of clarity. Your future self—the one five years from now looking at a beautiful upward-trending chart—will thank you for starting today.
             </p>
+          </div>
+        </section>
+
+        
+        {/* Internal Links */}
+        <section className="rounded-xl border border-slate-200 bg-slate-50 p-6 space-y-4">
+          <h3 className="text-lg font-bold text-slate-900">Read next</h3>
+          <div className="grid sm:grid-cols-2 gap-6">
+            <div>
+              <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Related articles</p>
+              <ul className="space-y-2 text-sm">
+              <li key="roth-conversion-strategy-engine-launch"><Link href="/articles/roth-conversion-strategy-engine-launch" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Building a Roth Conversion Strategy Engine</Link></li>
+              <li key="become-self-employed-freelancer-2026"><Link href="/articles/become-self-employed-freelancer-2026" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">How to Become a Self-Employed Freelancer in 2026</Link></li>
+              </ul>
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Free tools</p>
+              <ul className="space-y-2 text-sm">
+              <li key="fi-calculator"><Link href="/tools/fi-calculator" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">FI Calculator</Link></li>
+              </ul>
+            </div>
           </div>
         </section>
 

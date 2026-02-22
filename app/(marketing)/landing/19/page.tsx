@@ -6,6 +6,9 @@ import { LandingAnalytics, TrackedLink } from "@/components/analytics";
 // Style 19: Electric Blue/Neon - High energy, tech-forward, gaming-inspired
 export const metadata = {
   title: "SoloFI - Supercharge Your Finances",
+  alternates: {
+    canonical: "https://solofi.io",
+  },
 };
 
 const VARIANT = "landing_19_neon";

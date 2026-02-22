@@ -6,6 +6,9 @@ import { LandingAnalytics, TrackedLink } from "@/components/analytics";
 // Style 12: Forest Green - Natural, growth-focused, calming
 export const metadata = {
   title: "SoloFI - Grow Your Wealth Naturally",
+  alternates: {
+    canonical: "https://solofi.io",
+  },
 };
 
 const VARIANT = "landing_12_green";

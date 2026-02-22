@@ -6,6 +6,9 @@ import { LandingAnalytics, TrackedLink } from "@/components/analytics";
 // Style 20: Earth Tones/Brown - Warm, grounded, trustworthy, craftsman feel
 export const metadata = {
   title: "SoloFI - Grounded Financial Planning",
+  alternates: {
+    canonical: "https://solofi.io",
+  },
 };
 
 const VARIANT = "landing_20_earth";

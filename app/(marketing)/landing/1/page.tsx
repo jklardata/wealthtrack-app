@@ -6,6 +6,9 @@ import { LandingAnalytics, TrackedLink } from "@/components/analytics";
 // Style 1: Minimalist/Clean - Wealthsimple-inspired
 export const metadata = {
   title: "SoloFI - Financial Freedom for the Self-Employed",
+  alternates: {
+    canonical: "https://solofi.io",
+  },
 };
 
 const VARIANT = "landing_1_minimalist";

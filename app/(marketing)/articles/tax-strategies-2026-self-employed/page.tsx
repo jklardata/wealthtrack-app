@@ -1,15 +1,62 @@
+import { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Calculator, Calendar, Clock, AlertTriangle, DollarSign, Percent } from "lucide-react";
 
-export const metadata = {
-  title: "Tax Strategies in 2026 for Self-Employed Workers - SoloFI",
+export const metadata: Metadata = {
+  title: "Tax Strategies in 2026 for Self-Employed Workers | SoloFI",
   description: "Self-employment comes with a significant tax burden—but also unique opportunities for tax optimization. Here are the most effective strategies for 2026.",
+  openGraph: {
+    title: "Tax Strategies in 2026 for Self-Employed Workers",
+    description: "Self-employment comes with a significant tax burden—but also unique opportunities for tax optimization. Here are the most effective strategies for 2026.",
+    url: "https://solofi.io/articles/tax-strategies-2026-self-employed",
+    siteName: "SoloFI",
+    images: [
+      {
+        url: "https://solofi.io/api/og?title=Tax%20Strategies%20in%202026%20for%20Self-Employed%20Workers&category=Taxes",
+        width: 1200,
+        height: 630,
+        alt: "Tax Strategies in 2026 for Self-Employed Workers",
+      },
+    ],
+    type: "article",
+  },
+  alternates: {
+    canonical: "https://solofi.io/articles/tax-strategies-2026-self-employed",
+  },
 };
 
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "Tax Strategies in 2026 for Self-Employed Workers",
+  description: "Self-employment comes with a significant tax burden—but also unique opportunities for tax optimization. Here are the most effective strategies for 2026.",
+  datePublished: "2026-01-15",
+  dateModified: "2026-01-15",
+  author: {
+    "@type": "Person",
+    name: "Justin Leu",
+    url: "https://solofi.io/about",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "SoloFI",
+    url: "https://solofi.io",
+  },
+  url: "https://solofi.io/articles/tax-strategies-2026-self-employed",
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://solofi.io/articles/tax-strategies-2026-self-employed",
+  },
+};
 export default function TaxStrategiesArticle() {
   return (
     <article>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       {/* Back Button */}
       <div className="mb-6">
         <Link href="/blog">
@@ -94,11 +141,11 @@ export default function TaxStrategiesArticle() {
         </section>
 
         {/* Image break */}
-        <div className="relative h-48 rounded-xl overflow-hidden">
+        <div className="rounded-xl overflow-hidden">
           <img
-            src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=1000&h=400&fit=crop"
-            alt="Financial planning"
-            className="w-full h-full object-cover"
+            src="/creative/Maximize_your_savings_version_1.png"
+            alt="Maximize your savings"
+            className="w-full object-cover"
           />
         </div>
 
@@ -273,6 +320,30 @@ export default function TaxStrategiesArticle() {
             <p className="text-slate-700 leading-relaxed">
               Finally, invest in a CPA who understands self-employment tax strategy. The $2,000-4,000 you spend on quality accounting advice will save you multiples of that in optimized deductions, retirement contributions, and S-Corp structuring. DIY tax software is fine for W-2 employees, but once you're self-employed and earning real money, professional guidance pays for itself many times over.
             </p>
+          </div>
+        </section>
+
+        
+        {/* Internal Links */}
+        <section className="rounded-xl border border-slate-200 bg-slate-50 p-6 space-y-4">
+          <h3 className="text-lg font-bold text-slate-900">Read next</h3>
+          <div className="grid sm:grid-cols-2 gap-6">
+            <div>
+              <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Related articles</p>
+              <ul className="space-y-2 text-sm">
+              <li key="30-percent-rule-self-employment-taxes"><Link href="/articles/30-percent-rule-self-employment-taxes" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">The 30% Rule for Self-Employment Taxes</Link></li>
+              <li key="overlooked-tax-deductions-consultants"><Link href="/articles/overlooked-tax-deductions-consultants" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Top 10 Overlooked Tax Deductions for Consultants</Link></li>
+              <li key="sole-proprietor-vs-llc"><Link href="/articles/sole-proprietor-vs-llc" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Sole Proprietor vs. LLC: Which Structure Saves You More?</Link></li>
+              </ul>
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Free tools</p>
+              <ul className="space-y-2 text-sm">
+              <li key="scorp-calculator"><Link href="/tools/scorp-calculator" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">S-Corp Calculator</Link></li>
+              <li key="tax-savings"><Link href="/tools/tax-savings" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Tax Savings Calculator</Link></li>
+              <li key="quarterly-tax"><Link href="/tools/quarterly-tax" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Quarterly Tax Estimator</Link></li>
+              </ul>
+            </div>
           </div>
         </section>
 

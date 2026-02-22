@@ -96,25 +96,44 @@ export async function POST(request: NextRequest) {
       cancelUrl: `${appUrl}/upgrade?canceled=true`
     });
 
-    console.log('Creating Stripe checkout session for customer:', stripeCustomerId);
-    const session = await stripe.checkout.sessions.create({
-      customer: stripeCustomerId,
-      mode: 'subscription',
-      line_items: [
-        {
-          price: priceId,
-          quantity: 1,
+    const createSession = async (customerId: string) => {
+      return stripe.checkout.sessions.create({
+        customer: customerId,
+        mode: 'subscription',
+        line_items: [{ price: priceId, quantity: 1 }],
+        success_url: `${appUrl}/dashboard?success=true&tier=${tier}`,
+        cancel_url: `${appUrl}/upgrade?canceled=true`,
+        subscription_data: {
+          metadata: { clerk_user_id: userId },
+          ...(trialDays && { trial_period_days: trialDays }),
         },
-      ],
-      success_url: `${appUrl}/dashboard?success=true&tier=${tier}`,
-      cancel_url: `${appUrl}/upgrade?canceled=true`,
-      subscription_data: {
-        metadata: {
-          clerk_user_id: userId,
-        },
-        ...(trialDays && { trial_period_days: trialDays }),
-      },
-    });
+      });
+    };
+
+    let session;
+    try {
+      console.log('Creating Stripe checkout session for customer:', stripeCustomerId);
+      session = await createSession(stripeCustomerId);
+    } catch (stripeError: any) {
+      // Stale test-mode customer ID — create a fresh live customer and retry
+      if (stripeError?.code === 'resource_missing' && stripeError?.param === 'customer') {
+        console.log('Stale customer ID detected, creating new live customer for user:', userId);
+        const newCustomer = await stripe.customers.create({
+          email,
+          metadata: { clerk_user_id: userId },
+        });
+        stripeCustomerId = newCustomer.id;
+
+        await supabase
+          .from('subscriptions')
+          .update({ stripe_customer_id: stripeCustomerId })
+          .eq('user_id', userId);
+
+        session = await createSession(stripeCustomerId);
+      } else {
+        throw stripeError;
+      }
+    }
 
     console.log('Checkout session created:', session.id);
     return NextResponse.json({ url: session.url });

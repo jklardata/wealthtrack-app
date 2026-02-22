@@ -1,15 +1,62 @@
+import { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Calculator, Calendar, Clock, AlertTriangle, DollarSign, CheckCircle2, Home, Coffee, Wifi, Car, BookOpen, Smartphone, Brain, Plane, Heart, Users } from "lucide-react";
 
-export const metadata = {
-  title: "Top 10 Overlooked Tax Deductions for Consultants - SoloFI",
+export const metadata: Metadata = {
+  title: "Top 10 Overlooked Tax Deductions for Consultants | SoloFI",
   description: "Most consultants miss thousands in legitimate tax deductions. Here are the 10 most commonly overlooked write-offs that could save you money.",
+  openGraph: {
+    title: "Top 10 Overlooked Tax Deductions for Consultants",
+    description: "Most consultants miss thousands in legitimate tax deductions.",
+    url: "https://solofi.io/articles/overlooked-tax-deductions-consultants",
+    siteName: "SoloFI",
+    images: [
+      {
+        url: "https://solofi.io/api/og?title=Top%2010%20Overlooked%20Tax%20Deductions%20for%20Consultants&category=Taxes",
+        width: 1200,
+        height: 630,
+        alt: "Top 10 Overlooked Tax Deductions for Consultants",
+      },
+    ],
+    type: "article",
+  },
+  alternates: {
+    canonical: "https://solofi.io/articles/overlooked-tax-deductions-consultants",
+  },
 };
 
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "Top 10 Overlooked Tax Deductions for Consultants",
+  description: "Most consultants miss thousands in legitimate tax deductions. Here are the 10 most commonly overlooked write-offs.",
+  datePublished: "2025-09-15",
+  dateModified: "2025-09-15",
+  author: {
+    "@type": "Person",
+    name: "Justin Leu",
+    url: "https://solofi.io/about",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "SoloFI",
+    url: "https://solofi.io",
+  },
+  url: "https://solofi.io/articles/overlooked-tax-deductions-consultants",
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://solofi.io/articles/overlooked-tax-deductions-consultants",
+  },
+};
 export default function OverlookedDeductionsArticle() {
   return (
     <article>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       {/* Back Button */}
       <div className="mb-6">
         <Link href="/blog">
@@ -424,6 +471,28 @@ export default function OverlookedDeductionsArticle() {
             <p className="text-slate-700 leading-relaxed">
               Keep receipts and documentation for at least 3 years (7 years is safer). The IRS can audit returns within 3 years, and having organized records turns a potential nightmare into a non-event. Combined, these 10 deduction categories can save you $5,000-$10,000+ annually in taxes—money that stays in your business instead of going to the IRS.
             </p>
+          </div>
+        </section>
+
+        
+        {/* Internal Links */}
+        <section className="rounded-xl border border-slate-200 bg-slate-50 p-6 space-y-4">
+          <h3 className="text-lg font-bold text-slate-900">Read next</h3>
+          <div className="grid sm:grid-cols-2 gap-6">
+            <div>
+              <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Related articles</p>
+              <ul className="space-y-2 text-sm">
+              <li key="tax-strategies-2026-self-employed"><Link href="/articles/tax-strategies-2026-self-employed" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Tax Strategies in 2026 for Self-Employed Workers</Link></li>
+              <li key="30-percent-rule-self-employment-taxes"><Link href="/articles/30-percent-rule-self-employment-taxes" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">The 30% Rule for Self-Employment Taxes</Link></li>
+              </ul>
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Free tools</p>
+              <ul className="space-y-2 text-sm">
+              <li key="tax-savings"><Link href="/tools/tax-savings" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Tax Savings Calculator</Link></li>
+              <li key="scorp-calculator"><Link href="/tools/scorp-calculator" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">S-Corp Calculator</Link></li>
+              </ul>
+            </div>
           </div>
         </section>
 

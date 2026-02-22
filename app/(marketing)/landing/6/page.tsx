@@ -6,6 +6,9 @@ import { LandingAnalytics, TrackedLink } from "@/components/analytics";
 // Style 6: Story-Driven - Personal narrative approach
 export const metadata = {
   title: "SoloFI - From Freelancer Anxiety to Financial Freedom",
+  alternates: {
+    canonical: "https://solofi.io",
+  },
 };
 
 const VARIANT = "landing_6_story";

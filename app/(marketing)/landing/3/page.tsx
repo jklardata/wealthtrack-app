@@ -7,6 +7,9 @@ import { LandingAnalytics, TrackedLink } from "@/components/analytics";
 // Style 3: Professional/Enterprise - Corporate, trust-focused
 export const metadata = {
   title: "SoloFI - Enterprise-Grade Financial Planning for Independent Professionals",
+  alternates: {
+    canonical: "https://solofi.io",
+  },
 };
 
 const VARIANT = "landing_3_professional";

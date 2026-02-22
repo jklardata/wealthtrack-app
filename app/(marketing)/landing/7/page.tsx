@@ -9,6 +9,9 @@ import { LandingAnalytics, TrackedLink } from "@/components/analytics";
 // Style 7: Feature Grid - Icons and features layout, very scannable
 export const metadata = {
   title: "SoloFI - All-in-One Financial Toolkit for Freelancers",
+  alternates: {
+    canonical: "https://solofi.io",
+  },
 };
 
 const VARIANT = "landing_7_features";

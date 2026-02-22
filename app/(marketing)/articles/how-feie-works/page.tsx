@@ -2,15 +2,61 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "How the Foreign Earned Income Exclusion (FEIE) Works - SoloFI",
+  title: "How the Foreign Earned Income Exclusion (FEIE) Works | SoloFI",
   description: "Living abroad as a US citizen? The FEIE could save you up to $130,000 in taxes. Here's everything you need to know.",
+  openGraph: {
+    title: "How the Foreign Earned Income Exclusion (FEIE) Works",
+    description: "Living abroad as a US citizen? The FEIE could save you up to $130,000 in taxes.",
+    url: "https://solofi.io/articles/how-feie-works",
+    siteName: "SoloFI",
+    images: [
+      {
+        url: "https://solofi.io/api/og?title=How%20the%20Foreign%20Earned%20Income%20Exclusion%20(FEIE)%20Works&category=Taxes",
+        width: 1200,
+        height: 630,
+        alt: "How the Foreign Earned Income Exclusion (FEIE) Works",
+      },
+    ],
+    type: "article",
+  },
+  alternates: {
+    canonical: "https://solofi.io/articles/how-feie-works",
+  },
 };
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Calendar, Clock, AlertTriangle, Check, X, Globe, Calculator } from "lucide-react";
 
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "How the Foreign Earned Income Exclusion (FEIE) Works",
+  description: "Living abroad as a US citizen? The FEIE could save you up to $130,000 in taxes.",
+  datePublished: "2025-11-01",
+  dateModified: "2025-11-01",
+  author: {
+    "@type": "Person",
+    name: "Justin Leu",
+    url: "https://solofi.io/about",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "SoloFI",
+    url: "https://solofi.io",
+  },
+  url: "https://solofi.io/articles/how-feie-works",
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://solofi.io/articles/how-feie-works",
+  },
+};
 export default function FEIEArticle() {
   return (
     <article>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       {/* Back Button */}
       <div className="mb-6">
         <Link href="/blog">
@@ -328,6 +374,28 @@ export default function FEIEArticle() {
                 <span className="text-slate-700">Consult a tax professional familiar with expat taxation</span>
               </li>
             </ul>
+          </div>
+        </section>
+
+        
+        {/* Internal Links */}
+        <section className="rounded-xl border border-slate-200 bg-slate-50 p-6 space-y-4">
+          <h3 className="text-lg font-bold text-slate-900">Read next</h3>
+          <div className="grid sm:grid-cols-2 gap-6">
+            <div>
+              <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Related articles</p>
+              <ul className="space-y-2 text-sm">
+              <li key="working-remotely-from-another-country"><Link href="/articles/working-remotely-from-another-country" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">A US Guide for Working Remotely From Another Country</Link></li>
+              <li key="tax-strategies-2026-self-employed"><Link href="/articles/tax-strategies-2026-self-employed" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Tax Strategies in 2026 for Self-Employed Workers</Link></li>
+              </ul>
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Free tools</p>
+              <ul className="space-y-2 text-sm">
+              <li key="fi-calculator"><Link href="/tools/fi-calculator" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">FI Calculator</Link></li>
+              <li key="quarterly-tax"><Link href="/tools/quarterly-tax" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Quarterly Tax Estimator</Link></li>
+              </ul>
+            </div>
           </div>
         </section>
 

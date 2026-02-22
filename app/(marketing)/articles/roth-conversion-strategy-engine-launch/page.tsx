@@ -2,15 +2,61 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Building a Roth Conversion Strategy Engine: Why Early Retirement Changes Everything - SoloFI",
+  title: "Building a Roth Conversion Strategy Engine: Why Early Retirement Changes Everything | SoloFI",
   description: "Deep dive into building production-ready tax optimization tools for early retirees. Why gap years are goldmines, how we model lifetime tax exposure, and implementing Pro feature gating.",
+  openGraph: {
+    title: "Building a Roth Conversion Strategy Engine: Why Early Retirement Changes Everything",
+    description: "Deep dive into building production-ready tax optimization tools for early retirees.",
+    url: "https://solofi.io/articles/roth-conversion-strategy-engine-launch",
+    siteName: "SoloFI",
+    images: [
+      {
+        url: "https://solofi.io/api/og?title=Building%20a%20Roth%20Conversion%20Strategy%20Engine&category=Product%20Update",
+        width: 1200,
+        height: 630,
+        alt: "Building a Roth Conversion Strategy Engine",
+      },
+    ],
+    type: "article",
+  },
+  alternates: {
+    canonical: "https://solofi.io/articles/roth-conversion-strategy-engine-launch",
+  },
 };
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Calendar, Clock, TrendingUp, Target, Lightbulb, Lock, Code, BarChart3, DollarSign } from "lucide-react";
 
+
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "Building a Roth Conversion Strategy Engine: Why Early Retirement Changes Everything",
+  description: "Deep dive into building production-ready tax optimization tools for early retirees.",
+  datePublished: "2026-01-10",
+  dateModified: "2026-01-10",
+  author: {
+    "@type": "Person",
+    name: "Justin Leu",
+    url: "https://solofi.io/about",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "SoloFI",
+    url: "https://solofi.io",
+  },
+  url: "https://solofi.io/articles/roth-conversion-strategy-engine-launch",
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://solofi.io/articles/roth-conversion-strategy-engine-launch",
+  },
+};
 export default function RothConversionEngineArticle() {
   return (
     <article>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       {/* Back Button */}
       <div className="mb-6">
         <Link href="/blog">
@@ -311,6 +357,27 @@ export default function RothConversionEngineArticle() {
                 Try Roth Conversion Tool →
               </Button>
             </Link>
+          </div>
+        </section>
+
+        {/* Internal Links */}
+        <section className="rounded-xl border border-slate-200 bg-slate-50 p-6 space-y-4">
+          <h3 className="text-lg font-bold text-slate-900">Read next</h3>
+          <div className="grid sm:grid-cols-2 gap-6">
+            <div>
+              <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Related articles</p>
+              <ul className="space-y-2 text-sm">
+                <li><Link href="/articles/why-track-net-worth" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Why Tracking Your Net Worth Is Useful</Link></li>
+                <li><Link href="/articles/tax-strategies-2026-self-employed" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Tax Strategies in 2026 for Self-Employed Workers</Link></li>
+              </ul>
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Free tools</p>
+              <ul className="space-y-2 text-sm">
+                <li><Link href="/tools/roth-conversion" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Roth Conversion Tool</Link></li>
+                <li><Link href="/tools/fi-calculator" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">FI Calculator</Link></li>
+              </ul>
+            </div>
           </div>
         </section>
 

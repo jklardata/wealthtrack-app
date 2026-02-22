@@ -6,6 +6,9 @@ import { LandingAnalytics, TrackedLink } from "@/components/analytics";
 // Style 17: Rose/Pink Soft - Elegant, gentle, refined
 export const metadata = {
   title: "SoloFI - Thoughtful Financial Planning",
+  alternates: {
+    canonical: "https://solofi.io",
+  },
 };
 
 const VARIANT = "landing_17_rose";

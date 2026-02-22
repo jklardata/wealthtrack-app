@@ -372,34 +372,12 @@ export default function Landing21() {
                 </li>
               </ul>
             </div>
-            <div className="bg-white border border-slate-200 rounded-xl p-8 border-t-2 border-t-emerald-500">
-              <div className="text-sm text-slate-500 mb-4">Example: $250k consulting income</div>
-              <div className="space-y-6">
-                <div>
-                  <div className="flex justify-between mb-1">
-                    <span className="text-slate-600">Sole Proprietorship</span>
-                    <span className="font-medium text-slate-900">$78,400 total tax</span>
-                  </div>
-                  <div className="h-2 bg-slate-100 rounded-full">
-                    <div className="h-2 bg-slate-400 rounded-full" style={{ width: "100%" }}></div>
-                  </div>
-                </div>
-                <div>
-                  <div className="flex justify-between mb-1">
-                    <span className="text-slate-600">S-Corp (optimized salary)</span>
-                    <span className="font-medium text-emerald-600">$64,200 total tax</span>
-                  </div>
-                  <div className="h-2 bg-slate-100 rounded-full">
-                    <div className="h-2 bg-emerald-500 rounded-full" style={{ width: "82%" }}></div>
-                  </div>
-                </div>
-                <div className="pt-4 border-t border-slate-100">
-                  <div className="flex justify-between">
-                    <span className="text-slate-600">Annual savings</span>
-                    <span className="font-medium text-emerald-600">$14,200</span>
-                  </div>
-                </div>
-              </div>
+            <div className="rounded-xl overflow-hidden border border-slate-200 shadow-sm">
+              <img
+                src="/creative/Maximize_your_savings_version_1.png"
+                alt="Maximize your savings with SoloFI"
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
         </div>

@@ -6,6 +6,9 @@ import { LandingAnalytics, TrackedLink } from "@/components/analytics";
 // Style 10: Dark Mode Premium - Sleek, modern, high-end feel
 export const metadata = {
   title: "SoloFI - Premium Financial Planning for Independents",
+  alternates: {
+    canonical: "https://solofi.io",
+  },
 };
 
 const VARIANT = "landing_10_dark";

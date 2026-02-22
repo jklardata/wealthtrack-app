@@ -6,6 +6,9 @@ import { LandingAnalytics, TrackedLink } from "@/components/analytics";
 // Style 4: Friendly/Casual - FIRE community feel, conversational
 export const metadata = {
   title: "SoloFI - Your Friendly Guide to Financial Freedom",
+  alternates: {
+    canonical: "https://solofi.io",
+  },
 };
 
 const VARIANT = "landing_4_friendly";

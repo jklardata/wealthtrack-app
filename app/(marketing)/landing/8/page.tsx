@@ -7,6 +7,9 @@ import { LandingAnalytics, TrackedLink } from "@/components/analytics";
 // Style 8: Social Proof Heavy - Testimonials and trust signals first
 export const metadata = {
   title: "SoloFI - Trusted by 10,000+ Freelancers",
+  alternates: {
+    canonical: "https://solofi.io",
+  },
 };
 
 const VARIANT = "landing_8_social";

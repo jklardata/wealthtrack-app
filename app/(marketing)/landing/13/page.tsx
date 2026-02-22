@@ -6,6 +6,9 @@ import { LandingAnalytics, TrackedLink } from "@/components/analytics";
 // Style 13: Warm Coral/Peach - Friendly, approachable, warm
 export const metadata = {
   title: "SoloFI - Friendly Financial Planning",
+  alternates: {
+    canonical: "https://solofi.io",
+  },
 };
 
 const VARIANT = "landing_13_coral";

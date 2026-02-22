@@ -4,8 +4,11 @@ import { ArrowRight, Check, Calculator, PieChart, Building2, TrendingUp, Shield,
 import { LandingAnalytics, TrackedLink } from "@/components/analytics";
 
 export const metadata = {
-  title: "Solofi - Financial Decision Engine for Self-Employed Professionals",
+  title: "Financial Decision Engine for Self-Employed Professionals | SoloFI",
   description: "Model tax strategies, portfolio allocation, and retirement outcomes before making irreversible financial decisions. Built for independent consultants and high earners.",
+  alternates: {
+    canonical: "https://solofi.io",
+  },
 };
 
 const VARIANT = "landing_21_decision_engine";
