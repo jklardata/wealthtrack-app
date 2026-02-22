@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Calculator, TrendingUp, Repeat, CheckSquare, FileText, Sparkles } from "lucide-react";
+import { ArrowRight, Calculator, TrendingUp, Repeat, CheckSquare, FileText, Sparkles, Globe, DollarSign, Landmark } from "lucide-react";
 
 export const metadata = {
-  title: "Free Tools - SoloFI",
+  title: "Free Tools | SoloFI",
   description: "Free financial calculators and tools for self-employed professionals, consultants, and freelancers.",
 };
 
@@ -79,6 +79,45 @@ const TOOLS: Tool[] = [
       "Tax registration steps",
       "Banking recommendations",
       "Insurance requirements",
+    ],
+    category: "Getting Started",
+  },
+  {
+    slug: "feie-checker",
+    title: "FEIE Eligibility Checker",
+    description: "Find out if you qualify for the Foreign Earned Income Exclusion and estimate your tax savings.",
+    icon: Globe,
+    features: [
+      "Physical presence test calculator",
+      "Bona fide residence test",
+      "Estimated exclusion amount",
+      "Form 2555 filing guidance",
+    ],
+    category: "Working Abroad",
+  },
+  {
+    slug: "rate-calculator",
+    title: "Freelance Rate Calculator",
+    description: "Calculate your minimum viable hourly rate based on your income goals and work schedule.",
+    icon: DollarSign,
+    features: [
+      "Hourly, day, and weekly rates",
+      "Project rate ranges",
+      "Billable hours analysis",
+      "Pricing strategy tips",
+    ],
+    category: "Getting Started",
+  },
+  {
+    slug: "banking-setup",
+    title: "Freelancer Banking Setup Guide",
+    description: "Get a personalized banking plan — which accounts to open, and in what order.",
+    icon: Landmark,
+    features: [
+      "Personalized account roadmap",
+      "Specific bank recommendations",
+      "Tax reserve setup",
+      "Automation rules",
     ],
     category: "Getting Started",
   },
