@@ -564,14 +564,6 @@ export default function DashboardPage() {
     return (
       <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
         <div className="max-w-7xl mx-auto space-y-6">
-          {/* Header */}
-          <div>
-            <h1 className="text-4xl sm:text-5xl font-black text-slate-900">Dashboard</h1>
-            <p className="text-sm sm:text-base text-slate-500 mt-1">
-              Regular net worth tracking is the foundation of sound financial planning. Update your <Link href="/net-worth" className="text-emerald-600 hover:text-emerald-700 underline">Net Worth Timeline</Link> monthly to monitor progress, analyze portfolio allocation and concentration risk, model tax-optimized withdrawal strategies, and project retirement outcomes based on your unique financial situation.
-            </p>
-          </div>
-
           {/* Empty State - Enhanced */}
           <Card className="bg-white border-slate-200 border-t-4 border-t-emerald-500">
             <CardContent className="py-12 sm:py-16">
@@ -742,13 +734,7 @@ export default function DashboardPage() {
       </Suspense>
 
       {/* Header with Date Filters */}
-      <div className="flex flex-col gap-4">
-        <div>
-          <h1 className="text-4xl sm:text-5xl font-black text-slate-900">Dashboard</h1>
-          <p className="text-sm sm:text-base text-slate-500 mt-1">
-            Regular net worth tracking is the foundation of sound financial planning. Update your <Link href="/net-worth" className="text-emerald-600 hover:text-emerald-700 underline">Net Worth Timeline</Link> monthly to monitor progress, analyze portfolio allocation and concentration risk, model tax-optimized withdrawal strategies, and project retirement outcomes based on your unique financial situation.
-          </p>
-        </div>
+      <div className="flex flex-col gap-3">
         <div className="flex flex-wrap items-center gap-2">
           {/* Preset Date Range Dropdown */}
           <Select value={presetRange} onValueChange={(v) => handlePresetChange(v as PresetRange)}>
@@ -815,47 +801,47 @@ export default function DashboardPage() {
       </div>
 
       {/* Stats Cards - Compact */}
-      <div className="grid gap-2 sm:gap-3 grid-cols-2 lg:grid-cols-4">
-        <Card className="bg-white border-2 border-black shadow-sm">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 p-3 sm:p-6 sm:pb-2">
-            <CardTitle className="text-sm sm:text-base font-black text-slate-700 uppercase tracking-wide">
+      <div className="grid gap-2 grid-cols-2 lg:grid-cols-4">
+        <Card className="bg-white border border-slate-200 shadow-sm">
+          <CardHeader className="flex flex-row items-center justify-between pb-1 p-3">
+            <CardTitle className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
               Net Worth
             </CardTitle>
-            <DollarSign className="h-5 w-5 text-emerald-600" />
+            <DollarSign className="h-3.5 w-3.5 text-emerald-600" />
           </CardHeader>
-          <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
-            <div className="text-lg sm:text-2xl md:text-3xl font-black text-slate-900 font-mono break-words">
+          <CardContent className="p-3 pt-0">
+            <div className="text-base sm:text-lg font-bold text-slate-900 font-mono break-words">
               {latestEntry ? formatCurrency(latestEntry.net_worth) : "$0"}
             </div>
             {latestEntry && (
-              <p className="text-sm font-semibold text-emerald-600 mt-1">
+              <p className="text-xs text-emerald-600 mt-0.5">
                 as of {formatDateShort(latestEntry.date)}
               </p>
             )}
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-2 border-black shadow-sm">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 p-3 sm:p-6 sm:pb-2">
-            <CardTitle className="text-sm sm:text-base font-black text-slate-700 uppercase tracking-wide">
+        <Card className="bg-white border border-slate-200 shadow-sm">
+          <CardHeader className="flex flex-row items-center justify-between pb-1 p-3">
+            <CardTitle className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
               Monthly Change
             </CardTitle>
             {monthlyChange >= 0 ? (
-              <TrendingUp className="h-5 w-5 text-emerald-600" />
+              <TrendingUp className="h-3.5 w-3.5 text-emerald-600" />
             ) : (
-              <TrendingDown className="h-5 w-5 text-red-500" />
+              <TrendingDown className="h-3.5 w-3.5 text-red-500" />
             )}
           </CardHeader>
-          <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
+          <CardContent className="p-3 pt-0">
             <div
-              className={`text-lg sm:text-2xl md:text-3xl font-black font-mono break-words ${
+              className={`text-base sm:text-lg font-bold font-mono break-words ${
                 monthlyChange >= 0 ? "text-emerald-600" : "text-red-500"
               }`}
             >
               {monthlyChange >= 0 ? "+" : ""}
               {formatCurrency(monthlyChange)}
             </div>
-            <p className="text-sm font-semibold text-slate-600 mt-1">
+            <p className="text-xs text-slate-500 mt-0.5">
               {monthlyChange >= 0 ? "+" : ""}
               {monthlyChangePercent}% from last
             </p>
@@ -863,21 +849,21 @@ export default function DashboardPage() {
         </Card>
 
         {/* YTD Change */}
-        <Card className="bg-white border-2 border-black shadow-sm">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 p-3 sm:p-6 sm:pb-2">
-            <CardTitle className="text-sm sm:text-base font-black text-slate-700 uppercase tracking-wide">
+        <Card className="bg-white border border-slate-200 shadow-sm">
+          <CardHeader className="flex flex-row items-center justify-between pb-1 p-3">
+            <CardTitle className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
               YTD Change
             </CardTitle>
-            <TrendingUp className="h-5 w-5 text-emerald-500" />
+            <TrendingUp className="h-3.5 w-3.5 text-emerald-500" />
           </CardHeader>
-          <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
-            <div className={`text-lg sm:text-2xl md:text-3xl font-black font-mono break-words ${
+          <CardContent className="p-3 pt-0">
+            <div className={`text-base sm:text-lg font-bold font-mono break-words ${
               growthMetrics.ytd.amount >= 0 ? "text-emerald-600" : "text-red-500"
             }`}>
               {growthMetrics.ytd.amount >= 0 ? "+" : ""}
               {formatCurrency(growthMetrics.ytd.amount)}
             </div>
-            <p className={`text-sm font-semibold mt-1 ${
+            <p className={`text-xs mt-0.5 ${
               growthMetrics.ytd.percent >= 0 ? "text-emerald-600" : "text-red-500"
             }`}>
               {growthMetrics.ytd.percent >= 0 ? "+" : ""}
@@ -887,21 +873,21 @@ export default function DashboardPage() {
         </Card>
 
         {/* Avg Monthly $ */}
-        <Card className="bg-white border-2 border-black shadow-sm">
-          <CardHeader className="flex flex-row items-center justify-between pb-2 p-3 sm:p-6 sm:pb-2">
-            <CardTitle className="text-sm sm:text-base font-black text-slate-700 uppercase tracking-wide">
-              Avg Monthly $
+        <Card className="bg-white border border-slate-200 shadow-sm">
+          <CardHeader className="flex flex-row items-center justify-between pb-1 p-3">
+            <CardTitle className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+              Avg Monthly
             </CardTitle>
-            <TrendingUp className="h-5 w-5 text-blue-500" />
+            <TrendingUp className="h-3.5 w-3.5 text-blue-500" />
           </CardHeader>
-          <CardContent className="p-3 pt-0 sm:p-6 sm:pt-0">
-            <div className={`text-lg sm:text-2xl md:text-3xl font-black font-mono break-words ${
+          <CardContent className="p-3 pt-0">
+            <div className={`text-base sm:text-lg font-bold font-mono break-words ${
               growthMetrics.avgMonthlyGrowth >= 0 ? "text-blue-600" : "text-red-500"
             }`}>
               {growthMetrics.avgMonthlyGrowth >= 0 ? "+" : ""}
               {formatCurrency(growthMetrics.avgMonthlyGrowth)}
             </div>
-            <p className="text-sm font-semibold text-slate-600 mt-1">Average monthly growth</p>
+            <p className="text-xs text-slate-500 mt-0.5">Avg monthly growth</p>
           </CardContent>
         </Card>
       </div>

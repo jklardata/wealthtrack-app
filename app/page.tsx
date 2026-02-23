@@ -2,9 +2,196 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Check, Calculator, PieChart, Building2, TrendingUp, Shield, Lock, Eye } from "lucide-react";
+import { ArrowRight, Check, Calculator, PieChart, Building2, TrendingUp, Shield, Lock, Eye, ChevronRight } from "lucide-react";
 import { LandingAnalytics, TrackedLink } from "@/components/analytics";
 import { useState } from "react";
+
+// Quick quarterly tax estimator state type
+type TaxFilingStatus = "single" | "married" | "hoh";
+
+function QuarterlyTaxWidget() {
+  const [income, setIncome] = useState("");
+  const [expenses, setExpenses] = useState("");
+  const [filingStatus, setFilingStatus] = useState<TaxFilingStatus>("single");
+  const [result, setResult] = useState<null | {
+    netIncome: number;
+    selfEmploymentTax: number;
+    estimatedFederalTax: number;
+    quarterlyPayment: number;
+    effectiveRate: number;
+  }>(null);
+
+  const calculate = () => {
+    const gross = parseFloat(income.replace(/,/g, "")) || 0;
+    const exp = parseFloat(expenses.replace(/,/g, "")) || 0;
+    const net = Math.max(0, gross - exp);
+
+    // SE tax
+    const seTax = net * 0.9235 * 0.153;
+    const seDeduction = seTax * 0.5;
+
+    // Standard deductions
+    const standardDeduction = filingStatus === "married" ? 29200 : filingStatus === "hoh" ? 21900 : 14600;
+
+    // Federal taxable income
+    const taxableIncome = Math.max(0, net - seDeduction - standardDeduction);
+
+    // Simple progressive tax estimate (2024 brackets, single as baseline)
+    let federalTax = 0;
+    if (filingStatus === "married") {
+      const brackets = [[23200, 0.10], [94300, 0.12], [201050, 0.22], [383900, 0.24], [487450, 0.32], [731200, 0.35], [Infinity, 0.37]] as [number, number][];
+      let remaining = taxableIncome;
+      let prev = 0;
+      for (const [cap, rate] of brackets) {
+        const inBracket = Math.min(remaining, cap - prev);
+        federalTax += inBracket * rate;
+        remaining -= inBracket;
+        if (remaining <= 0) break;
+        prev = cap;
+      }
+    } else {
+      const brackets = [[11600, 0.10], [47150, 0.12], [100525, 0.22], [191950, 0.24], [243725, 0.32], [609350, 0.35], [Infinity, 0.37]] as [number, number][];
+      let remaining = taxableIncome;
+      let prev = 0;
+      for (const [cap, rate] of brackets) {
+        const inBracket = Math.min(remaining, cap - prev);
+        federalTax += inBracket * rate;
+        remaining -= inBracket;
+        if (remaining <= 0) break;
+        prev = cap;
+      }
+    }
+
+    const totalAnnual = seTax + federalTax;
+    const quarterly = totalAnnual / 4;
+    const effectiveRate = net > 0 ? (totalAnnual / net) * 100 : 0;
+
+    setResult({
+      netIncome: net,
+      selfEmploymentTax: seTax,
+      estimatedFederalTax: federalTax,
+      quarterlyPayment: quarterly,
+      effectiveRate,
+    });
+  };
+
+  const fmt = (n: number) =>
+    new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(n);
+
+  return (
+    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+      <div className="bg-emerald-600 px-5 py-4">
+        <div className="flex items-center gap-2">
+          <Calculator className="h-5 w-5 text-white" />
+          <h3 className="text-white font-semibold">Quick Quarterly Tax Estimate</h3>
+        </div>
+        <p className="text-emerald-100 text-sm mt-1">Free · No signup · Results in seconds</p>
+      </div>
+
+      <div className="p-5 space-y-4">
+        <div className="grid sm:grid-cols-2 gap-3">
+          <div>
+            <label className="block text-xs font-medium text-slate-600 mb-1">Annual Gross Income</label>
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">$</span>
+              <input
+                type="text"
+                inputMode="numeric"
+                value={income}
+                onChange={(e) => setIncome(e.target.value)}
+                placeholder="150,000"
+                className="w-full pl-7 pr-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+              />
+            </div>
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-slate-600 mb-1">Business Expenses</label>
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">$</span>
+              <input
+                type="text"
+                inputMode="numeric"
+                value={expenses}
+                onChange={(e) => setExpenses(e.target.value)}
+                placeholder="20,000"
+                className="w-full pl-7 pr-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-xs font-medium text-slate-600 mb-1">Filing Status</label>
+          <div className="flex gap-2">
+            {(["single", "married", "hoh"] as TaxFilingStatus[]).map((s) => (
+              <button
+                key={s}
+                onClick={() => setFilingStatus(s)}
+                className={`flex-1 py-2 text-xs rounded-lg border transition-colors font-medium ${
+                  filingStatus === s
+                    ? "bg-emerald-600 text-white border-emerald-600"
+                    : "bg-white text-slate-600 border-slate-300 hover:bg-slate-50"
+                }`}
+              >
+                {s === "single" ? "Single" : s === "married" ? "Married" : "HOH"}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <button
+          onClick={calculate}
+          disabled={!income}
+          className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-medium py-2.5 rounded-lg text-sm transition-colors"
+        >
+          Calculate My Quarterly Tax
+        </button>
+
+        {result && (
+          <div className="mt-2 rounded-lg bg-slate-50 border border-slate-200 p-4 space-y-2">
+            <div className="flex justify-between text-sm">
+              <span className="text-slate-500">Net Income</span>
+              <span className="font-medium text-slate-900">{fmt(result.netIncome)}</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-slate-500">Self-Employment Tax</span>
+              <span className="font-medium text-slate-900">{fmt(result.selfEmploymentTax)}</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-slate-500">Est. Federal Income Tax</span>
+              <span className="font-medium text-slate-900">{fmt(result.estimatedFederalTax)}</span>
+            </div>
+            <div className="border-t border-slate-200 pt-2 mt-2">
+              <div className="flex justify-between">
+                <span className="font-semibold text-slate-900">Pay per quarter</span>
+                <span className="text-xl font-bold text-emerald-600">{fmt(result.quarterlyPayment)}</span>
+              </div>
+              <p className="text-xs text-slate-500 mt-1">
+                ~{result.effectiveRate.toFixed(1)}% effective rate · Estimate only, excludes state tax
+              </p>
+            </div>
+            <Link
+              href="/quarterly-tax-calculator"
+              className="flex items-center justify-center gap-1.5 mt-3 text-xs text-emerald-700 font-medium hover:text-emerald-800"
+            >
+              Get detailed breakdown with state tax
+              <ChevronRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+        )}
+
+        {!result && (
+          <p className="text-center text-xs text-slate-400">
+            Includes SE tax + federal estimate. Add state tax at{" "}
+            <Link href="/quarterly-tax-calculator" className="text-emerald-600 hover:underline">
+              full calculator →
+            </Link>
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
 
 // Force deployment refresh
 
@@ -54,7 +241,10 @@ export default function Landing21() {
           </span>
         </Link>
         <div className="flex items-center gap-2 sm:gap-4">
-          <Link href="/blog" className="hidden sm:block text-slate-600 hover:text-slate-900 text-sm">
+          <Link href="/quarterly-tax-calculator" className="hidden sm:block text-slate-600 hover:text-slate-900 text-sm">
+            Tax Calculator
+          </Link>
+          <Link href="/blog" className="hidden md:block text-slate-600 hover:text-slate-900 text-sm">
             Resources
           </Link>
           <Link href="/pricing" className="text-slate-600 hover:text-slate-900 text-xs sm:text-sm">
@@ -137,6 +327,47 @@ export default function Landing21() {
                   <p className="text-xs text-slate-500 mt-0.5 hidden sm:block">S-Corp optimized</p>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Quarterly Tax Calculator CTA Section */}
+      <section className="py-10 sm:py-14 bg-white border-y border-slate-200">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div>
+              <p className="text-xs font-semibold text-emerald-600 uppercase tracking-wider mb-2">Try it free</p>
+              <h2 className="text-2xl sm:text-3xl font-medium text-slate-900 mb-3">
+                How much should you pay in quarterly taxes?
+              </h2>
+              <p className="text-slate-600 mb-4 leading-relaxed">
+                Most self-employed professionals either overpay and lose liquidity, or underpay and get hit with penalties. Get your estimate in seconds — no signup required.
+              </p>
+              <ul className="space-y-1.5 mb-5">
+                <li className="flex items-center gap-2 text-sm text-slate-600">
+                  <Check className="h-4 w-4 text-emerald-500 flex-shrink-0" />
+                  Federal + self-employment tax estimate
+                </li>
+                <li className="flex items-center gap-2 text-sm text-slate-600">
+                  <Check className="h-4 w-4 text-emerald-500 flex-shrink-0" />
+                  Accounts for business expense deductions
+                </li>
+                <li className="flex items-center gap-2 text-sm text-slate-600">
+                  <Check className="h-4 w-4 text-emerald-500 flex-shrink-0" />
+                  Full state tax breakdown at the detailed calculator
+                </li>
+              </ul>
+              <Link
+                href="/quarterly-tax-calculator"
+                className="inline-flex items-center gap-1.5 text-sm text-emerald-700 border border-emerald-300 hover:bg-emerald-50 font-medium px-4 py-2 rounded-lg transition-colors"
+              >
+                Full calculator with state tax
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+            <div>
+              <QuarterlyTaxWidget />
             </div>
           </div>
         </div>
@@ -550,8 +781,12 @@ export default function Landing21() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-6 text-xs sm:text-sm text-slate-500">
             <span>© 2026 SoloFI</span>
-            <div className="flex gap-8">
+            <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
+              <Link href="/about" className="hover:text-slate-700">About</Link>
+              <Link href="/contact" className="hover:text-slate-700">Contact</Link>
+              <Link href="/glossary" className="hover:text-slate-700">Glossary</Link>
               <Link href="/blog" className="hover:text-slate-700">Resources</Link>
+              <Link href="/pricing" className="hover:text-slate-700">Pricing</Link>
               <Link href="/privacy" className="hover:text-slate-700">Privacy</Link>
               <Link href="/terms" className="hover:text-slate-700">Terms</Link>
             </div>

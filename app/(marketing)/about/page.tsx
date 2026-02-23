@@ -14,11 +14,12 @@ export default function AboutPage() {
       {/* Hero Section */}
       <div className="border-b border-slate-200 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+          <p className="text-sm font-medium text-emerald-600 uppercase tracking-wider mb-3">The founder</p>
           <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 mb-6">
-            About Solofi
+            Hi, I'm Justin.
           </h1>
           <p className="text-xl text-slate-600 leading-relaxed">
-            Built to solve a problem I lived firsthand.
+            I built SoloFI because I couldn't find the tool I actually needed.
           </p>
         </div>
       </div>
@@ -28,102 +29,110 @@ export default function AboutPage() {
         <div className="prose prose-lg max-w-none">
           {/* Founder Story */}
           <section className="mb-16">
-            <div className="space-y-6 text-slate-700 leading-relaxed">
+            <div className="space-y-6 text-slate-700 leading-relaxed text-lg">
               <p>
-                I've been a self-employed consultant since 2016, working with startups and Fortune 500 companies on complex analytics, finance, and data problems. Before going independent, I worked in Big 4 consulting, and later with FAANG-scale and high-growth technology companies, where data-driven decision-making wasn't optional—it was the job.
+                I've been self-employed since 2016, working as a consultant with startups and Fortune 500 companies on analytics, finance, and data strategy. Before going independent, I spent years in Big 4 consulting and later worked with FAANG-scale companies where making decisions from data was the baseline expectation, not a differentiator.
               </p>
 
               <p>
-                Professionally, I spent years helping organizations make better decisions with imperfect information. Personally, I was navigating the same challenges many independent professionals face:
+                Going solo was the best career decision I've made. But the financial side? That came with a steep learning curve.
               </p>
 
-              <ul className="space-y-2 ml-6 my-6">
-                <li className="text-slate-700">Optimizing taxes with volatile income</li>
-                <li className="text-slate-700">Deciding whether an S-Corp actually makes sense</li>
-                <li className="text-slate-700">Balancing retirement contributions vs. taxable investing</li>
-                <li className="text-slate-700">Managing portfolios efficiently</li>
-                <li className="text-slate-700">Planning for financial independence—potentially abroad</li>
+              <p>
+                As a consultant, I was suddenly responsible for things most employees never think about:
+              </p>
+
+              <ul className="space-y-2 ml-6 my-6 text-base">
+                <li className="text-slate-700">Setting aside the right amount for quarterly taxes without overcorrecting</li>
+                <li className="text-slate-700">Figuring out whether an S-Corp actually made sense for my income level</li>
+                <li className="text-slate-700">Deciding how to split contributions between a Solo 401(k) and taxable investing</li>
+                <li className="text-slate-700">Understanding what financial independence looked like with variable, project-based income</li>
+                <li className="text-slate-700">Modeling retirement abroad versus staying in a high-cost U.S. city</li>
               </ul>
 
+              <p>
+                What I found was a frustrating gap. Most tools were built for salaried employees. Financial advisors wanted to manage my assets. Online calculators were static and generic. Spreadsheets got the job done but took forever to maintain.
+              </p>
+
               <p className="font-medium text-slate-900">
-                What I found was a gap.
+                There was no single place to model decisions — only tools that showed results after the fact.
               </p>
 
               <p>
-                There was no single place to model decisions—only tools that showed results after the fact, generic advice, or platforms that required moving assets before you fully understood the tradeoffs.
+                So I built it myself.
               </p>
 
               <p>
-                Solofi exists to close that gap.
-              </p>
-
-              <p>
-                It's a financial decision engine designed for self-employed professionals—combining tax modeling, portfolio analysis, retirement planning, and geo-arbitrage into one clear, data-driven system. No asset custody. No commissions. No lock-in.
+                SoloFI is the financial decision engine I wish had existed when I first went independent. It's designed for people like me: high earners with variable income, complicated taxes, and long-term ambitions that don't fit the standard retirement planning template.
               </p>
 
               <p className="text-slate-600 italic">
-                This is the tool I wish existed years ago—built from real experience, not theory.
+                No asset custody. No commissions. No lock-in. Just clarity — before you commit.
               </p>
 
-              <div className="mt-8 pt-8 border-t border-slate-200">
-                <p className="text-slate-900 font-medium">— Justin Leu</p>
-                <p className="text-sm text-slate-600">Founder, Solofi</p>
-                <p className="text-sm text-slate-500">Self-employed consultant • Big 4 alum • FAANG experience</p>
+              <div className="mt-10 pt-8 border-t border-slate-200">
+                <p className="text-slate-900 font-semibold text-base">— Justin Leu</p>
+                <p className="text-sm text-slate-600 mt-1">Founder, SoloFI</p>
+                <p className="text-sm text-slate-500">Self-employed consultant · Big 4 alum · FAANG experience · Been in the trenches since 2016</p>
               </div>
             </div>
           </section>
 
-          {/* Why Trust Solofi */}
+          {/* What SoloFI Is (and Isn't) */}
           <section className="mb-16">
-            <h2 className="text-3xl font-bold text-slate-900 mb-8">Why Trust Solofi</h2>
+            <h2 className="text-3xl font-bold text-slate-900 mb-6">What SoloFI is (and isn't)</h2>
 
             <div className="space-y-6 text-slate-700 leading-relaxed">
               <p>
-                Solofi is built around a simple principle: <span className="font-medium text-slate-900">clarity before commitment</span>.
+                SoloFI is a financial decision engine — not a brokerage, not a robo-advisor, not a budgeting app.
               </p>
 
-              <div className="grid gap-6 my-8">
-                <div className="flex gap-4 p-6 bg-white rounded-xl border border-slate-200">
-                  <div className="flex-shrink-0">
-                    <Shield className="h-6 w-6 text-emerald-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-slate-900 mb-2">No asset custody or account transfers</h3>
-                    <p className="text-sm text-slate-600">Your money stays where it is. We never touch your assets.</p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4 p-6 bg-white rounded-xl border border-slate-200">
-                  <div className="flex-shrink-0">
-                    <BarChart3 className="h-6 w-6 text-emerald-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-slate-900 mb-2">No commissions or product incentives</h3>
-                    <p className="text-sm text-slate-600">We're not selling you products. We're providing clarity.</p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4 p-6 bg-white rounded-xl border border-slate-200">
-                  <div className="flex-shrink-0">
-                    <Users className="h-6 w-6 text-emerald-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-slate-900 mb-2">Provider-agnostic</h3>
-                    <p className="text-sm text-slate-600">Works with where you already bank and invest. Designed to complement, not replace, your CPA or advisor.</p>
-                  </div>
-                </div>
-              </div>
+              <p>
+                The core idea is <span className="font-medium text-slate-900">clarity before commitment</span>. Before you make a big financial decision, you should be able to see what happens across different scenarios. What does your tax bill look like if you take an S-Corp election vs. stay as a sole proprietor? What's your probability of reaching FIRE at 52 vs. 58? How does retiring in Lisbon compare to staying in San Francisco?
+              </p>
 
               <div className="bg-slate-50 border-l-4 border-emerald-600 p-6 my-8">
                 <p className="text-lg font-medium text-slate-900 mb-2">
-                  Solofi doesn't tell you what to do.
+                  SoloFI doesn't tell you what to do.
                 </p>
                 <p className="text-slate-700">
                   It helps you understand what happens if you do.
                 </p>
-                <p className="text-sm text-slate-600 mt-4">
-                  That distinction matters—especially when decisions are expensive.
+                <p className="text-sm text-slate-500 mt-3">
+                  That distinction matters — especially when the decisions are expensive and hard to reverse.
                 </p>
+              </div>
+
+              <div className="grid gap-5 my-8">
+                <div className="flex gap-4 p-5 bg-white rounded-xl border border-slate-200 shadow-sm">
+                  <div className="flex-shrink-0 mt-0.5">
+                    <Shield className="h-5 w-5 text-emerald-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-slate-900 mb-1">No asset custody or account transfers</h3>
+                    <p className="text-sm text-slate-600">Your money stays exactly where it is. We never touch your assets or require you to move anything.</p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4 p-5 bg-white rounded-xl border border-slate-200 shadow-sm">
+                  <div className="flex-shrink-0 mt-0.5">
+                    <BarChart3 className="h-5 w-5 text-emerald-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-slate-900 mb-1">No commissions or product incentives</h3>
+                    <p className="text-sm text-slate-600">We don't earn money by selling you products or routing you toward specific providers. Our only incentive is to be useful enough that you keep subscribing.</p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4 p-5 bg-white rounded-xl border border-slate-200 shadow-sm">
+                  <div className="flex-shrink-0 mt-0.5">
+                    <Users className="h-5 w-5 text-emerald-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-slate-900 mb-1">Works alongside your existing team</h3>
+                    <p className="text-sm text-slate-600">SoloFI is designed to complement — not replace — your CPA or financial advisor. Think of it as your personal modeling layer that helps you show up to those conversations better prepared.</p>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
@@ -132,12 +141,12 @@ export default function AboutPage() {
           <section className="mb-16">
             <div className="bg-amber-50 border border-amber-200 rounded-xl p-8">
               <h2 className="text-xl font-bold text-slate-900 mb-4">Disclosure</h2>
-              <div className="space-y-4 text-sm text-slate-700 leading-relaxed">
+              <div className="space-y-3 text-sm text-slate-700 leading-relaxed">
                 <p>
-                  Solofi is a financial planning and decision-support tool. It does not provide personalized financial, tax, or investment advice, and it is not a brokerage or registered investment advisor.
+                  SoloFI is a financial planning and decision-support tool. It does not provide personalized financial, tax, or investment advice, and is not a registered investment advisor or brokerage.
                 </p>
                 <p>
-                  Any insights are based on user-provided information and general modeling assumptions. Users should consult qualified professionals (CPAs, tax advisors, financial planners) before making financial decisions.
+                  Any projections or insights are based on user-provided information and general modeling assumptions. Individual results will vary. Consult qualified professionals — CPAs, tax advisors, financial planners — before making significant financial decisions.
                 </p>
               </div>
             </div>
@@ -147,21 +156,21 @@ export default function AboutPage() {
           <section className="text-center py-12">
             <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-8 sm:p-12">
               <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-4">
-                Ready to make better financial decisions?
+                Ready to model your next financial decision?
               </h2>
               <p className="text-slate-600 mb-8 max-w-2xl mx-auto">
-                Start modeling your tax strategy, portfolio allocation, and retirement plan today.
+                Start with a free account. No credit card, no account linking, no asset transfers required.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/signup">
+                <Link href="/sign-up">
                   <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-white">
                     Get Started Free
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
-                <Link href="/pricing">
+                <Link href="/contact">
                   <Button size="lg" variant="outline">
-                    View Pricing
+                    Get in Touch
                   </Button>
                 </Link>
               </div>
@@ -169,6 +178,22 @@ export default function AboutPage() {
           </section>
         </div>
       </div>
+
+      {/* Footer */}
+      <footer className="border-t border-slate-200 py-8">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-500">
+            <span>© 2026 SoloFI</span>
+            <div className="flex gap-6">
+              <Link href="/contact" className="hover:text-slate-700">Contact</Link>
+              <Link href="/blog" className="hover:text-slate-700">Resources</Link>
+              <Link href="/glossary" className="hover:text-slate-700">Glossary</Link>
+              <Link href="/privacy" className="hover:text-slate-700">Privacy</Link>
+              <Link href="/terms" className="hover:text-slate-700">Terms</Link>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
