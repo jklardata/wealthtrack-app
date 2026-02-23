@@ -159,20 +159,16 @@ function QuarterlyTaxWidget() {
             <div className="rounded-lg bg-slate-50 border border-slate-200 p-4 space-y-2">
               <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Tax Breakdown</p>
               <div className="flex justify-between text-sm">
-                <span className="text-slate-500">Net Self-Employment Income</span>
+                <span className="text-slate-500">Net SE Income</span>
                 <span className="font-medium text-slate-900">{fmt(result.netIncome)}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-slate-500">Self-Employment Tax (15.3%)</span>
+                <span className="text-slate-500">Self-Employment Tax</span>
                 <span className="font-medium text-slate-900">{fmt(result.selfEmploymentTax)}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-slate-500">Est. Federal Income Tax</span>
                 <span className="font-medium text-slate-900">{fmt(result.estimatedFederalTax)}</span>
-              </div>
-              <div className="border-t border-slate-200 pt-2 mt-1 flex justify-between">
-                <span className="text-sm font-semibold text-slate-900">Total Annual Tax</span>
-                <span className="text-sm font-bold text-slate-900">{fmt(result.totalAnnual)}</span>
               </div>
             </div>
 
@@ -183,35 +179,18 @@ function QuarterlyTaxWidget() {
               <p className="text-emerald-200 text-xs mt-1">{result.effectiveRate.toFixed(1)}% effective rate · federal + SE only</p>
             </div>
 
-            {/* Safe Harbor */}
+            {/* Sign up CTA */}
             <div className="rounded-lg bg-slate-50 border border-slate-200 p-4">
-              <div className="flex items-center gap-1.5 mb-2">
-                <Shield className="h-3.5 w-3.5 text-emerald-600" />
-                <p className="text-xs font-semibold text-slate-700">Safe Harbor (avoid penalties)</p>
-              </div>
-              <div className="space-y-1.5 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-slate-500">90% of current year</span>
-                  <span className="font-medium text-slate-900">{fmt(result.safeHarbor90)}/quarter</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500">100% of prior year tax</span>
-                  <span className="text-xs text-slate-400 italic">Enter last year's tax in full calculator</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Due dates */}
-            <div className="rounded-lg border border-slate-200 p-3">
-              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">2025 Due Dates</p>
-              <div className="grid grid-cols-2 gap-1.5 text-xs">
-                {[["Q1", "Apr 15"], ["Q2", "Jun 16"], ["Q3", "Sep 15"], ["Q4", "Jan 15, 2026"]].map(([q, d]) => (
-                  <div key={q} className="flex justify-between bg-slate-50 rounded px-2 py-1">
-                    <span className="text-slate-500">{q}</span>
-                    <span className="font-medium text-slate-700">{d}</span>
-                  </div>
-                ))}
-              </div>
+              <p className="text-xs text-slate-600 mb-2.5">
+                <span className="font-semibold text-slate-800">Want the full breakdown?</span> Safe Harbor amounts, state tax, due dates + payment tracker.
+              </p>
+              <Link
+                href="/sign-up"
+                className="flex items-center justify-center gap-1.5 w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium py-2.5 rounded-lg transition-colors"
+              >
+                Sign up to see full breakdown — free
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
             </div>
           </div>
         )}

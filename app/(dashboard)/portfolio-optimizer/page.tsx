@@ -70,22 +70,22 @@ interface RiskQuestion {
 
 // Vibrant, distinct colors for better visibility
 const COLORS = {
-  stocks: "#f97316", // Bright Orange
-  bonds: "#0ea5e9", // Sky Blue
-  cash: "#10b981", // Emerald Green
-  real_estate: "#8b5cf6", // Violet Purple
-  commodities: "#f59e0b", // Amber Yellow
-  other: "#64748b", // Slate Gray
+  stocks: "#059669",    // emerald-600
+  bonds: "#10b981",    // emerald-500
+  cash: "#34d399",     // emerald-400
+  real_estate: "#065f46", // emerald-900
+  commodities: "#6ee7b7", // emerald-300
+  other: "#047857",    // emerald-700
 };
 
 // Gradient pairs for visual appeal
 const COLOR_GRADIENTS = {
-  stocks: { start: "#fb923c", end: "#ea580c" },
-  bonds: { start: "#38bdf8", end: "#0284c7" },
-  cash: { start: "#34d399", end: "#059669" },
-  real_estate: { start: "#a78bfa", end: "#7c3aed" },
-  commodities: { start: "#fbbf24", end: "#d97706" },
-  other: { start: "#94a3b8", end: "#475569" },
+  stocks: { start: "#059669", end: "#047857" },
+  bonds: { start: "#10b981", end: "#059669" },
+  cash: { start: "#6ee7b7", end: "#34d399" },
+  real_estate: { start: "#065f46", end: "#022c22" },
+  commodities: { start: "#a7f3d0", end: "#6ee7b7" },
+  other: { start: "#047857", end: "#065f46" },
 };
 
 const CATEGORY_LABELS: Record<keyof Allocation, string> = {
@@ -161,7 +161,7 @@ function RiskQuestionnaire({
   const progress = ((currentQuestion + 1) / questions.length) * 100;
 
   return (
-    <Card className="bg-white border-2 border-black shadow-sm">
+    <Card className="bg-white border border-slate-200 shadow-sm">
       <CardHeader>
         <CardTitle className="flex items-center gap-3 text-2xl font-black text-slate-900">
           <Target className="h-5 w-5 text-emerald-600" />
@@ -189,7 +189,7 @@ function RiskQuestionnaire({
                 "w-full text-left p-4 rounded-lg border-2 transition-all",
                 selectedAnswer === option.score
                   ? "border-emerald-600 bg-emerald-50"
-                  : "border-2 border-black hover:border-emerald-300 hover:bg-slate-50"
+                  : "border border-slate-200 hover:border-emerald-300 hover:bg-slate-50"
               )}
             >
               {option.text}
@@ -202,7 +202,7 @@ function RiskQuestionnaire({
             variant="outline"
             onClick={handleBack}
             disabled={currentQuestion === 0}
-            className="border-2 border-black text-slate-700 hover:bg-slate-100"
+            className="border border-slate-200 text-slate-700 hover:bg-slate-100"
           >
             <ChevronLeft className="h-4 w-4 mr-1" />
             Back
@@ -947,7 +947,7 @@ export default function PortfolioOptimizerPage() {
   const [activeScenario, setActiveScenario] = useState<Scenario | null>(null);
 
   // Landing page 21 design - ensuring consistency
-  const cardClass = "bg-white border-2 border-black shadow-sm";
+  const cardClass = "bg-white border border-slate-200 shadow-sm";
   const headerClass = "text-slate-900 font-medium";
   const mutedTextClass = "text-slate-500";
   const primaryBtnClass = "bg-emerald-600 hover:bg-emerald-700 text-white";
@@ -1138,7 +1138,7 @@ export default function PortfolioOptimizerPage() {
             onComplete={handleQuestionnaireComplete}
           />
         ) : (
-          <Card className="bg-white border-2 border-black shadow-sm">
+          <Card className="bg-white border border-slate-200 shadow-sm">
             <CardContent className="py-8 text-center">
               <p className="text-slate-500">Loading questionnaire...</p>
             </CardContent>
@@ -1190,7 +1190,7 @@ export default function PortfolioOptimizerPage() {
           <Button
             variant="outline"
             onClick={() => setShowQuestionnaire(true)}
-            className="border-2 border-black text-slate-700 hover:bg-slate-100"
+            className="border border-slate-200 text-slate-700 hover:bg-slate-100"
           >
             Retake Assessment
           </Button>
@@ -1255,7 +1255,7 @@ export default function PortfolioOptimizerPage() {
 
       {/* Risk Profile Card */}
       {riskProfile && (
-        <Card className="bg-white border-2 border-black shadow-sm">
+        <Card className="bg-white border border-slate-200 shadow-sm">
           <CardContent className="py-4">
             <div className="flex flex-wrap items-center gap-6">
               <div className="flex items-center gap-3">
@@ -1343,7 +1343,7 @@ export default function PortfolioOptimizerPage() {
           </div>
 
           {/* Allocation Comparison - Full Width */}
-          <Card className="bg-white border-2 border-black shadow-sm">
+          <Card className="bg-white border border-slate-200 shadow-sm">
             <CardHeader className="bg-gradient-to-r from-emerald-50 to-blue-50">
               <CardTitle className="flex items-center gap-2">
                 <Target className="h-5 w-5 text-emerald-600" />
@@ -1380,7 +1380,7 @@ export default function PortfolioOptimizerPage() {
 
           {/* Key Metrics */}
           {isPro ? (
-            <Card className="bg-white border-2 border-black shadow-sm">
+            <Card className="bg-white border border-slate-200 shadow-sm">
               <CardHeader>
                 <CardTitle className="font-medium text-slate-900">Expected Performance</CardTitle>
                 <div className="text-sm text-slate-600 mt-2 space-y-2">
@@ -1414,7 +1414,7 @@ export default function PortfolioOptimizerPage() {
                   </div>
                 </div>
 
-                <div className="flex items-start gap-2 p-3 bg-slate-50 rounded-lg text-sm border border-2 border-black">
+                <div className="flex items-start gap-2 p-3 bg-slate-50 rounded-lg text-sm border border border-slate-200">
                   <Info className="h-4 w-4 mt-0.5 flex-shrink-0 text-slate-400" />
                   <span className="text-slate-600">
                     The Sharpe Ratio measures risk-adjusted return. Higher is better.
@@ -1434,7 +1434,7 @@ export default function PortfolioOptimizerPage() {
 
           {/* Rebalancing Actions */}
           {isPro ? (
-            <Card className="bg-white border-2 border-black shadow-sm">
+            <Card className="bg-white border border-slate-200 shadow-sm">
               <CardHeader>
                 <CardTitle className="font-medium text-slate-900">Rebalancing Actions</CardTitle>
                 <div className="text-sm text-slate-600 mt-2 space-y-2">
@@ -1499,7 +1499,7 @@ export default function PortfolioOptimizerPage() {
 
           {/* Allocation Difference Chart */}
           {isPro ? (
-            <Card className="bg-white border-2 border-black shadow-sm">
+            <Card className="bg-white border border-slate-200 shadow-sm">
               <CardHeader>
                 <CardTitle className="text-xl font-semibold text-slate-900" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
                   Allocation Difference

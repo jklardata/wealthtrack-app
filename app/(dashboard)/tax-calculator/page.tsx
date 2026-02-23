@@ -1709,7 +1709,7 @@ export default function TaxCalculatorPage() {
           </CardHeader>
           <CardContent className="space-y-3">
             <a href="/quarterly-estimated-taxes">
-              <div className="p-4 rounded-lg border-2 border-black hover:bg-emerald-50 transition-colors cursor-pointer">
+              <div className="p-4 rounded-lg border border-slate-200 hover:bg-emerald-50 transition-colors cursor-pointer">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <Receipt className="h-5 w-5 text-emerald-600" />
@@ -1724,7 +1724,7 @@ export default function TaxCalculatorPage() {
             </a>
 
             <a href="/tax-optimization">
-              <div className="p-4 rounded-lg border-2 border-black hover:bg-blue-50 transition-colors cursor-pointer">
+              <div className="p-4 rounded-lg border border-slate-200 hover:bg-blue-50 transition-colors cursor-pointer">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <TrendingUp className="h-5 w-5 text-blue-600" />

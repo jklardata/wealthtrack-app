@@ -120,7 +120,7 @@
     @apply border-border outline-ring/50;
   }
   html {
-    font-size: 22px; /* Extra large base font size for better readability */
+    font-size: 15px;
     scroll-behavior: smooth;
   }
   body {

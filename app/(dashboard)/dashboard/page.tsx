@@ -88,6 +88,105 @@ type DateRange = {
 
 type PresetRange = "all" | "this-month" | "last-month" | "this-quarter" | "last-quarter" | "ytd" | "last-year" | "custom";
 
+// ─── Cash Flow Card ───────────────────────────────────────────────────────────
+function CashFlowCard({
+  latestEntry,
+  chartData,
+  entries,
+}: {
+  latestEntry: NetWorthEntry;
+  chartData: { date: string; entryId: string; netWorth: number }[];
+  entries: NetWorthEntry[];
+}) {
+  const [showHistory, setShowHistory] = useState(false);
+
+  const income = latestEntry.pre_tax_income;
+  const expenses = latestEntry.monthly_expenses;
+  const saved = income - expenses;
+  const savingsRate = income > 0 ? (saved / income) * 100 : 0;
+
+  const historyData = chartData
+    .map((entry) => {
+      const raw = entries.find((e) => e.id === entry.entryId);
+      return { date: entry.date, income: raw?.pre_tax_income || 0, expenses: raw?.monthly_expenses || 0 };
+    })
+    .filter((d) => d.income > 0);
+
+  const formatCurrencyLocal = (v: number) =>
+    new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(v);
+
+  return (
+    <Card className="bg-white border border-slate-200 shadow-sm">
+      <CardHeader className="pb-3">
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle className="text-base font-semibold text-slate-900">Cash Flow</CardTitle>
+            <p className="text-xs text-slate-500 mt-0.5">Most recent month</p>
+          </div>
+          {historyData.length > 1 && (
+            <button
+              onClick={() => setShowHistory(!showHistory)}
+              className="text-xs text-emerald-600 hover:text-emerald-700 font-medium flex items-center gap-1"
+            >
+              {showHistory ? "Hide history" : "View history"}
+              <ArrowRight className={`h-3 w-3 transition-transform ${showHistory ? "rotate-90" : ""}`} />
+            </button>
+          )}
+        </div>
+      </CardHeader>
+      <CardContent>
+        {/* Latest month metrics */}
+        <div className="grid grid-cols-3 gap-3 mb-3">
+          <div>
+            <p className="text-xs text-slate-500 mb-0.5">Income</p>
+            <p className="text-lg font-bold text-slate-900">{formatCurrencyLocal(income)}</p>
+          </div>
+          <div>
+            <p className="text-xs text-slate-500 mb-0.5">Expenses</p>
+            <p className="text-lg font-bold text-slate-900">{formatCurrencyLocal(expenses)}</p>
+          </div>
+          <div>
+            <p className="text-xs text-slate-500 mb-0.5">Saved</p>
+            <p className={`text-lg font-bold ${savingsRate >= 20 ? "text-emerald-600" : "text-amber-600"}`}>
+              {savingsRate.toFixed(0)}%
+            </p>
+          </div>
+        </div>
+
+        {/* Savings bar */}
+        <div className="h-2 rounded-full bg-slate-100 overflow-hidden mb-1">
+          <div
+            className={`h-full rounded-full transition-all ${savingsRate >= 20 ? "bg-emerald-500" : "bg-amber-400"}`}
+            style={{ width: `${Math.min(100, Math.max(0, savingsRate))}%` }}
+          />
+        </div>
+        <p className="text-xs text-slate-400">{formatCurrencyLocal(saved)} saved this month</p>
+
+        {/* Expandable history chart */}
+        {showHistory && historyData.length > 1 && (
+          <div className="mt-4 pt-4 border-t border-slate-100">
+            <p className="text-xs font-medium text-slate-500 mb-3">Income vs Expenses — History</p>
+            <ResponsiveContainer width="100%" height={200}>
+              <BarChart data={historyData} barGap={4} barCategoryGap="30%">
+                <CartesianGrid vertical={false} stroke="#f1f5f9" />
+                <XAxis dataKey="date" stroke="#cbd5e1" fontSize={10} tickLine={false} axisLine={false} />
+                <YAxis stroke="#cbd5e1" fontSize={10} tickLine={false} axisLine={false} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} width={36} />
+                <Tooltip
+                  contentStyle={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: "8px", fontSize: "11px" }}
+                  formatter={(v) => [formatCurrencyLocal(Number(v))]}
+                />
+                <Legend iconType="circle" iconSize={7} wrapperStyle={{ fontSize: "11px", paddingTop: "6px" }} />
+                <Bar dataKey="income" name="Income" fill="#10b981" radius={[3, 3, 0, 0]} />
+                <Bar dataKey="expenses" name="Expenses" fill="#fbbf24" radius={[3, 3, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
 // Green-spectrum color palette for asset classes
 const ASSET_COLORS = {
   stocks: "#059669",     // emerald-600
@@ -533,7 +632,7 @@ export default function DashboardPage() {
               </Card>
             ))}
           </div>
-          <Card className="bg-white border-2 border-black">
+          <Card className="bg-white border border-slate-200">
             <CardHeader>
               <Skeleton className="h-6 w-40" />
             </CardHeader>
@@ -1272,105 +1371,14 @@ export default function DashboardPage() {
         )}
       </div>
 
-      {/* Income vs Expenses Chart */}
-      {chartData.length > 0 && chartData.some(d => d.netWorth > 0) && (
-        <Card className="bg-white border border-slate-200 shadow-sm">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base font-semibold text-slate-900">Monthly Income vs Expenses</CardTitle>
-            <p className="text-xs text-slate-500">Cash flow over time</p>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={240}>
-              <BarChart
-                data={chartData.map(entry => {
-                  const rawEntry = entries.find(e => e.id === entry.entryId);
-                  return {
-                    date: entry.date,
-                    income: rawEntry?.pre_tax_income || 0,
-                    expenses: rawEntry?.monthly_expenses || 0,
-                  };
-                }).filter(d => d.income > 0 || d.expenses > 0)}
-                barGap={4}
-                barCategoryGap="30%"
-              >
-                <CartesianGrid vertical={false} stroke="#f1f5f9" />
-                <XAxis dataKey="date" stroke="#cbd5e1" fontSize={11} tickLine={false} axisLine={false} />
-                <YAxis stroke="#cbd5e1" fontSize={11} tickLine={false} axisLine={false} tickFormatter={(v) => `$${(v/1000).toFixed(0)}k`} width={40} />
-                <Tooltip
-                  contentStyle={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: "8px", fontSize: "12px" }}
-                  formatter={(v) => [formatCurrency(Number(v))]}
-                />
-                <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: "12px", paddingTop: "8px" }} />
-                <Bar dataKey="income" name="Income" fill="#10b981" radius={[3, 3, 0, 0]} />
-                <Bar dataKey="expenses" name="Expenses" fill="#fbbf24" radius={[3, 3, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Current Month Income vs Expenses Comparison and Next Best Actions - Side by Side */}
+      {/* Cash Flow - Latest month + expandable history */}
       <div className="grid lg:grid-cols-2 gap-3">
-        {/* Current Monthly Cash Flow */}
         {latestEntry && latestEntry.pre_tax_income > 0 && latestEntry.monthly_expenses > 0 && (
-          <Card className="bg-white border border-slate-200 shadow-sm">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base font-semibold text-slate-900">Monthly Cash Flow</CardTitle>
-              <p className="text-xs text-slate-500">Income vs. expenses over time</p>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {/* Trend chart */}
-                {chartData.filter(d => {
-                  const e = entries.find(x => x.id === d.entryId);
-                  return (e?.pre_tax_income || 0) > 0;
-                }).length > 1 ? (
-                  <ResponsiveContainer width="100%" height={180}>
-                    <BarChart
-                      data={chartData.map(entry => {
-                        const rawEntry = entries.find(e => e.id === entry.entryId);
-                        return {
-                          date: entry.date,
-                          income: rawEntry?.pre_tax_income || 0,
-                          expenses: rawEntry?.monthly_expenses || 0,
-                        };
-                      }).filter(d => d.income > 0)}
-                      barGap={4}
-                      barCategoryGap="30%"
-                    >
-                      <CartesianGrid vertical={false} stroke="#f1f5f9" />
-                      <XAxis dataKey="date" stroke="#cbd5e1" fontSize={11} tickLine={false} axisLine={false} />
-                      <YAxis stroke="#cbd5e1" fontSize={11} tickLine={false} axisLine={false} tickFormatter={(v) => `$${(v/1000).toFixed(0)}k`} width={40} />
-                      <Tooltip
-                        contentStyle={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: "8px", fontSize: "12px" }}
-                        formatter={(v) => [formatCurrency(Number(v))]}
-                      />
-                      <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: "11px", paddingTop: "6px" }} />
-                      <Bar dataKey="income" name="Income" fill="#10b981" radius={[3, 3, 0, 0]} />
-                      <Bar dataKey="expenses" name="Expenses" fill="#fbbf24" radius={[3, 3, 0, 0]} />
-                    </BarChart>
-                  </ResponsiveContainer>
-                ) : null}
-                {/* Summary row */}
-                <div className="grid grid-cols-3 gap-2 pt-1">
-                  <div className="p-2.5 rounded-lg bg-emerald-50">
-                    <p className="text-xs text-slate-500 mb-0.5">Income</p>
-                    <p className="text-sm font-bold text-emerald-700">{formatCurrency(latestEntry.pre_tax_income)}</p>
-                  </div>
-                  <div className="p-2.5 rounded-lg bg-slate-50">
-                    <p className="text-xs text-slate-500 mb-0.5">Expenses</p>
-                    <p className="text-sm font-bold text-slate-700">{formatCurrency(latestEntry.monthly_expenses)}</p>
-                  </div>
-                  <div className="p-2.5 rounded-lg bg-emerald-50">
-                    <p className="text-xs text-slate-500 mb-0.5">Saved</p>
-                    <p className="text-sm font-bold text-emerald-700">
-                      {((latestEntry.pre_tax_income - latestEntry.monthly_expenses) / latestEntry.pre_tax_income * 100).toFixed(0)}%
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <CashFlowCard
+            latestEntry={latestEntry}
+            chartData={chartData}
+            entries={entries}
+          />
         )}
 
         {/* Next Best Actions */}

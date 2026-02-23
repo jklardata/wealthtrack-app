@@ -345,7 +345,7 @@ export default function EarlyRetirementPage() {
         </Card>
 
         {/* Input Panel */}
-        <Card className="bg-white border-2 border-black shadow-sm">
+        <Card className="bg-white border border-slate-200 shadow-sm">
           <CardContent className="pt-4 pb-3">
             {/* Row 1: Core inputs */}
             <div className="grid grid-cols-3 md:grid-cols-6 gap-3 mb-4">
@@ -596,7 +596,7 @@ function FIReadinessDashboard({
   const currentIndex = getStageIndex(readiness.stage);
 
   return (
-    <Card className="bg-white border-2 border-black shadow-sm">
+    <Card className="bg-white border border-slate-200 shadow-sm">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
           <Target className="h-5 w-5 text-emerald-600" />
@@ -708,7 +708,7 @@ function WithdrawalStressSimulator({
   const chartData = simulation.projections;
 
   return (
-    <Card className="bg-white border-2 border-black shadow-sm">
+    <Card className="bg-white border border-slate-200 shadow-sm">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
           <Shield className="h-5 w-5 text-emerald-600" />
@@ -865,7 +865,7 @@ function LifestyleBudgetModule({
   };
 
   return (
-    <Card className="bg-white border-2 border-black shadow-sm">
+    <Card className="bg-white border border-slate-200 shadow-sm">
       <CardHeader className="pb-3">
         <CardTitle className="text-2xl font-black text-slate-900 flex items-center gap-2">
           <DollarSign className="h-6 w-6 text-emerald-600" />
@@ -984,7 +984,7 @@ function LifestyleBudgetModule({
                       className="h-full cursor-help hover:opacity-80 transition-opacity"
                     />
                   </TooltipTrigger>
-                  <TooltipContent className="bg-white border-2 border-black rounded-lg shadow-lg">
+                  <TooltipContent className="bg-white border border-slate-200 rounded-lg shadow-lg">
                     <p className="font-bold text-slate-900">{cat.name}</p>
                     <p className="text-sm text-slate-600">{formatCurrency(cat.annual / 12)}/month ({cat.percent}%)</p>
                     <p className="text-xs text-slate-500">{formatCurrency(cat.annual)}/year</p>
@@ -1138,7 +1138,7 @@ function CombinedLifestyleMilestonesModule({
   };
 
   return (
-    <Card className="bg-white border-2 border-black shadow-sm">
+    <Card className="bg-white border border-slate-200 shadow-sm">
       <CardHeader className="pb-3">
         <CardTitle className="text-2xl font-black text-slate-900 flex items-center gap-2">
           <Target className="h-6 w-6 text-emerald-600" />
@@ -1276,7 +1276,7 @@ function CombinedLifestyleMilestonesModule({
                       className="h-full cursor-help hover:opacity-80 transition-opacity"
                     />
                   </TooltipTrigger>
-                  <TooltipContent className="bg-white border-2 border-black rounded-lg shadow-lg">
+                  <TooltipContent className="bg-white border border-slate-200 rounded-lg shadow-lg">
                     <p className="font-bold text-slate-900">{cat.name}</p>
                     <p className="text-sm text-slate-600">{formatCurrency(cat.annual / 12)}/month ({cat.percent}%)</p>
                     <p className="text-xs text-slate-500">{formatCurrency(cat.annual)}/year</p>
@@ -1349,7 +1349,7 @@ function CoastFICalculator({
   );
 
   return (
-    <Card className="bg-white border-2 border-black shadow-sm">
+    <Card className="bg-white border border-slate-200 shadow-sm">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
           <TrendingUp className="h-5 w-5 text-emerald-600" />
@@ -1474,7 +1474,7 @@ function SemiRetirementBridgeModule({
   };
 
   return (
-    <Card className="bg-white border-2 border-black shadow-sm">
+    <Card className="bg-white border border-slate-200 shadow-sm">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
           <ArrowRight className="h-5 w-5 text-emerald-600" />
@@ -1604,7 +1604,7 @@ function GeoArbitrageLink({
   const currentSavings = baselinePortfolio - requiredPortfolio;
 
   return (
-    <Card className="bg-white border-2 border-black shadow-sm">
+    <Card className="bg-white border border-slate-200 shadow-sm">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
           <MapPin className="h-5 w-5 text-emerald-600" />
@@ -1698,7 +1698,7 @@ function GeoArbitrageLink({
 
 function BurnRateClockModule({ burnRate }: { burnRate: BurnRateResult }) {
   return (
-    <Card className="bg-white border-2 border-black shadow-sm">
+    <Card className="bg-white border border-slate-200 shadow-sm">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
           <Flame className="h-5 w-5 text-emerald-600" />
@@ -1770,7 +1770,7 @@ function FreedomMilestonesModule({ milestones }: { milestones: FIMilestone[] }) 
   };
 
   return (
-    <Card className="bg-white border-2 border-black shadow-sm">
+    <Card className="bg-white border border-slate-200 shadow-sm">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
           <Sparkles className="h-5 w-5 text-emerald-600" />
@@ -1790,7 +1790,7 @@ function FreedomMilestonesModule({ milestones }: { milestones: FIMilestone[] }) 
                   className={`p-3 rounded-lg border cursor-help transition-all hover:shadow-md ${
                     milestone.isAchieved
                       ? "bg-emerald-50 border-emerald-200"
-                      : "bg-slate-50 border-2 border-black"
+                      : "bg-slate-50 border border-slate-200"
                   }`}
                 >
                   {/* Icon & Status */}
@@ -1985,7 +1985,7 @@ function RothConversionLadderModule({
   ];
 
   return (
-    <Card className="bg-white border-2 border-black shadow-sm">
+    <Card className="bg-white border border-slate-200 shadow-sm">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-medium text-slate-900 flex items-center gap-2">
           <RefreshCcw className="h-5 w-5 text-emerald-600" />

@@ -722,7 +722,7 @@ export default function TaxBracketFillingPage() {
       </div>
 
       {/* Educational Guide */}
-      <Card className="border-2 border-black bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+      <Card className="border border-slate-200 bg-gradient-to-br from-blue-50 via-white to-indigo-50">
         <CardHeader>
           <CardTitle className="text-3xl font-black flex items-center gap-3">
             <Target className="h-8 w-8 text-blue-600" />
@@ -815,7 +815,7 @@ export default function TaxBracketFillingPage() {
       </Card>
 
       {/* Strategy Selector */}
-      <Card className="border-2 border-black">
+      <Card className="border border-slate-200">
         <CardHeader>
           <CardTitle className="text-2xl font-black flex items-center gap-3">
             <Settings className="h-6 w-6 text-emerald-600" />
@@ -847,7 +847,7 @@ export default function TaxBracketFillingPage() {
       </Card>
 
       {/* Input Parameters */}
-      <Card className="border-2 border-black">
+      <Card className="border border-slate-200">
         <CardHeader>
           <CardTitle className="text-2xl font-black">Your Financial Inputs</CardTitle>
         </CardHeader>
@@ -1124,7 +1124,7 @@ export default function TaxBracketFillingPage() {
 
       {/* Main Visualization */}
       {projections.length > 0 && (
-        <Card className="border-2 border-black">
+        <Card className="border border-slate-200">
           <CardHeader>
             <CardTitle className="text-2xl font-black">Tax Bracket Utilization Over Time</CardTitle>
             <p className="text-base font-medium text-slate-600 mt-2">
@@ -1169,7 +1169,7 @@ export default function TaxBracketFillingPage() {
                     if (active && payload && payload.length > 0) {
                       const data = payload[0].payload as YearlyProjection;
                       return (
-                        <div className="bg-white border-2 border-black rounded-lg p-3 shadow-lg">
+                        <div className="bg-white border border-slate-200 rounded-lg p-3 shadow-lg">
                           <p className="font-bold text-sm mb-2">Age {label} ({data.year})</p>
                           <div className="space-y-1 text-xs">
                             {data.consultingIncome > 0 && (
@@ -1346,7 +1346,7 @@ export default function TaxBracketFillingPage() {
 
       {/* Advisory Summary */}
       {projections.length > 0 && (
-        <Card className={isPro ? "bg-gradient-to-br from-emerald-50 via-white to-teal-50 border-2 border-black" : "bg-slate-100 border-2 border-slate-300"}>
+        <Card className={isPro ? "bg-gradient-to-br from-emerald-50 via-white to-teal-50 border border-slate-200" : "bg-slate-100 border-2 border-slate-300"}>
           <CardHeader>
             <CardTitle className={`text-2xl font-black flex items-center gap-3 ${!isPro && "text-slate-400"}`}>
               {!isPro && <Lock className="h-6 w-6 text-slate-400" />}
@@ -1481,7 +1481,7 @@ export default function TaxBracketFillingPage() {
 
       {/* Year-by-Year Table */}
       {projections.length > 0 && (
-        <Card className={isPro ? "border-2 border-black" : "bg-slate-100 border-2 border-slate-300"}>
+        <Card className={isPro ? "border border-slate-200" : "bg-slate-100 border-2 border-slate-300"}>
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className={`text-2xl font-black flex items-center gap-3 ${!isPro && "text-slate-400"}`}>
               {!isPro && <Lock className="h-6 w-6 text-slate-400" />}

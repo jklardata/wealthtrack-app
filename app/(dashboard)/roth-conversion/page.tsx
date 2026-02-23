@@ -629,7 +629,7 @@ export default function RothConversionPage() {
       </div>
 
       {/* Advisory Introduction */}
-      <Card className="bg-gradient-to-br from-blue-50 via-white to-indigo-50 border-2 border-black">
+      <Card className="bg-gradient-to-br from-blue-50 via-white to-indigo-50 border border-slate-200">
         <CardContent className="pt-6 space-y-4">
           <h2 className="text-2xl font-black text-slate-900">Understanding Roth Conversions</h2>
 
@@ -684,7 +684,7 @@ export default function RothConversionPage() {
       </Card>
 
       {/* Scenario Selector */}
-      <Card className="border-2 border-black">
+      <Card className="border border-slate-200">
         <CardHeader>
           <CardTitle className="text-2xl font-black flex items-center gap-3">
             <Settings className="h-6 w-6 text-emerald-600" />
@@ -719,7 +719,7 @@ export default function RothConversionPage() {
       </Card>
 
       {/* Input Parameters */}
-      <Card className="border-2 border-black">
+      <Card className="border border-slate-200">
         <CardHeader>
           <CardTitle className="text-2xl font-black flex items-center gap-3">
             <Calculator className="h-6 w-6 text-emerald-600" />
@@ -933,7 +933,7 @@ export default function RothConversionPage() {
 
       {/* Main Visualization */}
       {projections.length > 0 && (
-        <Card className="border-2 border-black">
+        <Card className="border border-slate-200">
           <CardHeader>
             <CardTitle className="text-2xl font-black">Portfolio Projection with Roth Conversions</CardTitle>
             <p className="text-base font-medium text-slate-600 mt-2">
@@ -979,7 +979,7 @@ export default function RothConversionPage() {
                     if (active && payload && payload.length > 0) {
                       const data = payload[0].payload as YearlyProjection;
                       return (
-                        <div className="bg-white border-2 border-black rounded-lg p-3 shadow-lg">
+                        <div className="bg-white border border-slate-200 rounded-lg p-3 shadow-lg">
                           <p className="font-bold text-sm mb-2">Age {label} ({data.year})</p>
                           <div className="space-y-1 text-xs">
                             <p className="font-semibold text-amber-700">Traditional IRA: {formatCurrency(data.traditionalBalance)}</p>
@@ -1185,7 +1185,7 @@ export default function RothConversionPage() {
 
       {/* Advisory Summary */}
       {projections.length > 0 && (
-        <Card className={isPro ? "bg-gradient-to-br from-emerald-50 via-white to-teal-50 border-2 border-black" : "bg-slate-100 border-2 border-slate-300 relative"}>
+        <Card className={isPro ? "bg-gradient-to-br from-emerald-50 via-white to-teal-50 border border-slate-200" : "bg-slate-100 border-2 border-slate-300 relative"}>
           <CardHeader>
             <CardTitle className={`text-2xl font-black flex items-center gap-3 ${!isPro && "text-slate-400"}`}>
               {!isPro && <Lock className="h-6 w-6 text-slate-400" />}
@@ -1348,7 +1348,7 @@ export default function RothConversionPage() {
 
       {/* Year-by-Year Table */}
       {projections.length > 0 && (
-        <Card className={isPro ? "border-2 border-black" : "bg-slate-100 border-2 border-slate-300"}>
+        <Card className={isPro ? "border border-slate-200" : "bg-slate-100 border-2 border-slate-300"}>
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className={`text-2xl font-black flex items-center gap-3 ${!isPro && "text-slate-400"}`}>
               {!isPro && <Lock className="h-6 w-6 text-slate-400" />}

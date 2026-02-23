@@ -164,7 +164,7 @@ export default function WithdrawalStressTestPage() {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (
-        <div className="bg-white border border-2 border-black rounded-lg shadow-lg p-3">
+        <div className="bg-white border border border-slate-200 rounded-lg shadow-lg p-3">
           <p className="font-semibold text-slate-900 mb-2">Year {data.year}</p>
           <div className="space-y-1 text-sm">
             <p className="text-emerald-600 font-medium">
@@ -233,7 +233,7 @@ export default function WithdrawalStressTestPage() {
         </Card>
 
         {/* Input Panel */}
-        <Card className="bg-white border-2 border-black shadow-sm">
+        <Card className="bg-white border border-slate-200 shadow-sm">
           <CardHeader>
             <CardTitle className="text-2xl font-black">Simulation Parameters</CardTitle>
             <CardDescription>Adjust your retirement scenario assumptions</CardDescription>
@@ -376,7 +376,7 @@ export default function WithdrawalStressTestPage() {
 
         {/* Chart */}
         {isPro ? (
-          <Card className="bg-white border-2 border-black shadow-sm">
+          <Card className="bg-white border border-slate-200 shadow-sm">
             <CardHeader>
               <CardTitle className="text-2xl font-black text-slate-900">
                 Retirement Success Probability Over Time
@@ -434,7 +434,7 @@ export default function WithdrawalStressTestPage() {
               </ComposedChart>
             </ResponsiveContainer>
 
-            <div className="mt-6 p-4 bg-slate-50 rounded-lg border border-2 border-black">
+            <div className="mt-6 p-4 bg-slate-50 rounded-lg border border border-slate-200">
               <div className="flex items-start gap-3">
                 <AlertTriangle className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
                 <div className="text-sm text-slate-600">
@@ -465,7 +465,7 @@ export default function WithdrawalStressTestPage() {
 
         {/* Data Table */}
         {isPro ? (
-          <Card className="bg-white border-2 border-black shadow-sm">
+          <Card className="bg-white border border-slate-200 shadow-sm">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>

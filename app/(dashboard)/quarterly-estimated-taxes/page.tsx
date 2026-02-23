@@ -523,83 +523,68 @@ export default function QuarterlyEstimatedTaxesPage() {
 
   return (
     <TooltipProvider>
-      <div className="max-w-7xl mx-auto space-y-8 py-4">
+      <div className="max-w-5xl mx-auto space-y-5 py-4">
         {/* Header */}
-        <div className="space-y-4">
-          <h1 className="text-5xl font-black text-slate-900">Quarterly Estimated Taxes</h1>
-          <p className="text-lg text-slate-600 max-w-3xl">
-            Calculate safe harbor requirements, track payments, and avoid underpayment penalties.
-            Self-employed individuals must pay quarterly estimated taxes to cover income tax and
-            self-employment tax.
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <Calendar className="h-5 w-5 text-emerald-600" />
+            Quarterly Estimated Taxes
+          </h1>
+          <p className="text-sm text-slate-500 mt-1">
+            Safe harbor calculations, payment tracking, and underpayment penalty avoidance.
           </p>
         </div>
 
         {/* Current Quarter Alert */}
         {summaryStats.nextPayment && summaryStats.nextPayment.daysUntil < 30 && (
-          <Card className="border-2 border-amber-400 bg-amber-50">
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-3">
-                <Clock className="h-6 w-6 text-amber-600" />
-                <p className="text-base font-bold text-amber-900">
-                  Q{summaryStats.nextPayment.quarter} payment due in {summaryStats.nextPayment.daysUntil}{" "}
-                  days ({formatDate(summaryStats.nextPayment.dueDate)})
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="flex items-center gap-2.5 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3">
+            <Clock className="h-4 w-4 text-amber-600 flex-shrink-0" />
+            <p className="text-sm font-medium text-amber-900">
+              Q{summaryStats.nextPayment.quarter} payment due in {summaryStats.nextPayment.daysUntil} days — {formatDate(summaryStats.nextPayment.dueDate)}
+            </p>
+          </div>
         )}
 
-        {/* Quick Summary Card */}
-        <Card className="bg-gradient-to-br from-emerald-50 via-white to-blue-50 border-2 border-black">
-          <CardHeader>
-            <CardTitle className="text-2xl font-black">Quick Summary</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid md:grid-cols-3 gap-6">
-              <div>
-                <p className="text-sm text-slate-600 mb-2">Recommended Quarterly Payment</p>
-                <p className="text-4xl font-black text-emerald-600">
-                  {formatCurrency(safeHarbor.recommendedQuarterly)}
-                </p>
-                <p className="text-xs text-slate-500 mt-1">{safeHarbor.reasoning}</p>
-              </div>
-              <div>
-                <p className="text-sm text-slate-600 mb-2">Total Paid YTD</p>
-                <p className="text-4xl font-black text-blue-600">
-                  {formatCurrency(summaryStats.totalPaid)}
-                </p>
-                <p className="text-xs text-slate-500 mt-1">
-                  of {formatCurrency(summaryStats.totalDue)} annual requirement
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-slate-600 mb-2">Next Due Date</p>
-                <p className="text-4xl font-black text-slate-900">
-                  {summaryStats.nextPayment
-                    ? formatDate(summaryStats.nextPayment.dueDate)
-                    : "All Paid"}
-                </p>
-                <p className="text-xs text-slate-500 mt-1">
-                  {summaryStats.nextPayment
-                    ? `Q${summaryStats.nextPayment.quarter} 2025`
-                    : "Congratulations!"}
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Quick Summary */}
+        <div className="grid md:grid-cols-3 gap-3">
+          <Card className="bg-white border border-slate-200 shadow-sm">
+            <CardContent className="pt-4 pb-4">
+              <p className="text-xs text-slate-500 mb-1">Recommended / Quarter</p>
+              <p className="text-2xl font-bold text-emerald-600">{formatCurrency(safeHarbor.recommendedQuarterly)}</p>
+              <p className="text-xs text-slate-400 mt-0.5">{safeHarbor.reasoning}</p>
+            </CardContent>
+          </Card>
+          <Card className="bg-white border border-slate-200 shadow-sm">
+            <CardContent className="pt-4 pb-4">
+              <p className="text-xs text-slate-500 mb-1">Total Paid YTD</p>
+              <p className="text-2xl font-bold text-slate-900">{formatCurrency(summaryStats.totalPaid)}</p>
+              <p className="text-xs text-slate-400 mt-0.5">of {formatCurrency(summaryStats.totalDue)} annual</p>
+            </CardContent>
+          </Card>
+          <Card className="bg-white border border-slate-200 shadow-sm">
+            <CardContent className="pt-4 pb-4">
+              <p className="text-xs text-slate-500 mb-1">Next Due Date</p>
+              <p className="text-2xl font-bold text-slate-900">
+                {summaryStats.nextPayment ? formatDate(summaryStats.nextPayment.dueDate) : "All Paid"}
+              </p>
+              <p className="text-xs text-slate-400 mt-0.5">
+                {summaryStats.nextPayment ? `Q${summaryStats.nextPayment.quarter} 2025` : "Congratulations!"}
+              </p>
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Input Controls Card */}
-        <Card className="bg-white border-2 border-black">
-          <CardHeader>
-            <CardTitle className="text-2xl font-black">Income & Deductions</CardTitle>
-            <CardDescription>Adjust your projections to refine quarterly payment estimates</CardDescription>
+        <Card className="bg-white border border-slate-200 shadow-sm">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base font-semibold text-slate-900">Income & Deductions</CardTitle>
+            <CardDescription className="text-xs">Adjust projections to refine quarterly estimates</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="space-y-5">
             {/* Prior Year Data */}
             <div>
-              <h3 className="text-lg font-bold mb-8 flex items-center gap-2">
-                <Info className="h-5 w-5 text-blue-600" />
+              <h3 className="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
+                <Info className="h-4 w-4 text-blue-500" />
                 Prior Year Tax Data (Auto-filled)
               </h3>
               <div className="grid md:grid-cols-2 gap-4">
@@ -626,7 +611,7 @@ export default function QuarterlyEstimatedTaxesPage() {
 
             {/* Current Year Projections */}
             <div>
-              <h3 className="text-lg font-bold mb-8">Current Year Projections</h3>
+              <h3 className="text-sm font-semibold mb-3">Current Year Projections</h3>
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="expectedGrossIncome">Expected Gross Income</Label>
@@ -673,7 +658,7 @@ export default function QuarterlyEstimatedTaxesPage() {
 
             {/* Deductions */}
             <div>
-              <h3 className="text-lg font-bold mb-8">Retirement & Deductions</h3>
+              <h3 className="text-sm font-semibold text-slate-700 mb-3">Retirement & Deductions</h3>
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div>
                   <Label htmlFor="retirement401k">401(k) / SEP IRA Contribution</Label>
@@ -718,13 +703,13 @@ export default function QuarterlyEstimatedTaxesPage() {
         </Card>
 
         {/* Safe Harbor Calculation Card */}
-        <Card className="bg-gradient-to-br from-emerald-50 via-white to-blue-50 border-2 border-black">
-          <CardHeader>
-            <CardTitle className="text-xl font-black flex items-center gap-2">
-              <Shield className="h-5 w-5 text-emerald-600" />
+        <Card className="bg-white border border-slate-200 shadow-sm">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base font-semibold text-slate-900 flex items-center gap-2">
+              <Shield className="h-4 w-4 text-emerald-600" />
               Safe Harbor Calculation
             </CardTitle>
-            <p className="text-sm text-slate-600 mt-2">
+            <p className="text-xs text-slate-500 mt-0.5">
               Meeting safe harbor requirements avoids underpayment penalties
             </p>
           </CardHeader>
@@ -763,7 +748,7 @@ export default function QuarterlyEstimatedTaxesPage() {
                     </span>
                   )}
                 </div>
-                <p className="text-2xl font-black text-emerald-600">
+                <p className="text-xl font-bold text-emerald-600">
                   {formatCurrency(safeHarbor.priorYearSafeHarbor)}
                 </p>
                 <p className="text-xs text-slate-600 mt-1">
@@ -791,7 +776,7 @@ export default function QuarterlyEstimatedTaxesPage() {
                     </span>
                   )}
                 </div>
-                <p className="text-2xl font-black text-blue-600">
+                <p className="text-xl font-bold text-blue-600">
                   {formatCurrency(safeHarbor.currentYearSafeHarbor)}
                 </p>
                 <p className="text-xs text-slate-600 mt-1">90% of estimated current year tax</p>
@@ -802,11 +787,11 @@ export default function QuarterlyEstimatedTaxesPage() {
             </div>
 
             {/* Recommendation */}
-            <div className="p-4 bg-white border-2 border-emerald-400 rounded-lg">
+            <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-lg">
               <p className="text-sm font-bold text-slate-900 mb-2">
                 💡 Recommended Quarterly Payment
               </p>
-              <p className="text-3xl font-black text-emerald-600 mb-1">
+              <p className="text-xl font-bold text-emerald-600 mb-1">
                 {formatCurrency(safeHarbor.recommendedQuarterly)}
               </p>
               <p className="text-xs text-slate-600">{safeHarbor.reasoning}</p>
@@ -815,10 +800,10 @@ export default function QuarterlyEstimatedTaxesPage() {
         </Card>
 
         {/* Payment Tracking Card */}
-        <Card className="bg-white border-2 border-black">
-          <CardHeader>
-            <CardTitle className="text-2xl font-black">Payment Tracking</CardTitle>
-            <CardDescription>Track your quarterly payments throughout the year</CardDescription>
+        <Card className="bg-white border border-slate-200 shadow-sm">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base font-semibold text-slate-900">Payment Tracking</CardTitle>
+            <CardDescription className="text-xs">Track your quarterly payments throughout the year</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -850,7 +835,7 @@ export default function QuarterlyEstimatedTaxesPage() {
                   <CardContent className="space-y-3">
                     <div>
                       <p className="text-xs text-slate-500 mb-1">Required Payment</p>
-                      <p className="text-2xl font-black">{formatCurrency(payment.amount)}</p>
+                      <p className="text-xl font-bold">{formatCurrency(payment.amount)}</p>
                     </div>
 
                     <div>
@@ -941,11 +926,11 @@ export default function QuarterlyEstimatedTaxesPage() {
         </Card>
 
         {/* Quarterly Timeline Visualization */}
-        <Card className="bg-white border-2 border-black">
-          <CardHeader>
-            <CardTitle className="text-2xl font-black flex items-center gap-2">
-              <Calendar className="h-6 w-6 text-emerald-600" />
-              2025 Quarterly Payment Timeline
+        <Card className="bg-white border border-slate-200 shadow-sm">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base font-semibold text-slate-900 flex items-center gap-2">
+              <Calendar className="h-4 w-4 text-emerald-600" />
+              2025 Payment Timeline
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -1017,9 +1002,9 @@ export default function QuarterlyEstimatedTaxesPage() {
 
         {/* Annualized Income Method (Pro Feature) */}
         {isPro ? (
-          <Card className="bg-gradient-to-br from-purple-50 via-white to-indigo-50 border-2 border-black">
+          <Card className="bg-gradient-to-br from-purple-50 via-white to-indigo-50 border border-slate-200">
             <CardHeader>
-              <CardTitle className="text-xl font-black flex items-center gap-2">
+              <CardTitle className="text-base font-bold flex items-center gap-2">
                 <TrendingUp className="h-5 w-5 text-purple-600" />
                 Annualized Income Installment Method
                 <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full border border-purple-300">
@@ -1132,9 +1117,9 @@ export default function QuarterlyEstimatedTaxesPage() {
 
         {/* Underpayment Penalty Calculator (Pro Feature) */}
         {isPro && penaltyCalculation.quarterlyPenalties.length > 0 && (
-          <Card className="bg-gradient-to-br from-red-50 via-white to-amber-50 border-2 border-black">
+          <Card className="bg-gradient-to-br from-red-50 via-white to-amber-50 border border-slate-200">
             <CardHeader>
-              <CardTitle className="text-xl font-black flex items-center gap-2">
+              <CardTitle className="text-base font-bold flex items-center gap-2">
                 <AlertTriangle className="h-5 w-5 text-red-600" />
                 Underpayment Penalty Estimate
                 <span className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded-full border border-red-300">
@@ -1147,9 +1132,9 @@ export default function QuarterlyEstimatedTaxesPage() {
               </p>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="p-4 bg-white border-2 border-red-400 rounded-lg">
+              <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
                 <p className="text-sm font-bold text-slate-900 mb-2">Total Estimated Penalty</p>
-                <p className="text-3xl font-black text-red-600 mb-1">
+                <p className="text-xl font-bold text-red-600 mb-1">
                   {formatCurrency(penaltyCalculation.totalPenalty)}
                 </p>
                 <p className="text-xs text-slate-600">

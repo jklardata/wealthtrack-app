@@ -1247,7 +1247,7 @@ export default function TaxOptimizationPage() {
 
       {/* Module 4: Quarterly Tax Calculator Link */}
       <a href="/quarterly-estimated-taxes" className="block">
-        <Card className="border-2 border-black hover:bg-emerald-50 transition-colors cursor-pointer">
+        <Card className="border border-slate-200 hover:bg-emerald-50 transition-colors cursor-pointer">
           <CardContent className="p-6">
             <div className="flex items-start gap-4">
               <div className="p-3 bg-emerald-100 rounded-lg">

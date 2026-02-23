@@ -296,7 +296,7 @@ function EntryForm({ entry, previousEntry, onSubmit, onClose, isSubmitting }: En
         />
       </div>
 
-      <div className="pt-4 border-t border-2 border-black space-y-2">
+      <div className="pt-4 border-t border border-slate-200 space-y-2">
         <div className="flex justify-between text-sm">
           <span className="text-slate-500">Total Assets</span>
           <span className="font-medium text-slate-900">{formatCurrency(totalAssets)}</span>
@@ -307,7 +307,7 @@ function EntryForm({ entry, previousEntry, onSubmit, onClose, isSubmitting }: En
             -{formatCurrency(Number(formData.total_debts))}
           </span>
         </div>
-        <div className="flex justify-between text-lg font-bold pt-2 border-t border-2 border-black">
+        <div className="flex justify-between text-lg font-bold pt-2 border-t border border-slate-200">
           <span className="text-slate-900">Net Worth</span>
           <span className={netWorth >= 0 ? "text-emerald-600" : "text-red-500"}>
             {formatCurrency(netWorth)}
@@ -315,7 +315,7 @@ function EntryForm({ entry, previousEntry, onSubmit, onClose, isSubmitting }: En
         </div>
         {(Number(formData.pre_tax_income) > 0 || Number(formData.monthly_expenses) > 0) && (
           <>
-            <div className="flex justify-between text-sm pt-2 border-t border-2 border-black">
+            <div className="flex justify-between text-sm pt-2 border-t border border-slate-200">
               <span className="text-slate-500">Monthly Net Profit</span>
               <span className={Number(formData.pre_tax_income) - Number(formData.monthly_expenses) >= 0 ? "text-emerald-600" : "text-red-500"}>
                 {formatCurrency(Number(formData.pre_tax_income) - Number(formData.monthly_expenses))}
@@ -338,7 +338,7 @@ function EntryForm({ entry, previousEntry, onSubmit, onClose, isSubmitting }: En
           type="button"
           variant="outline"
           onClick={onClose}
-          className="flex-1 border-2 border-black text-slate-700 hover:bg-slate-100"
+          className="flex-1 border border-slate-200 text-slate-700 hover:bg-slate-100"
           disabled={isSubmitting}
         >
           Cancel
@@ -371,7 +371,7 @@ export default function NetWorthPage() {
   const [isRemoveAllDialogOpen, setIsRemoveAllDialogOpen] = useState(false);
 
   // Landing page 21 design - already defined but ensuring consistency
-  const cardClass = "bg-white border-2 border-black shadow-sm";
+  const cardClass = "bg-white border border-slate-200 shadow-sm";
   const headerClass = "text-slate-900 font-medium";
   const mutedTextClass = "text-slate-500";
   const positiveClass = "text-emerald-600";
@@ -707,7 +707,7 @@ export default function NetWorthPage() {
               <Skeleton className="h-10 w-28" />
             </div>
           </div>
-          <Card className="bg-white border-2 border-black shadow-sm">
+          <Card className="bg-white border border-slate-200 shadow-sm">
             <CardContent className="p-6">
               <Skeleton className="h-[400px] w-full" />
             </CardContent>
@@ -776,13 +776,13 @@ export default function NetWorthPage() {
             variant="outline"
             onClick={handleSync}
             disabled={syncing}
-            className="border-2 border-black text-slate-700 hover:bg-slate-100"
+            className="border border-slate-200 text-slate-700 hover:bg-slate-100"
           >
             <RefreshCw className={`h-4 w-4 mr-2 ${syncing ? "animate-spin" : ""}`} />
             <span className="hidden sm:inline">{syncing ? "Syncing..." : "Sync from Sheet"}</span>
             <span className="sm:hidden">Sync</span>
           </Button>
-          <Button variant="outline" onClick={handleExportCSV} disabled={entries.length === 0} className="border-2 border-black text-slate-700 hover:bg-slate-100">
+          <Button variant="outline" onClick={handleExportCSV} disabled={entries.length === 0} className="border border-slate-200 text-slate-700 hover:bg-slate-100">
             <Download className="h-4 w-4 mr-2" />
             <span className="hidden sm:inline">Export CSV</span>
             <span className="sm:hidden">Export</span>
@@ -791,7 +791,7 @@ export default function NetWorthPage() {
             variant="outline"
             onClick={() => setIsRemoveAllDialogOpen(true)}
             disabled={entries.length === 0}
-            className="text-red-500 hover:text-red-600 hover:bg-red-50 border-2 border-black"
+            className="text-red-500 hover:text-red-600 hover:bg-red-50 border border-slate-200"
           >
             <Trash2 className="h-4 w-4 sm:mr-2" />
             <span className="hidden sm:inline">Remove All</span>
@@ -987,7 +987,7 @@ export default function NetWorthPage() {
         </div>
       )}
 
-      <Card className="bg-white border-2 border-black shadow-sm">
+      <Card className="bg-white border border-slate-200 shadow-sm">
         <CardHeader>
           <CardTitle className="text-2xl font-black text-slate-900">All Entries</CardTitle>
         </CardHeader>

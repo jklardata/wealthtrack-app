@@ -73,6 +73,8 @@ const navGroups: NavGroup[] = [
       { href: "/withdrawal-stress-test", label: "Withdrawal Stress Test", icon: Activity },
       { href: "/roth-conversion", label: "Roth Conversion", icon: RefreshCw },
       { href: "/geo-arbitrage", label: "Geo Arbitrage", icon: Globe },
+      { href: "/feie-eligibility", label: "FEIE Eligibility", icon: Globe },
+      { href: "/freelance-rate", label: "Freelance Rate", icon: DollarSign },
     ],
   },
   {
@@ -81,7 +83,7 @@ const navGroups: NavGroup[] = [
       { href: "/portfolio-optimizer", label: "Portfolio Optimizer", icon: PieChart },
       { href: "/tax-calculator", label: "Tax Calculator", icon: Receipt },
       { href: "/tax-optimization", label: "Tax Optimization", icon: Lightbulb },
-      { href: "/quarterly-estimated-taxes", label: "Quarterly Est. Taxes", icon: Calendar, disabled: true },
+      { href: "/quarterly-estimated-taxes", label: "Quarterly Est. Taxes", icon: Calendar },
       { href: "/tax-bracket-filling", label: "Tax Bracket Filling", icon: Target },
       { href: "/lifetime-tax-map", label: "Lifetime Tax Map", icon: Map },
     ],

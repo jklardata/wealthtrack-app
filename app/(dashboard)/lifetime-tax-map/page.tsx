@@ -442,7 +442,7 @@ export default function LifetimeTaxMapPage() {
       </div>
 
       {/* Educational Guide */}
-      <Card className="border-2 border-black bg-gradient-to-br from-emerald-50 via-white to-blue-50">
+      <Card className="border border-slate-200 bg-gradient-to-br from-emerald-50 via-white to-blue-50">
         <CardHeader>
           <CardTitle className="text-3xl font-black flex items-center gap-3">
             <Target className="h-8 w-8 text-emerald-600" />
@@ -538,7 +538,7 @@ export default function LifetimeTaxMapPage() {
       </Card>
 
       {/* Input Controls */}
-      <Card className="border-2 border-black">
+      <Card className="border border-slate-200">
         <CardHeader>
           <CardTitle className="text-2xl font-black">Your Lifetime Projection Inputs</CardTitle>
         </CardHeader>
@@ -748,7 +748,7 @@ export default function LifetimeTaxMapPage() {
       </Card>
 
       {/* Main Timeline Visualization */}
-      <Card className="border-2 border-black">
+      <Card className="border border-slate-200">
         <CardHeader>
           <CardTitle className="text-3xl font-black flex items-center gap-3">
             <TrendingUp className="h-8 w-8 text-emerald-600" />
@@ -912,7 +912,7 @@ export default function LifetimeTaxMapPage() {
       </Card>
 
       {/* Advisory Summary */}
-      <Card className={isPro ? "border-2 border-black bg-gradient-to-br from-amber-50 via-white to-emerald-50" : "bg-slate-100 border-2 border-slate-300"}>
+      <Card className={isPro ? "border border-slate-200 bg-gradient-to-br from-amber-50 via-white to-emerald-50" : "bg-slate-100 border-2 border-slate-300"}>
         <CardHeader>
           <CardTitle className={`text-3xl font-black flex items-center gap-3 ${!isPro && "text-slate-400"}`}>
             {!isPro && <Lock className="h-8 w-8 text-slate-400" />}
@@ -942,7 +942,7 @@ export default function LifetimeTaxMapPage() {
         ) : (
           <CardContent className="space-y-6">
           {/* Lifetime Tax Summary */}
-          <div className="p-6 bg-white border-2 border-black rounded-lg">
+          <div className="p-6 bg-white border border-slate-200 rounded-lg">
             <p className="text-lg font-bold text-slate-900 mb-3">Projected Lifetime Tax Burden</p>
             <p className="text-4xl font-black text-slate-900 mb-2">
               {formatCurrency(analysis.totalLifetimeTaxes)}
@@ -1034,7 +1034,7 @@ export default function LifetimeTaxMapPage() {
       </Card>
 
       {/* Detailed Year-by-Year Table */}
-      <Card className={isPro ? "border-2 border-black" : "bg-slate-100 border-2 border-slate-300"}>
+      <Card className={isPro ? "border border-slate-200" : "bg-slate-100 border-2 border-slate-300"}>
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
             <CardTitle className={`text-2xl font-black flex items-center gap-3 ${!isPro && "text-slate-400"}`}>
@@ -1139,7 +1139,7 @@ export default function LifetimeTaxMapPage() {
       {isPro && (
       <div className="grid md:grid-cols-2 gap-6">
         {/* Panel 1: Lifetime vs Annual */}
-        <Card className="border-2 border-black">
+        <Card className="border border-slate-200">
           <CardHeader>
             <CardTitle className="text-xl font-black flex items-center gap-2">
               <Lightbulb className="h-6 w-6 text-emerald-600" />
@@ -1163,7 +1163,7 @@ export default function LifetimeTaxMapPage() {
         </Card>
 
         {/* Panel 2: Gap Years */}
-        <Card className="border-2 border-black">
+        <Card className="border border-slate-200">
           <CardHeader>
             <CardTitle className="text-xl font-black flex items-center gap-2">
               <Target className="h-6 w-6 text-blue-600" />
@@ -1187,7 +1187,7 @@ export default function LifetimeTaxMapPage() {
         </Card>
 
         {/* Panel 3: Cumulative Tax Curve */}
-        <Card className="border-2 border-black">
+        <Card className="border border-slate-200">
           <CardHeader>
             <CardTitle className="text-xl font-black flex items-center gap-2">
               <TrendingUp className="h-6 w-6 text-purple-600" />
@@ -1211,7 +1211,7 @@ export default function LifetimeTaxMapPage() {
         </Card>
 
         {/* Panel 4: Income Stacking */}
-        <Card className="border-2 border-black">
+        <Card className="border border-slate-200">
           <CardHeader>
             <CardTitle className="text-xl font-black flex items-center gap-2">
               <Map className="h-6 w-6 text-orange-600" />
@@ -1235,7 +1235,7 @@ export default function LifetimeTaxMapPage() {
         </Card>
 
         {/* Panel 5: FEIE and International */}
-        <Card className="border-2 border-black">
+        <Card className="border border-slate-200">
           <CardHeader>
             <CardTitle className="text-xl font-black flex items-center gap-2">
               <AlertTriangle className="h-6 w-6 text-amber-600" />
@@ -1260,7 +1260,7 @@ export default function LifetimeTaxMapPage() {
         </Card>
 
         {/* Panel 6: Common Mistakes */}
-        <Card className="border-2 border-black">
+        <Card className="border border-slate-200">
           <CardHeader>
             <CardTitle className="text-xl font-black flex items-center gap-2">
               <AlertTriangle className="h-6 w-6 text-red-600" />
@@ -1314,7 +1314,7 @@ function CustomTooltip({ active, payload }: any) {
   const data = payload[0].payload as YearProjection;
 
   return (
-    <div className="bg-white border-2 border-black rounded-lg p-4 shadow-lg min-w-[280px]">
+    <div className="bg-white border border-slate-200 rounded-lg p-4 shadow-lg min-w-[280px]">
       <p className="text-sm font-black text-slate-900 mb-2">
         {data.year} (Age {data.age})
       </p>
