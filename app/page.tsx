@@ -167,16 +167,22 @@ function QuarterlyTaxWidget() {
                 <span className="text-xl font-bold text-emerald-600">{fmt(result.quarterlyPayment)}</span>
               </div>
               <p className="text-xs text-slate-500 mt-1">
-                ~{result.effectiveRate.toFixed(1)}% effective rate · Estimate only, excludes state tax
+                ~{result.effectiveRate.toFixed(1)}% effective rate · federal + SE tax only
               </p>
             </div>
-            <Link
-              href="/quarterly-tax-calculator"
-              className="flex items-center justify-center gap-1.5 mt-3 text-xs text-emerald-700 font-medium hover:text-emerald-800"
-            >
-              Get detailed breakdown with state tax
-              <ChevronRight className="h-3.5 w-3.5" />
-            </Link>
+            {/* Sign-up CTA */}
+            <div className="mt-3 pt-3 border-t border-slate-100 bg-emerald-50 -mx-5 -mb-5 px-5 pb-5 rounded-b-xl">
+              <p className="text-xs text-slate-600 mb-2">
+                <span className="font-medium text-slate-800">Want the full breakdown?</span> State tax, Safe Harbor amounts, and a payment timeline.
+              </p>
+              <Link
+                href="/tools/quarterly-tax"
+                className="flex items-center justify-center gap-1.5 w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium py-2.5 rounded-lg transition-colors"
+              >
+                Get full estimate — free
+                <ChevronRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
           </div>
         )}
 
@@ -359,7 +365,7 @@ export default function Landing21() {
                 </li>
               </ul>
               <Link
-                href="/quarterly-tax-calculator"
+                href="/tools/quarterly-tax"
                 className="inline-flex items-center gap-1.5 text-sm text-emerald-700 border border-emerald-300 hover:bg-emerald-50 font-medium px-4 py-2 rounded-lg transition-colors"
               >
                 Full calculator with state tax

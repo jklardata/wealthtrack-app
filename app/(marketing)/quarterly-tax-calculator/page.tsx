@@ -1,385 +1,363 @@
-import { Metadata } from "next";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Calendar,
-  DollarSign,
-  Shield,
-  TrendingDown,
-  CheckCircle,
-  ArrowRight,
-  Calculator,
-} from "lucide-react";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Free Quarterly Tax Calculator for Self-Employed | SoloFI",
-  description: "Calculate your quarterly estimated taxes using IRS safe harbor rules. Free calculator for freelancers, consultants, and self-employed professionals. No signup required.",
-  keywords: "quarterly tax calculator, estimated tax calculator, self employed tax calculator, freelance tax calculator, safe harbor calculator, quarterly taxes",
-  openGraph: {
-    title: "Free Quarterly Tax Calculator for Self-Employed",
-    description: "Stop overpaying quarterly taxes. Use IRS safe harbor rules to calculate exactly what you owe. Free, no signup required.",
-    type: "website",
-  },
-};
+import { useState } from "react";
+import Link from "next/link";
+import { ArrowRight, Check, Calculator, ChevronRight, Shield, Calendar } from "lucide-react";
+
+type FilingStatus = "single" | "married" | "hoh";
+
+function QuarterlyTaxCalc() {
+  const [income, setIncome] = useState("");
+  const [expenses, setExpenses] = useState("");
+  const [filingStatus, setFilingStatus] = useState<FilingStatus>("single");
+  const [result, setResult] = useState<null | {
+    netIncome: number;
+    selfEmploymentTax: number;
+    estimatedFederalTax: number;
+    quarterlyPayment: number;
+    effectiveRate: number;
+  }>(null);
+
+  const calculate = () => {
+    const gross = parseFloat(income.replace(/,/g, "")) || 0;
+    const exp = parseFloat(expenses.replace(/,/g, "")) || 0;
+    const net = Math.max(0, gross - exp);
+    const seTax = net * 0.9235 * 0.153;
+    const seDeduction = seTax * 0.5;
+    const standardDeduction = filingStatus === "married" ? 29200 : filingStatus === "hoh" ? 21900 : 14600;
+    const taxableIncome = Math.max(0, net - seDeduction - standardDeduction);
+
+    let federalTax = 0;
+    if (filingStatus === "married") {
+      const brackets: [number, number][] = [[23200, 0.10], [94300, 0.12], [201050, 0.22], [383900, 0.24], [487450, 0.32], [731200, 0.35], [Infinity, 0.37]];
+      let remaining = taxableIncome, prev = 0;
+      for (const [cap, rate] of brackets) {
+        const inBracket = Math.min(remaining, cap - prev);
+        federalTax += inBracket * rate;
+        remaining -= inBracket;
+        if (remaining <= 0) break;
+        prev = cap;
+      }
+    } else {
+      const brackets: [number, number][] = [[11600, 0.10], [47150, 0.12], [100525, 0.22], [191950, 0.24], [243725, 0.32], [609350, 0.35], [Infinity, 0.37]];
+      let remaining = taxableIncome, prev = 0;
+      for (const [cap, rate] of brackets) {
+        const inBracket = Math.min(remaining, cap - prev);
+        federalTax += inBracket * rate;
+        remaining -= inBracket;
+        if (remaining <= 0) break;
+        prev = cap;
+      }
+    }
+
+    const totalAnnual = seTax + federalTax;
+    setResult({
+      netIncome: net,
+      selfEmploymentTax: seTax,
+      estimatedFederalTax: federalTax,
+      quarterlyPayment: totalAnnual / 4,
+      effectiveRate: net > 0 ? (totalAnnual / net) * 100 : 0,
+    });
+  };
+
+  const fmt = (n: number) =>
+    new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(n);
+
+  return (
+    <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+      <div className="bg-emerald-600 px-5 py-4">
+        <div className="flex items-center gap-2">
+          <Calculator className="h-5 w-5 text-white" />
+          <h2 className="text-white font-semibold text-lg">Quick Quarterly Tax Estimate</h2>
+        </div>
+        <p className="text-emerald-100 text-sm mt-1">Free · No signup · Results in seconds</p>
+      </div>
+
+      <div className="p-5 space-y-4">
+        <div className="grid sm:grid-cols-2 gap-3">
+          <div>
+            <label className="block text-xs font-medium text-slate-600 mb-1.5">Annual Gross Income</label>
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">$</span>
+              <input
+                type="text"
+                inputMode="numeric"
+                value={income}
+                onChange={(e) => setIncome(e.target.value)}
+                placeholder="150,000"
+                className="w-full pl-7 pr-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+              />
+            </div>
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-slate-600 mb-1.5">Business Expenses</label>
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">$</span>
+              <input
+                type="text"
+                inputMode="numeric"
+                value={expenses}
+                onChange={(e) => setExpenses(e.target.value)}
+                placeholder="20,000"
+                className="w-full pl-7 pr-3 py-2.5 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-xs font-medium text-slate-600 mb-1.5">Filing Status</label>
+          <div className="flex gap-2">
+            {(["single", "married", "hoh"] as FilingStatus[]).map((s) => (
+              <button
+                key={s}
+                onClick={() => setFilingStatus(s)}
+                className={`flex-1 py-2.5 text-xs rounded-lg border transition-colors font-medium ${
+                  filingStatus === s
+                    ? "bg-emerald-600 text-white border-emerald-600"
+                    : "bg-white text-slate-600 border-slate-300 hover:bg-slate-50"
+                }`}
+              >
+                {s === "single" ? "Single" : s === "married" ? "Married" : "HOH"}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <button
+          onClick={calculate}
+          disabled={!income}
+          className="w-full bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-medium py-3 rounded-lg text-sm transition-colors"
+        >
+          Calculate My Quarterly Tax
+        </button>
+
+        {result && (
+          <div className="rounded-lg bg-slate-50 border border-slate-200 p-4 space-y-2">
+            <div className="flex justify-between text-sm">
+              <span className="text-slate-500">Net Income</span>
+              <span className="font-medium text-slate-900">{fmt(result.netIncome)}</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-slate-500">Self-Employment Tax</span>
+              <span className="font-medium text-slate-900">{fmt(result.selfEmploymentTax)}</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-slate-500">Est. Federal Income Tax</span>
+              <span className="font-medium text-slate-900">{fmt(result.estimatedFederalTax)}</span>
+            </div>
+            <div className="border-t border-slate-200 pt-2 mt-2">
+              <div className="flex justify-between">
+                <span className="font-semibold text-slate-900">Pay per quarter</span>
+                <span className="text-2xl font-bold text-emerald-600">{fmt(result.quarterlyPayment)}</span>
+              </div>
+              <p className="text-xs text-slate-500 mt-1">
+                ~{result.effectiveRate.toFixed(1)}% effective rate · federal + SE tax only
+              </p>
+            </div>
+            <div className="mt-3 pt-3 border-t border-slate-100 bg-emerald-50 -mx-4 -mb-4 px-4 pb-4 rounded-b-lg">
+              <p className="text-xs text-slate-600 mb-2">
+                <span className="font-medium text-slate-800">Want the full breakdown?</span> State tax, Safe Harbor amounts, and a quarterly payment timeline.
+              </p>
+              <Link
+                href="/tools/quarterly-tax"
+                className="flex items-center justify-center gap-1.5 w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium py-2.5 rounded-lg transition-colors"
+              >
+                Get full estimate — free
+                <ChevronRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {!result && (
+          <p className="text-center text-xs text-slate-400">
+            Includes SE tax + federal only.{" "}
+            <Link href="/tools/quarterly-tax" className="text-emerald-600 hover:underline">
+              Add state tax →
+            </Link>
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default function QuarterlyTaxCalculatorPage() {
   return (
-    <div className="min-h-screen bg-slate-50">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-emerald-50 via-white to-blue-50 border-b-2 border-black py-16 sm:py-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center space-y-6">
-            <div className="inline-block">
-              <span className="bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-bold border-2 border-emerald-300">
-                100% FREE • NO SIGNUP REQUIRED
-              </span>
-            </div>
+    <div className="min-h-screen bg-white">
+      {/* Nav */}
+      <nav className="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center border-b border-slate-100">
+        <Link href="/">
+          <span className="text-xl font-semibold text-slate-900 cursor-pointer hover:opacity-80 transition-opacity">
+            <span className="text-emerald-600">Solo</span>FI
+          </span>
+        </Link>
+        <div className="flex items-center gap-4">
+          <Link href="/pricing" className="text-slate-600 hover:text-slate-900 text-sm hidden sm:block">Pricing</Link>
+          <Link href="/sign-in" className="text-slate-600 hover:text-slate-900 text-sm">Sign in</Link>
+          <Link href="/sign-up" className="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors">
+            Get started
+          </Link>
+        </div>
+      </nav>
 
-            <h1 className="text-5xl sm:text-6xl font-black text-slate-900 leading-tight">
-              Stop Overpaying
-              <br />
-              <span className="text-emerald-600">Quarterly Taxes</span>
+      {/* Hero + Calculator */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
+        <div className="grid md:grid-cols-2 gap-8 sm:gap-12 items-start">
+          {/* Left */}
+          <div>
+            <p className="text-xs font-semibold text-emerald-600 uppercase tracking-wider mb-3">Free tool</p>
+            <h1 className="text-3xl sm:text-4xl font-medium text-slate-900 mb-3 leading-tight">
+              How much should you pay in quarterly taxes?
             </h1>
-
-            <p className="text-xl sm:text-2xl font-medium text-slate-700 max-w-3xl mx-auto">
-              Most self-employed people overpay by <strong className="text-emerald-600">$5,000-$10,000</strong> per year. Use our free calculator to pay exactly what you owe using IRS safe harbor rules.
+            <p className="text-slate-600 leading-relaxed mb-5">
+              Most self-employed professionals either overpay and lose liquidity, or underpay and get hit with penalties. Get your estimate in seconds.
             </p>
+            <ul className="space-y-2 mb-6">
+              {[
+                "Federal + self-employment tax included",
+                "Accounts for your business expenses",
+                "Safe Harbor amounts on full calculator",
+                "State tax breakdown on full calculator",
+              ].map((item) => (
+                <li key={item} className="flex items-center gap-2 text-sm text-slate-600">
+                  <Check className="h-4 w-4 text-emerald-500 flex-shrink-0" />
+                  {item}
+                </li>
+              ))}
+            </ul>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-              <Link href="/tools/quarterly-tax">
-                <Button
-                  size="lg"
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white text-lg px-8 py-6 h-auto"
-                >
-                  <Calculator className="h-5 w-5 mr-2" />
-                  Calculate My Quarterly Taxes
-                  <ArrowRight className="h-5 w-5 ml-2" />
-                </Button>
-              </Link>
+            {/* Due dates */}
+            <div className="bg-slate-50 rounded-xl border border-slate-200 p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <Calendar className="h-4 w-4 text-slate-400" />
+                <p className="text-xs font-semibold text-slate-600 uppercase tracking-wide">2025 Due Dates</p>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { q: "Q1", date: "Apr 15" },
+                  { q: "Q2", date: "Jun 16" },
+                  { q: "Q3", date: "Sep 15" },
+                  { q: "Q4", date: "Jan 15, 2026" },
+                ].map(({ q, date }) => (
+                  <div key={q} className="flex items-center justify-between bg-white rounded-lg px-3 py-2 border border-slate-200">
+                    <span className="text-xs font-semibold text-slate-500">{q}</span>
+                    <span className="text-xs text-slate-700 font-medium">{date}</span>
+                  </div>
+                ))}
+              </div>
             </div>
+          </div>
 
-            <p className="text-sm text-slate-600">
-              ✓ Free forever • ✓ No credit card • ✓ Results in 60 seconds
-            </p>
+          {/* Right — Calculator */}
+          <div>
+            <QuarterlyTaxCalc />
           </div>
         </div>
       </section>
 
-      {/* Problem Section */}
-      <section className="py-16 bg-white border-b-2 border-black">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-black text-slate-900 mb-4">
-              The Problem with Quarterly Taxes
-            </h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Most online calculators (and even CPAs) tell you to pay 25% of your projected income each quarter. But that's wrong.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            <Card className="border-2 border-red-300 bg-red-50">
-              <CardHeader>
-                <CardTitle className="text-xl font-black flex items-center gap-2">
-                  <TrendingDown className="h-6 w-6 text-red-600" />
-                  Overpayment Problem
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-slate-700">
-                  You tie up $20,000+ with the IRS for 9 months when you could be investing it or using it for business expenses.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border-2 border-amber-300 bg-amber-50">
-              <CardHeader>
-                <CardTitle className="text-xl font-black flex items-center gap-2">
-                  <Calendar className="h-6 w-6 text-amber-600" />
-                  Penalty Fear
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-slate-700">
-                  You're scared of IRS penalties, so you overpay "just to be safe." But there's a better way using safe harbor rules.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border-2 border-blue-300 bg-blue-50">
-              <CardHeader>
-                <CardTitle className="text-xl font-black flex items-center gap-2">
-                  <DollarSign className="h-6 w-6 text-blue-600" />
-                  Variable Income
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-slate-700">
-                  Your income fluctuates wildly (some quarters $60k, others $15k), but you're paying the same amount each quarter.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Solution Section */}
-      <section className="py-16 bg-slate-50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <div className="inline-block mb-4">
-              <span className="bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-bold border-2 border-emerald-300">
-                THE SOLUTION
-              </span>
-            </div>
-            <h2 className="text-4xl font-black text-slate-900 mb-4">
+      {/* Safe Harbor Explainer */}
+      <section className="bg-slate-50 border-y border-slate-200 py-12 sm:py-14">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <div className="max-w-2xl mx-auto text-center mb-8">
+            <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-3 py-1.5 rounded-full text-xs font-semibold mb-3">
+              <Shield className="h-3.5 w-3.5" />
               IRS Safe Harbor Rules
+            </div>
+            <h2 className="text-2xl font-medium text-slate-900 mb-3">
+              You're protected from penalties if you pay the lower of:
             </h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              You're safe from penalties if you pay the <strong>LOWER</strong> of:
-            </p>
           </div>
-
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <Card className="border-2 border-black bg-white">
-              <CardHeader>
-                <CardTitle className="text-2xl font-black">
-                  Option 1: Current Year
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="text-3xl font-black text-emerald-600">
-                  90%
-                </div>
-                <p className="text-sm text-slate-700">
-                  Pay 90% of your <strong>current year</strong> estimated tax liability
-                </p>
-                <div className="bg-slate-50 p-4 rounded border border-slate-200">
-                  <p className="text-xs font-medium text-slate-600">
-                    <strong>Example:</strong> If you'll owe $40k in taxes this year, you need to pay $36k (90%) in quarterly payments.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-2 border-black bg-white">
-              <CardHeader>
-                <CardTitle className="text-2xl font-black">
-                  Option 2: Prior Year
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="text-3xl font-black text-blue-600">
-                  100% <span className="text-lg">(110% if AGI &gt; $150k)</span>
-                </div>
-                <p className="text-sm text-slate-700">
-                  Pay 100% of your <strong>prior year</strong> tax (110% if your AGI was over $150k)
-                </p>
-                <div className="bg-slate-50 p-4 rounded border border-slate-200">
-                  <p className="text-xs font-medium text-slate-600">
-                    <strong>Example:</strong> If you paid $15k in taxes last year, you only need to pay $15k this year (even if you'll owe $40k).
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+          <div className="grid sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
+            <div className="bg-white rounded-xl border border-slate-200 p-5">
+              <div className="text-3xl font-bold text-emerald-600 mb-2">90%</div>
+              <p className="text-sm font-medium text-slate-800 mb-1">Current year method</p>
+              <p className="text-xs text-slate-500">Pay 90% of what you'll owe this tax year. Requires estimating your current income.</p>
+            </div>
+            <div className="bg-white rounded-xl border border-slate-200 p-5">
+              <div className="text-3xl font-bold text-blue-600 mb-2">100%<span className="text-base font-medium text-slate-500"> / 110%</span></div>
+              <p className="text-sm font-medium text-slate-800 mb-1">Prior year method</p>
+              <p className="text-xs text-slate-500">Pay 100% of last year's tax (110% if AGI &gt; $150K). No estimation needed — the safest approach.</p>
+            </div>
           </div>
-
-          <div className="text-center mt-12">
-            <Card className="border-2 border-emerald-400 bg-emerald-50 max-w-2xl mx-auto">
-              <CardContent className="pt-6">
-                <Shield className="h-12 w-12 text-emerald-600 mx-auto mb-4" />
-                <h3 className="text-2xl font-black text-slate-900 mb-2">
-                  You're Safe from Penalties
-                </h3>
-                <p className="text-slate-700 mb-4">
-                  Pay whichever amount is <strong>LOWER</strong>, and the IRS can't charge you underpayment penalties. This is official IRS policy.
-                </p>
-                <Link href="/tools/quarterly-tax">
-                  <Button className="bg-emerald-600 hover:bg-emerald-700">
-                    Calculate My Safe Harbor Amount
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
-          </div>
+          <p className="text-center text-xs text-slate-400 mt-4">Source: IRS Publication 505</p>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-16 bg-white border-t-2 border-black">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-black text-slate-900 mb-4">
-              What Our Calculator Does
-            </h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Everything you need to calculate and track quarterly estimated taxes.
-            </p>
-          </div>
+      {/* FAQ */}
+      <section className="max-w-3xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+        <h2 className="text-2xl font-medium text-slate-900 mb-6">Common questions</h2>
+        <div className="space-y-5">
+          {[
+            {
+              q: "When are quarterly estimated taxes due?",
+              a: "Q1: April 15 · Q2: June 16 · Q3: September 15 · Q4: January 15 of the following year. Note Q4 is not December 31.",
+            },
+            {
+              q: "What if I miss a payment?",
+              a: "If you meet safe harbor requirements (90% current year OR 100%/110% prior year), there are no underpayment penalties. If you miss, the IRS charges interest (~8% annually) on the shortfall.",
+            },
+            {
+              q: "Can I use prior year method even if my income went up a lot?",
+              a: "Yes. That's the key advantage. Even if your income doubled, you can base payments on last year's tax and settle up at filing. No penalties.",
+            },
+            {
+              q: "Does this work for S-Corps and sole proprietors?",
+              a: "Yes. Safe harbor rules apply to all individual tax returns regardless of business structure.",
+            },
+          ].map(({ q, a }) => (
+            <div key={q} className="border-b border-slate-100 pb-5">
+              <h3 className="text-sm font-semibold text-slate-900 mb-1.5">{q}</h3>
+              <p className="text-sm text-slate-600 leading-relaxed">{a}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              {
-                icon: Calculator,
-                title: "Safe Harbor Calculator",
-                description: "Shows both methods (prior year vs current year) and tells you which is lower."
-              },
-              {
-                icon: Calendar,
-                title: "Payment Timeline",
-                description: "Visual quarterly timeline with color-coded status (paid, upcoming, overdue)."
-              },
-              {
-                icon: DollarSign,
-                title: "Payment Tracking",
-                description: "Track what you've paid with progress bars and quick 'Mark Paid' buttons."
-              },
-              {
-                icon: TrendingDown,
-                title: "Auto-Population",
-                description: "Pulls from prior year tax returns and your profile settings automatically."
-              },
-              {
-                icon: Shield,
-                title: "Penalty Calculator",
-                description: "Estimates underpayment penalties if you're not meeting safe harbor (Pro)."
-              },
-              {
-                icon: CheckCircle,
-                title: "Variable Income Support",
-                description: "Annualized Income Method for seasonal/fluctuating income (Pro)."
-              }
-            ].map((feature, idx) => (
-              <Card key={idx} className="border-2 border-black">
-                <CardHeader>
-                  <feature.icon className="h-10 w-10 text-emerald-600 mb-3" />
-                  <CardTitle className="text-lg font-black">
-                    {feature.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-slate-700">
-                    {feature.description}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          <div className="text-center mt-12">
-            <Link href="/tools/quarterly-tax">
-              <Button
-                size="lg"
-                className="bg-emerald-600 hover:bg-emerald-700 text-lg px-8 py-6 h-auto"
-              >
-                Try the Calculator Now
-                <ArrowRight className="h-5 w-5 ml-2" />
-              </Button>
+      {/* CTA */}
+      <section className="bg-emerald-600 py-12">
+        <div className="max-w-xl mx-auto px-4 text-center">
+          <h2 className="text-2xl font-medium text-white mb-3">
+            Ready to stop guessing?
+          </h2>
+          <p className="text-emerald-100 mb-6 text-sm leading-relaxed">
+            SoloFI gives you quarterly tax tracking, Safe Harbor calculations, state tax, and your full financial picture in one place.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link
+              href="/tools/quarterly-tax"
+              className="inline-flex items-center justify-center gap-2 bg-white text-emerald-700 font-medium px-5 py-3 rounded-lg text-sm hover:bg-emerald-50 transition-colors"
+            >
+              <Calculator className="h-4 w-4" />
+              Full calculator — free
+            </Link>
+            <Link
+              href="/sign-up"
+              className="inline-flex items-center justify-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white font-medium px-5 py-3 rounded-lg text-sm transition-colors border border-emerald-500"
+            >
+              Create free account
+              <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="py-16 bg-slate-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-black text-slate-900 mb-12 text-center">
-            Frequently Asked Questions
-          </h2>
-
-          <div className="space-y-6">
-            {[
-              {
-                question: "When are quarterly estimated taxes due?",
-                answer: "Q1: April 15, Q2: June 15, Q3: September 15, Q4: January 15 of the following year. Note that Q4 is NOT December 31."
-              },
-              {
-                question: "What happens if I don't pay enough?",
-                answer: "If you meet safe harbor requirements (90% of current year OR 100%/110% of prior year), you won't face penalties. If you don't meet safe harbor, the IRS charges interest (currently ~8% annually) on the underpayment."
-              },
-              {
-                question: "Can I use the prior year method if my income went up?",
-                answer: "Yes! That's the beauty of safe harbor. Even if your income doubled, you can pay based on last year's tax and settle up when you file. No penalties."
-              },
-              {
-                question: "Do I need to pay equally each quarter?",
-                answer: "For the standard method, yes. But if your income is variable, you can use the Annualized Income Installment Method (Pro feature) to pay more in high-income quarters and less in low-income quarters."
-              },
-              {
-                question: "Is this calculator accurate?",
-                answer: "Yes. We use the official IRS Publication 505 rules for safe harbor calculations. However, this is for educational purposes only—always consult a tax professional for your specific situation."
-              },
-              {
-                question: "Does this work for S-Corps or just sole proprietors?",
-                answer: "This calculator works for any self-employed structure (sole proprietor, LLC, S-Corp, partnership). The safe harbor rules apply to all individual tax returns."
-              }
-            ].map((faq, idx) => (
-              <Card key={idx} className="border-2 border-black">
-                <CardHeader>
-                  <CardTitle className="text-xl font-black">
-                    {faq.question}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-slate-700">
-                    {faq.answer}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
+      {/* Footer */}
+      <footer className="border-t border-slate-200 py-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-500">
+            <span>© 2026 SoloFI</span>
+            <div className="flex gap-6">
+              <Link href="/about" className="hover:text-slate-700">About</Link>
+              <Link href="/contact" className="hover:text-slate-700">Contact</Link>
+              <Link href="/blog" className="hover:text-slate-700">Resources</Link>
+              <Link href="/privacy" className="hover:text-slate-700">Privacy</Link>
+              <Link href="/terms" className="hover:text-slate-700">Terms</Link>
+            </div>
           </div>
         </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-br from-emerald-600 to-blue-600 border-t-2 border-black">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl sm:text-5xl font-black text-white mb-6">
-            Ready to Stop Overpaying?
-          </h2>
-          <p className="text-xl text-white/90 mb-8">
-            Calculate your exact quarterly tax payments in under 60 seconds.
-          </p>
-          <Link href="/tools/quarterly-tax">
-            <Button
-              size="lg"
-              className="bg-white text-emerald-600 hover:bg-slate-100 text-lg px-8 py-6 h-auto"
-            >
-              <Calculator className="h-5 w-5 mr-2" />
-              Use the Free Calculator
-              <ArrowRight className="h-5 w-5 ml-2" />
-            </Button>
-          </Link>
-          <p className="text-sm text-white/80 mt-4">
-            No signup required • Results in 60 seconds • 100% free forever
-          </p>
-        </div>
-      </section>
-
-      {/* Schema Markup */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebApplication",
-            "name": "Quarterly Tax Calculator",
-            "description": "Free calculator for quarterly estimated taxes using IRS safe harbor rules",
-            "applicationCategory": "FinanceApplication",
-            "operatingSystem": "Web",
-            "offers": {
-              "@type": "Offer",
-              "price": "0",
-              "priceCurrency": "USD"
-            },
-            "creator": {
-              "@type": "Organization",
-              "name": "SoloFI"
-            }
-          })
-        }}
-      />
+      </footer>
     </div>
   );
 }
