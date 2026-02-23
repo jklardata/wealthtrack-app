@@ -280,12 +280,12 @@ function RetirementPageContent() {
   } : null;
 
   return (
-    <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="">
+      <div className="space-y-6 py-4">
         {/* Header */}
         <div>
-          <h1 className="text-4xl sm:text-5xl font-black text-slate-900 flex items-center gap-3">
-            <Calculator className="h-6 w-6 sm:h-7 sm:w-7 text-emerald-600 flex-shrink-0" />
+          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <Calculator className="h-5 w-5 text-emerald-600" />
             Retirement Calculator
         </h1>
         <p className="text-sm sm:text-base text-slate-500 mt-1">

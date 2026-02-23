@@ -481,9 +481,9 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="space-y-6 max-w-4xl">
+    <div className="space-y-6 py-4">
       <div>
-        <h1 className="text-5xl font-black">Settings</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Settings</h1>
         <p className="text-lg font-semibold text-slate-600 mt-2">
           Configure your account and integrations
         </p>

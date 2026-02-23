@@ -91,97 +91,76 @@ type PresetRange = "all" | "this-month" | "last-month" | "this-quarter" | "last-
 // ─── Cash Flow Card ───────────────────────────────────────────────────────────
 function CashFlowCard({
   latestEntry,
-  chartData,
-  entries,
 }: {
   latestEntry: NetWorthEntry;
-  chartData: { date: string; entryId: string; netWorth: number }[];
-  entries: NetWorthEntry[];
+  chartData?: { date: string; entryId: string; netWorth: number }[];
+  entries?: NetWorthEntry[];
 }) {
-  const [showHistory, setShowHistory] = useState(false);
-
   const income = latestEntry.pre_tax_income;
   const expenses = latestEntry.monthly_expenses;
   const saved = income - expenses;
   const savingsRate = income > 0 ? (saved / income) * 100 : 0;
 
-  const historyData = chartData
-    .map((entry) => {
-      const raw = entries.find((e) => e.id === entry.entryId);
-      return { date: entry.date, income: raw?.pre_tax_income || 0, expenses: raw?.monthly_expenses || 0 };
-    })
-    .filter((d) => d.income > 0);
-
   const formatCurrencyLocal = (v: number) =>
     new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(v);
 
+  const barData = [{ name: "This Month", income, expenses }];
+
+  const savingsLabel = savingsRate >= 30 ? "Excellent" : savingsRate >= 20 ? "Good" : "Below target";
+  const savingsLabelClass = savingsRate >= 30
+    ? "bg-emerald-100 text-emerald-700"
+    : savingsRate >= 20
+    ? "bg-blue-100 text-blue-700"
+    : "bg-amber-100 text-amber-700";
+
   return (
     <Card className="bg-white border border-slate-200 shadow-sm">
-      <CardHeader className="pb-3">
+      <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="text-base font-semibold text-slate-900">Cash Flow</CardTitle>
+            <CardTitle className="text-base font-semibold text-slate-900">Monthly Cash Flow</CardTitle>
             <p className="text-xs text-slate-500 mt-0.5">Most recent month</p>
           </div>
-          {historyData.length > 1 && (
-            <button
-              onClick={() => setShowHistory(!showHistory)}
-              className="text-xs text-emerald-600 hover:text-emerald-700 font-medium flex items-center gap-1"
-            >
-              {showHistory ? "Hide history" : "View history"}
-              <ArrowRight className={`h-3 w-3 transition-transform ${showHistory ? "rotate-90" : ""}`} />
-            </button>
-          )}
+          <Link href="/net-worth" className="text-xs text-emerald-600 hover:text-emerald-700 font-medium flex items-center gap-1">
+            Full history <ArrowRight className="h-3 w-3" />
+          </Link>
         </div>
       </CardHeader>
       <CardContent>
-        {/* Latest month metrics */}
-        <div className="grid grid-cols-3 gap-3 mb-3">
-          <div>
-            <p className="text-xs text-slate-500 mb-0.5">Income</p>
-            <p className="text-lg font-bold text-slate-900">{formatCurrencyLocal(income)}</p>
-          </div>
-          <div>
-            <p className="text-xs text-slate-500 mb-0.5">Expenses</p>
-            <p className="text-lg font-bold text-slate-900">{formatCurrencyLocal(expenses)}</p>
-          </div>
-          <div>
-            <p className="text-xs text-slate-500 mb-0.5">Saved</p>
-            <p className={`text-lg font-bold ${savingsRate >= 20 ? "text-emerald-600" : "text-amber-600"}`}>
-              {savingsRate.toFixed(0)}%
-            </p>
-          </div>
+        {/* Savings Rate */}
+        <div className="flex items-baseline gap-2 mb-3">
+          <span className={`text-3xl font-bold font-mono ${savingsRate >= 20 ? "text-emerald-600" : "text-amber-600"}`}>
+            {savingsRate.toFixed(0)}%
+          </span>
+          <span className="text-sm text-slate-400">saved</span>
+          <span className={`ml-auto text-xs font-medium px-2 py-0.5 rounded-full ${savingsLabelClass}`}>
+            {savingsLabel}
+          </span>
         </div>
 
-        {/* Savings bar */}
-        <div className="h-2 rounded-full bg-slate-100 overflow-hidden mb-1">
-          <div
-            className={`h-full rounded-full transition-all ${savingsRate >= 20 ? "bg-emerald-500" : "bg-amber-400"}`}
-            style={{ width: `${Math.min(100, Math.max(0, savingsRate))}%` }}
-          />
-        </div>
-        <p className="text-xs text-slate-400">{formatCurrencyLocal(saved)} saved this month</p>
+        {/* Bar Chart */}
+        <ResponsiveContainer width="100%" height={140}>
+          <BarChart data={barData} barGap={6} barCategoryGap="40%">
+            <CartesianGrid vertical={false} stroke="#f1f5f9" />
+            <XAxis dataKey="name" hide />
+            <YAxis stroke="#cbd5e1" fontSize={10} tickLine={false} axisLine={false} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} width={36} />
+            <Tooltip
+              contentStyle={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: "8px", fontSize: "12px" }}
+              formatter={(v, name) => [formatCurrencyLocal(Number(v)), name]}
+              labelStyle={{ fontWeight: 600, color: "#0f172a" }}
+            />
+            <Legend iconType="circle" iconSize={7} wrapperStyle={{ fontSize: "11px", paddingTop: "4px" }} />
+            <Bar dataKey="income" name="Income" fill="#10b981" radius={[4, 4, 0, 0]} />
+            <Bar dataKey="expenses" name="Expenses" fill="#f59e0b" radius={[4, 4, 0, 0]} />
+          </BarChart>
+        </ResponsiveContainer>
 
-        {/* Expandable history chart */}
-        {showHistory && historyData.length > 1 && (
-          <div className="mt-4 pt-4 border-t border-slate-100">
-            <p className="text-xs font-medium text-slate-500 mb-3">Income vs Expenses — History</p>
-            <ResponsiveContainer width="100%" height={200}>
-              <BarChart data={historyData} barGap={4} barCategoryGap="30%">
-                <CartesianGrid vertical={false} stroke="#f1f5f9" />
-                <XAxis dataKey="date" stroke="#cbd5e1" fontSize={10} tickLine={false} axisLine={false} />
-                <YAxis stroke="#cbd5e1" fontSize={10} tickLine={false} axisLine={false} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} width={36} />
-                <Tooltip
-                  contentStyle={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: "8px", fontSize: "11px" }}
-                  formatter={(v) => [formatCurrencyLocal(Number(v))]}
-                />
-                <Legend iconType="circle" iconSize={7} wrapperStyle={{ fontSize: "11px", paddingTop: "6px" }} />
-                <Bar dataKey="income" name="Income" fill="#10b981" radius={[3, 3, 0, 0]} />
-                <Bar dataKey="expenses" name="Expenses" fill="#fbbf24" radius={[3, 3, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        )}
+        {/* Amount breakdown */}
+        <div className="flex justify-between mt-1 text-xs text-slate-400">
+          <span>{formatCurrencyLocal(income)} income</span>
+          <span>{formatCurrencyLocal(saved >= 0 ? saved : 0)} saved</span>
+          <span>{formatCurrencyLocal(expenses)} expenses</span>
+        </div>
       </CardContent>
     </Card>
   );
@@ -902,13 +881,12 @@ export default function DashboardPage() {
       {/* Stats Cards - Compact */}
       <div className="grid gap-2 grid-cols-2 lg:grid-cols-4">
         <Card className="bg-white border border-slate-200 shadow-sm">
-          <CardHeader className="flex flex-row items-center justify-between pb-1 p-3">
+          <CardHeader className="p-3 pb-1 text-center">
             <CardTitle className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
               Net Worth
             </CardTitle>
-            <DollarSign className="h-3.5 w-3.5 text-emerald-600" />
           </CardHeader>
-          <CardContent className="p-3 pt-0">
+          <CardContent className="p-3 pt-0 text-center">
             <div className="text-base sm:text-lg font-bold text-slate-900 font-mono break-words">
               {latestEntry ? formatCurrency(latestEntry.net_worth) : "$0"}
             </div>
@@ -921,17 +899,12 @@ export default function DashboardPage() {
         </Card>
 
         <Card className="bg-white border border-slate-200 shadow-sm">
-          <CardHeader className="flex flex-row items-center justify-between pb-1 p-3">
+          <CardHeader className="p-3 pb-1 text-center">
             <CardTitle className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
               Monthly Change
             </CardTitle>
-            {monthlyChange >= 0 ? (
-              <TrendingUp className="h-3.5 w-3.5 text-emerald-600" />
-            ) : (
-              <TrendingDown className="h-3.5 w-3.5 text-red-500" />
-            )}
           </CardHeader>
-          <CardContent className="p-3 pt-0">
+          <CardContent className="p-3 pt-0 text-center">
             <div
               className={`text-base sm:text-lg font-bold font-mono break-words ${
                 monthlyChange >= 0 ? "text-emerald-600" : "text-red-500"
@@ -949,13 +922,12 @@ export default function DashboardPage() {
 
         {/* YTD Change */}
         <Card className="bg-white border border-slate-200 shadow-sm">
-          <CardHeader className="flex flex-row items-center justify-between pb-1 p-3">
+          <CardHeader className="p-3 pb-1 text-center">
             <CardTitle className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
               YTD Change
             </CardTitle>
-            <TrendingUp className="h-3.5 w-3.5 text-emerald-500" />
           </CardHeader>
-          <CardContent className="p-3 pt-0">
+          <CardContent className="p-3 pt-0 text-center">
             <div className={`text-base sm:text-lg font-bold font-mono break-words ${
               growthMetrics.ytd.amount >= 0 ? "text-emerald-600" : "text-red-500"
             }`}>
@@ -973,13 +945,12 @@ export default function DashboardPage() {
 
         {/* Avg Monthly $ */}
         <Card className="bg-white border border-slate-200 shadow-sm">
-          <CardHeader className="flex flex-row items-center justify-between pb-1 p-3">
+          <CardHeader className="p-3 pb-1 text-center">
             <CardTitle className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
               Avg Monthly
             </CardTitle>
-            <TrendingUp className="h-3.5 w-3.5 text-blue-500" />
           </CardHeader>
-          <CardContent className="p-3 pt-0">
+          <CardContent className="p-3 pt-0 text-center">
             <div className={`text-base sm:text-lg font-bold font-mono break-words ${
               growthMetrics.avgMonthlyGrowth >= 0 ? "text-blue-600" : "text-red-500"
             }`}>
@@ -1187,7 +1158,7 @@ export default function DashboardPage() {
               <div className="space-y-4">
                 {/* Pie Chart */}
                 <div className="relative">
-                  <ResponsiveContainer width="100%" height={300}>
+                  <ResponsiveContainer width="100%" height={320}>
                     <PieChart>
                       <defs>
                         {Object.entries(ASSET_GRADIENTS).map(([key, gradient]) => (
@@ -1201,11 +1172,24 @@ export default function DashboardPage() {
                         data={allocationData}
                         cx="50%"
                         cy="50%"
-                        innerRadius={70}
-                        outerRadius={110}
+                        innerRadius={65}
+                        outerRadius={95}
                         paddingAngle={3}
                         dataKey="value"
                         stroke="none"
+                        labelLine={false}
+                        label={({ name, percent, cx, cy, midAngle, outerRadius: or }: { name: string; percent: number; cx: number; cy: number; midAngle: number; outerRadius: number }) => {
+                          if (percent < 0.05) return null;
+                          const RADIAN = Math.PI / 180;
+                          const radius = or + 22;
+                          const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                          const y = cy + radius * Math.sin(-midAngle * RADIAN);
+                          return (
+                            <text x={x} y={y} fill="#475569" textAnchor={x > cx ? "start" : "end"} dominantBaseline="central" fontSize={11} fontWeight={500}>
+                              {`${name} ${(percent * 100).toFixed(0)}%`}
+                            </text>
+                          );
+                        }}
                       >
                         {allocationData.map((entry) => (
                           <Cell

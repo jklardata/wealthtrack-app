@@ -429,14 +429,14 @@ export default function LifetimeTaxMapPage() {
   // ========== Render ==========
 
   return (
-    <div className="container mx-auto p-6 space-y-8 max-w-[1600px]">
+    <div className="space-y-6 py-4">
       {/* Header */}
-      <div className="space-y-3">
-        <h1 className="text-5xl font-black text-slate-900 flex items-center gap-3">
-          <Map className="h-12 w-12 text-emerald-600" />
+      <div>
+        <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+          <Map className="h-5 w-5 text-emerald-600" />
           Lifetime Tax Map
         </h1>
-        <p className="text-xl font-medium text-slate-600">
+        <p className="text-sm text-slate-500 mt-1">
           Visualize your complete tax exposure across decades to identify optimization windows and minimize lifetime tax burden
         </p>
       </div>

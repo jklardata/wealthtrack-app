@@ -698,8 +698,8 @@ export default function NetWorthPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
-        <div className="max-w-7xl mx-auto space-y-6">
+      <div className="">
+        <div className="space-y-6 py-4">
           <div className="flex justify-between items-center">
             <Skeleton className="h-8 w-32" />
             <div className="flex gap-2">
@@ -719,7 +719,7 @@ export default function NetWorthPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
+      <div className="">
         <div className="max-w-7xl mx-auto flex flex-col items-center justify-center h-[400px] text-center">
           <p className="text-red-500 mb-4">{error}</p>
           <Button onClick={() => window.location.reload()} className="bg-emerald-600 hover:bg-emerald-700 text-white">Try Again</Button>
@@ -729,16 +729,19 @@ export default function NetWorthPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
-      <div className="max-w-7xl mx-auto space-y-6">
-      <div className="space-y-4">
-        <div>
-          <h1 className="text-4xl sm:text-5xl font-black text-slate-900">Net Worth Timeline</h1>
-          <p className="text-base sm:text-lg font-semibold text-slate-600 mt-2">
-            Track your net worth over time
-          </p>
-        </div>
+    <div className="">
+      <div className="space-y-6 py-4">
+      <div>
+        <h1 className="text-2xl font-bold text-slate-900">Net Worth Timeline</h1>
+        <p className="text-sm text-slate-500 mt-1">
+          Track your net worth over time
+        </p>
+      </div>
 
+      {/* Main layout: controls + entries (left) + educational guide (right) */}
+      <div className="flex flex-col lg:flex-row gap-5 items-start">
+        {/* Educational Guide — right column */}
+        <div className="lg:w-72 lg:flex-shrink-0 lg:order-2 w-full">
         {/* Educational Introduction */}
         <Card className="bg-gradient-to-br from-emerald-50 via-white to-teal-50 border-emerald-200 shadow-sm">
           <CardContent className="pt-6">
@@ -770,7 +773,9 @@ export default function NetWorthPage() {
             </div>
           </CardContent>
         </Card>
-
+        </div>
+        {/* Controls + entries — left column */}
+        <div className="flex-1 min-w-0 lg:order-1 space-y-4">
         <div className="flex flex-wrap gap-2">
           <Button
             variant="outline"
@@ -828,7 +833,6 @@ export default function NetWorthPage() {
             </DialogContent>
           </Dialog>
         </div>
-      </div>
 
       {/* Bulk Actions Bar */}
       {selectedIds.size > 0 && (
@@ -989,7 +993,7 @@ export default function NetWorthPage() {
 
       <Card className="bg-white border border-slate-200 shadow-sm">
         <CardHeader>
-          <CardTitle className="text-2xl font-black text-slate-900">All Entries</CardTitle>
+          <CardTitle className="text-base font-semibold text-slate-900">All Entries</CardTitle>
         </CardHeader>
         <CardContent>
           {entries.length === 0 ? (
@@ -1200,6 +1204,8 @@ export default function NetWorthPage() {
           )}
         </CardContent>
       </Card>
+        </div> {/* closes left column */}
+      </div> {/* closes flex row */}
       </div>
     </div>
   );

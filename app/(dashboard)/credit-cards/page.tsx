@@ -699,11 +699,11 @@ export default function CreditCardsPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-4xl sm:text-5xl font-black flex items-center gap-3">
-            <CreditCardIcon className="h-6 w-6 sm:h-7 sm:w-7 text-primary flex-shrink-0" />
+          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <CreditCardIcon className="h-5 w-5 text-emerald-600" />
             <span className="leading-tight">Credit Cards</span>
           </h1>
-          <p className="text-sm sm:text-base text-slate-500 mt-1">Loading your cards...</p>
+          <p className="text-sm text-slate-500 mt-1">Loading your cards...</p>
         </div>
         <div className="grid gap-4 md:grid-cols-4">
           {[...Array(4)].map((_, i) => (
@@ -723,8 +723,8 @@ export default function CreditCardsPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-4xl sm:text-5xl font-black flex items-center gap-3">
-            <CreditCardIcon className="h-6 w-6 sm:h-7 sm:w-7 text-primary flex-shrink-0" />
+          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <CreditCardIcon className="h-5 w-5 text-emerald-600" />
             <span className="leading-tight">Credit Cards</span>
           </h1>
         </div>
@@ -752,8 +752,8 @@ export default function CreditCardsPage() {
         "Bonus value calculations"
       ]}
     >
-      <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
-        <div className="max-w-7xl mx-auto space-y-6">
+      <div className="">
+        <div className="space-y-6 py-4">
         {/* Sync Message */}
       {syncMessage && (
         <div
@@ -782,11 +782,11 @@ export default function CreditCardsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-4xl sm:text-5xl font-black text-slate-900 flex items-center gap-3">
-            <CreditCardIcon className="h-6 w-6 sm:h-7 sm:w-7 text-emerald-600 flex-shrink-0" />
+          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <CreditCardIcon className="h-5 w-5 text-emerald-600" />
             <span className="leading-tight">Credit Cards</span>
           </h1>
-          <p className="text-sm sm:text-base text-slate-500 mt-1">
+          <p className="text-sm text-slate-500 mt-1">
             Track your cards and sign-up bonus progress
           </p>
         </div>

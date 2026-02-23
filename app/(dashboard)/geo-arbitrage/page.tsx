@@ -510,13 +510,13 @@ export default function GeoArbitragePage() {
 
   if (loading) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-6 py-4">
         <div>
-          <h1 className="text-4xl sm:text-5xl font-black text-slate-900 flex items-center gap-3">
-            <Globe className="h-6 w-6 sm:h-7 sm:w-7 text-emerald-600 flex-shrink-0" />
+          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <Globe className="h-5 w-5 text-emerald-600" />
             <span className="leading-tight">Geographic Arbitrage</span>
           </h1>
-          <p className="text-sm sm:text-base text-slate-500 mt-1">Loading comparison data...</p>
+          <p className="text-sm text-slate-500 mt-1">Loading comparison data...</p>
         </div>
         <Skeleton className="h-[600px]" />
       </div>
@@ -524,14 +524,14 @@ export default function GeoArbitragePage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 py-4">
       {/* Header with Description */}
       <div>
-        <h1 className="text-4xl sm:text-5xl font-black text-slate-900 flex items-center gap-3">
-          <Globe className="h-6 w-6 sm:h-7 sm:w-7 text-emerald-600 flex-shrink-0" />
+        <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+          <Globe className="h-5 w-5 text-emerald-600" />
           <span className="leading-tight">Geographic Arbitrage</span>
         </h1>
-        <p className="text-sm sm:text-base text-slate-500 mt-1">
+        <p className="text-sm text-slate-500 mt-1">
           Compare cities to find where your money goes furthest. Geographic arbitrage means
           living in a lower cost-of-living area while earning income based on higher-cost markets.
         </p>

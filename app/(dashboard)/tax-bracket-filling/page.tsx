@@ -720,7 +720,7 @@ export default function TaxBracketFillingPage() {
           Tax Bracket Filling Strategy Engine
         </h1>
         <p className="text-sm text-slate-500 mt-1">
-          Model multi-year tax optimization using Roth conversions, capital gains harvesting, and income smoothing
+          Model multi-year tax optimization using Roth conversions, capital gains harvesting, and income smoothing. Progressive tax rates mean every unused bracket point is a missed opportunity—especially during the low-income gap years before Social Security and RMDs begin.
         </p>
       </div>
 
@@ -738,24 +738,6 @@ export default function TaxBracketFillingPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-3">
-            <div>
-              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">What Tax Bracket Filling Means</p>
-              <p className="text-sm text-slate-600 leading-relaxed">
-                Tax bracket filling is the strategy of intentionally using your available tax bracket space each year to minimize lifetime taxes.
-                Our progressive tax system means you pay different rates on different portions of your income. The goal is to avoid leaving
-                low-rate bracket space unused in some years while paying high rates in others. By strategically triggering income through
-                Roth conversions, capital gains harvesting, or planned withdrawals, you smooth your tax burden across decades.
-              </p>
-            </div>
-
-            <div>
-              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Why Early Retirees Have Unique Opportunities</p>
-              <p className="text-sm text-slate-600 leading-relaxed">
-                When you retire early, you create a window of low-income years between leaving work and starting Social Security or RMDs at age 72.
-                This gap is your opportunity to fill lower brackets with Roth conversions or capital gains harvesting—a window that closes permanently once floor income begins.
-              </p>
-            </div>
-
             <div>
               <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">How to Use This Engine</p>
               <div className="space-y-1.5 text-sm text-slate-600 leading-relaxed">
@@ -1599,6 +1581,9 @@ export default function TaxBracketFillingPage() {
             to withdraw. This creates artificially low income years where you can fill the 12% and 22% brackets almost entirely with Roth
             conversions or capital gains harvesting. This window closes permanently once floor income begins.
           </p>
+          <Link href="/early-retirement" className="inline-flex items-center gap-1 text-xs text-emerald-600 hover:text-emerald-700 font-medium mt-3">
+            Explore Early Retirement planning →
+          </Link>
         </div>
 
         <div className="bg-white border border-slate-200 rounded-xl p-5">
@@ -1609,6 +1594,9 @@ export default function TaxBracketFillingPage() {
             that were never optimized. Aggressive Roth conversions during these transition years can dramatically reduce future RMD exposure
             before normal income resumes.
           </p>
+          <Link href="/feie-eligibility" className="inline-flex items-center gap-1 text-xs text-emerald-600 hover:text-emerald-700 font-medium mt-3">
+            Check FEIE eligibility →
+          </Link>
         </div>
 
         <div className="bg-white border border-slate-200 rounded-xl p-5">

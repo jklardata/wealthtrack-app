@@ -184,12 +184,12 @@ export default function WithdrawalStressTestPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="">
+      <div className="space-y-6 py-4">
         {/* Header */}
         <div>
-          <h1 className="text-4xl sm:text-5xl font-black text-slate-900 flex items-center gap-3">
-            <Activity className="h-7 w-7 text-emerald-600" />
+          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <Activity className="h-5 w-5 text-emerald-600" />
             Withdrawal Stress Test
           </h1>
           <p className="text-slate-500 mt-1">
@@ -235,7 +235,7 @@ export default function WithdrawalStressTestPage() {
         {/* Input Panel */}
         <Card className="bg-white border border-slate-200 shadow-sm">
           <CardHeader>
-            <CardTitle className="text-2xl font-black">Simulation Parameters</CardTitle>
+            <CardTitle className="text-base font-semibold">Simulation Parameters</CardTitle>
             <CardDescription>Adjust your retirement scenario assumptions</CardDescription>
           </CardHeader>
           <CardContent>
@@ -378,7 +378,7 @@ export default function WithdrawalStressTestPage() {
         {isPro ? (
           <Card className="bg-white border border-slate-200 shadow-sm">
             <CardHeader>
-              <CardTitle className="text-2xl font-black text-slate-900">
+              <CardTitle className="text-base font-semibold text-slate-900">
                 Retirement Success Probability Over Time
               </CardTitle>
               <CardDescription className="mt-1">
@@ -469,7 +469,7 @@ export default function WithdrawalStressTestPage() {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle className="text-2xl font-black">Detailed Simulation Results</CardTitle>
+                  <CardTitle className="text-base font-semibold">Detailed Simulation Results</CardTitle>
                   <CardDescription>Year-by-year breakdown of all variables</CardDescription>
                 </div>
                 <Button onClick={handleExport} variant="outline" size="sm">

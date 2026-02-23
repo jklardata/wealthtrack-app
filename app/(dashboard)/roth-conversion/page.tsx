@@ -616,14 +616,14 @@ export default function RothConversionPage() {
   };
 
   return (
-    <div className="space-y-8 max-w-7xl mx-auto">
+    <div className="space-y-5 py-4">
       {/* Header */}
       <div>
-        <h1 className="text-4xl sm:text-5xl font-black text-slate-900 flex items-center gap-3">
-          <TrendingUp className="h-10 w-10 text-emerald-600" />
+        <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+          <TrendingUp className="h-5 w-5 text-emerald-600" />
           Roth Conversion Optimizer
         </h1>
-        <p className="text-lg font-semibold text-slate-700 mt-2">
+        <p className="text-sm text-slate-500 mt-1">
           Model conversion strategies to minimize lifetime taxes and maximize after-tax retirement wealth
         </p>
       </div>
@@ -631,7 +631,7 @@ export default function RothConversionPage() {
       {/* Advisory Introduction */}
       <Card className="bg-gradient-to-br from-blue-50 via-white to-indigo-50 border border-slate-200">
         <CardContent className="pt-6 space-y-4">
-          <h2 className="text-2xl font-black text-slate-900">Understanding Roth Conversions</h2>
+          <h2 className="text-base font-semibold text-slate-900">Understanding Roth Conversions</h2>
 
           <p className="text-base font-medium text-slate-800 leading-relaxed">
             A Roth conversion is when you move money from a traditional IRA or pre-tax retirement account into a Roth IRA. You pay taxes on the converted amount now, but in exchange, that money grows tax-free forever and you never pay taxes on qualified withdrawals. For early retirees, this creates a powerful opportunity.
@@ -641,7 +641,7 @@ export default function RothConversionPage() {
             Here's why this matters for your plan: Once you retire early but before you start Social Security or required minimum distributions, you likely have several years of low taxable income. These are golden years for conversions—you can fill up the lower tax brackets with conversions at rates you'll never see again. You're essentially prepaying taxes at 12% or 22% to avoid paying 24% or 32% later when RMDs kick in.
           </p>
 
-          <h3 className="text-xl font-black text-slate-900 mt-6">How to Use This Tool</h3>
+          <h3 className="text-sm font-semibold text-slate-900 mt-6">How to Use This Tool</h3>
 
           <p className="text-base font-medium text-slate-800 leading-relaxed">
             Start by entering your current account balances and retirement assumptions below. The tool will project your account balances year by year, showing exactly when conversions make sense and how much tax you'll pay. Pay special attention to the years between early retirement and age 72—this is your conversion window.
@@ -669,12 +669,12 @@ export default function RothConversionPage() {
             </p>
           </div>
 
-          <div className="mt-6 p-4 bg-amber-50 border-2 border-amber-300 rounded-lg">
+          <div className="mt-6 p-4 bg-white border border-slate-200 rounded-lg">
             <div className="flex items-start gap-3">
               <AlertTriangle className="h-6 w-6 text-amber-600 flex-shrink-0 mt-1" />
               <div>
-                <p className="text-base font-bold text-amber-900 mb-2">Critical Decision Points</p>
-                <p className="text-sm font-medium text-amber-800 leading-relaxed">
+                <p className="text-sm font-medium text-slate-900 mb-1.5">Critical Decision Points</p>
+                <p className="text-sm text-slate-500 leading-relaxed">
                   Watch for years where your effective tax rate spikes—those are years to reduce conversions. The visualization below will highlight optimal conversion windows in green. If future tax rates increase (as many advisors expect), converting now becomes even more valuable.
                 </p>
               </div>
@@ -686,7 +686,7 @@ export default function RothConversionPage() {
       {/* Scenario Selector */}
       <Card className="border border-slate-200">
         <CardHeader>
-          <CardTitle className="text-2xl font-black flex items-center gap-3">
+          <CardTitle className="text-sm font-semibold flex items-center gap-2">
             <Settings className="h-6 w-6 text-emerald-600" />
             Select Conversion Strategy
           </CardTitle>
@@ -721,7 +721,7 @@ export default function RothConversionPage() {
       {/* Input Parameters */}
       <Card className="border border-slate-200">
         <CardHeader>
-          <CardTitle className="text-2xl font-black flex items-center gap-3">
+          <CardTitle className="text-sm font-semibold flex items-center gap-2">
             <Calculator className="h-6 w-6 text-emerald-600" />
             Your Conversion Scenario
           </CardTitle>
@@ -918,7 +918,7 @@ export default function RothConversionPage() {
                 </div>
               </div>
 
-              <div className="p-4 bg-amber-50 border-2 border-amber-200 rounded-lg">
+              <div className="p-4 bg-white border border-slate-200 rounded-lg">
                 <p className="text-sm font-bold text-amber-900 mb-2">Healthcare Planning Notes</p>
                 <div className="space-y-1 text-sm font-medium text-amber-800">
                   <p>• ACA subsidy eligibility ends at ${filingStatus === "single" ? "60,000" : "80,000"} MAGI</p>
@@ -935,7 +935,7 @@ export default function RothConversionPage() {
       {projections.length > 0 && (
         <Card className="border border-slate-200">
           <CardHeader>
-            <CardTitle className="text-2xl font-black">Portfolio Projection with Roth Conversions</CardTitle>
+            <CardTitle className="text-base font-semibold">Portfolio Projection with Roth Conversions</CardTitle>
             <p className="text-base font-medium text-slate-600 mt-2">
               Track how your account balances evolve with conversions. Green shading shows optimal gap year conversion windows.
               Dashed lines mark Medicare eligibility, tax bracket thresholds, and healthcare subsidy limits.
@@ -1187,7 +1187,7 @@ export default function RothConversionPage() {
       {projections.length > 0 && (
         <Card className={isPro ? "bg-gradient-to-br from-emerald-50 via-white to-teal-50 border border-slate-200" : "bg-slate-100 border-2 border-slate-300 relative"}>
           <CardHeader>
-            <CardTitle className={`text-2xl font-black flex items-center gap-3 ${!isPro && "text-slate-400"}`}>
+            <CardTitle className={`text-sm font-semibold flex items-center gap-2 ${!isPro && "text-slate-400"}`}>
               {!isPro && <Lock className="h-6 w-6 text-slate-400" />}
               {isPro && <Lightbulb className="h-6 w-6 text-emerald-600" />}
               Strategy Insights
@@ -1200,7 +1200,7 @@ export default function RothConversionPage() {
                 <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-200 mb-4">
                   <Lock className="h-8 w-8 text-slate-400" />
                 </div>
-                <h3 className="text-xl font-black text-slate-700 mb-2">Unlock Strategic Insights</h3>
+                <h3 className="text-sm font-semibold text-slate-600 mb-2">Unlock Strategic Insights</h3>
                 <p className="text-base font-semibold text-slate-600 mb-6 max-w-md mx-auto">
                   Get personalized analysis of optimal conversion windows, lifetime tax savings, RMD reduction estimates, healthcare impacts, and break-even timelines.
                 </p>
@@ -1215,11 +1215,11 @@ export default function RothConversionPage() {
           ) : (
             <CardContent className="space-y-5">
             {/* Optimal Conversion Window */}
-            <div className="p-4 bg-emerald-50 border-2 border-emerald-200 rounded-lg">
-              <p className="text-base font-bold text-emerald-900 mb-2">
+            <div className="p-4 bg-white border border-slate-200 rounded-lg">
+              <p className="text-sm font-medium text-slate-900 mb-1.5">
                 • Your optimal conversion window is ages {retirementAge} to {Math.min(72, lifeExpectancy)}
               </p>
-              <p className="text-sm font-medium text-emerald-800 leading-relaxed">
+              <p className="text-sm text-slate-500 leading-relaxed">
                 {analysis.optimalYears.length > 0
                   ? `Focus conversions in years ${analysis.optimalYears.slice(0, 5).join(", ")} when your effective tax rate is lowest. These gap years between retirement and RMDs/Social Security offer the best opportunity to fill the 12% and 22% brackets.`
                   : "Consider increasing conversion amounts to take advantage of low-income years during early retirement."}
@@ -1227,11 +1227,11 @@ export default function RothConversionPage() {
             </div>
 
             {/* Lifetime Tax Savings */}
-            <div className="p-4 bg-blue-50 border-2 border-blue-200 rounded-lg">
-              <p className="text-base font-bold text-blue-900 mb-2">
+            <div className="p-4 bg-white border border-slate-200 rounded-lg">
+              <p className="text-sm font-medium text-slate-900 mb-1.5">
                 • Estimated lifetime tax savings: {formatCurrency(Math.abs(analysis.lifetimeTaxSavings))}
               </p>
-              <p className="text-sm font-medium text-blue-800 leading-relaxed">
+              <p className="text-sm text-slate-500 leading-relaxed">
                 {analysis.lifetimeTaxSavings > 0
                   ? `By converting during low-income years, you avoid paying higher tax rates on future RMDs. This strategy pays for itself and generates ${formatCurrency(analysis.lifetimeTaxSavings)} in net tax savings over your lifetime.`
                   : `This strategy would increase lifetime taxes by ${formatCurrency(Math.abs(analysis.lifetimeTaxSavings))}. Consider reducing conversion amounts or adjusting timing.`}
@@ -1239,22 +1239,22 @@ export default function RothConversionPage() {
             </div>
 
             {/* RMD Reduction */}
-            <div className="p-4 bg-purple-50 border-2 border-purple-200 rounded-lg">
-              <p className="text-base font-bold text-purple-900 mb-2">
+            <div className="p-4 bg-white border border-slate-200 rounded-lg">
+              <p className="text-sm font-medium text-slate-900 mb-1.5">
                 • Future RMD exposure reduced by {formatPercent(analysis.rmdReduction)}
               </p>
-              <p className="text-sm font-medium text-purple-800 leading-relaxed">
+              <p className="text-sm text-slate-500 leading-relaxed">
                 Converting now reduces your Traditional IRA balance, which means smaller forced withdrawals starting at age 72. This gives you more control over taxable income in your 70s and 80s, potentially keeping you in lower tax brackets.
               </p>
             </div>
 
             {/* Healthcare Impact */}
             {currentAge && currentAge < 65 && (
-              <div className="p-4 bg-amber-50 border-2 border-amber-200 rounded-lg">
-                <p className="text-base font-bold text-amber-900 mb-2">
+              <div className="p-4 bg-white border border-slate-200 rounded-lg">
+                <p className="text-sm font-medium text-slate-900 mb-1.5">
                   • Healthcare subsidy considerations (pre-Medicare)
                 </p>
-                <p className="text-sm font-medium text-amber-800 leading-relaxed">
+                <p className="text-sm text-slate-500 leading-relaxed">
                   {(() => {
                     const subsidyYears = projections.filter(p => p.age < 65 && p.healthcareSubsidyEligible);
                     const riskYears = projections.filter(p => p.age < 65 && !p.healthcareSubsidyEligible && p.taxableIncome > 0);
@@ -1275,11 +1275,11 @@ export default function RothConversionPage() {
               const irmaaYears = projections.filter(p => p.age >= 65 && p.irmaaThreshold);
               if (irmaaYears.length > 0) {
                 return (
-                  <div className="p-4 bg-red-50 border-2 border-red-200 rounded-lg">
-                    <p className="text-base font-bold text-red-900 mb-2">
+                  <div className="p-4 bg-white border border-slate-200 rounded-lg">
+                    <p className="text-sm font-medium text-slate-900 mb-1.5">
                       • Conversion risk: IRMAA surcharges triggered in {irmaaYears.length} years
                     </p>
-                    <p className="text-sm font-medium text-red-800 leading-relaxed">
+                    <p className="text-sm text-slate-500 leading-relaxed">
                       Your conversions push income above the Medicare IRMAA threshold (${formatCurrency(filingStatus === "single" ? IRMAA_THRESHOLD_SINGLE : IRMAA_THRESHOLD_MARRIED)}) in years {irmaaYears.slice(0, 5).map(y => y.year).join(", ")}.
                       This triggers surcharges of $800-$6,000+ per year on Medicare premiums. Remember: IRMAA uses a 2-year lookback, so high-income years at age 63-64 affect Medicare costs at 65-66.
                     </p>
@@ -1323,23 +1323,23 @@ export default function RothConversionPage() {
 
       {/* Helper Panels */}
       <div className="grid md:grid-cols-2 gap-6">
-        <Card className="bg-amber-50 border-2 border-amber-300">
+        <Card className="bg-white border border-slate-200">
           <CardHeader>
-            <CardTitle className="text-lg font-black text-amber-900">What if you convert too much in one year?</CardTitle>
+            <CardTitle className="font-medium text-slate-900">What if you convert too much in one year?</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm font-medium text-amber-800 leading-relaxed">
+            <p className="text-sm text-slate-500 leading-relaxed">
               Converting too much can push you into a higher tax bracket, defeating the purpose. For example, if you're in the 12% bracket and convert enough to jump to 22% or 24%, you're paying unnecessarily high taxes. The key is to convert just enough to "fill up" your current bracket without spilling into the next one. This is why spreading conversions over multiple years is usually optimal.
             </p>
           </CardContent>
         </Card>
 
-        <Card className="bg-blue-50 border-2 border-blue-300">
+        <Card className="bg-white border border-slate-200">
           <CardHeader>
-            <CardTitle className="text-lg font-black text-blue-900">Why early retirement creates tax opportunities</CardTitle>
+            <CardTitle className="font-medium text-slate-900">Why early retirement creates tax opportunities</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm font-medium text-blue-800 leading-relaxed">
+            <p className="text-sm text-slate-500 leading-relaxed">
               When you retire early, you often have a gap of 5-10 years between leaving work and starting Social Security. During these years, your taxable income can be very low—maybe just investment income or part-time consulting. This is your conversion window. You can convert $50,000-$100,000+ per year while staying in the 12% or 22% brackets, rates you'll never see again once RMDs and Social Security kick in.
             </p>
           </CardContent>
@@ -1350,7 +1350,7 @@ export default function RothConversionPage() {
       {projections.length > 0 && (
         <Card className={isPro ? "border border-slate-200" : "bg-slate-100 border-2 border-slate-300"}>
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className={`text-2xl font-black flex items-center gap-3 ${!isPro && "text-slate-400"}`}>
+            <CardTitle className={`text-sm font-semibold flex items-center gap-2 ${!isPro && "text-slate-400"}`}>
               {!isPro && <Lock className="h-6 w-6 text-slate-400" />}
               Detailed Year-by-Year Projection
               {!isPro && <span className="ml-2 text-sm font-bold text-amber-600 bg-amber-100 px-3 py-1 rounded-full border-2 border-amber-300">Pro Only</span>}
@@ -1368,7 +1368,7 @@ export default function RothConversionPage() {
                 <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-200 mb-4">
                   <Lock className="h-8 w-8 text-slate-400" />
                 </div>
-                <h3 className="text-xl font-black text-slate-700 mb-2">Unlock Detailed Projections</h3>
+                <h3 className="text-sm font-semibold text-slate-600 mb-2">Unlock Detailed Projections</h3>
                 <p className="text-base font-semibold text-slate-600 mb-6 max-w-md mx-auto">
                   Get year-by-year breakdowns with income, conversions, taxes, healthcare, and account balances for your entire retirement timeline.
                 </p>
@@ -1384,25 +1384,25 @@ export default function RothConversionPage() {
             <CardContent>
             <div className="overflow-x-auto">
               <Table>
-                <TableHeader className="sticky top-0 bg-white">
-                  <TableRow className="border-b-2 border-black">
-                    <TableHead className="font-black text-slate-900">Year</TableHead>
-                    <TableHead className="font-black text-slate-900">Age</TableHead>
-                    <TableHead className="font-black text-slate-900">Income</TableHead>
-                    <TableHead className="font-black text-slate-900">Conversion</TableHead>
-                    <TableHead className="font-black text-slate-900">Taxable Income</TableHead>
-                    <TableHead className="font-black text-slate-900">Est. Taxes</TableHead>
-                    <TableHead className="font-black text-slate-900">Eff. Tax %</TableHead>
-                    <TableHead className="font-black text-slate-900">Marg. Tax %</TableHead>
-                    <TableHead className="font-black text-slate-900">Healthcare</TableHead>
-                    <TableHead className="font-black text-slate-900">Subsidy</TableHead>
-                    <TableHead className="font-black text-slate-900">IRMAA</TableHead>
-                    <TableHead className="font-black text-slate-900">Traditional</TableHead>
-                    <TableHead className="font-black text-slate-900">Roth</TableHead>
-                    <TableHead className="font-black text-slate-900">Taxable</TableHead>
-                    <TableHead className="font-black text-slate-900">Total</TableHead>
-                    <TableHead className="font-black text-slate-900">Withdrawal</TableHead>
-                    <TableHead className="font-black text-slate-900">RMD</TableHead>
+                <TableHeader className="sticky top-0 bg-slate-50">
+                  <TableRow className="border-b border-slate-200">
+                    <TableHead className="text-xs font-semibold text-slate-600">Year</TableHead>
+                    <TableHead className="text-xs font-semibold text-slate-600">Age</TableHead>
+                    <TableHead className="text-xs font-semibold text-slate-600">Income</TableHead>
+                    <TableHead className="text-xs font-semibold text-slate-600">Conversion</TableHead>
+                    <TableHead className="text-xs font-semibold text-slate-600">Taxable Income</TableHead>
+                    <TableHead className="text-xs font-semibold text-slate-600">Est. Taxes</TableHead>
+                    <TableHead className="text-xs font-semibold text-slate-600">Eff. Tax %</TableHead>
+                    <TableHead className="text-xs font-semibold text-slate-600">Marg. Tax %</TableHead>
+                    <TableHead className="text-xs font-semibold text-slate-600">Healthcare</TableHead>
+                    <TableHead className="text-xs font-semibold text-slate-600">Subsidy</TableHead>
+                    <TableHead className="text-xs font-semibold text-slate-600">IRMAA</TableHead>
+                    <TableHead className="text-xs font-semibold text-slate-600">Traditional</TableHead>
+                    <TableHead className="text-xs font-semibold text-slate-600">Roth</TableHead>
+                    <TableHead className="text-xs font-semibold text-slate-600">Taxable</TableHead>
+                    <TableHead className="text-xs font-semibold text-slate-600">Total</TableHead>
+                    <TableHead className="text-xs font-semibold text-slate-600">Withdrawal</TableHead>
+                    <TableHead className="text-xs font-semibold text-slate-600">RMD</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -1419,16 +1419,16 @@ export default function RothConversionPage() {
 
                     return (
                       <TableRow key={idx} className={rowClass}>
-                        <TableCell className="font-semibold">{p.year}</TableCell>
-                        <TableCell className="font-semibold">{p.age}</TableCell>
-                        <TableCell className="font-semibold">{p.income > 0 ? formatCurrency(p.income) : "—"}</TableCell>
-                        <TableCell className="font-semibold">{p.conversionAmount > 0 ? formatCurrency(p.conversionAmount) : "—"}</TableCell>
-                        <TableCell className="font-semibold">{formatCurrency(p.taxableIncome)}</TableCell>
-                        <TableCell className="font-semibold">{formatCurrency(p.estimatedTaxes)}</TableCell>
-                        <TableCell className="font-semibold">{formatPercent(p.effectiveTaxRate)}</TableCell>
-                        <TableCell className="font-semibold">{formatPercent(p.marginalTaxRate)}</TableCell>
-                        <TableCell className="font-semibold">{formatCurrency(p.healthcareCost)}</TableCell>
-                        <TableCell className="font-semibold text-center">
+                        <TableCell className="text-xs tabular-nums">{p.year}</TableCell>
+                        <TableCell className="text-xs tabular-nums">{p.age}</TableCell>
+                        <TableCell className="text-xs tabular-nums">{p.income > 0 ? formatCurrency(p.income) : "—"}</TableCell>
+                        <TableCell className="text-xs tabular-nums">{p.conversionAmount > 0 ? formatCurrency(p.conversionAmount) : "—"}</TableCell>
+                        <TableCell className="text-xs tabular-nums">{formatCurrency(p.taxableIncome)}</TableCell>
+                        <TableCell className="text-xs tabular-nums">{formatCurrency(p.estimatedTaxes)}</TableCell>
+                        <TableCell className="text-xs tabular-nums">{formatPercent(p.effectiveTaxRate)}</TableCell>
+                        <TableCell className="text-xs tabular-nums">{formatPercent(p.marginalTaxRate)}</TableCell>
+                        <TableCell className="text-xs tabular-nums">{formatCurrency(p.healthcareCost)}</TableCell>
+                        <TableCell className="text-xs text-center">
                           {p.age < 65 ? (
                             p.healthcareSubsidyEligible ? (
                               <span className="text-green-700 font-bold">✓</span>
@@ -1439,7 +1439,7 @@ export default function RothConversionPage() {
                             <span className="text-slate-400">—</span>
                           )}
                         </TableCell>
-                        <TableCell className="font-semibold text-center">
+                        <TableCell className="text-xs text-center">
                           {p.age >= 65 ? (
                             p.irmaaThreshold ? (
                               <span className="text-red-700 font-bold">⚠</span>
@@ -1450,12 +1450,12 @@ export default function RothConversionPage() {
                             <span className="text-slate-400">—</span>
                           )}
                         </TableCell>
-                        <TableCell className="font-semibold">{formatCurrency(p.traditionalBalance)}</TableCell>
-                        <TableCell className="font-semibold">{formatCurrency(p.rothBalance)}</TableCell>
-                        <TableCell className="font-semibold">{formatCurrency(p.taxableBalance)}</TableCell>
-                        <TableCell className="font-semibold">{formatCurrency(p.totalPortfolio)}</TableCell>
-                        <TableCell className="font-semibold">{p.withdrawalAmount > 0 ? formatCurrency(p.withdrawalAmount) : "—"}</TableCell>
-                        <TableCell className="font-semibold">{p.rmdAmount > 0 ? formatCurrency(p.rmdAmount) : "—"}</TableCell>
+                        <TableCell className="text-xs tabular-nums">{formatCurrency(p.traditionalBalance)}</TableCell>
+                        <TableCell className="text-xs tabular-nums">{formatCurrency(p.rothBalance)}</TableCell>
+                        <TableCell className="text-xs tabular-nums">{formatCurrency(p.taxableBalance)}</TableCell>
+                        <TableCell className="text-xs tabular-nums">{formatCurrency(p.totalPortfolio)}</TableCell>
+                        <TableCell className="text-xs tabular-nums">{p.withdrawalAmount > 0 ? formatCurrency(p.withdrawalAmount) : "—"}</TableCell>
+                        <TableCell className="text-xs tabular-nums">{p.rmdAmount > 0 ? formatCurrency(p.rmdAmount) : "—"}</TableCell>
                       </TableRow>
                     );
                   })}
@@ -1463,7 +1463,7 @@ export default function RothConversionPage() {
               </Table>
             </div>
             <div className="mt-4 space-y-2 text-xs text-slate-600">
-              <p className="font-semibold">Row highlighting:</p>
+              <p className="text-xs tabular-nums">Row highlighting:</p>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 bg-emerald-50 border border-emerald-200"></div>

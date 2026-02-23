@@ -146,15 +146,15 @@ export default function LifetimeIncomePage() {
   }
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
+    <div className="space-y-6 py-4">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-4xl sm:text-5xl font-black flex flex-wrap items-center gap-3">
-            <TrendingUp className="h-8 w-8 sm:h-10 sm:w-10 text-emerald-600" />
+          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            <TrendingUp className="h-5 w-5 text-emerald-600" />
             <span>Trajectory</span>
           </h1>
-          <p className="text-slate-700 mt-3 text-base sm:text-lg font-semibold">
+          <p className="text-sm text-slate-500 mt-1">
             Model your complete financial future by combining all income sources with expenses to project your lifetime net worth trajectory
           </p>
         </div>

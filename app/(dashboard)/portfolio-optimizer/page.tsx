@@ -1107,8 +1107,8 @@ export default function PortfolioOptimizerPage() {
 
   if (loading || subscriptionLoading) {
     return (
-      <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
-        <div className="max-w-7xl mx-auto space-y-6">
+      <div className="">
+        <div className="space-y-6 py-4">
           <Skeleton className="h-8 w-64" />
           <Skeleton className="h-4 w-96" />
           <div className="grid gap-6 md:grid-cols-2">
@@ -1123,10 +1123,10 @@ export default function PortfolioOptimizerPage() {
   // Show questionnaire if needed
   if (showQuestionnaire || (!riskProfile && !optimization)) {
     return (
-      <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
-        <div className="max-w-7xl mx-auto space-y-6">
+      <div className="">
+        <div className="space-y-6 py-4">
         <div>
-          <h1 className="text-4xl sm:text-5xl font-black text-slate-900">Portfolio Optimizer</h1>
+          <h1 className="text-2xl font-bold text-slate-900">Portfolio Optimizer</h1>
           <p className="text-sm sm:text-base text-slate-500 mt-1">
             Let&apos;s determine your risk profile to provide personalized recommendations
           </p>
@@ -1176,12 +1176,12 @@ export default function PortfolioOptimizerPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="">
+      <div className="space-y-6 py-4">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-4xl sm:text-5xl font-black text-slate-900">Portfolio Optimizer</h1>
+          <h1 className="text-2xl font-bold text-slate-900">Portfolio Optimizer</h1>
           <p className="text-sm sm:text-base text-slate-500 mt-1">
             AI-powered portfolio recommendations based on Modern Portfolio Theory
           </p>

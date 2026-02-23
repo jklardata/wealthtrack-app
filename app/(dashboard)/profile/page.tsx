@@ -127,10 +127,10 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-6">
+    <div className="p-4 md:p-8 space-y-6 py-4">
       {/* Header */}
       <div>
-        <h1 className="text-3xl md:text-5xl font-black flex items-center gap-2 md:gap-3">
+        <h1 className="text-3xl md:text-2xl font-bold text-slate-900 flex items-center gap-2 md:gap-3">
           <User className="h-8 w-8 md:h-10 md:w-10 text-emerald-600" />
           Profile
         </h1>
