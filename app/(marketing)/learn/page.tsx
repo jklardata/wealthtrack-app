@@ -194,7 +194,13 @@ export default function LearnOverviewPage() {
 
       {/* Footer nav */}
       <div className="mt-12 pt-6 border-t border-slate-200 flex justify-between items-center text-sm">
-        <span className="text-slate-400">Overview</span>
+        <Link
+          href="/faq"
+          className="flex items-center gap-1.5 text-slate-500 hover:text-slate-700"
+        >
+          FAQ
+          <ArrowRight className="h-3.5 w-3.5" />
+        </Link>
         <Link
           href="/learn/methodology"
           className="flex items-center gap-1.5 text-emerald-700 font-medium hover:text-emerald-800"

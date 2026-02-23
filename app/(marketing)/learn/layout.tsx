@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { TrendingUp, FileText, BookOpen, Cpu, ArrowLeft } from "lucide-react";
+import { TrendingUp, FileText, BookOpen, Cpu, ArrowLeft, HelpCircle } from "lucide-react";
 
 const docNav = [
   {
@@ -12,6 +12,7 @@ const docNav = [
       { href: "/learn", label: "Overview", icon: BookOpen, exact: true },
       { href: "/learn/methodology", label: "Methodology", icon: Cpu },
       { href: "/learn/glossary", label: "Glossary", icon: FileText },
+      { href: "/faq", label: "FAQ", icon: HelpCircle, exact: true },
     ],
   },
 ];

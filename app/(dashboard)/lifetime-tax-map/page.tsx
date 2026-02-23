@@ -1078,24 +1078,24 @@ export default function LifetimeTaxMapPage() {
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
-                <TableRow className="bg-slate-100">
-                  <TableHead className="font-black text-slate-900 sticky left-0 bg-slate-100 z-10">Year</TableHead>
-                  <TableHead className="font-black text-slate-900 sticky left-[60px] bg-slate-100 z-10">Age</TableHead>
-                  <TableHead className="font-black text-slate-900">Total Income</TableHead>
-                  <TableHead className="font-black text-slate-900">Consulting</TableHead>
-                  <TableHead className="font-black text-slate-900">Roth Conv.</TableHead>
-                  <TableHead className="font-black text-slate-900">Cap. Gains</TableHead>
-                  <TableHead className="font-black text-slate-900">Withdrawals</TableHead>
-                  <TableHead className="font-black text-slate-900">Soc. Sec.</TableHead>
-                  <TableHead className="font-black text-slate-900">Taxable Inc.</TableHead>
-                  <TableHead className="font-black text-slate-900">Taxes Paid</TableHead>
-                  <TableHead className="font-black text-slate-900">Effective Rate</TableHead>
-                  <TableHead className="font-black text-slate-900">Marginal Rate</TableHead>
-                  <TableHead className="font-black text-slate-900 bg-red-50">Cumulative Taxes</TableHead>
-                  <TableHead className="font-black text-slate-900">Trad. Balance</TableHead>
-                  <TableHead className="font-black text-slate-900">Roth Balance</TableHead>
-                  <TableHead className="font-black text-slate-900">Taxable Balance</TableHead>
-                  <TableHead className="font-black text-slate-900">Total Portfolio</TableHead>
+                <TableRow className="bg-slate-50">
+                  <TableHead className="text-xs font-semibold text-slate-600 sticky left-0 bg-slate-50 z-10">Year</TableHead>
+                  <TableHead className="text-xs font-semibold text-slate-600 sticky left-[60px] bg-slate-50 z-10">Age</TableHead>
+                  <TableHead className="text-xs font-semibold text-slate-600">Total Income</TableHead>
+                  <TableHead className="text-xs font-semibold text-blue-600">Consulting</TableHead>
+                  <TableHead className="text-xs font-semibold text-purple-600">Roth Conv.</TableHead>
+                  <TableHead className="text-xs font-semibold text-green-600">Cap. Gains</TableHead>
+                  <TableHead className="text-xs font-semibold text-orange-600">Withdrawals</TableHead>
+                  <TableHead className="text-xs font-semibold text-yellow-600">Soc. Sec.</TableHead>
+                  <TableHead className="text-xs font-semibold text-slate-600">Taxable Inc.</TableHead>
+                  <TableHead className="text-xs font-semibold text-red-600">Taxes Paid</TableHead>
+                  <TableHead className="text-xs font-semibold text-slate-600">Effective Rate</TableHead>
+                  <TableHead className="text-xs font-semibold text-slate-600">Marginal Rate</TableHead>
+                  <TableHead className="text-xs font-semibold text-red-600 bg-red-50">Cumulative Taxes</TableHead>
+                  <TableHead className="text-xs font-semibold text-slate-600">Trad. Balance</TableHead>
+                  <TableHead className="text-xs font-semibold text-slate-600">Roth Balance</TableHead>
+                  <TableHead className="text-xs font-semibold text-slate-600">Taxable Balance</TableHead>
+                  <TableHead className="text-xs font-semibold text-emerald-600">Total Portfolio</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -1109,23 +1109,23 @@ export default function LifetimeTaxMapPage() {
                       "hover:bg-slate-50"
                     }
                   >
-                    <TableCell className="font-bold sticky left-0 bg-inherit z-10">{row.year}</TableCell>
-                    <TableCell className="font-bold sticky left-[60px] bg-inherit z-10">{row.age}</TableCell>
-                    <TableCell className="font-semibold">{formatCurrency(row.totalIncome)}</TableCell>
-                    <TableCell className="font-semibold">{formatCurrency(row.consultingIncome)}</TableCell>
-                    <TableCell className="font-semibold text-purple-700">{formatCurrency(row.rothConversion)}</TableCell>
-                    <TableCell className="font-semibold text-green-700">{formatCurrency(row.capitalGainsRealized)}</TableCell>
-                    <TableCell className="font-semibold text-orange-700">{formatCurrency(row.withdrawals)}</TableCell>
-                    <TableCell className="font-semibold text-yellow-700">{formatCurrency(row.socialSecurityIncome)}</TableCell>
-                    <TableCell className="font-semibold">{formatCurrency(row.taxableIncome)}</TableCell>
-                    <TableCell className="font-bold text-red-700">{formatCurrency(row.taxesPaid)}</TableCell>
-                    <TableCell className="font-semibold">{formatPercent(row.effectiveTaxRate)}</TableCell>
-                    <TableCell className="font-semibold">{formatPercent(row.marginalTaxRate)}</TableCell>
-                    <TableCell className="font-black text-red-800 bg-red-50">{formatCurrency(row.cumulativeLifetimeTaxes)}</TableCell>
-                    <TableCell className="font-semibold">{formatCurrency(row.traditionalBalance)}</TableCell>
-                    <TableCell className="font-semibold">{formatCurrency(row.rothBalance)}</TableCell>
-                    <TableCell className="font-semibold">{formatCurrency(row.taxableBalance)}</TableCell>
-                    <TableCell className="font-bold text-emerald-700">{formatCurrency(row.totalPortfolio)}</TableCell>
+                    <TableCell className="text-xs font-medium sticky left-0 bg-inherit z-10">{row.year}</TableCell>
+                    <TableCell className="text-xs font-medium sticky left-[60px] bg-inherit z-10">{row.age}</TableCell>
+                    <TableCell className="text-xs tabular-nums">{formatCurrency(row.totalIncome)}</TableCell>
+                    <TableCell className="text-xs tabular-nums text-blue-700">{formatCurrency(row.consultingIncome)}</TableCell>
+                    <TableCell className="text-xs tabular-nums text-purple-700">{formatCurrency(row.rothConversion)}</TableCell>
+                    <TableCell className="text-xs tabular-nums text-green-700">{formatCurrency(row.capitalGainsRealized)}</TableCell>
+                    <TableCell className="text-xs tabular-nums text-orange-700">{formatCurrency(row.withdrawals)}</TableCell>
+                    <TableCell className="text-xs tabular-nums text-yellow-700">{formatCurrency(row.socialSecurityIncome)}</TableCell>
+                    <TableCell className="text-xs tabular-nums">{formatCurrency(row.taxableIncome)}</TableCell>
+                    <TableCell className="text-xs tabular-nums text-red-700">{formatCurrency(row.taxesPaid)}</TableCell>
+                    <TableCell className="text-xs tabular-nums">{formatPercent(row.effectiveTaxRate)}</TableCell>
+                    <TableCell className="text-xs tabular-nums">{formatPercent(row.marginalTaxRate)}</TableCell>
+                    <TableCell className="text-xs tabular-nums text-red-700 bg-red-50">{formatCurrency(row.cumulativeLifetimeTaxes)}</TableCell>
+                    <TableCell className="text-xs tabular-nums">{formatCurrency(row.traditionalBalance)}</TableCell>
+                    <TableCell className="text-xs tabular-nums">{formatCurrency(row.rothBalance)}</TableCell>
+                    <TableCell className="text-xs tabular-nums">{formatCurrency(row.taxableBalance)}</TableCell>
+                    <TableCell className="text-xs tabular-nums font-medium text-emerald-700">{formatCurrency(row.totalPortfolio)}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

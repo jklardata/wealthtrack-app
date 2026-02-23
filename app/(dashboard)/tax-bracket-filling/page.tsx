@@ -1477,57 +1477,59 @@ export default function TaxBracketFillingPage() {
             <CardContent>
             <div className="overflow-x-auto">
               <Table>
-                <TableHeader className="sticky top-0 bg-white">
+                <TableHeader className="sticky top-0 bg-slate-50">
                   <TableRow className="border-b border-slate-200">
-                    <TableHead className="font-semibold text-slate-700 text-xs">Year</TableHead>
-                    <TableHead className="font-semibold text-slate-700 text-xs">Age</TableHead>
-                    <TableHead className="font-semibold text-slate-700 text-xs">Total Income</TableHead>
-                    <TableHead className="font-semibold text-slate-700 text-xs">Consulting</TableHead>
-                    <TableHead className="font-semibold text-slate-700 text-xs">Roth Conv.</TableHead>
-                    <TableHead className="font-semibold text-slate-700 text-xs">Cap. Gains</TableHead>
-                    <TableHead className="font-semibold text-slate-700 text-xs">Withdrawals</TableHead>
-                    <TableHead className="font-semibold text-slate-700 text-xs">Taxable Income</TableHead>
-                    <TableHead className="font-semibold text-slate-700 text-xs">Taxes Paid</TableHead>
-                    <TableHead className="font-semibold text-slate-700 text-xs">Eff. Tax %</TableHead>
-                    <TableHead className="font-semibold text-slate-700 text-xs">Bracket Use %</TableHead>
-                    <TableHead className="font-semibold text-slate-700 text-xs">Remaining Cap.</TableHead>
-                    <TableHead className="font-semibold text-slate-700 text-xs">Traditional</TableHead>
-                    <TableHead className="font-semibold text-slate-700 text-xs">Roth</TableHead>
-                    <TableHead className="font-semibold text-slate-700 text-xs">Taxable</TableHead>
-                    <TableHead className="font-semibold text-slate-700 text-xs">Total Portfolio</TableHead>
-                    <TableHead className="font-semibold text-slate-700 text-xs">Strategy</TableHead>
+                    <TableHead className="text-xs font-semibold text-slate-600">Year</TableHead>
+                    <TableHead className="text-xs font-semibold text-slate-600">Age</TableHead>
+                    <TableHead className="text-xs font-semibold text-slate-600">Total Income</TableHead>
+                    <TableHead className="text-xs font-semibold text-blue-600">Consulting</TableHead>
+                    <TableHead className="text-xs font-semibold text-purple-600">Roth Conv.</TableHead>
+                    <TableHead className="text-xs font-semibold text-green-600">Cap. Gains</TableHead>
+                    <TableHead className="text-xs font-semibold text-orange-600">Withdrawals</TableHead>
+                    <TableHead className="text-xs font-semibold text-slate-600">Taxable Income</TableHead>
+                    <TableHead className="text-xs font-semibold text-red-600">Taxes Paid</TableHead>
+                    <TableHead className="text-xs font-semibold text-slate-600">Eff. Tax %</TableHead>
+                    <TableHead className="text-xs font-semibold text-slate-600">Bracket Use %</TableHead>
+                    <TableHead className="text-xs font-semibold text-slate-600">Remaining Cap.</TableHead>
+                    <TableHead className="text-xs font-semibold text-slate-600">Traditional</TableHead>
+                    <TableHead className="text-xs font-semibold text-slate-600">Roth</TableHead>
+                    <TableHead className="text-xs font-semibold text-slate-600">Taxable</TableHead>
+                    <TableHead className="text-xs font-semibold text-emerald-600">Total Portfolio</TableHead>
+                    <TableHead className="text-xs font-semibold text-slate-600">Strategy</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {projections.map((p, idx) => {
                     let rowClass = "";
                     if (p.isOptimalYear) {
-                      rowClass = "bg-emerald-50";
+                      rowClass = "bg-emerald-50 hover:bg-emerald-100";
                     } else if (p.irmaaThreshold) {
-                      rowClass = "bg-red-50";
+                      rowClass = "bg-red-50 hover:bg-red-100";
                     } else if (p.bracketUtilization < 50 && p.age >= retirementAge) {
-                      rowClass = "bg-amber-50";
+                      rowClass = "bg-amber-50 hover:bg-amber-100";
+                    } else {
+                      rowClass = "hover:bg-slate-50";
                     }
 
                     return (
                       <TableRow key={idx} className={rowClass}>
-                        <TableCell className="font-semibold">{p.year}</TableCell>
-                        <TableCell className="font-semibold">{p.age}</TableCell>
-                        <TableCell className="font-semibold">{formatCurrency(p.totalIncome)}</TableCell>
-                        <TableCell className="font-semibold">{p.consultingIncome > 0 ? formatCurrency(p.consultingIncome) : "—"}</TableCell>
-                        <TableCell className="font-semibold">{p.rothConversion > 0 ? formatCurrency(p.rothConversion) : "—"}</TableCell>
-                        <TableCell className="font-semibold">{p.capitalGainsRealized > 0 ? formatCurrency(p.capitalGainsRealized) : "—"}</TableCell>
-                        <TableCell className="font-semibold">{p.withdrawals > 0 ? formatCurrency(p.withdrawals) : "—"}</TableCell>
-                        <TableCell className="font-semibold">{formatCurrency(p.taxableIncome)}</TableCell>
-                        <TableCell className="font-semibold">{formatCurrency(p.taxesPaid)}</TableCell>
-                        <TableCell className="font-semibold">{formatPercent(p.effectiveTaxRate)}</TableCell>
-                        <TableCell className="font-semibold">{formatPercent(p.bracketUtilization)}</TableCell>
-                        <TableCell className="font-semibold">{formatCurrency(p.remainingBracketCapacity)}</TableCell>
-                        <TableCell className="font-semibold">{formatCurrency(p.traditionalBalance)}</TableCell>
-                        <TableCell className="font-semibold">{formatCurrency(p.rothBalance)}</TableCell>
-                        <TableCell className="font-semibold">{formatCurrency(p.taxableBalance)}</TableCell>
-                        <TableCell className="font-semibold">{formatCurrency(p.totalPortfolio)}</TableCell>
-                        <TableCell className="font-semibold text-xs">{p.strategyLabel}</TableCell>
+                        <TableCell className="text-xs font-medium">{p.year}</TableCell>
+                        <TableCell className="text-xs font-medium">{p.age}</TableCell>
+                        <TableCell className="text-xs tabular-nums">{formatCurrency(p.totalIncome)}</TableCell>
+                        <TableCell className="text-xs tabular-nums text-blue-700">{p.consultingIncome > 0 ? formatCurrency(p.consultingIncome) : "—"}</TableCell>
+                        <TableCell className="text-xs tabular-nums text-purple-700">{p.rothConversion > 0 ? formatCurrency(p.rothConversion) : "—"}</TableCell>
+                        <TableCell className="text-xs tabular-nums text-green-700">{p.capitalGainsRealized > 0 ? formatCurrency(p.capitalGainsRealized) : "—"}</TableCell>
+                        <TableCell className="text-xs tabular-nums text-orange-700">{p.withdrawals > 0 ? formatCurrency(p.withdrawals) : "—"}</TableCell>
+                        <TableCell className="text-xs tabular-nums">{formatCurrency(p.taxableIncome)}</TableCell>
+                        <TableCell className="text-xs tabular-nums text-red-700">{formatCurrency(p.taxesPaid)}</TableCell>
+                        <TableCell className="text-xs tabular-nums">{formatPercent(p.effectiveTaxRate)}</TableCell>
+                        <TableCell className="text-xs tabular-nums">{formatPercent(p.bracketUtilization)}</TableCell>
+                        <TableCell className="text-xs tabular-nums">{formatCurrency(p.remainingBracketCapacity)}</TableCell>
+                        <TableCell className="text-xs tabular-nums">{formatCurrency(p.traditionalBalance)}</TableCell>
+                        <TableCell className="text-xs tabular-nums">{formatCurrency(p.rothBalance)}</TableCell>
+                        <TableCell className="text-xs tabular-nums">{formatCurrency(p.taxableBalance)}</TableCell>
+                        <TableCell className="text-xs tabular-nums font-medium text-emerald-700">{formatCurrency(p.totalPortfolio)}</TableCell>
+                        <TableCell className="text-xs text-slate-600">{p.strategyLabel}</TableCell>
                       </TableRow>
                     );
                   })}

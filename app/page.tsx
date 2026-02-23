@@ -794,6 +794,7 @@ export default function Landing21() {
               <Link href="/about" className="hover:text-slate-700">About</Link>
               <Link href="/contact" className="hover:text-slate-700">Contact</Link>
               <Link href="/learn" className="hover:text-slate-700">Documentation</Link>
+              <Link href="/faq" className="hover:text-slate-700">FAQ</Link>
               <Link href="/blog" className="hover:text-slate-700">Resources</Link>
               <Link href="/pricing" className="hover:text-slate-700">Pricing</Link>
               <Link href="/privacy" className="hover:text-slate-700">Privacy</Link>
