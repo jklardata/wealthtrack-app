@@ -315,7 +315,7 @@ export default function GeoArbitragePage() {
     if (latest) {
       // Use net worth directly from the entry
       if (latest.net_worth && latest.net_worth > 0) {
-        setCurrentNetWorth(latest.net_worth);
+        setCurrentNetWorth(Math.round(latest.net_worth));
       }
 
       // Use pre_tax_income if available (convert monthly to annual)
@@ -762,7 +762,7 @@ export default function GeoArbitragePage() {
                 <input
                   type="number"
                   value={currentNetWorth}
-                  onChange={(e) => setCurrentNetWorth(parseFloat(e.target.value) || 0)}
+                  onChange={(e) => setCurrentNetWorth(parseInt(e.target.value) || 0)}
                   className="w-full pl-9 pr-4 py-2 border rounded-md bg-background"
                 />
               </div>

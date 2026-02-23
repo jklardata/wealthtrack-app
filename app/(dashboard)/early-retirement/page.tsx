@@ -178,7 +178,7 @@ export default function EarlyRetirementPage() {
             const netWorth = latest.net_worth || (latest.total_assets - latest.total_debts);
 
             if (netWorth > 0) {
-              setCurrentPortfolio(netWorth);
+              setCurrentPortfolio(Math.round(netWorth));
             }
 
             // Use income and expenses if available
@@ -1081,14 +1081,16 @@ function CombinedLifestyleMilestonesModule({
       isAchieved: fullMilestone?.isAchieved || false,
       progress: fullMilestone?.progress || 0,
     },
-    chubby: {
-      // Interpolate between Full FI and Fat FI
-      portfolioTarget: ((fullMilestone?.portfolioTarget || 1750000) + (fatMilestone?.portfolioTarget || 7500000)) / 2,
-      annualSpending: (((fullMilestone?.portfolioTarget || 1750000) + (fatMilestone?.portfolioTarget || 7500000)) / 2) * (withdrawalRate / 100),
-      adjustedPortfolioNeeded: Math.max(0, ((((fullMilestone?.portfolioTarget || 1750000) + (fatMilestone?.portfolioTarget || 7500000)) / 2) * (withdrawalRate / 100) - annualIncome) / (withdrawalRate / 100)),
-      isAchieved: false,
-      progress: Math.min(((fullMilestone?.progress || 0) + (fatMilestone?.progress || 0)) / 2, 100),
-    },
+    chubby: (() => {
+      const chubbyTarget = ((fullMilestone?.portfolioTarget || 1750000) + (fatMilestone?.portfolioTarget || 7500000)) / 2;
+      return {
+        portfolioTarget: chubbyTarget,
+        annualSpending: chubbyTarget * (withdrawalRate / 100),
+        adjustedPortfolioNeeded: Math.max(0, (chubbyTarget * (withdrawalRate / 100) - annualIncome) / (withdrawalRate / 100)),
+        isAchieved: currentPortfolio >= chubbyTarget,
+        progress: Math.min((currentPortfolio / chubbyTarget) * 100, 100),
+      };
+    })(),
     fat: {
       portfolioTarget: fatMilestone?.portfolioTarget || 7500000,
       annualSpending: (fatMilestone?.portfolioTarget || 7500000) * (withdrawalRate / 100),

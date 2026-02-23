@@ -76,7 +76,7 @@ export default function LifetimeIncomePage() {
       const data = await response.json();
       if (response.ok && data.data && data.data.length > 0) {
         const latest = data.data[0];
-        setCurrentNetWorth(latest.net_worth.toString());
+        setCurrentNetWorth(Math.round(latest.net_worth).toString());
       }
     } catch (error) {
       console.error("Error fetching net worth:", error);
