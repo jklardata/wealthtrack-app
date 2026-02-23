@@ -1178,8 +1178,8 @@ export default function DashboardPage() {
                         dataKey="value"
                         stroke="none"
                         labelLine={false}
-                        label={({ name, percent, cx, cy, midAngle, outerRadius: or }: { name: string; percent: number; cx: number; cy: number; midAngle: number; outerRadius: number }) => {
-                          if (percent < 0.05) return null;
+                        label={({ name, percent, cx, cy, midAngle, outerRadius: or }: { name?: string; percent?: number; cx?: number; cy?: number; midAngle?: number; outerRadius?: number }) => {
+                          if (!name || !percent || percent < 0.05 || cx == null || cy == null || midAngle == null || or == null) return null;
                           const RADIAN = Math.PI / 180;
                           const radius = or + 22;
                           const x = cx + radius * Math.cos(-midAngle * RADIAN);
