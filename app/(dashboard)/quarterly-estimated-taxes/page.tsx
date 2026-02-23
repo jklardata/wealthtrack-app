@@ -523,7 +523,7 @@ export default function QuarterlyEstimatedTaxesPage() {
 
   return (
     <TooltipProvider>
-      <div className="max-w-5xl mx-auto space-y-5 py-4">
+      <div className="space-y-5 py-4">
         {/* Header */}
         <div>
           <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
@@ -1161,70 +1161,57 @@ export default function QuarterlyEstimatedTaxesPage() {
         {/* Educational Panels */}
         <div className="grid md:grid-cols-3 gap-4">
           {/* Safe Harbor */}
-          <Card className="border-2 border-emerald-300 bg-emerald-50">
-            <CardHeader>
-              <CardTitle className="text-lg font-black flex items-center gap-2">
-                <Shield className="h-5 w-5 text-emerald-600" />
-                Safe Harbor Explained
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-sm space-y-2">
-              <p className="font-semibold text-emerald-900">
-                Safe harbor = no underpayment penalties
-              </p>
-              <p className="text-slate-700">
-                You're safe if you pay the <strong>lower</strong> of:
-              </p>
-              <ul className="list-disc list-inside space-y-1 text-slate-700">
+          <div className="bg-white border border-slate-200 rounded-xl p-5">
+            <h3 className="font-medium text-slate-900 mb-3 flex items-center gap-2">
+              <Shield className="h-4 w-4 text-emerald-600" />
+              Safe Harbor Explained
+            </h3>
+            <div className="text-sm space-y-2 text-slate-500">
+              <p className="font-medium text-slate-700">Safe harbor = no underpayment penalties</p>
+              <p>You're safe if you pay the <strong className="text-slate-700">lower</strong> of:</p>
+              <ul className="list-disc list-inside space-y-1">
                 <li>90% of current year tax</li>
                 <li>100% of prior year tax (110% if AGI &gt; $150k)</li>
               </ul>
-              <p className="text-xs text-slate-600 pt-2 border-t border-emerald-200">
+              <p className="text-xs pt-2 border-t border-slate-100">
                 Most self-employed use prior year method when income is growing.
               </p>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* Annualized Method */}
-          <Card className="border-2 border-purple-300 bg-purple-50">
-            <CardHeader>
-              <CardTitle className="text-lg font-black flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-purple-600" />
-                Annualized Income Method
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-sm space-y-2">
-              <p className="font-semibold text-purple-900">For variable/seasonal income</p>
-              <p className="text-slate-700">
-                Calculate tax based on year-to-date income annualized. Pay more in high quarters,
-                less in low quarters.
-              </p>
-              <p className="text-xs text-slate-600 pt-2 border-t border-purple-200">
+          <div className="bg-white border border-slate-200 rounded-xl p-5">
+            <h3 className="font-medium text-slate-900 mb-3 flex items-center gap-2">
+              <TrendingUp className="h-4 w-4 text-slate-500" />
+              Annualized Income Method
+            </h3>
+            <div className="text-sm space-y-2 text-slate-500">
+              <p className="font-medium text-slate-700">For variable/seasonal income</p>
+              <p>Calculate tax based on year-to-date income annualized. Pay more in high quarters, less in low quarters.</p>
+              <p className="text-xs pt-2 border-t border-slate-100">
                 Requires IRS Form 2210 Schedule AI. Pro feature helps calculate this automatically.
               </p>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* Common Mistakes */}
-          <Card className="border-2 border-amber-300 bg-amber-50">
-            <CardHeader>
-              <CardTitle className="text-lg font-black flex items-center gap-2">
-                <AlertTriangle className="h-5 w-5 text-amber-600" />
-                Common Mistakes
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="text-sm space-y-2">
-              <ul className="list-disc list-inside space-y-1 text-slate-700">
+          <div className="bg-white border border-slate-200 rounded-xl p-5">
+            <h3 className="font-medium text-slate-900 mb-3 flex items-center gap-2">
+              <AlertTriangle className="h-4 w-4 text-slate-500" />
+              Common Mistakes
+            </h3>
+            <div className="text-sm space-y-2 text-slate-500">
+              <ul className="list-disc list-inside space-y-1">
                 <li>Forgetting self-employment tax (15.3%)</li>
                 <li>Not adjusting when income spikes</li>
                 <li>Missing Q4 deadline (Jan 15, not Dec 31)</li>
                 <li>Paying equal amounts with seasonal income</li>
               </ul>
-              <p className="text-xs text-slate-600 pt-2 border-t border-amber-200">
+              <p className="text-xs pt-2 border-t border-slate-100">
                 Penalties are small (~8% interest) but avoidable with planning.
               </p>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
 
         {/* Disclaimer */}

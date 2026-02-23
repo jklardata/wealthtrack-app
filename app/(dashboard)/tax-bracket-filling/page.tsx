@@ -712,7 +712,7 @@ export default function TaxBracketFillingPage() {
   // ========== Render ==========
 
   return (
-    <div className="max-w-5xl mx-auto space-y-5 py-4">
+    <div className="space-y-5 py-4">
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
@@ -724,6 +724,10 @@ export default function TaxBracketFillingPage() {
         </p>
       </div>
 
+      {/* Top layout: Strategy/Inputs (left) + Educational Guide (right) */}
+      <div className="flex flex-col lg:flex-row gap-5 items-start">
+        {/* Educational Guide — right column */}
+        <div className="lg:w-72 lg:flex-shrink-0 lg:order-2 w-full">
       {/* Educational Guide */}
       <Card className="border border-slate-200 bg-blue-50/50">
         <CardHeader className="pb-3">
@@ -773,7 +777,9 @@ export default function TaxBracketFillingPage() {
           </div>
         </CardContent>
       </Card>
-
+        </div>
+        {/* Strategy + Inputs — left column */}
+        <div className="flex-1 min-w-0 lg:order-1 space-y-4">
       {/* Strategy Selector */}
       <Card className="bg-white border border-slate-200 shadow-sm">
         <CardHeader className="pb-3">
@@ -1081,6 +1087,8 @@ export default function TaxBracketFillingPage() {
           </Tabs>
         </CardContent>
       </Card>
+        </div>
+      </div>
 
       {/* Main Visualization */}
       {projections.length > 0 && (
@@ -1093,7 +1101,7 @@ export default function TaxBracketFillingPage() {
             </p>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={700}>
+            <ResponsiveContainer width="100%" height={450}>
               <ComposedChart data={projections}>
                 <defs>
                   <linearGradient id="consultingGradient" x1="0" y1="0" x2="0" y2="1">
@@ -1304,8 +1312,11 @@ export default function TaxBracketFillingPage() {
         </Card>
       )}
 
-      {/* Advisory Summary */}
+      {/* Advisory Summary + Year-by-Year Table: side-by-side */}
       {projections.length > 0 && (
+        <div className="flex flex-col lg:flex-row gap-5 items-start">
+          {/* Advisory Summary — right column */}
+          <div className="lg:w-96 lg:flex-shrink-0 lg:order-2 w-full">
         <Card className={isPro ? "bg-white border border-slate-200 shadow-sm" : "bg-slate-50 border border-slate-200"}>
           <CardHeader className="pb-3">
             <CardTitle className={`text-sm font-semibold flex items-center gap-2 ${!isPro ? "text-slate-400" : "text-slate-900"}`}>
@@ -1337,11 +1348,11 @@ export default function TaxBracketFillingPage() {
             <CardContent className="space-y-5">
             {/* Underutilized Years */}
             {analysis.underutilizedYears.length > 0 && (
-              <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg">
-                <p className="text-sm font-semibold text-amber-900 mb-1">
+              <div className="p-4 bg-white border border-slate-200 rounded-lg">
+                <p className="text-sm font-medium text-slate-900 mb-1.5">
                   • You have {analysis.underutilizedYears.length} years where tax brackets are significantly underutilized
                 </p>
-                <p className="text-sm text-amber-700 leading-relaxed">
+                <p className="text-sm text-slate-500 leading-relaxed">
                   Years {analysis.underutilizedYears.slice(0, 5).join(", ")} show bracket utilization below 60%.
                   These are missed opportunities to reduce lifetime taxes through Roth conversions or capital gains harvesting.
                   Consider increasing optimization during these low-income windows.
@@ -1351,11 +1362,11 @@ export default function TaxBracketFillingPage() {
 
             {/* Optimal Years */}
             {analysis.optimalYears.length > 0 && (
-              <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
-                <p className="text-sm font-semibold text-emerald-900 mb-1">
+              <div className="p-4 bg-white border border-slate-200 rounded-lg">
+                <p className="text-sm font-medium text-slate-900 mb-1.5">
                   • Optimal bracket filling windows identified in {analysis.optimalYears.length} years
                 </p>
-                <p className="text-sm text-emerald-700 leading-relaxed">
+                <p className="text-sm text-slate-500 leading-relaxed">
                   Years {analysis.optimalYears.slice(0, 5).join(", ")} show strong bracket utilization (70-95%) with low effective tax rates.
                   These years demonstrate efficient tax planning where you're maximizing bracket usage without triggering higher rates or surcharges.
                 </p>
@@ -1363,11 +1374,11 @@ export default function TaxBracketFillingPage() {
             )}
 
             {/* Lifetime Tax Impact */}
-            <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-              <p className="text-sm font-semibold text-blue-900 mb-1">
+            <div className="p-4 bg-white border border-slate-200 rounded-lg">
+              <p className="text-sm font-medium text-slate-900 mb-1.5">
                 • Estimated lifetime federal taxes under this strategy: {formatCurrency(analysis.lifetimeTaxes)}
               </p>
-              <p className="text-sm text-blue-700 leading-relaxed">
+              <p className="text-sm text-slate-500 leading-relaxed">
                 This represents {formatPercent(analysis.avgBracketUtilization)} average bracket utilization across all years.
                 {analysis.totalRothConversions > 0 && ` Total Roth conversions: ${formatCurrency(analysis.totalRothConversions)}.`}
                 {analysis.totalCapitalGainsHarvested > 0 && ` Total capital gains harvested: ${formatCurrency(analysis.totalCapitalGainsHarvested)}.`}
@@ -1377,11 +1388,11 @@ export default function TaxBracketFillingPage() {
 
             {/* High Tax Risk Years */}
             {analysis.highTaxYears.length > 0 && (
-              <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-sm font-semibold text-red-900 mb-1">
+              <div className="p-4 bg-white border border-slate-200 rounded-lg">
+                <p className="text-sm font-medium text-slate-900 mb-1.5">
                   • High tax risk detected in {analysis.highTaxYears.length} years
                 </p>
-                <p className="text-sm text-red-700 leading-relaxed">
+                <p className="text-sm text-slate-500 leading-relaxed">
                   Years {analysis.highTaxYears.slice(0, 5).join(", ")} show effective tax rates above 25% or trigger IRMAA surcharges.
                   Review these years carefully. You may be converting or harvesting too aggressively, or income stacking is creating unintended consequences.
                   Consider reducing optimization amounts or timing conversions differently.
@@ -1390,11 +1401,11 @@ export default function TaxBracketFillingPage() {
             )}
 
             {/* Portfolio Impact */}
-            <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg">
-              <p className="text-sm font-semibold text-purple-900 mb-1">
+            <div className="p-4 bg-white border border-slate-200 rounded-lg">
+              <p className="text-sm font-medium text-slate-900 mb-1.5">
                 • Impact on retirement portfolio allocation and future flexibility
               </p>
-              <p className="text-sm text-purple-700 leading-relaxed">
+              <p className="text-sm text-slate-500 leading-relaxed">
                 {analysis.totalRothConversions > 0
                   ? `Converting ${formatCurrency(analysis.totalRothConversions)} to Roth over time reduces future RMD exposure and creates tax-free withdrawal flexibility during retirement. This allows precise income control in your 70s and 80s.`
                   : "With minimal Roth conversions, you'll face larger RMDs starting at age 72, which may push you into higher brackets regardless of your actual spending needs."}
@@ -1402,11 +1413,11 @@ export default function TaxBracketFillingPage() {
             </div>
 
             {/* Healthcare Subsidy Impact */}
-            <div className="p-4 bg-indigo-50 border border-indigo-200 rounded-lg">
-              <p className="text-sm font-semibold text-indigo-900 mb-1">
+            <div className="p-4 bg-white border border-slate-200 rounded-lg">
+              <p className="text-sm font-medium text-slate-900 mb-1.5">
                 • Healthcare subsidy and Medicare premium considerations
               </p>
-              <p className="text-sm text-indigo-700 leading-relaxed">
+              <p className="text-sm text-slate-500 leading-relaxed">
                 {(() => {
                   const subsidyYears = projections.filter(p => p.age < 65 && p.healthcareSubsidyEligible).length;
                   const irmaaYears = projections.filter(p => p.irmaaThreshold).length;
@@ -1422,11 +1433,11 @@ export default function TaxBracketFillingPage() {
             </div>
 
             {/* Future Tax Rate Sensitivity */}
-            <div className="p-4 bg-slate-50 border border-slate-200 rounded-lg">
-              <p className="text-sm font-semibold text-slate-900 mb-1">
+            <div className="p-4 bg-white border border-slate-200 rounded-lg">
+              <p className="text-sm font-medium text-slate-900 mb-1.5">
                 • Sensitivity to future tax rate changes
               </p>
-              <p className="text-sm text-slate-600 leading-relaxed">
+              <p className="text-sm text-slate-500 leading-relaxed">
                 {futureTaxAssumption === "higher"
                   ? "You're assuming higher future tax rates, which strongly favors aggressive bracket filling now. Every dollar converted at today's 12-22% rates could avoid 15-28%+ rates later if Congress allows TCJA provisions to sunset."
                   : futureTaxAssumption === "lower"
@@ -1437,10 +1448,9 @@ export default function TaxBracketFillingPage() {
           </CardContent>
           )}
         </Card>
-      )}
-
-      {/* Year-by-Year Table */}
-      {projections.length > 0 && (
+          </div>
+          {/* Year-by-Year Table — left column */}
+          <div className="flex-1 min-w-0 lg:order-1">
         <Card className={isPro ? "bg-white border border-slate-200 shadow-sm" : "bg-slate-50 border border-slate-200"}>
           <CardHeader className="flex flex-row items-center justify-between pb-3">
             <CardTitle className={`text-sm font-semibold flex items-center gap-2 ${!isPro ? "text-slate-400" : "text-slate-900"}`}>
@@ -1556,94 +1566,72 @@ export default function TaxBracketFillingPage() {
           </CardContent>
           )}
         </Card>
+          </div>
+        </div>
       )}
 
       {/* Educational Panels */}
       {isPro && (
       <div className="grid md:grid-cols-2 gap-4">
-        <Card className="bg-blue-50 border border-blue-200">
-          <CardHeader>
-            <CardTitle className="text-sm font-semibold text-blue-900">Why Gradual Bracket Filling Reduces Lifetime Taxes</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-blue-700 leading-relaxed">
-              Progressive taxation means your effective rate increases as income rises. By intentionally filling lower brackets each year instead
-              of taking large distributions later, you minimize the amount of income taxed at higher marginal rates. A $50k conversion at 12%
-              is far better than a $50k RMD at 24%. Over 20-30 years, this compounds to six-figure tax savings.
-            </p>
-          </CardContent>
-        </Card>
+        <div className="bg-white border border-slate-200 rounded-xl p-5">
+          <h3 className="font-medium text-slate-900 mb-3">Why Gradual Bracket Filling Reduces Lifetime Taxes</h3>
+          <p className="text-sm text-slate-500 leading-relaxed">
+            Progressive taxation means your effective rate increases as income rises. By intentionally filling lower brackets each year instead
+            of taking large distributions later, you minimize the amount of income taxed at higher marginal rates. A $50k conversion at 12%
+            is far better than a $50k RMD at 24%. Over 20-30 years, this compounds to six-figure tax savings.
+          </p>
+        </div>
 
-        <Card className="bg-purple-50 border border-purple-200">
-          <CardHeader>
-            <CardTitle className="text-sm font-semibold text-purple-900">How Variable Income Impacts Bracket Strategy</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-purple-700 leading-relaxed">
-              Consultants and freelancers with fluctuating income should maximize bracket filling in low-earning years. A year with $80k income
-              leaves room to fill the 12% or 22% bracket with conversions. A $200k year does not. By front-loading conversions during lean years,
-              you use bracket space that would otherwise go to waste while avoiding high-rate conversions during peak income years.
-            </p>
-          </CardContent>
-        </Card>
+        <div className="bg-white border border-slate-200 rounded-xl p-5">
+          <h3 className="font-medium text-slate-900 mb-3">How Variable Income Impacts Bracket Strategy</h3>
+          <p className="text-sm text-slate-500 leading-relaxed">
+            Consultants and freelancers with fluctuating income should maximize bracket filling in low-earning years. A year with $80k income
+            leaves room to fill the 12% or 22% bracket with conversions. A $200k year does not. By front-loading conversions during lean years,
+            you use bracket space that would otherwise go to waste while avoiding high-rate conversions during peak income years.
+          </p>
+        </div>
 
-        <Card className="bg-emerald-50 border border-emerald-200">
-          <CardHeader>
-            <CardTitle className="text-sm font-semibold text-emerald-900">Why Early Retirement Gap Years Are So Valuable</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-emerald-700 leading-relaxed">
-              The 5-15 years between early retirement (age 50-60) and Social Security/RMDs (age 67-72) represent your peak optimization window.
-              With no earned income, no required distributions, and potentially no Social Security, your taxable income is just what you choose
-              to withdraw. This creates artificially low income years where you can fill the 12% and 22% brackets almost entirely with Roth
-              conversions or capital gains harvesting. This window closes permanently once floor income begins.
-            </p>
-          </CardContent>
-        </Card>
+        <div className="bg-white border border-slate-200 rounded-xl p-5">
+          <h3 className="font-medium text-slate-900 mb-3">Why Early Retirement Gap Years Are So Valuable</h3>
+          <p className="text-sm text-slate-500 leading-relaxed">
+            The 5-15 years between early retirement (age 50-60) and Social Security/RMDs (age 67-72) represent your peak optimization window.
+            With no earned income, no required distributions, and potentially no Social Security, your taxable income is just what you choose
+            to withdraw. This creates artificially low income years where you can fill the 12% and 22% brackets almost entirely with Roth
+            conversions or capital gains harvesting. This window closes permanently once floor income begins.
+          </p>
+        </div>
 
-        <Card className="bg-indigo-50 border border-indigo-200">
-          <CardHeader>
-            <CardTitle className="text-sm font-semibold text-indigo-900">How FEIE Transitions Change Tax Stacking</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-indigo-700 leading-relaxed">
-              If you've been using the Foreign Earned Income Exclusion and plan to return to the US tax system, your first 2-3 years back create
-              unique opportunities. You may have minimal US income initially while re-establishing, combined with large Traditional IRA balances
-              that were never optimized. Aggressive Roth conversions during these transition years can dramatically reduce future RMD exposure
-              before normal income resumes.
-            </p>
-          </CardContent>
-        </Card>
+        <div className="bg-white border border-slate-200 rounded-xl p-5">
+          <h3 className="font-medium text-slate-900 mb-3">How FEIE Transitions Change Tax Stacking</h3>
+          <p className="text-sm text-slate-500 leading-relaxed">
+            If you've been using the Foreign Earned Income Exclusion and plan to return to the US tax system, your first 2-3 years back create
+            unique opportunities. You may have minimal US income initially while re-establishing, combined with large Traditional IRA balances
+            that were never optimized. Aggressive Roth conversions during these transition years can dramatically reduce future RMD exposure
+            before normal income resumes.
+          </p>
+        </div>
 
-        <Card className="bg-amber-50 border border-amber-200">
-          <CardHeader>
-            <CardTitle className="text-sm font-semibold text-amber-900">Pre-Medicare Income Planning Considerations</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-amber-700 leading-relaxed">
-              Before age 65, you must balance bracket filling with ACA marketplace subsidy preservation. Exceeding MAGI thresholds ($60k single,
-              $80k married) eliminates subsidies worth $5k-$15k annually. Additionally, high income at ages 63-64 triggers IRMAA surcharges
-              at 65-66 due to the 2-year lookback. Strategic bracket filling pre-65 means staying just below subsidy cliffs while maximizing
-              optimization, then ramping up conversions after Medicare enrollment.
-            </p>
-          </CardContent>
-        </Card>
+        <div className="bg-white border border-slate-200 rounded-xl p-5">
+          <h3 className="font-medium text-slate-900 mb-3">Pre-Medicare Income Planning Considerations</h3>
+          <p className="text-sm text-slate-500 leading-relaxed">
+            Before age 65, you must balance bracket filling with ACA marketplace subsidy preservation. Exceeding MAGI thresholds ($60k single,
+            $80k married) eliminates subsidies worth $5k-$15k annually. Additionally, high income at ages 63-64 triggers IRMAA surcharges
+            at 65-66 due to the 2-year lookback. Strategic bracket filling pre-65 means staying just below subsidy cliffs while maximizing
+            optimization, then ramping up conversions after Medicare enrollment.
+          </p>
+        </div>
 
-        <Card className="bg-red-50 border border-red-200">
-          <CardHeader>
-            <CardTitle className="text-sm font-semibold text-red-900">Common Bracket Filling Mistakes to Avoid</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-1.5 text-sm text-red-700 leading-relaxed">
-              <p>• <strong>Converting too much in one year:</strong> Jumping tax brackets negates the benefit</p>
-              <p>• <strong>Ignoring healthcare subsidies:</strong> A $1 income increase can cost thousands in lost subsidies</p>
-              <p>• <strong>Triggering IRMAA before Medicare:</strong> High income at 63 means surcharges at 65</p>
-              <p>• <strong>Not planning for RMDs:</strong> Waiting until 72 means forced high-tax distributions</p>
-              <p>• <strong>Forgetting capital gains stacking:</strong> Gains stack on top of ordinary income, affecting rates</p>
-              <p>• <strong>Over-depleting taxable accounts:</strong> You still need money to live on</p>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="bg-white border border-slate-200 rounded-xl p-5">
+          <h3 className="font-medium text-slate-900 mb-3">Common Bracket Filling Mistakes to Avoid</h3>
+          <div className="space-y-1.5 text-sm text-slate-500 leading-relaxed">
+            <p>• <strong className="text-slate-700">Converting too much in one year:</strong> Jumping tax brackets negates the benefit</p>
+            <p>• <strong className="text-slate-700">Ignoring healthcare subsidies:</strong> A $1 income increase can cost thousands in lost subsidies</p>
+            <p>• <strong className="text-slate-700">Triggering IRMAA before Medicare:</strong> High income at 63 means surcharges at 65</p>
+            <p>• <strong className="text-slate-700">Not planning for RMDs:</strong> Waiting until 72 means forced high-tax distributions</p>
+            <p>• <strong className="text-slate-700">Forgetting capital gains stacking:</strong> Gains stack on top of ordinary income, affecting rates</p>
+            <p>• <strong className="text-slate-700">Over-depleting taxable accounts:</strong> You still need money to live on</p>
+          </div>
+        </div>
       </div>
       )}
 

@@ -129,18 +129,18 @@ const typeConfig = {
 
 export default function FounderNotesPage() {
   return (
-    <div className="max-w-5xl mx-auto space-y-10 py-4">
+    <div className="space-y-8 py-4 max-w-3xl">
       {/* Header */}
       <div className="space-y-4">
-        <h1 className="text-5xl font-black text-slate-900">Founder Notes</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Founder Notes</h1>
       </div>
 
       {/* Introduction */}
       <div className="space-y-3">
-        <p className="text-lg font-medium text-slate-800 leading-relaxed">
+        <p className="text-sm text-slate-600 leading-relaxed">
           I'm Justin. I built SoloFI because I was tired of paying $200/month for basic retirement calculators when I left consulting to go solo. Most tools are designed for W-2 employees with steady paychecks and not for DIY self-employed people like us dealing with variable income, multiple revenue streams, and actually wanting to understand the math.
         </p>
-        <p className="text-lg font-medium text-slate-800 leading-relaxed">
+        <p className="text-sm text-slate-600 leading-relaxed">
           Shipping fast, breaking things occasionally, fixing them quickly. Everything I build gets posted here. Message me on the feedback widget if something breaks or if you have a feature request.
         </p>
       </div>
@@ -153,7 +153,7 @@ export default function FounderNotesPage() {
           return (
             <div
               key={index}
-              className="border border-slate-200 p-6 bg-white space-y-4"
+              className="border border-slate-100 p-5 bg-white space-y-3 rounded-xl"
             >
               <div className="flex items-start justify-between gap-4 flex-wrap">
                 <div className="flex items-center gap-3 flex-wrap">
@@ -161,7 +161,7 @@ export default function FounderNotesPage() {
                     <TypeIcon className="h-4 w-4 mr-1.5" />
                     <span className="font-bold">{typeConfig[entry.type].label}</span>
                   </Badge>
-                  <time className="text-base font-bold text-slate-600">
+                  <time className="text-xs text-slate-400">
                     {new Date(entry.date).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
@@ -171,19 +171,19 @@ export default function FounderNotesPage() {
                 </div>
               </div>
 
-              <h2 className="text-2xl font-black text-slate-900">
+              <h2 className="text-base font-semibold text-slate-900">
                 {entry.title}
               </h2>
 
-              <p className="text-lg font-medium text-slate-800 leading-relaxed">
+              <p className="text-sm text-slate-600 leading-relaxed">
                 {entry.content}
               </p>
 
               {entry.details && entry.details.length > 0 && (
                 <ul className="space-y-2 pl-6">
                   {entry.details.map((detail, idx) => (
-                    <li key={idx} className="text-base font-semibold text-slate-700 flex items-start gap-3">
-                      <span className="text-emerald-600 font-black mt-0.5">→</span>
+                    <li key={idx} className="text-sm text-slate-600 flex items-start gap-2">
+                      <span className="text-emerald-500 mt-0.5">→</span>
                       <span>{detail}</span>
                     </li>
                   ))}
