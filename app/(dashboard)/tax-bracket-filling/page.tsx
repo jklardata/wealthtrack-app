@@ -712,28 +712,31 @@ export default function TaxBracketFillingPage() {
   // ========== Render ==========
 
   return (
-    <div className="container mx-auto p-6 space-y-8 max-w-[1400px]">
+    <div className="max-w-5xl mx-auto space-y-5 py-4">
       {/* Header */}
-      <div className="space-y-3">
-        <h1 className="text-5xl font-black text-slate-900">Tax Bracket Filling Strategy Engine</h1>
-        <p className="text-xl font-medium text-slate-600">
-          Model multi-year tax optimization strategies using Roth conversions, capital gains harvesting, and income smoothing
+      <div>
+        <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+          <Target className="h-5 w-5 text-emerald-600" />
+          Tax Bracket Filling Strategy Engine
+        </h1>
+        <p className="text-sm text-slate-500 mt-1">
+          Model multi-year tax optimization using Roth conversions, capital gains harvesting, and income smoothing
         </p>
       </div>
 
       {/* Educational Guide */}
-      <Card className="border border-slate-200 bg-gradient-to-br from-blue-50 via-white to-indigo-50">
-        <CardHeader>
-          <CardTitle className="text-3xl font-black flex items-center gap-3">
-            <Target className="h-8 w-8 text-blue-600" />
+      <Card className="border border-slate-200 bg-blue-50/50">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-sm font-semibold text-slate-900 flex items-center gap-2">
+            <Target className="h-4 w-4 text-blue-600" />
             Understanding Tax Bracket Filling
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="space-y-4">
+        <CardContent className="space-y-4">
+          <div className="space-y-3">
             <div>
-              <p className="text-lg font-bold text-slate-900 mb-3">What Tax Bracket Filling Means</p>
-              <p className="text-base font-medium text-slate-700 leading-relaxed">
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">What Tax Bracket Filling Means</p>
+              <p className="text-xs text-slate-600 leading-relaxed">
                 Tax bracket filling is the strategy of intentionally using your available tax bracket space each year to minimize lifetime taxes.
                 Our progressive tax system means you pay different rates on different portions of your income. The goal is to avoid leaving
                 low-rate bracket space unused in some years while paying high rates in others. By strategically triggering income through
@@ -742,72 +745,29 @@ export default function TaxBracketFillingPage() {
             </div>
 
             <div>
-              <p className="text-lg font-bold text-slate-900 mb-3">Why Early Retirees Have Unique Opportunities</p>
-              <p className="text-base font-medium text-slate-700 leading-relaxed">
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Why Early Retirees Have Unique Opportunities</p>
+              <p className="text-xs text-slate-600 leading-relaxed">
                 When you retire early, you create a window of low-income years between leaving work and starting Social Security or RMDs at age 72.
-                During these gap years, your taxable income might be just what you withdraw for living expenses, potentially keeping you in the 12% or 22% bracket.
-                This is your opportunity to fill those brackets with Roth conversions or capital gains harvesting. Once Social Security begins and RMDs kick in,
-                your income floor rises permanently, closing this window. Most people who retire at 65 never get this opportunity.
+                This gap is your opportunity to fill lower brackets with Roth conversions or capital gains harvesting—a window that closes permanently once floor income begins.
               </p>
             </div>
 
             <div>
-              <p className="text-lg font-bold text-slate-900 mb-3">How Consultants with Variable Income Benefit</p>
-              <p className="text-base font-medium text-slate-700 leading-relaxed">
-                If your consulting income fluctuates year to year, you experience natural low-income windows even before retirement.
-                A $200k year followed by an $80k year creates a bracket filling opportunity in the lower year. By front-loading Roth conversions
-                or harvesting gains during lean years, you use bracket space that would otherwise go to waste. This strategy becomes even more
-                powerful when you can predict or control income timing through project scheduling or business structure decisions.
-              </p>
-            </div>
-
-            <div>
-              <p className="text-lg font-bold text-slate-900 mb-3">How This Works with Roth Conversions and Capital Gains</p>
-              <p className="text-base font-medium text-slate-700 leading-relaxed">
-                Roth conversions and capital gains harvesting are the two primary tools for filling brackets. Roth conversions move money from
-                Traditional IRAs to Roth IRAs, creating taxable income now to avoid RMDs later. Long-term capital gains harvesting realizes
-                investment gains, often at 0% or 15% rates when stacked on top of modest ordinary income. The key insight: you can layer these
-                strategically. Fill the 12% ordinary income bracket with Roth conversions, then harvest capital gains that may qualify for 0% treatment
-                because your total income is still below the capital gains threshold. This creates tax-free wealth accumulation.
-              </p>
-            </div>
-
-            <div>
-              <p className="text-lg font-bold text-slate-900 mb-3">How to Use This Engine Step-by-Step</p>
-              <div className="space-y-2 text-base font-medium text-slate-700 leading-relaxed">
-                <p>• <strong>Step 1:</strong> Enter your current financial situation (age, balances, income, filing status)</p>
-                <p>• <strong>Step 2:</strong> Set your retirement timeline and expected income changes</p>
-                <p>• <strong>Step 3:</strong> Choose your target tax bracket (typically 12% or 22% bracket top for most strategies)</p>
-                <p>• <strong>Step 4:</strong> Select a bracket filling strategy that matches your situation</p>
-                <p>• <strong>Step 5:</strong> Review the visualization to see how income layers fill brackets each year</p>
-                <p>• <strong>Step 6:</strong> Read the advisory summary to identify optimal years and risks</p>
-                <p>• <strong>Step 7:</strong> Export the detailed table to analyze year-by-year impacts</p>
-                <p>• <strong>Step 8:</strong> Test multiple strategies to compare lifetime tax outcomes</p>
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">How to Use This Engine</p>
+              <div className="space-y-1 text-xs text-slate-600 leading-relaxed">
+                <p>1. Enter your financial situation (age, balances, income, filing status)</p>
+                <p>2. Set retirement timeline and choose your target tax bracket</p>
+                <p>3. Select a strategy and review the visualization</p>
+                <p>4. Compare against "No Optimization" baseline to quantify savings</p>
               </div>
             </div>
 
             <div>
-              <p className="text-lg font-bold text-slate-900 mb-3">Key Assumptions and Limitations</p>
-              <div className="space-y-2 text-base font-medium text-slate-700 leading-relaxed">
-                <p>• Tax rates are held constant unless you select a different future assumption</p>
-                <p>• Standard deduction is used; itemized deductions are not modeled</p>
-                <p>• State taxes are not included in calculations</p>
-                <p>• Capital gains harvesting assumes you have unrealized gains available</p>
-                <p>• Portfolio returns are assumed constant; sequence of returns risk is not modeled</p>
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Key Assumptions</p>
+              <div className="space-y-1 text-xs text-slate-600 leading-relaxed">
+                <p>• Standard deduction used; state taxes and itemized deductions not included</p>
+                <p>• Portfolio returns are constant; sequence-of-returns risk not modeled</p>
                 <p>• Healthcare subsidies use simplified MAGI thresholds</p>
-                <p>• IRMAA calculations use 2-year lookback but are simplified</p>
-              </div>
-            </div>
-
-            <div>
-              <p className="text-lg font-bold text-slate-900 mb-3">Critical Factors to Watch When Testing Strategies</p>
-              <div className="space-y-2 text-base font-medium text-slate-700 leading-relaxed">
-                <p>• <strong>Years where brackets are underutilized:</strong> Missed opportunities to reduce lifetime taxes</p>
-                <p>• <strong>IRMAA trigger years:</strong> High income at ages 63-66 creates Medicare premium surcharges two years later</p>
-                <p>• <strong>ACA subsidy cliffs:</strong> Exceeding subsidy limits before age 65 can cost $5k-$15k per year</p>
-                <p>• <strong>Gap year windows:</strong> The period between retirement and Social Security is your best opportunity</p>
-                <p>• <strong>Portfolio depletion risk:</strong> Ensure conversions don't drain accounts needed for living expenses</p>
-                <p>• <strong>Future tax rate assumptions:</strong> Strategy effectiveness depends heavily on this assumption</p>
               </div>
             </div>
           </div>
@@ -815,18 +775,18 @@ export default function TaxBracketFillingPage() {
       </Card>
 
       {/* Strategy Selector */}
-      <Card className="border border-slate-200">
-        <CardHeader>
-          <CardTitle className="text-2xl font-black flex items-center gap-3">
-            <Settings className="h-6 w-6 text-emerald-600" />
+      <Card className="bg-white border border-slate-200 shadow-sm">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-sm font-semibold text-slate-900 flex items-center gap-2">
+            <Settings className="h-4 w-4 text-emerald-600" />
             Select Bracket Filling Strategy
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-3">
           <div>
-            <Label className="text-base font-bold">Strategy</Label>
+            <Label className="text-xs font-medium text-slate-600">Strategy</Label>
             <Select value={selectedStrategy} onValueChange={(v: BracketStrategy) => setSelectedStrategy(v)}>
-              <SelectTrigger className="text-base font-semibold">
+              <SelectTrigger className="text-sm mt-1">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -838,8 +798,8 @@ export default function TaxBracketFillingPage() {
               </SelectContent>
             </Select>
           </div>
-          <div className="p-4 bg-slate-50 border-2 border-slate-200 rounded-lg">
-            <p className="text-sm font-medium text-slate-700 leading-relaxed">
+          <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg">
+            <p className="text-xs text-slate-600 leading-relaxed">
               {BRACKET_STRATEGIES.find(s => s.strategy === selectedStrategy)?.description}
             </p>
           </div>
@@ -847,54 +807,54 @@ export default function TaxBracketFillingPage() {
       </Card>
 
       {/* Input Parameters */}
-      <Card className="border border-slate-200">
-        <CardHeader>
-          <CardTitle className="text-2xl font-black">Your Financial Inputs</CardTitle>
+      <Card className="bg-white border border-slate-200 shadow-sm">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-sm font-semibold text-slate-900">Your Financial Inputs</CardTitle>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="basic" className="w-full">
             <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="basic" className="font-bold">Basic</TabsTrigger>
-              <TabsTrigger value="income" className="font-bold">Income</TabsTrigger>
-              <TabsTrigger value="strategy" className="font-bold">Strategy</TabsTrigger>
-              <TabsTrigger value="advanced" className="font-bold">Advanced</TabsTrigger>
+              <TabsTrigger value="basic">Basic</TabsTrigger>
+              <TabsTrigger value="income">Income</TabsTrigger>
+              <TabsTrigger value="strategy">Strategy</TabsTrigger>
+              <TabsTrigger value="advanced">Advanced</TabsTrigger>
             </TabsList>
 
             {/* Basic Tab */}
             <TabsContent value="basic" className="space-y-6 mt-6">
               <div className="grid md:grid-cols-3 gap-6">
                 <div>
-                  <Label className="text-base font-bold">Current Age</Label>
+                  <Label className="text-xs font-medium text-slate-600">Current Age</Label>
                   <Input
                     type="number"
                     value={currentAge}
                     onChange={(e) => setCurrentAge(Number(e.target.value))}
-                    className="text-base font-semibold"
+                    className="text-sm"
                   />
                 </div>
                 <div>
-                  <Label className="text-base font-bold">Retirement Age</Label>
+                  <Label className="text-xs font-medium text-slate-600">Retirement Age</Label>
                   <Input
                     type="number"
                     value={retirementAge}
                     onChange={(e) => setRetirementAge(Number(e.target.value))}
-                    className="text-base font-semibold"
+                    className="text-sm"
                   />
                 </div>
                 <div>
-                  <Label className="text-base font-bold">Life Expectancy</Label>
+                  <Label className="text-xs font-medium text-slate-600">Life Expectancy</Label>
                   <Input
                     type="number"
                     value={lifeExpectancy}
                     onChange={(e) => setLifeExpectancy(Number(e.target.value))}
-                    className="text-base font-semibold"
+                    className="text-sm"
                   />
                 </div>
 
                 <div>
-                  <Label className="text-base font-bold">Filing Status</Label>
+                  <Label className="text-xs font-medium text-slate-600">Filing Status</Label>
                   <Select value={filingStatus} onValueChange={(v: FilingStatus) => setFilingStatus(v)}>
-                    <SelectTrigger className="text-base font-semibold">
+                    <SelectTrigger className="text-sm">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -905,58 +865,58 @@ export default function TaxBracketFillingPage() {
                 </div>
 
                 <div>
-                  <Label className="text-base font-bold">Traditional IRA Balance</Label>
+                  <Label className="text-xs font-medium text-slate-600">Traditional IRA Balance</Label>
                   <Input
                     type="number"
                     value={traditionalBalance}
                     onChange={(e) => setTraditionalBalance(Number(e.target.value))}
-                    className="text-base font-semibold"
+                    className="text-sm"
                   />
                 </div>
                 <div>
-                  <Label className="text-base font-bold">Roth IRA Balance</Label>
+                  <Label className="text-xs font-medium text-slate-600">Roth IRA Balance</Label>
                   <Input
                     type="number"
                     value={rothBalance}
                     onChange={(e) => setRothBalance(Number(e.target.value))}
-                    className="text-base font-semibold"
+                    className="text-sm"
                   />
                 </div>
                 <div>
-                  <Label className="text-base font-bold">Taxable Brokerage Balance</Label>
+                  <Label className="text-xs font-medium text-slate-600">Taxable Brokerage Balance</Label>
                   <Input
                     type="number"
                     value={taxableBalance}
                     onChange={(e) => setTaxableBalance(Number(e.target.value))}
-                    className="text-base font-semibold"
+                    className="text-sm"
                   />
                 </div>
 
                 <div>
-                  <Label className="text-base font-bold">Annual Spending Target</Label>
+                  <Label className="text-xs font-medium text-slate-600">Annual Spending Target</Label>
                   <Input
                     type="number"
                     value={annualSpending}
                     onChange={(e) => setAnnualSpending(Number(e.target.value))}
-                    className="text-base font-semibold"
+                    className="text-sm"
                   />
                 </div>
                 <div>
-                  <Label className="text-base font-bold">Expected Portfolio Return (%)</Label>
+                  <Label className="text-xs font-medium text-slate-600">Expected Portfolio Return (%)</Label>
                   <Input
                     type="number"
                     value={expectedReturn}
                     onChange={(e) => setExpectedReturn(Number(e.target.value))}
-                    className="text-base font-semibold"
+                    className="text-sm"
                   />
                 </div>
                 <div>
-                  <Label className="text-base font-bold">Inflation Rate (%)</Label>
+                  <Label className="text-xs font-medium text-slate-600">Inflation Rate (%)</Label>
                   <Input
                     type="number"
                     value={inflationRate}
                     onChange={(e) => setInflationRate(Number(e.target.value))}
-                    className="text-base font-semibold"
+                    className="text-sm"
                   />
                 </div>
               </div>
@@ -964,45 +924,45 @@ export default function TaxBracketFillingPage() {
 
             {/* Income Tab */}
             <TabsContent value="income" className="space-y-6 mt-6">
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <Label className="text-base font-bold">Base Consulting Income</Label>
+                  <Label className="text-xs font-medium text-slate-600">Base Consulting Income</Label>
                   <Input
                     type="number"
                     value={baseConsultingIncome}
                     onChange={(e) => setBaseConsultingIncome(Number(e.target.value))}
-                    className="text-base font-semibold"
+                    className="text-sm"
                   />
                   <p className="text-xs text-slate-500 mt-1">Annual income before retirement</p>
                 </div>
 
                 <div>
-                  <Label className="text-base font-bold">Social Security Start Age</Label>
+                  <Label className="text-xs font-medium text-slate-600">Social Security Start Age</Label>
                   <Input
                     type="number"
                     value={socialSecurityStartAge || ""}
                     onChange={(e) => setSocialSecurityStartAge(e.target.value ? Number(e.target.value) : null)}
-                    className="text-base font-semibold"
+                    className="text-sm"
                   />
                   <p className="text-xs text-slate-500 mt-1">Leave blank if not planning to claim</p>
                 </div>
 
                 {socialSecurityStartAge && (
                   <div>
-                    <Label className="text-base font-bold">Annual Social Security Amount</Label>
+                    <Label className="text-xs font-medium text-slate-600">Annual Social Security Amount</Label>
                     <Input
                       type="number"
                       value={socialSecurityAmount}
                       onChange={(e) => setSocialSecurityAmount(Number(e.target.value))}
-                      className="text-base font-semibold"
+                      className="text-sm"
                     />
                   </div>
                 )}
               </div>
 
-              <div className="p-4 bg-blue-50 border-2 border-blue-200 rounded-lg">
-                <p className="text-sm font-bold text-blue-900 mb-2">Income Timeline Note</p>
-                <p className="text-sm font-medium text-blue-800 leading-relaxed">
+              <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <p className="text-xs font-semibold text-blue-900 mb-1">Income Timeline Note</p>
+                <p className="text-xs text-blue-800 leading-relaxed">
                   The engine uses your base consulting income until retirement age, then zeros it out. If you have variable income or
                   part-time work planned during retirement, you can model those scenarios by adjusting the base income or selecting the
                   Variable Income Optimization strategy.
@@ -1012,14 +972,14 @@ export default function TaxBracketFillingPage() {
 
             {/* Strategy Tab */}
             <TabsContent value="strategy" className="space-y-6 mt-6">
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <Label className="text-base font-bold">Target Bracket Top</Label>
+                  <Label className="text-xs font-medium text-slate-600">Target Bracket Top</Label>
                   <Select
                     value={targetBracketTop.toString()}
                     onValueChange={(v) => setTargetBracketTop(Number(v))}
                   >
-                    <SelectTrigger className="text-base font-semibold">
+                    <SelectTrigger className="text-sm">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -1044,9 +1004,9 @@ export default function TaxBracketFillingPage() {
                 </div>
 
                 <div>
-                  <Label className="text-base font-bold">Future Tax Rate Assumption</Label>
+                  <Label className="text-xs font-medium text-slate-600">Future Tax Rate Assumption</Label>
                   <Select value={futureTaxAssumption} onValueChange={(v: FutureTaxAssumption) => setFutureTaxAssumption(v)}>
-                    <SelectTrigger className="text-base font-semibold">
+                    <SelectTrigger className="text-sm">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -1058,9 +1018,9 @@ export default function TaxBracketFillingPage() {
                 </div>
               </div>
 
-              <div className="p-4 bg-amber-50 border-2 border-amber-200 rounded-lg">
-                <p className="text-sm font-bold text-amber-900 mb-2">Strategy Selection Guidance</p>
-                <div className="space-y-2 text-sm font-medium text-amber-800">
+              <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                <p className="text-xs font-semibold text-amber-900 mb-1">Strategy Selection Guidance</p>
+                <div className="space-y-1 text-xs text-amber-800">
                   <p>• <strong>No Optimization:</strong> Use as baseline to measure improvement</p>
                   <p>• <strong>Roth Only:</strong> Best if you have large Traditional IRA and want tax-free growth</p>
                   <p>• <strong>Gains Only:</strong> Best if you have large taxable brokerage with unrealized gains</p>
@@ -1077,42 +1037,42 @@ export default function TaxBracketFillingPage() {
             <TabsContent value="advanced" className="space-y-6 mt-6">
               <div className="grid md:grid-cols-3 gap-6">
                 <div>
-                  <Label className="text-base font-bold">Pre-Medicare Healthcare Cost</Label>
+                  <Label className="text-xs font-medium text-slate-600">Pre-Medicare Healthcare Cost</Label>
                   <Input
                     type="number"
                     value={healthcareCostPreMedicare}
                     onChange={(e) => setHealthcareCostPreMedicare(Number(e.target.value))}
-                    className="text-base font-semibold"
+                    className="text-sm"
                   />
                 </div>
 
                 <div>
-                  <Label className="text-base font-bold">Post-Medicare Healthcare Cost</Label>
+                  <Label className="text-xs font-medium text-slate-600">Post-Medicare Healthcare Cost</Label>
                   <Input
                     type="number"
                     value={healthcareCostPostMedicare}
                     onChange={(e) => setHealthcareCostPostMedicare(Number(e.target.value))}
-                    className="text-base font-semibold"
+                    className="text-sm"
                   />
                 </div>
 
                 <div>
-                  <Label className="text-base font-bold">Years to Model</Label>
+                  <Label className="text-xs font-medium text-slate-600">Years to Model</Label>
                   <Input
                     type="number"
                     value={yearsToModel}
                     onChange={(e) => setYearsToModel(Number(e.target.value))}
-                    className="text-base font-semibold"
+                    className="text-sm"
                   />
                 </div>
 
                 <div>
-                  <Label className="text-base font-bold">US Return Year (FEIE Exit)</Label>
+                  <Label className="text-xs font-medium text-slate-600">US Return Year (FEIE Exit)</Label>
                   <Input
                     type="number"
                     value={usReturnYear || ""}
                     onChange={(e) => setUsReturnYear(e.target.value ? Number(e.target.value) : null)}
-                    className="text-base font-semibold"
+                    className="text-sm"
                   />
                   <p className="text-xs text-slate-500 mt-1">Leave blank if not applicable</p>
                 </div>
@@ -1126,8 +1086,8 @@ export default function TaxBracketFillingPage() {
       {projections.length > 0 && (
         <Card className="border border-slate-200">
           <CardHeader>
-            <CardTitle className="text-2xl font-black">Tax Bracket Utilization Over Time</CardTitle>
-            <p className="text-base font-medium text-slate-600 mt-2">
+            <CardTitle className="text-sm font-semibold text-slate-900">Tax Bracket Utilization Over Time</CardTitle>
+            <p className="text-xs text-slate-500 mt-1">
               See how income layers stack into tax brackets each year. Green shading shows optimal bracket filling windows.
               Dashed lines mark key thresholds for Medicare, ACA subsidies, and your target bracket.
             </p>
@@ -1346,28 +1306,28 @@ export default function TaxBracketFillingPage() {
 
       {/* Advisory Summary */}
       {projections.length > 0 && (
-        <Card className={isPro ? "bg-gradient-to-br from-emerald-50 via-white to-teal-50 border border-slate-200" : "bg-slate-100 border-2 border-slate-300"}>
-          <CardHeader>
-            <CardTitle className={`text-2xl font-black flex items-center gap-3 ${!isPro && "text-slate-400"}`}>
-              {!isPro && <Lock className="h-6 w-6 text-slate-400" />}
-              {isPro && <Lightbulb className="h-6 w-6 text-emerald-600" />}
+        <Card className={isPro ? "bg-white border border-slate-200 shadow-sm" : "bg-slate-50 border border-slate-200"}>
+          <CardHeader className="pb-3">
+            <CardTitle className={`text-sm font-semibold flex items-center gap-2 ${!isPro ? "text-slate-400" : "text-slate-900"}`}>
+              {!isPro && <Lock className="h-4 w-4 text-slate-400" />}
+              {isPro && <Lightbulb className="h-4 w-4 text-emerald-600" />}
               Strategy Analysis & Recommendations
-              {!isPro && <span className="ml-2 text-sm font-bold text-amber-600 bg-amber-100 px-3 py-1 rounded-full border-2 border-amber-300">Pro Only</span>}
+              {!isPro && <span className="ml-2 text-xs font-medium text-amber-600 bg-amber-100 px-2 py-0.5 rounded-full border border-amber-200">Pro Only</span>}
             </CardTitle>
           </CardHeader>
           {!isPro ? (
             <CardContent>
-              <div className="text-center py-12">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-200 mb-4">
-                  <Lock className="h-8 w-8 text-slate-400" />
+              <div className="text-center py-8">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-200 mb-3">
+                  <Lock className="h-5 w-5 text-slate-400" />
                 </div>
-                <h3 className="text-xl font-black text-slate-700 mb-2">Unlock Strategic Analysis</h3>
-                <p className="text-base font-semibold text-slate-600 mb-6 max-w-md mx-auto">
+                <h3 className="text-sm font-semibold text-slate-700 mb-1.5">Unlock Strategic Analysis</h3>
+                <p className="text-xs text-slate-500 mb-4 max-w-md mx-auto">
                   Get personalized recommendations on underutilized tax years, optimal filling windows, lifetime tax savings estimates, and risk assessments.
                 </p>
                 <Link href="/upgrade">
-                  <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-lg px-8 py-6">
-                    <Sparkles className="h-5 w-5 mr-2" />
+                  <Button className="bg-emerald-600 hover:bg-emerald-700 text-white text-sm px-6 py-2">
+                    <Sparkles className="h-4 w-4 mr-1.5" />
                     Upgrade to Pro
                   </Button>
                 </Link>
@@ -1377,11 +1337,11 @@ export default function TaxBracketFillingPage() {
             <CardContent className="space-y-5">
             {/* Underutilized Years */}
             {analysis.underutilizedYears.length > 0 && (
-              <div className="p-4 bg-amber-50 border-2 border-amber-200 rounded-lg">
-                <p className="text-base font-bold text-amber-900 mb-2">
+              <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                <p className="text-xs font-semibold text-amber-900 mb-1.5">
                   • You have {analysis.underutilizedYears.length} years where tax brackets are significantly underutilized
                 </p>
-                <p className="text-sm font-medium text-amber-800 leading-relaxed">
+                <p className="text-xs text-amber-800 leading-relaxed">
                   Years {analysis.underutilizedYears.slice(0, 5).join(", ")} show bracket utilization below 60%.
                   These are missed opportunities to reduce lifetime taxes through Roth conversions or capital gains harvesting.
                   Consider increasing optimization during these low-income windows.
@@ -1391,11 +1351,11 @@ export default function TaxBracketFillingPage() {
 
             {/* Optimal Years */}
             {analysis.optimalYears.length > 0 && (
-              <div className="p-4 bg-emerald-50 border-2 border-emerald-200 rounded-lg">
-                <p className="text-base font-bold text-emerald-900 mb-2">
+              <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
+                <p className="text-xs font-semibold text-emerald-900 mb-1.5">
                   • Optimal bracket filling windows identified in {analysis.optimalYears.length} years
                 </p>
-                <p className="text-sm font-medium text-emerald-800 leading-relaxed">
+                <p className="text-xs text-emerald-800 leading-relaxed">
                   Years {analysis.optimalYears.slice(0, 5).join(", ")} show strong bracket utilization (70-95%) with low effective tax rates.
                   These years demonstrate efficient tax planning where you're maximizing bracket usage without triggering higher rates or surcharges.
                 </p>
@@ -1403,11 +1363,11 @@ export default function TaxBracketFillingPage() {
             )}
 
             {/* Lifetime Tax Impact */}
-            <div className="p-4 bg-blue-50 border-2 border-blue-200 rounded-lg">
-              <p className="text-base font-bold text-blue-900 mb-2">
+            <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-xs font-semibold text-blue-900 mb-1.5">
                 • Estimated lifetime federal taxes under this strategy: {formatCurrency(analysis.lifetimeTaxes)}
               </p>
-              <p className="text-sm font-medium text-blue-800 leading-relaxed">
+              <p className="text-xs text-blue-800 leading-relaxed">
                 This represents {formatPercent(analysis.avgBracketUtilization)} average bracket utilization across all years.
                 {analysis.totalRothConversions > 0 && ` Total Roth conversions: ${formatCurrency(analysis.totalRothConversions)}.`}
                 {analysis.totalCapitalGainsHarvested > 0 && ` Total capital gains harvested: ${formatCurrency(analysis.totalCapitalGainsHarvested)}.`}
@@ -1417,11 +1377,11 @@ export default function TaxBracketFillingPage() {
 
             {/* High Tax Risk Years */}
             {analysis.highTaxYears.length > 0 && (
-              <div className="p-4 bg-red-50 border-2 border-red-200 rounded-lg">
-                <p className="text-base font-bold text-red-900 mb-2">
+              <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                <p className="text-xs font-semibold text-red-900 mb-1.5">
                   • High tax risk detected in {analysis.highTaxYears.length} years
                 </p>
-                <p className="text-sm font-medium text-red-800 leading-relaxed">
+                <p className="text-xs text-red-800 leading-relaxed">
                   Years {analysis.highTaxYears.slice(0, 5).join(", ")} show effective tax rates above 25% or trigger IRMAA surcharges.
                   Review these years carefully. You may be converting or harvesting too aggressively, or income stacking is creating unintended consequences.
                   Consider reducing optimization amounts or timing conversions differently.
@@ -1430,11 +1390,11 @@ export default function TaxBracketFillingPage() {
             )}
 
             {/* Portfolio Impact */}
-            <div className="p-4 bg-purple-50 border-2 border-purple-200 rounded-lg">
-              <p className="text-base font-bold text-purple-900 mb-2">
+            <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg">
+              <p className="text-xs font-semibold text-purple-900 mb-1.5">
                 • Impact on retirement portfolio allocation and future flexibility
               </p>
-              <p className="text-sm font-medium text-purple-800 leading-relaxed">
+              <p className="text-xs text-purple-800 leading-relaxed">
                 {analysis.totalRothConversions > 0
                   ? `Converting ${formatCurrency(analysis.totalRothConversions)} to Roth over time reduces future RMD exposure and creates tax-free withdrawal flexibility during retirement. This allows precise income control in your 70s and 80s.`
                   : "With minimal Roth conversions, you'll face larger RMDs starting at age 72, which may push you into higher brackets regardless of your actual spending needs."}
@@ -1442,11 +1402,11 @@ export default function TaxBracketFillingPage() {
             </div>
 
             {/* Healthcare Subsidy Impact */}
-            <div className="p-4 bg-indigo-50 border-2 border-indigo-200 rounded-lg">
-              <p className="text-base font-bold text-indigo-900 mb-2">
+            <div className="p-4 bg-indigo-50 border border-indigo-200 rounded-lg">
+              <p className="text-xs font-semibold text-indigo-900 mb-1.5">
                 • Healthcare subsidy and Medicare premium considerations
               </p>
-              <p className="text-sm font-medium text-indigo-800 leading-relaxed">
+              <p className="text-xs text-indigo-800 leading-relaxed">
                 {(() => {
                   const subsidyYears = projections.filter(p => p.age < 65 && p.healthcareSubsidyEligible).length;
                   const irmaaYears = projections.filter(p => p.irmaaThreshold).length;
@@ -1462,11 +1422,11 @@ export default function TaxBracketFillingPage() {
             </div>
 
             {/* Future Tax Rate Sensitivity */}
-            <div className="p-4 bg-slate-50 border-2 border-slate-200 rounded-lg">
-              <p className="text-base font-bold text-slate-900 mb-2">
+            <div className="p-4 bg-slate-50 border border-slate-200 rounded-lg">
+              <p className="text-xs font-semibold text-slate-900 mb-1.5">
                 • Sensitivity to future tax rate changes
               </p>
-              <p className="text-sm font-medium text-slate-700 leading-relaxed">
+              <p className="text-xs text-slate-700 leading-relaxed">
                 {futureTaxAssumption === "higher"
                   ? "You're assuming higher future tax rates, which strongly favors aggressive bracket filling now. Every dollar converted at today's 12-22% rates could avoid 15-28%+ rates later if Congress allows TCJA provisions to sunset."
                   : futureTaxAssumption === "lower"
@@ -1481,33 +1441,33 @@ export default function TaxBracketFillingPage() {
 
       {/* Year-by-Year Table */}
       {projections.length > 0 && (
-        <Card className={isPro ? "border border-slate-200" : "bg-slate-100 border-2 border-slate-300"}>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className={`text-2xl font-black flex items-center gap-3 ${!isPro && "text-slate-400"}`}>
-              {!isPro && <Lock className="h-6 w-6 text-slate-400" />}
+        <Card className={isPro ? "bg-white border border-slate-200 shadow-sm" : "bg-slate-50 border border-slate-200"}>
+          <CardHeader className="flex flex-row items-center justify-between pb-3">
+            <CardTitle className={`text-sm font-semibold flex items-center gap-2 ${!isPro ? "text-slate-400" : "text-slate-900"}`}>
+              {!isPro && <Lock className="h-4 w-4 text-slate-400" />}
               Detailed Year-by-Year Projection
-              {!isPro && <span className="ml-2 text-sm font-bold text-amber-600 bg-amber-100 px-3 py-1 rounded-full border-2 border-amber-300">Pro Only</span>}
+              {!isPro && <span className="ml-2 text-xs font-medium text-amber-600 bg-amber-100 px-2 py-0.5 rounded-full border border-amber-200">Pro Only</span>}
             </CardTitle>
             {isPro && (
-              <Button onClick={exportToCSV} className="bg-emerald-600 hover:bg-emerald-700">
-                <Download className="h-4 w-4 mr-2" />
-                Export to CSV
+              <Button onClick={exportToCSV} size="sm" className="bg-emerald-600 hover:bg-emerald-700 text-xs">
+                <Download className="h-3.5 w-3.5 mr-1.5" />
+                Export CSV
               </Button>
             )}
           </CardHeader>
           {!isPro ? (
             <CardContent>
-              <div className="text-center py-12">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-200 mb-4">
-                  <Lock className="h-8 w-8 text-slate-400" />
+              <div className="text-center py-8">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-200 mb-3">
+                  <Lock className="h-5 w-5 text-slate-400" />
                 </div>
-                <h3 className="text-xl font-black text-slate-700 mb-2">Unlock Detailed Projections</h3>
-                <p className="text-base font-semibold text-slate-600 mb-6 max-w-md mx-auto">
+                <h3 className="text-sm font-semibold text-slate-700 mb-1.5">Unlock Detailed Projections</h3>
+                <p className="text-xs text-slate-500 mb-4 max-w-md mx-auto">
                   Get complete year-by-year breakdowns with income, conversions, gains realized, taxes paid, and full account balance tracking.
                 </p>
                 <Link href="/upgrade">
-                  <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-lg px-8 py-6">
-                    <Sparkles className="h-5 w-5 mr-2" />
+                  <Button className="bg-emerald-600 hover:bg-emerald-700 text-white text-sm px-6 py-2">
+                    <Sparkles className="h-4 w-4 mr-1.5" />
                     Upgrade to Pro
                   </Button>
                 </Link>
@@ -1518,24 +1478,24 @@ export default function TaxBracketFillingPage() {
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader className="sticky top-0 bg-white">
-                  <TableRow className="border-b-2 border-black">
-                    <TableHead className="font-black text-slate-900">Year</TableHead>
-                    <TableHead className="font-black text-slate-900">Age</TableHead>
-                    <TableHead className="font-black text-slate-900">Total Income</TableHead>
-                    <TableHead className="font-black text-slate-900">Consulting</TableHead>
-                    <TableHead className="font-black text-slate-900">Roth Conv.</TableHead>
-                    <TableHead className="font-black text-slate-900">Cap. Gains</TableHead>
-                    <TableHead className="font-black text-slate-900">Withdrawals</TableHead>
-                    <TableHead className="font-black text-slate-900">Taxable Income</TableHead>
-                    <TableHead className="font-black text-slate-900">Taxes Paid</TableHead>
-                    <TableHead className="font-black text-slate-900">Eff. Tax %</TableHead>
-                    <TableHead className="font-black text-slate-900">Bracket Use %</TableHead>
-                    <TableHead className="font-black text-slate-900">Remaining Cap.</TableHead>
-                    <TableHead className="font-black text-slate-900">Traditional</TableHead>
-                    <TableHead className="font-black text-slate-900">Roth</TableHead>
-                    <TableHead className="font-black text-slate-900">Taxable</TableHead>
-                    <TableHead className="font-black text-slate-900">Total Portfolio</TableHead>
-                    <TableHead className="font-black text-slate-900">Strategy</TableHead>
+                  <TableRow className="border-b border-slate-200">
+                    <TableHead className="font-semibold text-slate-700 text-xs">Year</TableHead>
+                    <TableHead className="font-semibold text-slate-700 text-xs">Age</TableHead>
+                    <TableHead className="font-semibold text-slate-700 text-xs">Total Income</TableHead>
+                    <TableHead className="font-semibold text-slate-700 text-xs">Consulting</TableHead>
+                    <TableHead className="font-semibold text-slate-700 text-xs">Roth Conv.</TableHead>
+                    <TableHead className="font-semibold text-slate-700 text-xs">Cap. Gains</TableHead>
+                    <TableHead className="font-semibold text-slate-700 text-xs">Withdrawals</TableHead>
+                    <TableHead className="font-semibold text-slate-700 text-xs">Taxable Income</TableHead>
+                    <TableHead className="font-semibold text-slate-700 text-xs">Taxes Paid</TableHead>
+                    <TableHead className="font-semibold text-slate-700 text-xs">Eff. Tax %</TableHead>
+                    <TableHead className="font-semibold text-slate-700 text-xs">Bracket Use %</TableHead>
+                    <TableHead className="font-semibold text-slate-700 text-xs">Remaining Cap.</TableHead>
+                    <TableHead className="font-semibold text-slate-700 text-xs">Traditional</TableHead>
+                    <TableHead className="font-semibold text-slate-700 text-xs">Roth</TableHead>
+                    <TableHead className="font-semibold text-slate-700 text-xs">Taxable</TableHead>
+                    <TableHead className="font-semibold text-slate-700 text-xs">Total Portfolio</TableHead>
+                    <TableHead className="font-semibold text-slate-700 text-xs">Strategy</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -1598,13 +1558,13 @@ export default function TaxBracketFillingPage() {
 
       {/* Educational Panels */}
       {isPro && (
-      <div className="grid md:grid-cols-2 gap-6">
-        <Card className="bg-blue-50 border-2 border-blue-300">
+      <div className="grid md:grid-cols-2 gap-4">
+        <Card className="bg-blue-50 border border-blue-200">
           <CardHeader>
-            <CardTitle className="text-lg font-black text-blue-900">Why Gradual Bracket Filling Reduces Lifetime Taxes</CardTitle>
+            <CardTitle className="text-xs font-semibold text-blue-900">Why Gradual Bracket Filling Reduces Lifetime Taxes</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm font-medium text-blue-800 leading-relaxed">
+            <p className="text-xs text-blue-800 leading-relaxed">
               Progressive taxation means your effective rate increases as income rises. By intentionally filling lower brackets each year instead
               of taking large distributions later, you minimize the amount of income taxed at higher marginal rates. A $50k conversion at 12%
               is far better than a $50k RMD at 24%. Over 20-30 years, this compounds to six-figure tax savings.
@@ -1612,12 +1572,12 @@ export default function TaxBracketFillingPage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-purple-50 border-2 border-purple-300">
+        <Card className="bg-purple-50 border border-purple-200">
           <CardHeader>
-            <CardTitle className="text-lg font-black text-purple-900">How Variable Income Impacts Bracket Strategy</CardTitle>
+            <CardTitle className="text-xs font-semibold text-purple-900">How Variable Income Impacts Bracket Strategy</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm font-medium text-purple-800 leading-relaxed">
+            <p className="text-xs text-purple-800 leading-relaxed">
               Consultants and freelancers with fluctuating income should maximize bracket filling in low-earning years. A year with $80k income
               leaves room to fill the 12% or 22% bracket with conversions. A $200k year does not. By front-loading conversions during lean years,
               you use bracket space that would otherwise go to waste while avoiding high-rate conversions during peak income years.
@@ -1625,12 +1585,12 @@ export default function TaxBracketFillingPage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-emerald-50 border-2 border-emerald-300">
+        <Card className="bg-emerald-50 border border-emerald-200">
           <CardHeader>
-            <CardTitle className="text-lg font-black text-emerald-900">Why Early Retirement Gap Years Are So Valuable</CardTitle>
+            <CardTitle className="text-xs font-semibold text-emerald-900">Why Early Retirement Gap Years Are So Valuable</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm font-medium text-emerald-800 leading-relaxed">
+            <p className="text-xs text-emerald-800 leading-relaxed">
               The 5-15 years between early retirement (age 50-60) and Social Security/RMDs (age 67-72) represent your peak optimization window.
               With no earned income, no required distributions, and potentially no Social Security, your taxable income is just what you choose
               to withdraw. This creates artificially low income years where you can fill the 12% and 22% brackets almost entirely with Roth
@@ -1639,12 +1599,12 @@ export default function TaxBracketFillingPage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-indigo-50 border-2 border-indigo-300">
+        <Card className="bg-indigo-50 border border-indigo-200">
           <CardHeader>
-            <CardTitle className="text-lg font-black text-indigo-900">How FEIE Transitions Change Tax Stacking</CardTitle>
+            <CardTitle className="text-xs font-semibold text-indigo-900">How FEIE Transitions Change Tax Stacking</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm font-medium text-indigo-800 leading-relaxed">
+            <p className="text-xs text-indigo-800 leading-relaxed">
               If you've been using the Foreign Earned Income Exclusion and plan to return to the US tax system, your first 2-3 years back create
               unique opportunities. You may have minimal US income initially while re-establishing, combined with large Traditional IRA balances
               that were never optimized. Aggressive Roth conversions during these transition years can dramatically reduce future RMD exposure
@@ -1653,12 +1613,12 @@ export default function TaxBracketFillingPage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-amber-50 border-2 border-amber-300">
+        <Card className="bg-amber-50 border border-amber-200">
           <CardHeader>
-            <CardTitle className="text-lg font-black text-amber-900">Pre-Medicare Income Planning Considerations</CardTitle>
+            <CardTitle className="text-xs font-semibold text-amber-900">Pre-Medicare Income Planning Considerations</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm font-medium text-amber-800 leading-relaxed">
+            <p className="text-xs text-amber-800 leading-relaxed">
               Before age 65, you must balance bracket filling with ACA marketplace subsidy preservation. Exceeding MAGI thresholds ($60k single,
               $80k married) eliminates subsidies worth $5k-$15k annually. Additionally, high income at ages 63-64 triggers IRMAA surcharges
               at 65-66 due to the 2-year lookback. Strategic bracket filling pre-65 means staying just below subsidy cliffs while maximizing
@@ -1667,12 +1627,12 @@ export default function TaxBracketFillingPage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-red-50 border-2 border-red-300">
+        <Card className="bg-red-50 border border-red-200">
           <CardHeader>
-            <CardTitle className="text-lg font-black text-red-900">Common Bracket Filling Mistakes to Avoid</CardTitle>
+            <CardTitle className="text-xs font-semibold text-red-900">Common Bracket Filling Mistakes to Avoid</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-2 text-sm font-medium text-red-800 leading-relaxed">
+            <div className="space-y-1 text-xs text-red-800 leading-relaxed">
               <p>• <strong>Converting too much in one year:</strong> Jumping tax brackets negates the benefit</p>
               <p>• <strong>Ignoring healthcare subsidies:</strong> A $1 income increase can cost thousands in lost subsidies</p>
               <p>• <strong>Triggering IRMAA before Medicare:</strong> High income at 63 means surcharges at 65</p>
@@ -1686,9 +1646,9 @@ export default function TaxBracketFillingPage() {
       )}
 
       {/* Disclaimer */}
-      <Card className="bg-slate-50 border-2 border-slate-300">
+      <Card className="bg-slate-50 border border-slate-200">
         <CardContent className="pt-6">
-          <p className="text-sm font-medium text-slate-700 leading-relaxed">
+          <p className="text-xs text-slate-700 leading-relaxed">
             <strong>Disclaimer:</strong> This Tax Bracket Filling Strategy Engine is an educational financial modeling tool for planning purposes only.
             It is not personalized tax, legal, or investment advice. Tax laws are complex, change frequently, and vary by jurisdiction. Individual
             circumstances differ significantly. The projections shown are based on assumptions you provide and simplified calculations that may not

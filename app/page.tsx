@@ -253,6 +253,9 @@ export default function Landing21() {
           </span>
         </Link>
         <div className="flex items-center gap-2 sm:gap-4">
+          <Link href="/learn" className="hidden md:block text-slate-600 hover:text-slate-900 text-sm">
+            Documentation
+          </Link>
           <Link href="/blog" className="hidden md:block text-slate-600 hover:text-slate-900 text-sm">
             Resources
           </Link>
@@ -790,7 +793,7 @@ export default function Landing21() {
             <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
               <Link href="/about" className="hover:text-slate-700">About</Link>
               <Link href="/contact" className="hover:text-slate-700">Contact</Link>
-              <Link href="/glossary" className="hover:text-slate-700">Glossary</Link>
+              <Link href="/learn" className="hover:text-slate-700">Documentation</Link>
               <Link href="/blog" className="hover:text-slate-700">Resources</Link>
               <Link href="/pricing" className="hover:text-slate-700">Pricing</Link>
               <Link href="/privacy" className="hover:text-slate-700">Privacy</Link>

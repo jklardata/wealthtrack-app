@@ -701,11 +701,11 @@ export default function TaxCalculatorPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-4xl sm:text-5xl font-black text-slate-900 flex items-center gap-3">
-          <Calculator className="h-6 w-6 sm:h-7 sm:w-7 text-emerald-600 flex-shrink-0" />
-          <span className="leading-tight">Tax-Optimized Take-Home Calculator</span>
+        <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+          <Calculator className="h-5 w-5 text-emerald-600 flex-shrink-0" />
+          Tax-Optimized Take-Home Calculator
         </h1>
-        <p className="text-sm sm:text-base text-slate-500 mt-1">
+        <p className="text-sm text-slate-500 mt-1">
           Compare tax strategies for consultants and solo practitioners
         </p>
       </div>
@@ -731,7 +731,9 @@ export default function TaxCalculatorPage() {
       )}
 
       {/* Input Section */}
-      <div className="grid gap-4 md:gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 md:gap-6 lg:grid-cols-2">
+        {/* Left column: Income & Business + S-Corp */}
+        <div className="space-y-4">
         {/* Income & Business */}
         <Card>
           <CardHeader>
@@ -898,8 +900,9 @@ export default function TaxCalculatorPage() {
             ]}
           />
         )}
+        </div>{/* end left column */}
 
-        {/* Tax-Advantaged Accounts */}
+        {/* Right column: Tax-Advantaged Accounts */}
         <Card>
           <CardHeader>
             <CardTitle className="text-lg flex items-center gap-2">

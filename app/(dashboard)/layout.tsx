@@ -175,7 +175,7 @@ export default function DashboardLayout({
   return (
     <div className="flex min-h-screen bg-slate-50">
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex w-48 flex-col border-r border-slate-200 bg-slate-100 flex-shrink-0">
+      <aside className="hidden md:flex w-56 flex-col border-r border-slate-200 bg-slate-100 flex-shrink-0">
         <Sidebar />
       </aside>
 
