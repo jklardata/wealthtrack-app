@@ -515,8 +515,8 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
-        <div className="max-w-7xl mx-auto space-y-6">
+      <div className="min-h-screen bg-slate-50 p-3 sm:p-4">
+        <div className="max-w-6xl mx-auto space-y-4">
           <div className="flex justify-between items-center">
             <Skeleton className="h-8 w-32" />
             <Skeleton className="h-10 w-28" />
@@ -562,8 +562,8 @@ export default function DashboardPage() {
   // Empty state - show when no entries
   if (!loading && entries.length === 0) {
     return (
-      <div className="min-h-screen bg-slate-50 p-4 sm:p-6 lg:p-8">
-        <div className="max-w-7xl mx-auto space-y-6">
+      <div className="min-h-screen bg-slate-50 p-3 sm:p-4">
+        <div className="max-w-6xl mx-auto space-y-4">
           {/* Empty State - Enhanced */}
           <Card className="bg-white border-slate-200 border-t-4 border-t-emerald-500">
             <CardContent className="py-12 sm:py-16">
@@ -1280,29 +1280,29 @@ export default function DashboardPage() {
             <p className="text-xs text-slate-500">Cash flow over time</p>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={chartData.map(entry => {
-                const rawEntry = entries.find(e => e.id === entry.entryId);
-                return {
-                  date: entry.date,
-                  income: rawEntry?.pre_tax_income || 0,
-                  expenses: rawEntry?.monthly_expenses || 0,
-                  netProfit: (rawEntry?.pre_tax_income || 0) - (rawEntry?.monthly_expenses || 0),
-                };
-              })}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis dataKey="date" stroke="#94a3b8" fontSize={11} />
-                <YAxis stroke="#94a3b8" fontSize={11} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} />
-                <Tooltip formatter={(value) => formatCurrency(Number(value))} />
-                <Legend />
-                <Bar dataKey="income" name="Income" fill="#3b82f6" radius={[4, 4, 0, 0]} label={{ position: 'top', content: (props: any) => {
-                  const { x, y, width, value } = props;
-                  return <text x={x + width / 2} y={y - 5} fill="#64748b" textAnchor="middle" fontSize={10}>${(value / 1000).toFixed(0)}k</text>;
-                } }} />
-                <Bar dataKey="expenses" name="Expenses" fill="#d97706" radius={[4, 4, 0, 0]} label={{ position: 'top', content: (props: any) => {
-                  const { x, y, width, value } = props;
-                  return <text x={x + width / 2} y={y - 5} fill="#64748b" textAnchor="middle" fontSize={10}>${(value / 1000).toFixed(0)}k</text>;
-                } }} />
+            <ResponsiveContainer width="100%" height={240}>
+              <BarChart
+                data={chartData.map(entry => {
+                  const rawEntry = entries.find(e => e.id === entry.entryId);
+                  return {
+                    date: entry.date,
+                    income: rawEntry?.pre_tax_income || 0,
+                    expenses: rawEntry?.monthly_expenses || 0,
+                  };
+                }).filter(d => d.income > 0 || d.expenses > 0)}
+                barGap={4}
+                barCategoryGap="30%"
+              >
+                <CartesianGrid vertical={false} stroke="#f1f5f9" />
+                <XAxis dataKey="date" stroke="#cbd5e1" fontSize={11} tickLine={false} axisLine={false} />
+                <YAxis stroke="#cbd5e1" fontSize={11} tickLine={false} axisLine={false} tickFormatter={(v) => `$${(v/1000).toFixed(0)}k`} width={40} />
+                <Tooltip
+                  contentStyle={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: "8px", fontSize: "12px" }}
+                  formatter={(v) => [formatCurrency(Number(v))]}
+                />
+                <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: "12px", paddingTop: "8px" }} />
+                <Bar dataKey="income" name="Income" fill="#10b981" radius={[3, 3, 0, 0]} />
+                <Bar dataKey="expenses" name="Expenses" fill="#fbbf24" radius={[3, 3, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
@@ -1325,7 +1325,7 @@ export default function DashboardPage() {
                   const e = entries.find(x => x.id === d.entryId);
                   return (e?.pre_tax_income || 0) > 0;
                 }).length > 1 ? (
-                  <ResponsiveContainer width="100%" height={140}>
+                  <ResponsiveContainer width="100%" height={180}>
                     <BarChart
                       data={chartData.map(entry => {
                         const rawEntry = entries.find(e => e.id === entry.entryId);
@@ -1335,17 +1335,19 @@ export default function DashboardPage() {
                           expenses: rawEntry?.monthly_expenses || 0,
                         };
                       }).filter(d => d.income > 0)}
-                      barGap={2}
+                      barGap={4}
+                      barCategoryGap="30%"
                     >
                       <CartesianGrid vertical={false} stroke="#f1f5f9" />
-                      <XAxis dataKey="date" stroke="#cbd5e1" fontSize={10} tickLine={false} axisLine={false} />
-                      <YAxis stroke="#cbd5e1" fontSize={10} tickLine={false} axisLine={false} tickFormatter={(v) => `$${(v/1000).toFixed(0)}k`} width={36} />
+                      <XAxis dataKey="date" stroke="#cbd5e1" fontSize={11} tickLine={false} axisLine={false} />
+                      <YAxis stroke="#cbd5e1" fontSize={11} tickLine={false} axisLine={false} tickFormatter={(v) => `$${(v/1000).toFixed(0)}k`} width={40} />
                       <Tooltip
                         contentStyle={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: "8px", fontSize: "12px" }}
                         formatter={(v) => [formatCurrency(Number(v))]}
                       />
+                      <Legend iconType="circle" iconSize={8} wrapperStyle={{ fontSize: "11px", paddingTop: "6px" }} />
                       <Bar dataKey="income" name="Income" fill="#10b981" radius={[3, 3, 0, 0]} />
-                      <Bar dataKey="expenses" name="Expenses" fill="#e2e8f0" radius={[3, 3, 0, 0]} />
+                      <Bar dataKey="expenses" name="Expenses" fill="#fbbf24" radius={[3, 3, 0, 0]} />
                     </BarChart>
                   </ResponsiveContainer>
                 ) : null}

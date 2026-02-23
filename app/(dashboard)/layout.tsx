@@ -18,6 +18,7 @@ import {
   Lightbulb,
   Sunrise,
   BookOpen,
+  FileText,
   User,
   LineChart,
   Activity,
@@ -88,6 +89,7 @@ const navGroups: NavGroup[] = [
   {
     label: "Account",
     items: [
+      { href: "/learn", label: "Documentation", icon: FileText },
       { href: "/blog", label: "Resources", icon: BookOpen },
       { href: "/pricing", label: "Pricing", icon: Sparkles },
       { href: "/founder-notes", label: "Founder Notes", icon: MessageSquare },
@@ -116,7 +118,7 @@ function Sidebar({ className }: { className?: string }) {
         {navGroups.map((group, groupIdx) => (
           <div key={groupIdx}>
             {group.label && (
-              <p className="px-2 mb-1 text-[10px] font-semibold uppercase tracking-widest text-slate-400">
+              <p className="px-2 mb-1 text-[11px] font-bold uppercase tracking-wider text-slate-500">
                 {group.label}
               </p>
             )}

@@ -39,8 +39,12 @@ export async function POST(request: NextRequest) {
       .eq('user_id', userId)
       .single();
 
-    // Don't allow promo codes if user already has paid subscription
-    if (subscription?.entitlement_tier !== 'free') {
+    // Don't allow promo codes if user has an active paid Stripe subscription
+    // Allow users who downgraded (stripe_subscription_id cleared or status not 'active')
+    const hasActivePaidSub =
+      subscription?.stripe_subscription_id != null &&
+      subscription?.status === 'active';
+    if (hasActivePaidSub) {
       return NextResponse.json(
         { error: 'You already have an active subscription' },
         { status: 400 }

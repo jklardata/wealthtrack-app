@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Check, Calculator, PieChart, Building2, TrendingUp, Shield, Lock, Eye, ChevronRight } from "lucide-react";
+import { ArrowRight, Check, Calculator, PieChart, Building2, TrendingUp, Shield, Lock, Eye } from "lucide-react";
 import { LandingAnalytics, TrackedLink } from "@/components/analytics";
 import { useState } from "react";
 
@@ -19,6 +19,9 @@ function QuarterlyTaxWidget() {
     estimatedFederalTax: number;
     quarterlyPayment: number;
     effectiveRate: number;
+    safeHarbor90: number;
+    safeHarbor100: number;
+    totalAnnual: number;
   }>(null);
 
   const calculate = () => {
@@ -72,6 +75,9 @@ function QuarterlyTaxWidget() {
       estimatedFederalTax: federalTax,
       quarterlyPayment: quarterly,
       effectiveRate,
+      safeHarbor90: totalAnnual * 0.9 / 4,
+      safeHarbor100: totalAnnual / 4, // same as quarterly (100% of current year estimate)
+      totalAnnual,
     });
   };
 
@@ -148,50 +154,71 @@ function QuarterlyTaxWidget() {
         </button>
 
         {result && (
-          <div className="mt-2 rounded-lg bg-slate-50 border border-slate-200 p-4 space-y-2">
-            <div className="flex justify-between text-sm">
-              <span className="text-slate-500">Net Income</span>
-              <span className="font-medium text-slate-900">{fmt(result.netIncome)}</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-slate-500">Self-Employment Tax</span>
-              <span className="font-medium text-slate-900">{fmt(result.selfEmploymentTax)}</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-slate-500">Est. Federal Income Tax</span>
-              <span className="font-medium text-slate-900">{fmt(result.estimatedFederalTax)}</span>
-            </div>
-            <div className="border-t border-slate-200 pt-2 mt-2">
-              <div className="flex justify-between">
-                <span className="font-semibold text-slate-900">Pay per quarter</span>
-                <span className="text-xl font-bold text-emerald-600">{fmt(result.quarterlyPayment)}</span>
+          <div className="mt-2 space-y-3">
+            {/* Tax breakdown */}
+            <div className="rounded-lg bg-slate-50 border border-slate-200 p-4 space-y-2">
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Tax Breakdown</p>
+              <div className="flex justify-between text-sm">
+                <span className="text-slate-500">Net Self-Employment Income</span>
+                <span className="font-medium text-slate-900">{fmt(result.netIncome)}</span>
               </div>
-              <p className="text-xs text-slate-500 mt-1">
-                ~{result.effectiveRate.toFixed(1)}% effective rate · federal + SE tax only
-              </p>
+              <div className="flex justify-between text-sm">
+                <span className="text-slate-500">Self-Employment Tax (15.3%)</span>
+                <span className="font-medium text-slate-900">{fmt(result.selfEmploymentTax)}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-slate-500">Est. Federal Income Tax</span>
+                <span className="font-medium text-slate-900">{fmt(result.estimatedFederalTax)}</span>
+              </div>
+              <div className="border-t border-slate-200 pt-2 mt-1 flex justify-between">
+                <span className="text-sm font-semibold text-slate-900">Total Annual Tax</span>
+                <span className="text-sm font-bold text-slate-900">{fmt(result.totalAnnual)}</span>
+              </div>
             </div>
-            {/* Sign-up CTA */}
-            <div className="mt-3 pt-3 border-t border-slate-100 bg-emerald-50 -mx-5 -mb-5 px-5 pb-5 rounded-b-xl">
-              <p className="text-xs text-slate-600 mb-2">
-                <span className="font-medium text-slate-800">Want the full breakdown?</span> State tax, Safe Harbor amounts, and a payment timeline.
-              </p>
-              <Link
-                href="/tools/quarterly-tax"
-                className="flex items-center justify-center gap-1.5 w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium py-2.5 rounded-lg transition-colors"
-              >
-                Get full estimate — free
-                <ChevronRight className="h-3.5 w-3.5" />
-              </Link>
+
+            {/* Quarterly payment highlight */}
+            <div className="rounded-lg bg-emerald-600 p-4 text-white text-center">
+              <p className="text-emerald-100 text-xs mb-1">Pay per quarter</p>
+              <p className="text-3xl font-bold">{fmt(result.quarterlyPayment)}</p>
+              <p className="text-emerald-200 text-xs mt-1">{result.effectiveRate.toFixed(1)}% effective rate · federal + SE only</p>
+            </div>
+
+            {/* Safe Harbor */}
+            <div className="rounded-lg bg-slate-50 border border-slate-200 p-4">
+              <div className="flex items-center gap-1.5 mb-2">
+                <Shield className="h-3.5 w-3.5 text-emerald-600" />
+                <p className="text-xs font-semibold text-slate-700">Safe Harbor (avoid penalties)</p>
+              </div>
+              <div className="space-y-1.5 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-slate-500">90% of current year</span>
+                  <span className="font-medium text-slate-900">{fmt(result.safeHarbor90)}/quarter</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-500">100% of prior year tax</span>
+                  <span className="text-xs text-slate-400 italic">Enter last year's tax in full calculator</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Due dates */}
+            <div className="rounded-lg border border-slate-200 p-3">
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">2025 Due Dates</p>
+              <div className="grid grid-cols-2 gap-1.5 text-xs">
+                {[["Q1", "Apr 15"], ["Q2", "Jun 16"], ["Q3", "Sep 15"], ["Q4", "Jan 15, 2026"]].map(([q, d]) => (
+                  <div key={q} className="flex justify-between bg-slate-50 rounded px-2 py-1">
+                    <span className="text-slate-500">{q}</span>
+                    <span className="font-medium text-slate-700">{d}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         )}
 
         {!result && (
           <p className="text-center text-xs text-slate-400">
-            Includes SE tax + federal estimate. Add state tax at{" "}
-            <Link href="/quarterly-tax-calculator" className="text-emerald-600 hover:underline">
-              full calculator →
-            </Link>
+            Federal + SE tax estimate. State tax not included.
           </p>
         )}
       </div>
@@ -247,9 +274,6 @@ export default function Landing21() {
           </span>
         </Link>
         <div className="flex items-center gap-2 sm:gap-4">
-          <Link href="/quarterly-tax-calculator" className="hidden sm:block text-slate-600 hover:text-slate-900 text-sm">
-            Tax Calculator
-          </Link>
           <Link href="/blog" className="hidden md:block text-slate-600 hover:text-slate-900 text-sm">
             Resources
           </Link>
@@ -341,7 +365,7 @@ export default function Landing21() {
       {/* Quarterly Tax Calculator CTA Section */}
       <section className="py-10 sm:py-14 bg-white border-y border-slate-200">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <div className="grid md:grid-cols-2 gap-8 items-center">
+          <div className="grid md:grid-cols-2 gap-8 items-start">
             <div>
               <p className="text-xs font-semibold text-emerald-600 uppercase tracking-wider mb-2">Try it free</p>
               <h2 className="text-2xl sm:text-3xl font-medium text-slate-900 mb-3">
@@ -350,10 +374,10 @@ export default function Landing21() {
               <p className="text-slate-600 mb-4 leading-relaxed">
                 Most self-employed professionals either overpay and lose liquidity, or underpay and get hit with penalties. Get your estimate in seconds — no signup required.
               </p>
-              <ul className="space-y-1.5 mb-5">
+              <ul className="space-y-1.5">
                 <li className="flex items-center gap-2 text-sm text-slate-600">
                   <Check className="h-4 w-4 text-emerald-500 flex-shrink-0" />
-                  Federal + self-employment tax estimate
+                  Federal + self-employment tax breakdown
                 </li>
                 <li className="flex items-center gap-2 text-sm text-slate-600">
                   <Check className="h-4 w-4 text-emerald-500 flex-shrink-0" />
@@ -361,16 +385,13 @@ export default function Landing21() {
                 </li>
                 <li className="flex items-center gap-2 text-sm text-slate-600">
                   <Check className="h-4 w-4 text-emerald-500 flex-shrink-0" />
-                  Full state tax breakdown at the detailed calculator
+                  Safe Harbor amounts to avoid IRS penalties
+                </li>
+                <li className="flex items-center gap-2 text-sm text-slate-600">
+                  <Check className="h-4 w-4 text-emerald-500 flex-shrink-0" />
+                  2025 quarterly due dates
                 </li>
               </ul>
-              <Link
-                href="/tools/quarterly-tax"
-                className="inline-flex items-center gap-1.5 text-sm text-emerald-700 border border-emerald-300 hover:bg-emerald-50 font-medium px-4 py-2 rounded-lg transition-colors"
-              >
-                Full calculator with state tax
-                <ArrowRight className="h-4 w-4" />
-              </Link>
             </div>
             <div>
               <QuarterlyTaxWidget />
