@@ -6,6 +6,20 @@ import { ArrowRight, Shield, BarChart3, Users } from "lucide-react";
 export const metadata: Metadata = {
   title: "About SoloFI | Financial Planning for Independent Professionals",
   description: "Built by a self-employed consultant to solve the financial planning gap for independent professionals. No asset custody. No commissions. Just clarity.",
+  openGraph: {
+    title: "About SoloFI | Financial Planning for Independent Professionals",
+    description: "The financial platform for the self-employed. Built by a consultant who needed it.",
+    url: "https://solofi.io/about",
+    siteName: "SoloFI",
+    images: [{ url: "https://solofi.io/api/og?title=About%20SoloFI&category=About", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About SoloFI",
+    description: "The financial platform for the self-employed. Built by a consultant who needed it.",
+    images: ["https://solofi.io/api/og?title=About%20SoloFI&category=About"],
+  },
 };
 
 export default function AboutPage() {

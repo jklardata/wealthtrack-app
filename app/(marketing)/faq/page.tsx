@@ -5,6 +5,20 @@ import { TrendingUp, ArrowRight } from "lucide-react";
 export const metadata: Metadata = {
   title: "FAQ | SoloFI",
   description: "Frequently asked questions about SoloFI — what it does, how it works, and how to get the most out of it.",
+  openGraph: {
+    title: "FAQ | SoloFI — The Financial Platform for the Self-Employed",
+    description: "The financial platform for the self-employed. Common questions answered.",
+    url: "https://solofi.io/faq",
+    siteName: "SoloFI",
+    images: [{ url: "https://solofi.io/api/og?title=FAQ&category=Support", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "FAQ | SoloFI",
+    description: "The financial platform for the self-employed. Common questions answered.",
+    images: ["https://solofi.io/api/og?title=FAQ&category=Support"],
+  },
 };
 
 const faqs = [

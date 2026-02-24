@@ -64,6 +64,7 @@ const navGroups: NavGroup[] = [
     items: [
       { href: "/profile", label: "Profile", icon: User },
       { href: "/net-worth", label: "Net Worth", icon: TrendingUp },
+      { href: "/freelance-checklist", label: "Self Employed Checklist", icon: ClipboardList },
       { href: "/credit-cards", label: "Credit Cards", icon: CreditCard, disabled: true },
     ],
   },
@@ -78,7 +79,6 @@ const navGroups: NavGroup[] = [
       { href: "/geo-arbitrage", label: "Geo Arbitrage", icon: Globe },
       { href: "/feie-eligibility", label: "FEIE Eligibility", icon: Globe },
       { href: "/freelance-rate", label: "Freelance Rate", icon: DollarSign },
-      { href: "/freelance-checklist", label: "Self Employed Checklist", icon: ClipboardList },
     ],
   },
   {

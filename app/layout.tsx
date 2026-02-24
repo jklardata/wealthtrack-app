@@ -15,28 +15,28 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SoloFI | Financial Independence for Consultants",
-  description: "Tax optimization and retirement outcomes for the self-employed, business owners, and FIRE seekers.",
+  title: "SoloFI | The Financial Platform for the Self-Employed",
+  description: "The financial platform for the self-employed.",
   openGraph: {
-    title: "SoloFI | Financial Independence for Consultants",
-    description: "Tax optimization and retirement outcomes for the self-employed, business owners, and FIRE seekers.",
+    title: "SoloFI | The Financial Platform for the Self-Employed",
+    description: "The financial platform for the self-employed.",
     url: "https://solofi.io",
     siteName: "SoloFI",
     images: [
       {
-        url: "https://solofi.io/api/og?title=Financial%20Independence%20for%20Consultants&category=Financial%20Planning",
+        url: "https://solofi.io/api/og?title=The%20Financial%20Platform%20for%20the%20Self-Employed&category=Financial%20Planning",
         width: 1200,
         height: 630,
-        alt: "SoloFI - Financial Independence for Consultants",
+        alt: "SoloFI - The Financial Platform for the Self-Employed",
       },
     ],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "SoloFI - Financial Independence for Consultants",
-    description: "Tax optimization and retirement outcomes for the self-employed, business owners, and FIRE seekers.",
-    images: ["https://solofi.io/api/og?title=Financial%20Independence%20for%20Consultants&category=Financial%20Planning"],
+    title: "SoloFI | The Financial Platform for the Self-Employed",
+    description: "The financial platform for the self-employed.",
+    images: ["https://solofi.io/api/og?title=The%20Financial%20Platform%20for%20the%20Self-Employed&category=Financial%20Planning"],
   },
   alternates: {
     canonical: "https://solofi.io",
@@ -51,7 +51,7 @@ const websiteJsonLd = {
       "@id": "https://solofi.io/#website",
       url: "https://solofi.io",
       name: "SoloFI",
-      description: "Tax optimization and retirement outcomes for the self-employed, business owners, and FIRE seekers.",
+      description: "The financial platform for the self-employed.",
       potentialAction: {
         "@type": "SearchAction",
         target: "https://solofi.io/blog?q={search_term_string}",

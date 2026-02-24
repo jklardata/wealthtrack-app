@@ -6,6 +6,20 @@ import { ContactForm } from "./ContactForm";
 export const metadata: Metadata = {
   title: "Contact | SoloFI",
   description: "Get in touch with the SoloFI team. Questions, feedback, feature requests, or just say hi.",
+  openGraph: {
+    title: "Contact SoloFI",
+    description: "The financial platform for the self-employed. Get in touch.",
+    url: "https://solofi.io/contact",
+    siteName: "SoloFI",
+    images: [{ url: "https://solofi.io/api/og?title=Contact%20SoloFI&category=Support", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact SoloFI",
+    description: "The financial platform for the self-employed. Get in touch.",
+    images: ["https://solofi.io/api/og?title=Contact%20SoloFI&category=Support"],
+  },
 };
 
 export default function ContactPage() {
