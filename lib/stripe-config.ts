@@ -6,6 +6,7 @@ export const STRIPE_PRICES = {
   pro: {
     monthly: process.env.STRIPE_PRICE_PRO_MONTHLY || '',
     yearly: process.env.STRIPE_PRICE_PRO_YEARLY || '',
+    lifetime: process.env.STRIPE_PRICE_PRO_LIFETIME || '',
   },
   premium: {
     monthly: process.env.STRIPE_PRICE_PREMIUM_MONTHLY || '',
@@ -18,7 +19,7 @@ export function getTierFromPriceId(priceId: string): EntitlementTier {
   if (priceId === STRIPE_PRICES.premium.monthly || priceId === STRIPE_PRICES.premium.yearly) {
     return 'premium';
   }
-  if (priceId === STRIPE_PRICES.pro.monthly || priceId === STRIPE_PRICES.pro.yearly) {
+  if (priceId === STRIPE_PRICES.pro.monthly || priceId === STRIPE_PRICES.pro.yearly || priceId === STRIPE_PRICES.pro.lifetime) {
     return 'pro';
   }
   return 'free';
@@ -51,8 +52,8 @@ export const PRICING_TIERS = {
   },
   pro: {
     name: 'Pro',
-    monthlyPrice: 19,
-    yearlyPrice: 199,
+    monthlyPrice: 15,
+    yearlyPrice: 120,
     description: 'Advanced tools for serious planners',
     features: [
       'Everything in Free',
@@ -71,8 +72,8 @@ export const PRICING_TIERS = {
   // Legacy tier - maps to Pro for existing subscribers
   premium: {
     name: 'Pro',
-    monthlyPrice: 19,
-    yearlyPrice: 199,
+    monthlyPrice: 15,
+    yearlyPrice: 120,
     description: 'Advanced tools for serious planners',
     features: [
       'Everything in Free',
