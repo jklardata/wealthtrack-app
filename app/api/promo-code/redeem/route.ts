@@ -9,7 +9,12 @@ const VALID_PROMO_CODES: Record<string, {
 }> = {
   'SAVERTEST': {
     tier: 'pro',
-    duration: 'lifetime', // Can be changed to 'trial' with trialDays if needed
+    duration: 'lifetime',
+  },
+  'EARLYWEALTH': {
+    tier: 'pro',
+    duration: 'trial',
+    trialDays: 365, // 50% off first year — free first year for early access
   },
 };
 

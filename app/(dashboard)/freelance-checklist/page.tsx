@@ -181,7 +181,7 @@ export default function FreelanceChecklistPage() {
             <ClipboardList className="h-5 w-5 text-emerald-600" />
             First-Year Freelancer Financial Checklist
           </h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-base text-slate-500 mt-1">
             30+ tasks to set up your finances when going self-employed. Progress saves automatically.
           </p>
         </div>
@@ -251,7 +251,7 @@ export default function FreelanceChecklistPage() {
       {loading ? (
         <div className="text-center py-12 text-slate-400 text-sm">Loading your progress...</div>
       ) : (
-        <div className="space-y-6 print:space-y-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 print:grid-cols-1 print:gap-4">
           {CHECKLIST_SECTIONS.map((section) => {
             const sectionDone = section.items.filter(i => checkedItems.has(`${section.title}-${i.task}`)).length;
             return (
@@ -263,8 +263,8 @@ export default function FreelanceChecklistPage() {
                         {section.icon}
                       </div>
                       <div>
-                        <CardTitle className="text-base font-semibold text-slate-900">{section.title}</CardTitle>
-                        <p className="text-xs text-slate-500 mt-0.5">{section.description}</p>
+                        <CardTitle className="text-lg font-semibold text-slate-900">{section.title}</CardTitle>
+                        <p className="text-sm text-slate-500 mt-0.5">{section.description}</p>
                       </div>
                     </div>
                     <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
@@ -303,7 +303,7 @@ export default function FreelanceChecklistPage() {
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 flex-wrap">
-                              <p className={`font-medium text-sm ${isChecked ? "line-through text-slate-400" : "text-slate-900"}`}>
+                              <p className={`font-medium text-base ${isChecked ? "line-through text-slate-400" : "text-slate-900"}`}>
                                 {item.task}
                               </p>
                               {item.priority === "high" && !isChecked && (
@@ -312,7 +312,7 @@ export default function FreelanceChecklistPage() {
                                 </span>
                               )}
                             </div>
-                            <p className={`text-xs mt-1 leading-relaxed ${isChecked ? "text-slate-400" : "text-slate-500"}`}>
+                            <p className={`text-sm mt-1 leading-relaxed ${isChecked ? "text-slate-400" : "text-slate-500"}`}>
                               {item.details}
                             </p>
                           </div>
@@ -333,8 +333,8 @@ export default function FreelanceChecklistPage() {
           <div className="flex gap-3">
             <AlertCircle className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
             <div>
-              <p className="font-medium text-amber-900 text-sm">Important Note</p>
-              <p className="text-xs text-amber-800 mt-1">
+              <p className="font-medium text-amber-900 text-base">Important Note</p>
+              <p className="text-sm text-amber-800 mt-1">
                 This checklist provides general guidance. Tax laws and requirements vary by state and situation.
                 Consult with a CPA or tax professional for advice specific to your circumstances.
               </p>
