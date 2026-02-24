@@ -53,7 +53,7 @@ export default function AboutPage() {
                 As a consultant, I was suddenly responsible for things most employees never think about:
               </p>
 
-              <ul className="space-y-2 ml-6 my-6 text-base">
+              <ul className="list-disc space-y-2 ml-6 my-6 text-base">
                 <li className="text-slate-700">Setting aside the right amount for quarterly taxes without overcorrecting</li>
                 <li className="text-slate-700">Figuring out whether an S-Corp actually made sense for my income level</li>
                 <li className="text-slate-700">Deciding how to split contributions between a Solo 401(k) and taxable investing</li>
@@ -66,7 +66,7 @@ export default function AboutPage() {
               </p>
 
               <p className="font-medium text-slate-900">
-                There was no single place to model decisions — only tools that showed results after the fact.
+                There was no single place to model decisions. There were only tools that showed results after the fact.
               </p>
 
               <p>
@@ -74,7 +74,7 @@ export default function AboutPage() {
               </p>
 
               <p>
-                SoloFI is the financial decision engine I wish had existed when I first went independent. It's designed for people like me: high earners with variable income, complicated taxes, and long-term ambitions that don't fit the standard retirement planning template.
+                SoloFI is the financial decision engine I wish had existed when I first went independent. It's designed for people like me: self employed with variable income, complicated taxes, and long-term ambitions that don't fit the standard retirement planning template. I built a suite of tools used for tax optimization, tracking everything that is required to be successful in self employment, and planning for my own retirement.
               </p>
 
               <p className="text-slate-600 italic">
@@ -85,6 +85,11 @@ export default function AboutPage() {
                 <p className="text-slate-900 font-semibold text-base">— Justin Leu</p>
                 <p className="text-sm text-slate-600 mt-1">Founder, SoloFI</p>
                 <p className="text-sm text-slate-500">Self-employed consultant · Big 4 alum · FAANG experience · Been in the trenches since 2016</p>
+                <img
+                  src="/creative/sevillapic_hs.jpg"
+                  alt="Justin Leu"
+                  className="mt-6 w-48 sm:w-64 rounded-xl object-cover shadow-sm"
+                />
               </div>
             </div>
           </section>
