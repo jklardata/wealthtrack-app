@@ -7,6 +7,7 @@ import type { NetWorthEntry } from "./types";
 export interface MomentumMetrics {
   velocity: number; // $/month average (last 3 months)
   acceleration: number; // Change in velocity vs prior 3mo
+  periodMonths: number; // Actual number of months used for contribution calculation
   contribution12mo: {
     portfolioGrowth: number; // Market appreciation estimate
     netContributions: number; // Savings minus withdrawals estimate
@@ -36,9 +37,20 @@ export function calculateMomentum(entries: NetWorthEntry[]): MomentumMetrics | n
     velocity = monthsDiff > 0 ? (newest.net_worth - oldest.net_worth) / monthsDiff : 0;
   }
 
-  // 12-month contribution (simplified - actual vs expected if just market growth)
+  // Dynamic period: use all available data up to 12 months
+  const newestEntry = sorted[0];
+  const oldestEntry = sorted[sorted.length - 1];
+  const totalDays = (new Date(newestEntry.date).getTime() - new Date(oldestEntry.date).getTime()) / (1000 * 60 * 60 * 24);
+  const totalMonths = totalDays / 30;
+
+  // If more than 12 months of data, cap at 12 months; otherwise use all data
   const twelveMonthsAgo = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
-  const yearAgoEntry = sorted.find(e => new Date(e.date) <= twelveMonthsAgo);
+  const baseEntry = totalMonths > 12
+    ? (sorted.find(e => new Date(e.date) <= twelveMonthsAgo) || oldestEntry)
+    : oldestEntry;
+
+  const periodDays = (new Date(newestEntry.date).getTime() - new Date(baseEntry.date).getTime()) / (1000 * 60 * 60 * 24);
+  const periodMonths = Math.max(1, Math.round(periodDays / 30));
 
   let contribution12mo = {
     portfolioGrowth: 0,
@@ -46,10 +58,11 @@ export function calculateMomentum(entries: NetWorthEntry[]): MomentumMetrics | n
     totalChange: 0
   };
 
-  if (yearAgoEntry && sorted[0]) {
-    const totalChange = sorted[0].net_worth - yearAgoEntry.net_worth;
-    // Rough estimate: assume 7% market return on starting balance
-    const expectedGrowth = yearAgoEntry.net_worth * 0.07;
+  if (newestEntry && baseEntry && newestEntry !== baseEntry) {
+    const totalChange = newestEntry.net_worth - baseEntry.net_worth;
+    // Scale 7% annual rate to actual period
+    const periodRate = 0.07 * (periodDays / 365);
+    const expectedGrowth = baseEntry.net_worth * periodRate;
     const netContributions = totalChange - expectedGrowth;
 
     contribution12mo = {
@@ -61,7 +74,8 @@ export function calculateMomentum(entries: NetWorthEntry[]): MomentumMetrics | n
 
   return {
     velocity,
-    acceleration: 0, // Simplified for now
+    acceleration: 0,
+    periodMonths,
     contribution12mo
   };
 }

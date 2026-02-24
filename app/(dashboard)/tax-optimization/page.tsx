@@ -37,6 +37,7 @@ import {
   FileText,
 } from "lucide-react";
 import { FeedbackWidget } from "@/components/feedback-widget";
+import Link from "next/link";
 import type { TaxReturn } from "@/lib/types";
 
 // ============================================
@@ -262,11 +263,11 @@ function TaxHealthDashboard({
           <DollarSign className="h-5 w-5 text-emerald-600" />
           Tax Health Dashboard
         </CardTitle>
-        <div className="text-sm text-slate-600 mt-2 space-y-2">
+        <div className="text-base text-slate-600 mt-2 space-y-2">
           <p>
             Your effective tax rate is what you actually pay after all deductions and credits—this is the number that matters, not your marginal bracket. Most self-employed professionals can achieve an effective rate 10-15 percentage points below their marginal rate through strategic planning.
           </p>
-          <p className="text-xs text-slate-500">
+          <p className="text-sm text-slate-500">
             Overview of your {current.tax_year} tax situation. These metrics show how effectively you're using the tax code to your advantage.
           </p>
         </div>
@@ -454,11 +455,11 @@ function DeductionEfficiencyAnalyzer({
           <Percent className="h-5 w-5 text-emerald-600" />
           Deduction Efficiency Analyzer
         </CardTitle>
-        <div className="text-sm text-slate-600 mt-2 space-y-2">
+        <div className="text-base text-slate-600 mt-2 space-y-2">
           <p>
             Every legitimate business expense is a dollar you keep instead of sending to the IRS. The key word is "legitimate"—aggressive deductions invite audits, but leaving money on the table is equally foolish.
           </p>
-          <p className="text-xs text-slate-500">
+          <p className="text-sm text-slate-500">
             These benchmarks show if you're optimizing deductions or potentially under-claiming. Most consultants have 20-40% expense ratios depending on their business model.
           </p>
         </div>
@@ -690,11 +691,11 @@ function SelfEmploymentOptimization({
           <Building2 className="h-5 w-5 text-emerald-600" />
           Self-Employment Tax Optimization
         </CardTitle>
-        <div className="text-sm text-slate-600 mt-2 space-y-2">
+        <div className="text-base text-slate-600 mt-2 space-y-2">
           <p>
             Self-employment tax is the hidden wealth killer for consultants—15.3% right off the top before income tax even starts. An S-Corp election can slash this burden by allowing you to take part of your income as distributions instead of salary.
           </p>
-          <p className="text-xs text-slate-500">
+          <p className="text-sm text-slate-500">
             The break-even is typically around $60-80k in net income. Below that, the compliance costs outweigh savings. Above $100k, it's almost always worth it.
           </p>
         </div>
@@ -1195,6 +1196,17 @@ export default function TaxOptimizationPage() {
         </h1>
         <p className="text-sm text-slate-500 mt-1">
           Insights and modeling for self-employed tax planning
+        </p>
+      </div>
+
+      {/* Data source note */}
+      <div className="flex items-center gap-2 p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800">
+        <FileText className="h-4 w-4 flex-shrink-0" />
+        <p>
+          Analysis is based on your uploaded tax return data.{" "}
+          <Link href="/settings" className="font-medium underline hover:text-blue-900">
+            Upload or update tax returns in Settings →
+          </Link>
         </p>
       </div>
 

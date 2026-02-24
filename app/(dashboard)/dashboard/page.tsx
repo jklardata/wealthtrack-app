@@ -562,10 +562,10 @@ export default function DashboardPage() {
       { name: "Other", key: "other_assets", value: Number(latestEntry.other_assets), color: ASSET_COLORS.other_assets },
     ].filter((item) => item.value > 0);
 
-    // Calculate percentages
+    // Calculate percentages (named pct to avoid conflict with Recharts' internal percent prop)
     return data.map((item) => ({
       ...item,
-      percent: (item.value / total) * 100,
+      pct: (item.value / total) * 100,
     })).sort((a, b) => b.value - a.value); // Sort by value descending
   }, [latestEntry]);
 
@@ -1216,7 +1216,7 @@ export default function DashboardPage() {
                                     />
                                     <span className="font-medium text-slate-900">{item.name}</span>
                                   </div>
-                                  <div className="text-lg font-semibold mt-1 text-slate-900">{Math.round(item.percent)}%</div>
+                                  <div className="text-lg font-semibold mt-1 text-slate-900">{Math.round(item.pct)}%</div>
                                   <div className="text-sm text-slate-500">
                                     {formatCurrency(item.value)}
                                   </div>
@@ -1256,7 +1256,7 @@ export default function DashboardPage() {
                   <TrendingUpIcon className="h-4 w-4 text-emerald-600" />
                   Net Worth Momentum
                 </CardTitle>
-                <p className="text-xs text-slate-500">Savings vs. market returns over 12 months</p>
+                <p className="text-xs text-slate-500">Savings vs. market returns over {momentumMetrics.periodMonths} month{momentumMetrics.periodMonths !== 1 ? "s" : ""}</p>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -1308,18 +1308,64 @@ export default function DashboardPage() {
                           </LineChart>
                         </ResponsiveContainer>
                         <p className="text-xs text-slate-600">
-                          Showing last 12 months of net worth progression. Velocity is calculated from the slope of this trend line.
+                          Showing last {momentumMetrics.periodMonths} months of net worth progression. Velocity is calculated from the slope of this trend line.
                         </p>
                       </div>
                     </PopoverContent>
                   </Popover>
-                  <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 text-center">
-                    <p className="text-xs font-medium text-slate-500 mb-1">12-Month Change</p>
-                    <p className="text-xl font-bold text-slate-900">
-                      {formatCurrency(momentumMetrics.contribution12mo.totalChange)}
-                    </p>
-                    <p className="text-xs text-slate-400 mt-0.5">total net worth change</p>
-                  </div>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 cursor-pointer hover:bg-emerald-50 hover:border-emerald-200 transition-all text-center">
+                        <p className="text-xs font-medium text-slate-500 mb-1 flex items-center justify-center gap-2">
+                          {momentumMetrics.periodMonths}-Month Change
+                          <span className="text-slate-400">(click for trend)</span>
+                        </p>
+                        <p className="text-xl font-bold text-slate-900">
+                          {formatCurrency(momentumMetrics.contribution12mo.totalChange)}
+                        </p>
+                        <p className="text-xs text-slate-400 mt-0.5">total net worth change</p>
+                      </div>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80 p-4 bg-white border border-slate-200 rounded-lg shadow-lg">
+                      <div className="space-y-3">
+                        <p className="font-bold text-sm text-slate-900">{momentumMetrics.periodMonths}-Month Net Worth Change</p>
+                        <ResponsiveContainer width="100%" height={150}>
+                          <LineChart data={chartData.slice(-momentumMetrics.periodMonths)}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                            <XAxis
+                              dataKey="date"
+                              stroke="#94a3b8"
+                              fontSize={10}
+                              tickFormatter={(date) => {
+                                const d = new Date(date);
+                                return `${d.getMonth() + 1}/${String(d.getDate()).padStart(2, "0")}`;
+                              }}
+                            />
+                            <YAxis
+                              stroke="#94a3b8"
+                              fontSize={10}
+                              tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
+                            />
+                            <Tooltip
+                              contentStyle={{ backgroundColor: "#fff", border: "2px solid #000", borderRadius: "8px", padding: "8px" }}
+                              labelStyle={{ fontWeight: "bold", fontSize: "12px" }}
+                              formatter={(value: any) => [formatCurrency(Number(value)), "Net Worth"]}
+                            />
+                            <Line
+                              type="monotone"
+                              dataKey="netWorth"
+                              stroke="#0f172a"
+                              strokeWidth={2}
+                              dot={{ fill: "#0f172a", r: 3 }}
+                            />
+                          </LineChart>
+                        </ResponsiveContainer>
+                        <p className="text-xs text-slate-600">
+                          Showing {momentumMetrics.periodMonths}-month net worth progression based on your entered data.
+                        </p>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
                   <Popover>
                     <PopoverTrigger asChild>
                       <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 cursor-pointer hover:bg-emerald-50 hover:border-emerald-200 transition-all text-center">
@@ -1335,7 +1381,7 @@ export default function DashboardPage() {
                     </PopoverTrigger>
                     <PopoverContent className="w-80 p-4 bg-white border border-slate-200 rounded-lg shadow-lg">
                       <div className="space-y-3">
-                        <p className="font-bold text-sm text-slate-900">12-Month Contribution Breakdown</p>
+                        <p className="font-bold text-sm text-slate-900">{momentumMetrics.periodMonths}-Month Contribution Breakdown</p>
                         <div className="space-y-2">
                           <div className="flex justify-between text-sm">
                             <span className="text-slate-500">Total Change</span>
@@ -1372,7 +1418,7 @@ export default function DashboardPage() {
                           </BarChart>
                         </ResponsiveContainer>
                         <p className="text-xs text-slate-600">
-                          Net contributions = total 12-month change minus estimated 7% market appreciation on starting balance.
+                          Net contributions = total {momentumMetrics.periodMonths}-month change minus estimated market appreciation on starting balance.
                         </p>
                       </div>
                     </PopoverContent>

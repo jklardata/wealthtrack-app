@@ -734,172 +734,6 @@ export default function SettingsPage() {
         </CardContent>
       </Card>
 
-      {/* Credit Cards Sheet Integration */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <CreditCard className="h-5 w-5 text-purple-600" />
-            Credit Cards Google Sheet
-          </CardTitle>
-          <CardDescription>
-            Connect a Google Sheet to sync your credit card data automatically
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {/* Create Template Button - Prominent CTA */}
-          <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20 rounded-lg p-6">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div className="flex items-start gap-4">
-                <div className="p-3 rounded-lg bg-purple-500/20">
-                  <FileSpreadsheet className="h-6 w-6 text-purple-500" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-lg">Credit Cards Template</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Create a pre-configured Google Sheet for tracking credit cards, bonuses, and spending.
-                  </p>
-                </div>
-              </div>
-              <Button
-                onClick={handleCreateCreditCardsTemplate}
-                disabled={creatingCreditCards}
-                className="bg-purple-500 hover:bg-purple-600 whitespace-nowrap"
-                size="lg"
-              >
-                {creatingCreditCards ? (
-                  <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Creating...
-                  </>
-                ) : (
-                  <>
-                    <Plus className="h-4 w-4 mr-2" />
-                    Create Credit Cards Sheet
-                  </>
-                )}
-              </Button>
-            </div>
-            {createdCreditCardsSheetUrl && (
-              <div className="mt-4 p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
-                <p className="text-sm text-green-500 flex items-center gap-2">
-                  <Check className="h-4 w-4" />
-                  Sheet created successfully!
-                </p>
-                <a
-                  href={createdCreditCardsSheetUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-purple-500 hover:text-purple-600 flex items-center gap-1 mt-2"
-                >
-                  <ExternalLink className="h-4 w-4" />
-                  Open your new spreadsheet
-                </a>
-              </div>
-            )}
-          </div>
-
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">
-                Or connect existing sheet
-              </span>
-            </div>
-          </div>
-
-          {/* Manual Setup Instructions */}
-          <div className="bg-muted/50 rounded-lg p-4 space-y-3">
-            <h4 className="font-medium">Manual Setup:</h4>
-            <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
-              <li>
-                Create a Google Sheet with these columns in row 1:
-                <br />
-                <code className="text-xs bg-muted px-1 py-0.5 rounded">
-                  Card Name | Last 4 | Status | Signup Bonus | SUB Requirement | Current Spend | SUB Deadline | Got Bonus | Annual Fee | Signup Date | Annual Fee Date | Close Date | Notes
-                </code>
-              </li>
-              <li>Name the sheet tab &quot;Credit Cards&quot;</li>
-              <li>Add your data starting from row 2</li>
-              <li>
-                Share the sheet with this email (Viewer access):
-                <br />
-                <code className="text-xs bg-muted px-1 py-0.5 rounded break-all select-all">
-                  {SERVICE_ACCOUNT_EMAIL}
-                </code>
-              </li>
-              <li>Copy the Sheet ID from the URL and paste it below</li>
-            </ol>
-          </div>
-
-          {/* Sheet ID Input */}
-          <div className="space-y-2">
-            <Label htmlFor="creditCardsSheetId">Credit Cards Sheet ID or URL</Label>
-            <Input
-              id="creditCardsSheetId"
-              placeholder="1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms"
-              value={creditCardsSheetId}
-              onChange={(e) => handleCreditCardsSheetIdChange(e.target.value)}
-            />
-            <p className="text-xs text-muted-foreground">
-              You can paste the full URL or just the Sheet ID
-            </p>
-          </div>
-
-          {/* Connected Sheet Info */}
-          {creditCardsSheetId && (
-            <div className="flex items-center gap-2 text-sm">
-              <Check className="h-4 w-4 text-green-500" />
-              <span className="text-muted-foreground">Connected to sheet:</span>
-              <a
-                href={`https://docs.google.com/spreadsheets/d/${creditCardsSheetId}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-purple-500 hover:text-purple-600 flex items-center gap-1"
-              >
-                Open Sheet
-                <ExternalLink className="h-3 w-3" />
-              </a>
-            </div>
-          )}
-
-          {/* Last Sync Info */}
-          {settings?.credit_cards_last_sync_at && (
-            <p className="text-sm text-muted-foreground">
-              Last synced: {new Date(settings.credit_cards_last_sync_at).toLocaleString()}
-            </p>
-          )}
-
-          {/* Message */}
-          {creditCardsMessage && (
-            <div
-              className={`flex items-center gap-2 p-3 rounded-lg ${
-                creditCardsMessage.type === "success"
-                  ? "bg-green-500/10 text-green-500"
-                  : "bg-red-500/10 text-red-500"
-              }`}
-            >
-              {creditCardsMessage.type === "success" ? (
-                <Check className="h-4 w-4" />
-              ) : (
-                <AlertCircle className="h-4 w-4" />
-              )}
-              {creditCardsMessage.text}
-            </div>
-          )}
-
-          {/* Save Button */}
-          <Button
-            onClick={handleSave}
-            disabled={saving}
-            variant="outline"
-          >
-            {saving ? "Saving..." : "Save Settings"}
-          </Button>
-        </CardContent>
-      </Card>
-
       {/* Tax Returns Upload */}
       <Card>
         <CardHeader>
@@ -912,58 +746,35 @@ export default function SettingsPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          {/* PDF Upload Section (Primary Method) */}
-          <div className="bg-gradient-to-r from-emerald-500/10 to-green-500/10 border-2 border-emerald-500/30 rounded-lg p-6">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div className="flex items-start gap-4">
-                <div className="p-3 rounded-lg bg-emerald-500/20">
-                  <FileText className="h-6 w-6 text-emerald-600" />
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <h3 className="font-bold text-lg">Upload TurboTax PDF</h3>
-                    <span className="text-xs bg-emerald-500 text-white px-2 py-0.5 rounded-full font-medium">
-                      Recommended
-                    </span>
+          {/* PDF Upload Section (Coming Soon) */}
+          <div className="relative rounded-lg overflow-hidden">
+            <div className="bg-gradient-to-r from-emerald-500/10 to-green-500/10 border-2 border-emerald-500/30 rounded-lg p-6 opacity-50 pointer-events-none select-none">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 rounded-lg bg-emerald-500/20">
+                    <FileText className="h-6 w-6 text-emerald-600" />
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    Simply upload your TurboTax PDF file — we'll extract the data automatically.
-                    No Python installation or command line needed.
-                  </p>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <h3 className="font-bold text-lg">Upload TurboTax PDF</h3>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      Simply upload your TurboTax PDF file — we'll extract the data automatically.
+                      No Python installation or command line needed.
+                    </p>
+                  </div>
+                </div>
+                <div className="bg-emerald-500 text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2 whitespace-nowrap">
+                  <Upload className="h-4 w-4" />
+                  Select PDF File
                 </div>
               </div>
-              <label className="cursor-pointer flex-shrink-0">
-                <input
-                  type="file"
-                  accept=".pdf"
-                  onChange={handlePdfFileChange}
-                  disabled={uploadingPdf}
-                  className="hidden"
-                />
-                <div className="bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2 whitespace-nowrap">
-                  {uploadingPdf ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                      Parsing PDF...
-                    </>
-                  ) : (
-                    <>
-                      <Upload className="h-4 w-4" />
-                      Select PDF File
-                    </>
-                  )}
-                </div>
-              </label>
             </div>
-
-            {pdfFile && !uploadingPdf && (
-              <div className="mt-4 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-lg">
-                <p className="text-sm flex items-center gap-2">
-                  <FileText className="h-4 w-4" />
-                  Uploaded: {pdfFile.name}
-                </p>
-              </div>
-            )}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="bg-slate-800 text-white text-sm font-semibold px-4 py-2 rounded-full shadow-lg">
+                Coming Soon
+              </span>
+            </div>
           </div>
 
           {/* CSV Upload Section (Advanced Option) */}
@@ -1139,8 +950,7 @@ export default function SettingsPage() {
             <div className="p-4 pt-0 space-y-4">
               <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
                 <p className="text-sm text-amber-700 dark:text-amber-400">
-                  <strong>Note:</strong> Most users should just use the PDF upload above.
-                  These manual instructions are only needed if you want to run the parser locally on your own computer.
+                  <strong>Coming soon</strong> as we work on this. Manual local parsing instructions will be available here once the feature is ready.
                 </p>
               </div>
 
@@ -1257,6 +1067,41 @@ export default function SettingsPage() {
           )}
         </CardContent>
       </Card>
+
+      {/* Credit Cards Sheet Integration — Coming Soon */}
+      <div className="relative">
+        <Card className="opacity-50 pointer-events-none select-none">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <CreditCard className="h-5 w-5 text-purple-600" />
+              Credit Cards Google Sheet
+            </CardTitle>
+            <CardDescription>
+              Connect a Google Sheet to sync your credit card data automatically
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20 rounded-lg p-6">
+              <div className="flex items-start gap-4">
+                <div className="p-3 rounded-lg bg-purple-500/20">
+                  <FileSpreadsheet className="h-6 w-6 text-purple-500" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg">Credit Cards Template</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Create a pre-configured Google Sheet for tracking credit cards, bonuses, and spending.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="bg-slate-800 text-white text-sm font-semibold px-4 py-2 rounded-full shadow-lg">
+            Coming Soon
+          </span>
+        </div>
+      </div>
     </div>
   );
 }

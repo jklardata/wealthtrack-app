@@ -174,34 +174,47 @@ export default function LifetimeIncomePage() {
         </div>
       </div>
 
-      {/* Explanation Card */}
-      <Card className="bg-gradient-to-br from-blue-50 to-emerald-50 border-blue-200">
-        <CardContent className="py-6">
-          <h3 className="font-semibold text-slate-900 mb-3">How This Works</h3>
-          <div className="space-y-3 text-sm text-slate-700">
-            <p>
-              This tool creates a comprehensive financial projection by integrating <span className="font-medium">all your income sources</span> (work, social security, passive income, windfalls) with <span className="font-medium">your expenses</span> over your lifetime.
-            </p>
-            <div className="grid md:grid-cols-3 gap-4 mt-4">
-              <div className="bg-white/60 p-3 rounded-lg">
-                <p className="font-medium text-slate-900 mb-1">📊 Income Sources</p>
-                <p className="text-xs">Configure work income, social security benefits, passive income streams, and one-time windfalls in your Profile</p>
-              </div>
-              <div className="bg-white/60 p-3 rounded-lg">
-                <p className="font-medium text-slate-900 mb-1">💰 Expenses</p>
-                <p className="text-xs">Set recurring expenses, medical costs, Medicare, and age-specific one-time expenses to model your spending</p>
-              </div>
-              <div className="bg-white/60 p-3 rounded-lg">
-                <p className="font-medium text-slate-900 mb-1">📈 Projection</p>
-                <p className="text-xs">See year-by-year portfolio growth accounting for contributions, withdrawals, investment returns, and inflation</p>
+      {/* Explanation + How To Use side by side */}
+      <div className="grid md:grid-cols-2 gap-6">
+        <Card className="bg-gradient-to-br from-blue-50 to-emerald-50 border-blue-200">
+          <CardContent className="py-6">
+            <h3 className="font-semibold text-slate-900 mb-3">How This Works</h3>
+            <div className="space-y-3 text-sm text-slate-700">
+              <p>
+                This tool creates a comprehensive financial projection by integrating <span className="font-medium">all your income sources</span> (work, social security, passive income, windfalls) with <span className="font-medium">your expenses</span> over your lifetime.
+              </p>
+              <div className="grid gap-2 mt-3">
+                <div className="bg-white/60 p-3 rounded-lg">
+                  <p className="font-medium text-slate-900 mb-1">📊 Income Sources</p>
+                  <p className="text-xs">Configure work income, social security benefits, passive income streams, and one-time windfalls in your Profile</p>
+                </div>
+                <div className="bg-white/60 p-3 rounded-lg">
+                  <p className="font-medium text-slate-900 mb-1">💰 Expenses</p>
+                  <p className="text-xs">Set recurring expenses, medical costs, Medicare, and age-specific one-time expenses to model your spending</p>
+                </div>
+                <div className="bg-white/60 p-3 rounded-lg">
+                  <p className="font-medium text-slate-900 mb-1">📈 Projection</p>
+                  <p className="text-xs">See year-by-year portfolio growth accounting for contributions, withdrawals, investment returns, and inflation</p>
+                </div>
               </div>
             </div>
-            <p className="text-xs text-slate-600 mt-3">
-              The projection shows how your net worth evolves as income sources turn on and off at different ages, while accounting for inflation and investment growth.
-            </p>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-blue-50 border-blue-200">
+          <CardHeader>
+            <CardTitle className="text-xl font-black text-blue-900">How to Use This Tool</CardTitle>
+          </CardHeader>
+          <CardContent className="text-sm text-blue-800 space-y-2">
+            <ol className="list-decimal list-inside space-y-1">
+              <li>Go to your <Link href="/profile" className="underline font-medium">Profile</Link> to add income sources and expenses</li>
+              <li>Enter your current age and net worth in the parameters below</li>
+              <li>Click "Calculate Projection" to see your lifetime net worth trajectory</li>
+              <li>Adjust assumptions and modify income/expenses to model different scenarios</li>
+            </ol>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* CTA Banner when no data */}
       {(!currentNetWorth || incomeSources.length === 0 || expenses.length === 0) && (
@@ -487,22 +500,6 @@ export default function LifetimeIncomePage() {
         />
       )}
 
-      {/* Instructions */}
-      {!hasCalculated && (
-        <Card className="bg-blue-50 border-blue-200">
-          <CardHeader>
-            <CardTitle className="text-xl font-black text-blue-900">How to Use This Tool</CardTitle>
-          </CardHeader>
-          <CardContent className="text-sm text-blue-800 space-y-2">
-            <ol className="list-decimal list-inside space-y-1">
-              <li>Go to your <Link href="/profile" className="underline font-medium">Profile</Link> to add income sources and expenses</li>
-              <li>Enter your current age and net worth in the parameters above</li>
-              <li>Click "Calculate Projection" to see your lifetime net worth trajectory</li>
-              <li>Adjust assumptions and modify income/expenses to model different scenarios</li>
-            </ol>
-          </CardContent>
-        </Card>
-      )}
 
       {/* Tips Section */}
       {hasCalculated && (
