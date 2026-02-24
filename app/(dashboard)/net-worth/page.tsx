@@ -400,10 +400,10 @@ export default function NetWorthPage() {
   const handleSubmit = async (data: NetWorthFormData) => {
     setIsSubmitting(true);
     try {
-      const url = editingEntry
+      const url = editingEntry?.id
         ? `/api/net-worth/${editingEntry.id}`
         : "/api/net-worth";
-      const method = editingEntry ? "PUT" : "POST";
+      const method = editingEntry?.id ? "PUT" : "POST";
 
       const response = await fetch(url, {
         method,

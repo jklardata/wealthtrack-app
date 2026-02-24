@@ -41,6 +41,21 @@ const changelogData: ChangelogEntry[] = [
     ]
   },
   {
+    date: "2026-02-10",
+    title: "FEIE Eligibility Checker Launch",
+    type: "feature",
+    content: "Built a Foreign Earned Income Exclusion (FEIE) eligibility checker for self-employed consultants and remote workers living or working abroad. FEIE lets qualifying US taxpayers exclude up to $126,500 (2024) of foreign-earned income from US federal income tax—one of the most powerful provisions available to expats and digital nomads, and one of the most underused because it's genuinely confusing to navigate.",
+    details: [
+      "Bona Fide Residence Test: determines qualification based on establishing tax residence in a foreign country—intended for those who've made a real, permanent move abroad",
+      "Physical Presence Test: 330 full-day rule with guidance on counting qualifying days and handling partial years",
+      "Foreign Housing Exclusion/Deduction: calculates additional exclusions for qualified housing expenses beyond the base FEIE amount",
+      "Self-employment tax clarification: FEIE reduces your income tax bill but does NOT eliminate self-employment tax—this trips up a lot of people and I wanted to make it explicit",
+      "State tax flag: several states (California, South Carolina, Virginia, others) don't conform to federal FEIE rules, so you may still owe state tax even if you qualify federally",
+      "Edge case guidance for digital nomads, treaty countries, and partial-year abroad scenarios",
+      "Built this because I got questions about FEIE constantly from consultants doing international work—there was no clean tool that explained the tests side-by-side without requiring you to read IRS publications"
+    ]
+  },
+  {
     date: "2026-02-06",
     title: "Roth Conversion Strategy Engine Launch",
     type: "feature",

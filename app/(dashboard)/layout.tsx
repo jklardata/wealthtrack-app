@@ -65,6 +65,8 @@ const navGroups: NavGroup[] = [
       { href: "/profile", label: "Profile", icon: User },
       { href: "/net-worth", label: "Net Worth", icon: TrendingUp },
       { href: "/freelance-checklist", label: "Self Employed Checklist", icon: ClipboardList },
+      { href: "/freelance-rate", label: "Freelance Rate", icon: DollarSign },
+      { href: "/feie-eligibility", label: "FEIE Eligibility", icon: Globe },
       { href: "/credit-cards", label: "Credit Cards", icon: CreditCard, disabled: true },
     ],
   },
@@ -77,8 +79,6 @@ const navGroups: NavGroup[] = [
       { href: "/withdrawal-stress-test", label: "Withdrawal Stress Test", icon: Activity },
       { href: "/roth-conversion", label: "Roth Conversion", icon: RefreshCw },
       { href: "/geo-arbitrage", label: "Geo Arbitrage", icon: Globe },
-      { href: "/feie-eligibility", label: "FEIE Eligibility", icon: Globe },
-      { href: "/freelance-rate", label: "Freelance Rate", icon: DollarSign },
     ],
   },
   {
