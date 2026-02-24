@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -89,6 +89,32 @@ export default function HSACalculatorPage() {
   const [returnRate, setReturnRate] = useState(7);
   const [yearsToRetirement, setYearsToRetirement] = useState(30);
   const [expectedMedicalExpenses, setExpectedMedicalExpenses] = useState(10000);
+
+  // Load saved calculator preferences
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("solofi_hsa");
+      if (saved) {
+        const p = JSON.parse(saved);
+        if (p.coverageType !== undefined) setCoverageType(p.coverageType);
+        if (p.age !== undefined) setAge(p.age);
+        if (p.annualContrib !== undefined) setAnnualContrib(p.annualContrib);
+        if (p.federalRate !== undefined) setFederalRate(p.federalRate);
+        if (p.stateRate !== undefined) setStateRate(p.stateRate);
+        if (p.returnRate !== undefined) setReturnRate(p.returnRate);
+        if (p.yearsToRetirement !== undefined) setYearsToRetirement(p.yearsToRetirement);
+        if (p.expectedMedicalExpenses !== undefined) setExpectedMedicalExpenses(p.expectedMedicalExpenses);
+      }
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("solofi_hsa", JSON.stringify({
+        coverageType, age, annualContrib, federalRate, stateRate, returnRate, yearsToRetirement, expectedMedicalExpenses,
+      }));
+    } catch {}
+  }, [coverageType, age, annualContrib, federalRate, stateRate, returnRate, yearsToRetirement, expectedMedicalExpenses]);
 
   const catchupEligible = age >= 55;
   const maxContrib = HSA_LIMITS_2025[coverageType] + (catchupEligible ? HSA_LIMITS_2025.catchup : 0);

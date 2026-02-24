@@ -1214,6 +1214,17 @@ export default function PortfolioOptimizerPage() {
         </div>
       </div>
 
+      {/* Net Worth callout */}
+      <div className="flex items-start gap-3 p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800">
+        <Info className="h-4 w-4 flex-shrink-0 mt-0.5 text-blue-600" />
+        <p>
+          Portfolio recommendations are based on your asset balances.{" "}
+          <a href="/net-worth" className="font-medium underline hover:text-blue-900">
+            Keep your Net Worth Timeline up to date →
+          </a>
+        </p>
+      </div>
+
       {/* Educational Introduction */}
       <Card className="bg-gradient-to-br from-blue-50 via-white to-indigo-50 border-blue-200 shadow-sm">
         <CardContent className="pt-6">

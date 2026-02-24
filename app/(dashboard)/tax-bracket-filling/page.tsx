@@ -377,9 +377,48 @@ export default function TaxBracketFillingPage() {
       } catch (error) {
         console.error("Error fetching settings:", error);
       }
+      // Override API defaults with user's saved calculator preferences
+      try {
+        const saved = localStorage.getItem("solofi_tax_bracket");
+        if (saved) {
+          const p = JSON.parse(saved);
+          if (p.currentAge !== undefined) setCurrentAge(p.currentAge);
+          if (p.retirementAge !== undefined) setRetirementAge(p.retirementAge);
+          if (p.lifeExpectancy !== undefined) setLifeExpectancy(p.lifeExpectancy);
+          if (p.filingStatus !== undefined) setFilingStatus(p.filingStatus);
+          if (p.baseConsultingIncome !== undefined) setBaseConsultingIncome(p.baseConsultingIncome);
+          if (p.traditionalBalance !== undefined) setTraditionalBalance(p.traditionalBalance);
+          if (p.rothBalance !== undefined) setRothBalance(p.rothBalance);
+          if (p.taxableBalance !== undefined) setTaxableBalance(p.taxableBalance);
+          if (p.annualSpending !== undefined) setAnnualSpending(p.annualSpending);
+          if (p.expectedReturn !== undefined) setExpectedReturn(p.expectedReturn);
+          if (p.inflationRate !== undefined) setInflationRate(p.inflationRate);
+          if (p.healthcareCostPreMedicare !== undefined) setHealthcareCostPreMedicare(p.healthcareCostPreMedicare);
+          if (p.healthcareCostPostMedicare !== undefined) setHealthcareCostPostMedicare(p.healthcareCostPostMedicare);
+          if (p.socialSecurityStartAge !== undefined) setSocialSecurityStartAge(p.socialSecurityStartAge);
+          if (p.socialSecurityAmount !== undefined) setSocialSecurityAmount(p.socialSecurityAmount);
+          if (p.selectedStrategy !== undefined) setSelectedStrategy(p.selectedStrategy);
+          if (p.targetBracketTop !== undefined) setTargetBracketTop(p.targetBracketTop);
+          if (p.futureTaxAssumption !== undefined) setFutureTaxAssumption(p.futureTaxAssumption);
+          if (p.yearsToModel !== undefined) setYearsToModel(p.yearsToModel);
+        }
+      } catch {}
     }
     fetchSettings();
   }, []);
+
+  // Save calculator preferences on any change
+  useEffect(() => {
+    try {
+      localStorage.setItem("solofi_tax_bracket", JSON.stringify({
+        currentAge, retirementAge, lifeExpectancy, filingStatus, baseConsultingIncome,
+        traditionalBalance, rothBalance, taxableBalance, annualSpending, expectedReturn,
+        inflationRate, healthcareCostPreMedicare, healthcareCostPostMedicare,
+        socialSecurityStartAge, socialSecurityAmount, selectedStrategy, targetBracketTop,
+        futureTaxAssumption, yearsToModel,
+      }));
+    } catch {}
+  }, [currentAge, retirementAge, lifeExpectancy, filingStatus, baseConsultingIncome, traditionalBalance, rothBalance, taxableBalance, annualSpending, expectedReturn, inflationRate, healthcareCostPreMedicare, healthcareCostPostMedicare, socialSecurityStartAge, socialSecurityAmount, selectedStrategy, targetBracketTop, futureTaxAssumption, yearsToModel]);
 
   const isPro = subscriptionTier === "pro" || subscriptionTier === "premium";
 

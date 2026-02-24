@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -190,6 +190,32 @@ export default function QBIDeductionPage() {
   const [w2Wages, setW2Wages] = useState(0);
   const [qualifiedProperty, setQualifiedProperty] = useState(0);
   const [federalRate, setFederalRate] = useState(0.22);
+
+  // Load saved calculator preferences
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("solofi_qbi");
+      if (saved) {
+        const p = JSON.parse(saved);
+        if (p.isSSTB !== undefined) setIsSSTB(p.isSSTB);
+        if (p.filingStatus !== undefined) setFilingStatus(p.filingStatus);
+        if (p.qbi !== undefined) setQbi(p.qbi);
+        if (p.taxableIncome !== undefined) setTaxableIncome(p.taxableIncome);
+        if (p.capitalGains !== undefined) setCapitalGains(p.capitalGains);
+        if (p.w2Wages !== undefined) setW2Wages(p.w2Wages);
+        if (p.qualifiedProperty !== undefined) setQualifiedProperty(p.qualifiedProperty);
+        if (p.federalRate !== undefined) setFederalRate(p.federalRate);
+      }
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("solofi_qbi", JSON.stringify({
+        isSSTB, filingStatus, qbi, taxableIncome, capitalGains, w2Wages, qualifiedProperty, federalRate,
+      }));
+    } catch {}
+  }, [isSSTB, filingStatus, qbi, taxableIncome, capitalGains, w2Wages, qualifiedProperty, federalRate]);
 
   const isSSTBBool = isSSTB === "yes";
   const threshold = THRESHOLDS[filingStatus];

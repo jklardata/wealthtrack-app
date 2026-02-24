@@ -183,10 +183,47 @@ export default function QuarterlyEstimatedTaxesPage() {
       } finally {
         setLoading(false);
       }
+      // Override API defaults with user's saved calculator preferences
+      try {
+        const saved = localStorage.getItem("solofi_quarterly_est");
+        if (saved) {
+          const p = JSON.parse(saved);
+          if (p.expectedGrossIncome !== undefined) setExpectedGrossIncome(p.expectedGrossIncome);
+          if (p.expectedBusinessExpenses !== undefined) setExpectedBusinessExpenses(p.expectedBusinessExpenses);
+          if (p.filingStatus !== undefined) setFilingStatus(p.filingStatus);
+          if (p.stateCode !== undefined) setStateCode(p.stateCode);
+          if (p.retirement401k !== undefined) setRetirement401k(p.retirement401k);
+          if (p.hsaContribution !== undefined) setHsaContribution(p.hsaContribution);
+          if (p.itemizedDeductions !== undefined) setItemizedDeductions(p.itemizedDeductions);
+          if (p.feieExclusion !== undefined) setFeieExclusion(p.feieExclusion);
+          if (p.useAnnualizedMethod !== undefined) setUseAnnualizedMethod(p.useAnnualizedMethod);
+          if (p.q1Income !== undefined) setQ1Income(p.q1Income);
+          if (p.q2Income !== undefined) setQ2Income(p.q2Income);
+          if (p.q3Income !== undefined) setQ3Income(p.q3Income);
+          if (p.q4Income !== undefined) setQ4Income(p.q4Income);
+          if (p.q1Paid !== undefined) setQ1Paid(p.q1Paid);
+          if (p.q2Paid !== undefined) setQ2Paid(p.q2Paid);
+          if (p.q3Paid !== undefined) setQ3Paid(p.q3Paid);
+          if (p.q4Paid !== undefined) setQ4Paid(p.q4Paid);
+          if (p.selectedMethod !== undefined) setSelectedMethod(p.selectedMethod);
+        }
+      } catch {}
     }
 
     fetchPriorYearData();
   }, []);
+
+  // Save calculator preferences on any change
+  useEffect(() => {
+    try {
+      localStorage.setItem("solofi_quarterly_est", JSON.stringify({
+        expectedGrossIncome, expectedBusinessExpenses, filingStatus, stateCode,
+        retirement401k, hsaContribution, itemizedDeductions, feieExclusion,
+        useAnnualizedMethod, q1Income, q2Income, q3Income, q4Income,
+        q1Paid, q2Paid, q3Paid, q4Paid, selectedMethod,
+      }));
+    } catch {}
+  }, [expectedGrossIncome, expectedBusinessExpenses, filingStatus, stateCode, retirement401k, hsaContribution, itemizedDeductions, feieExclusion, useAnnualizedMethod, q1Income, q2Income, q3Income, q4Income, q1Paid, q2Paid, q3Paid, q4Paid, selectedMethod]);
 
   // ============================================================================
   // CALCULATIONS (Memoized)

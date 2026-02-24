@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { useSubscription } from "@/hooks/use-subscription";
 import { LockedModule } from "@/components/locked-module";
@@ -182,6 +182,34 @@ export default function FreelanceRatePage() {
   // Tax settings
   const [federalRate, setFederalRate] = useState(0.22);
   const [stateRate, setStateRate] = useState(5);
+
+  // Load saved calculator preferences
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("solofi_freelance_rate");
+      if (saved) {
+        const p = JSON.parse(saved);
+        if (p.targetTakeHome !== undefined) setTargetTakeHome(p.targetTakeHome);
+        if (p.healthInsurance !== undefined) setHealthInsurance(p.healthInsurance);
+        if (p.retirementContrib !== undefined) setRetirementContrib(p.retirementContrib);
+        if (p.annualExpenses !== undefined) setAnnualExpenses(p.annualExpenses);
+        if (p.hoursPerWeek !== undefined) setHoursPerWeek(p.hoursPerWeek);
+        if (p.billablePercent !== undefined) setBillablePercent(p.billablePercent);
+        if (p.vacationWeeks !== undefined) setVacationWeeks(p.vacationWeeks);
+        if (p.federalRate !== undefined) setFederalRate(p.federalRate);
+        if (p.stateRate !== undefined) setStateRate(p.stateRate);
+      }
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem("solofi_freelance_rate", JSON.stringify({
+        targetTakeHome, healthInsurance, retirementContrib, annualExpenses,
+        hoursPerWeek, billablePercent, vacationWeeks, federalRate, stateRate,
+      }));
+    } catch {}
+  }, [targetTakeHome, healthInsurance, retirementContrib, annualExpenses, hoursPerWeek, billablePercent, vacationWeeks, federalRate, stateRate]);
 
   const result = useMemo(
     () =>

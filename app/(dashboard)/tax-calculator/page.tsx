@@ -346,9 +346,41 @@ export default function TaxCalculatorPage() {
       } catch (error) {
         console.error("Error fetching user settings:", error);
       }
+      // Override API defaults with user's saved calculator preferences
+      try {
+        const saved = localStorage.getItem("solofi_tax_calc");
+        if (saved) {
+          const p = JSON.parse(saved);
+          if (p.grossIncome !== undefined) setGrossIncome(p.grossIncome);
+          if (p.filingStatus !== undefined) setFilingStatus(p.filingStatus);
+          if (p.stateCode !== undefined) setStateCode(p.stateCode);
+          if (p.businessExpenses !== undefined) setBusinessExpenses(p.businessExpenses);
+          if (p.sCorpSalaryPercent !== undefined) setSCorpSalaryPercent(p.sCorpSalaryPercent);
+          if (p.customSalary !== undefined) setCustomSalary(p.customSalary);
+          if (p.solo401kContribution !== undefined) setSolo401kContribution(p.solo401kContribution);
+          if (p.hsaContribution !== undefined) setHsaContribution(p.hsaContribution);
+          if (p.rothIraContribution !== undefined) setRothIraContribution(p.rothIraContribution);
+          if (p.sepIraContribution !== undefined) setSepIraContribution(p.sepIraContribution);
+          if (p.taxLossHarvesting !== undefined) setTaxLossHarvesting(p.taxLossHarvesting);
+          if (p.useFEIE1099 !== undefined) setUseFEIE1099(p.useFEIE1099);
+          if (p.useFEIEW2 !== undefined) setUseFEIEW2(p.useFEIEW2);
+          if (p.daysAbroad !== undefined) setDaysAbroad(p.daysAbroad);
+        }
+      } catch {}
     }
     fetchUserSettings();
   }, []);
+
+  // Save calculator preferences on any change
+  useEffect(() => {
+    try {
+      localStorage.setItem("solofi_tax_calc", JSON.stringify({
+        grossIncome, filingStatus, stateCode, businessExpenses, sCorpSalaryPercent,
+        customSalary, solo401kContribution, hsaContribution, rothIraContribution,
+        sepIraContribution, taxLossHarvesting, useFEIE1099, useFEIEW2, daysAbroad,
+      }));
+    } catch {}
+  }, [grossIncome, filingStatus, stateCode, businessExpenses, sCorpSalaryPercent, customSalary, solo401kContribution, hsaContribution, rothIraContribution, sepIraContribution, taxLossHarvesting, useFEIE1099, useFEIEW2, daysAbroad]);
 
   // Get most recent tax return
   const mostRecentTaxReturn = useMemo(() => {
