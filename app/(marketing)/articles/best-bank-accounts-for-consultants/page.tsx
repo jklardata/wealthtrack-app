@@ -59,7 +59,7 @@ export default function BankAccountsArticle() {
       />
       {/* Back Button */}
       <div className="mb-6">
-        <Link href="/blog">
+        <Link href="https://solofi.io/blog">
           <Button variant="ghost" size="sm" className="gap-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100">
             <ArrowLeft className="h-4 w-4" />
             Back to Blog
@@ -332,14 +332,14 @@ export default function BankAccountsArticle() {
             <div>
               <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Related articles</p>
               <ul className="space-y-2 text-sm">
-              <li key="become-self-employed-freelancer-2026"><Link href="/articles/become-self-employed-freelancer-2026" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">How to Become a Self-Employed Freelancer in 2026</Link></li>
-              <li key="sole-proprietor-vs-llc"><Link href="/articles/sole-proprietor-vs-llc" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Sole Proprietor vs. LLC: Which Structure Saves You More?</Link></li>
+              <li key="become-self-employed-freelancer-2026"><Link href="https://solofi.io/articles/become-self-employed-freelancer-2026" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">How to Become a Self-Employed Freelancer in 2026</Link></li>
+              <li key="sole-proprietor-vs-llc"><Link href="https://solofi.io/articles/sole-proprietor-vs-llc" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Sole Proprietor vs. LLC: Which Structure Saves You More?</Link></li>
               </ul>
             </div>
             <div>
               <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Free tools</p>
               <ul className="space-y-2 text-sm">
-              <li key="scorp-calculator"><Link href="/tools/scorp-calculator" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">S-Corp Calculator</Link></li>
+              <li key="scorp-calculator"><Link href="https://solofi.io/tools" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">S-Corp Calculator</Link></li>
               </ul>
             </div>
           </div>
@@ -349,7 +349,7 @@ export default function BankAccountsArticle() {
         <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-green-500/20 to-blue-500/20 p-8 text-center">
           <h3 className="text-xl font-bold mb-3">Ready to optimize your finances?</h3>
           <p className="text-slate-500 mb-6">Discover our free tools to help you manage your consulting business.</p>
-          <Link href="/tools">
+          <Link href="https://solofi.io/tools">
             <Button className="bg-emerald-600 hover:bg-emerald-700 text-slate-900">
               <Building2 className="mr-2 h-4 w-4" />
               Explore Free Tools

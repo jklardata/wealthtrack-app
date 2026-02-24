@@ -59,7 +59,7 @@ export default function WhyTrackNetWorthArticle() {
       />
       {/* Back Button */}
       <div className="mb-6">
-        <Link href="/blog">
+        <Link href="https://solofi.io/blog">
           <Button variant="ghost" size="sm" className="gap-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100">
             <ArrowLeft className="h-4 w-4" />
             Back to Blog
@@ -325,14 +325,14 @@ export default function WhyTrackNetWorthArticle() {
             <div>
               <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Related articles</p>
               <ul className="space-y-2 text-sm">
-              <li key="roth-conversion-strategy-engine-launch"><Link href="/articles/roth-conversion-strategy-engine-launch" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Building a Roth Conversion Strategy Engine</Link></li>
-              <li key="become-self-employed-freelancer-2026"><Link href="/articles/become-self-employed-freelancer-2026" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">How to Become a Self-Employed Freelancer in 2026</Link></li>
+              <li key="roth-conversion-strategy-engine-launch"><Link href="https://solofi.io/articles/roth-conversion-strategy-engine-launch" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Building a Roth Conversion Strategy Engine</Link></li>
+              <li key="become-self-employed-freelancer-2026"><Link href="https://solofi.io/articles/become-self-employed-freelancer-2026" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">How to Become a Self-Employed Freelancer in 2026</Link></li>
               </ul>
             </div>
             <div>
               <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Free tools</p>
               <ul className="space-y-2 text-sm">
-              <li key="fi-calculator"><Link href="/tools/fi-calculator" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">FI Calculator</Link></li>
+              <li key="fi-calculator"><Link href="https://solofi.io/tools" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">FI Calculator</Link></li>
               </ul>
             </div>
           </div>
@@ -342,7 +342,7 @@ export default function WhyTrackNetWorthArticle() {
         <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-emerald-50 to-emerald-100 p-8 text-center">
           <h3 className="text-xl font-bold mb-3">Ready to start tracking?</h3>
           <p className="text-slate-500 mb-6">Explore our free financial tools to help you track and optimize your wealth.</p>
-          <Link href="/tools">
+          <Link href="https://solofi.io/tools">
             <Button className="bg-emerald-600 hover:bg-emerald-700 text-slate-900">
               <PiggyBank className="mr-2 h-4 w-4" />
               Explore Free Tools

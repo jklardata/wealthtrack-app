@@ -14,6 +14,11 @@ import {
   Sunrise,
   ArrowRight,
   CreditCard,
+  Calendar,
+  DollarSign,
+  Lightbulb,
+  Percent,
+  Heart,
 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -133,6 +138,46 @@ const sections = [
         description:
           "Visualizes your projected marginal tax rate across your entire life — working years, early retirement, Social Security, and RMD years. Identify windows of opportunity to pay taxes at lower rates.",
         tip: "The gap between retirement and age 72 (RMDs) is often your lowest-tax window.",
+      },
+      {
+        icon: Lightbulb,
+        title: "Tax Optimization",
+        href: "/tax-optimization",
+        description:
+          "Upload your tax returns and get a health dashboard, deduction efficiency analysis, and self-employment tax optimization insights. Compares your effective rate to benchmarks and surfaces opportunities.",
+        tip: "Upload multiple years of returns to see trends in your effective tax rate.",
+      },
+      {
+        icon: Calendar,
+        title: "Quarterly Estimated Taxes",
+        href: "/quarterly-estimated-taxes",
+        description:
+          "Calculate your safe harbor quarterly payments using prior year or current year method. Track what you've paid, visualize the 2025 payment timeline, and model the annualized income method for variable income.",
+        tip: "Use the prior year method when your income is growing—it's simpler and avoids penalties.",
+      },
+      {
+        icon: DollarSign,
+        title: "Freelance Rate Calculator",
+        href: "/freelance-rate",
+        description:
+          "Set your hourly, day, and weekly rates based on target take-home pay. Accounts for SE tax (15.3%), health insurance, retirement contributions, and billable utilization. Includes W2 equivalent salary and S-Corp savings analysis.",
+        tip: "Most freelancers undercharge by 20–40% because they forget to account for SE tax and benefits.",
+      },
+      {
+        icon: Percent,
+        title: "QBI Deduction",
+        href: "/qbi-deduction",
+        description:
+          "Calculate your Section 199A Qualified Business Income deduction. Handles SSTB phase-outs, the 2025 income thresholds ($197,300 single / $394,600 MFJ), and the W-2 wage limitation for non-SSTBs.",
+        tip: "Non-SSTBs (software, design, real estate) keep the full 20% deduction even above the threshold.",
+      },
+      {
+        icon: Heart,
+        title: "HSA Calculator",
+        href: "/hsa-calculator",
+        description:
+          "Model the HSA triple-tax advantage over 30 years and compare it to a 401(k) and taxable account. See how pre-tax contributions, tax-free growth, and tax-free medical withdrawals compound over time.",
+        tip: "Invest HSA funds and pay medical bills out-of-pocket — let the account grow tax-free for decades.",
       },
     ],
   },

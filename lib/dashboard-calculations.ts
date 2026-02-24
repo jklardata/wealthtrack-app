@@ -298,10 +298,10 @@ export function determineNextActions(
   // Tax optimization opportunity
   if (entry.pre_tax_income > 0 && entry.stocks > 100000) {
     actions.push({
-      title: "Optimize Your Taxes",
+      title: "Tax Calculator",
       description: "Explore Roth conversions and tax-loss harvesting strategies",
       actionLabel: "Calculate Impact",
-      actionLink: "/tax-optimization",
+      actionLink: "/tax-calculator",
       priority: 4,
       category: 'opportunity',
       icon: 'zap'

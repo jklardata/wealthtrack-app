@@ -545,65 +545,38 @@ export default function QuarterlyEstimatedTaxesPage() {
           </div>
         )}
 
-        {/* Quick Summary */}
-        <div className="grid md:grid-cols-3 gap-3">
-          <Card className="bg-white border border-slate-200 shadow-sm">
-            <CardContent className="pt-4 pb-4">
-              <p className="text-xs text-slate-500 mb-1">Recommended / Quarter</p>
-              <p className="text-2xl font-bold text-emerald-600">{formatCurrency(safeHarbor.recommendedQuarterly)}</p>
-              <p className="text-xs text-slate-400 mt-0.5">{safeHarbor.reasoning}</p>
-            </CardContent>
-          </Card>
-          <Card className="bg-white border border-slate-200 shadow-sm">
-            <CardContent className="pt-4 pb-4">
-              <p className="text-xs text-slate-500 mb-1">Total Paid YTD</p>
-              <p className="text-2xl font-bold text-slate-900">{formatCurrency(summaryStats.totalPaid)}</p>
-              <p className="text-xs text-slate-400 mt-0.5">of {formatCurrency(summaryStats.totalDue)} annual</p>
-            </CardContent>
-          </Card>
-          <Card className="bg-white border border-slate-200 shadow-sm">
-            <CardContent className="pt-4 pb-4">
-              <p className="text-xs text-slate-500 mb-1">Next Due Date</p>
-              <p className="text-2xl font-bold text-slate-900">
-                {summaryStats.nextPayment ? formatDate(summaryStats.nextPayment.dueDate) : "All Paid"}
-              </p>
-              <p className="text-xs text-slate-400 mt-0.5">
-                {summaryStats.nextPayment ? `Q${summaryStats.nextPayment.quarter} 2025` : "Congratulations!"}
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-
         {/* Input Controls Card */}
         <Card className="bg-white border border-slate-200 shadow-sm">
           <CardHeader className="pb-3">
             <CardTitle className="text-base font-semibold text-slate-900">Income & Deductions</CardTitle>
             <CardDescription className="text-xs">Adjust projections to refine quarterly estimates</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-5">
+          <CardContent className="space-y-6">
             {/* Prior Year Data */}
             <div>
-              <h3 className="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
+              <h3 className="text-sm font-semibold text-slate-700 mb-4 flex items-center gap-2">
                 <Info className="h-4 w-4 text-blue-500" />
                 Prior Year Tax Data (Auto-filled)
               </h3>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="priorYearAGI">Prior Year AGI</Label>
+              <div className="grid md:grid-cols-2 gap-5">
+                <div className="space-y-2">
+                  <Label htmlFor="priorYearAGI" className="text-sm font-medium">Prior Year AGI</Label>
                   <Input
                     id="priorYearAGI"
                     type="number"
                     value={priorYearAGI}
                     onChange={(e) => setPriorYearAGI(parseFloat(e.target.value) || 0)}
+                    className="h-10"
                   />
                 </div>
-                <div>
-                  <Label htmlFor="priorYearTotalTax">Prior Year Total Tax</Label>
+                <div className="space-y-2">
+                  <Label htmlFor="priorYearTotalTax" className="text-sm font-medium">Prior Year Total Tax</Label>
                   <Input
                     id="priorYearTotalTax"
                     type="number"
                     value={priorYearTotalTax}
                     onChange={(e) => setPriorYearTotalTax(parseFloat(e.target.value) || 0)}
+                    className="h-10"
                   />
                 </div>
               </div>
@@ -611,30 +584,32 @@ export default function QuarterlyEstimatedTaxesPage() {
 
             {/* Current Year Projections */}
             <div>
-              <h3 className="text-sm font-semibold mb-3">Current Year Projections</h3>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="expectedGrossIncome">Expected Gross Income</Label>
+              <h3 className="text-sm font-semibold text-slate-700 mb-4">Current Year Projections</h3>
+              <div className="grid md:grid-cols-2 gap-5">
+                <div className="space-y-2">
+                  <Label htmlFor="expectedGrossIncome" className="text-sm font-medium">Expected Gross Income</Label>
                   <Input
                     id="expectedGrossIncome"
                     type="number"
                     value={expectedGrossIncome}
                     onChange={(e) => setExpectedGrossIncome(e.target.value)}
+                    className="h-10"
                   />
                 </div>
-                <div>
-                  <Label htmlFor="expectedBusinessExpenses">Business Expenses</Label>
+                <div className="space-y-2">
+                  <Label htmlFor="expectedBusinessExpenses" className="text-sm font-medium">Business Expenses</Label>
                   <Input
                     id="expectedBusinessExpenses"
                     type="number"
                     value={expectedBusinessExpenses}
                     onChange={(e) => setExpectedBusinessExpenses(e.target.value)}
+                    className="h-10"
                   />
                 </div>
-                <div>
-                  <Label htmlFor="filingStatus">Filing Status</Label>
+                <div className="space-y-2">
+                  <Label htmlFor="filingStatus" className="text-sm font-medium">Filing Status</Label>
                   <Select value={filingStatus} onValueChange={(v: any) => setFilingStatus(v)}>
-                    <SelectTrigger id="filingStatus">
+                    <SelectTrigger id="filingStatus" className="h-10">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -643,14 +618,15 @@ export default function QuarterlyEstimatedTaxesPage() {
                     </SelectContent>
                   </Select>
                 </div>
-                <div>
-                  <Label htmlFor="stateCode">State</Label>
+                <div className="space-y-2">
+                  <Label htmlFor="stateCode" className="text-sm font-medium">State (2-letter code)</Label>
                   <Input
                     id="stateCode"
                     type="text"
                     value={stateCode}
                     onChange={(e) => setStateCode(e.target.value)}
                     maxLength={2}
+                    className="h-10"
                   />
                 </div>
               </div>
@@ -658,43 +634,48 @@ export default function QuarterlyEstimatedTaxesPage() {
 
             {/* Deductions */}
             <div>
-              <h3 className="text-sm font-semibold text-slate-700 mb-3">Retirement & Deductions</h3>
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div>
-                  <Label htmlFor="retirement401k">401(k) / SEP IRA Contribution</Label>
+              <h3 className="text-sm font-semibold text-slate-700 mb-1">Retirement & Deductions</h3>
+              <p className="text-xs text-slate-500 mb-4">These reduce your estimated current-year tax and safe harbor calculation</p>
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div className="space-y-2">
+                  <Label htmlFor="retirement401k" className="text-sm font-medium">401(k) / SEP IRA</Label>
                   <Input
                     id="retirement401k"
                     type="number"
                     value={retirement401k}
                     onChange={(e) => setRetirement401k(e.target.value)}
+                    className="h-10"
                   />
                 </div>
-                <div>
-                  <Label htmlFor="hsaContribution">HSA Contribution</Label>
+                <div className="space-y-2">
+                  <Label htmlFor="hsaContribution" className="text-sm font-medium">HSA Contribution</Label>
                   <Input
                     id="hsaContribution"
                     type="number"
                     value={hsaContribution}
                     onChange={(e) => setHsaContribution(e.target.value)}
+                    className="h-10"
                   />
                 </div>
-                <div>
-                  <Label htmlFor="feieExclusion">FEIE Exclusion</Label>
+                <div className="space-y-2">
+                  <Label htmlFor="feieExclusion" className="text-sm font-medium">FEIE Exclusion</Label>
                   <Input
                     id="feieExclusion"
                     type="number"
                     value={feieExclusion}
                     onChange={(e) => setFeieExclusion(e.target.value)}
                     placeholder="0"
+                    className="h-10"
                   />
                 </div>
-                <div>
-                  <Label htmlFor="itemizedDeductions">Itemized Deductions</Label>
+                <div className="space-y-2">
+                  <Label htmlFor="itemizedDeductions" className="text-sm font-medium">Itemized Deductions</Label>
                   <Input
                     id="itemizedDeductions"
                     type="number"
                     value={itemizedDeductions}
                     onChange={(e) => setItemizedDeductions(e.target.value)}
+                    className="h-10"
                   />
                 </div>
               </div>
@@ -702,8 +683,13 @@ export default function QuarterlyEstimatedTaxesPage() {
           </CardContent>
         </Card>
 
+        {/* Safe Harbor + Stats Row */}
+        <div className="flex flex-col lg:flex-row gap-4">
+
         {/* Safe Harbor Calculation Card */}
-        <Card className="bg-white border border-slate-200 shadow-sm">
+        <div className="flex-1">
+        {isPro ? (
+        <Card className="bg-white border border-slate-200 shadow-sm h-full">
           <CardHeader className="pb-3">
             <CardTitle className="text-base font-semibold text-slate-900 flex items-center gap-2">
               <Shield className="h-4 w-4 text-emerald-600" />
@@ -764,19 +750,19 @@ export default function QuarterlyEstimatedTaxesPage() {
               <div
                 className={`p-4 rounded-lg border-2 ${
                   safeHarbor.method === "current-year"
-                    ? "bg-blue-50 border-blue-400"
+                    ? "bg-emerald-50 border-emerald-400"
                     : "bg-slate-50 border-slate-300"
                 }`}
               >
                 <div className="flex items-center justify-between mb-3">
                   <p className="font-bold text-sm">Current Year Method</p>
                   {safeHarbor.method === "current-year" && (
-                    <span className="text-xs bg-blue-600 text-white px-2 py-1 rounded-full">
+                    <span className="text-xs bg-emerald-600 text-white px-2 py-1 rounded-full">
                       Recommended
                     </span>
                   )}
                 </div>
-                <p className="text-xl font-bold text-blue-600">
+                <p className="text-xl font-bold text-emerald-600">
                   {formatCurrency(safeHarbor.currentYearSafeHarbor)}
                 </p>
                 <p className="text-xs text-slate-600 mt-1">90% of estimated current year tax</p>
@@ -787,19 +773,53 @@ export default function QuarterlyEstimatedTaxesPage() {
             </div>
 
             {/* Recommendation */}
-            <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-lg">
-              <p className="text-sm font-bold text-slate-900 mb-2">
-                💡 Recommended Quarterly Payment
+            <div className="p-4 bg-emerald-800 rounded-xl">
+              <p className="text-xs font-bold text-emerald-200 uppercase tracking-wider mb-1">
+                Recommended Quarterly Payment
               </p>
-              <p className="text-xl font-bold text-emerald-600 mb-1">
+              <p className="text-3xl font-black text-white mb-1">
                 {formatCurrency(safeHarbor.recommendedQuarterly)}
               </p>
-              <p className="text-xs text-slate-600">{safeHarbor.reasoning}</p>
+              <p className="text-sm text-emerald-200">{safeHarbor.reasoning}</p>
             </div>
           </CardContent>
         </Card>
+        ) : (
+          <LockedModule
+            title="Safe Harbor Calculation"
+            description="Calculate exactly how much to pay each quarter to avoid IRS underpayment penalties"
+            icon={<Shield className="h-5 w-5 text-emerald-600" />}
+            benefits={["Prior year vs current year method comparison", "Automatic method selection (lower amount)", "Personalized quarterly payment recommendation"]}
+          />
+        )}
+        </div>
+
+        {/* Right: Stat cards stacked vertically */}
+        <div className="flex flex-col gap-3 lg:w-56">
+          <Card className="bg-white border border-slate-200 shadow-sm">
+            <CardContent className="pt-4 pb-4">
+              <p className="text-xs text-slate-500 mb-1">Total Paid YTD</p>
+              <p className="text-2xl font-bold text-slate-900">{formatCurrency(summaryStats.totalPaid)}</p>
+              <p className="text-xs text-slate-400 mt-0.5">of {formatCurrency(summaryStats.totalDue)} annual</p>
+            </CardContent>
+          </Card>
+          <Card className="bg-white border border-slate-200 shadow-sm">
+            <CardContent className="pt-4 pb-4">
+              <p className="text-xs text-slate-500 mb-1">Next Due Date</p>
+              <p className="text-xl font-bold text-slate-900">
+                {summaryStats.nextPayment ? formatDate(summaryStats.nextPayment.dueDate) : "All Paid"}
+              </p>
+              <p className="text-xs text-slate-400 mt-0.5">
+                {summaryStats.nextPayment ? `Q${summaryStats.nextPayment.quarter} 2025` : "Congratulations!"}
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+
+        </div>{/* end Safe Harbor + Stats row */}
 
         {/* Payment Tracking Card */}
+        {isPro ? (
         <Card className="bg-white border border-slate-200 shadow-sm">
           <CardHeader className="pb-3">
             <CardTitle className="text-base font-semibold text-slate-900">Payment Tracking</CardTitle>
@@ -815,7 +835,7 @@ export default function QuarterlyEstimatedTaxesPage() {
                       ? "border-emerald-400 bg-emerald-50"
                       : payment.status === "overdue"
                       ? "border-red-400 bg-red-50"
-                      : "border-blue-400 bg-blue-50"
+                      : "border-emerald-300 bg-emerald-50"
                   }`}
                 >
                   <CardHeader className="pb-3">
@@ -834,12 +854,12 @@ export default function QuarterlyEstimatedTaxesPage() {
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <div>
-                      <p className="text-xs text-slate-500 mb-1">Required Payment</p>
+                      <p className="text-sm text-slate-500 mb-1">Required Payment</p>
                       <p className="text-xl font-bold">{formatCurrency(payment.amount)}</p>
                     </div>
 
                     <div>
-                      <div className="flex justify-between text-xs mb-1">
+                      <div className="flex justify-between text-sm mb-1">
                         <span>Paid: {formatCurrency(payment.amountPaid)}</span>
                         <span>
                           {Math.round((payment.amountPaid / payment.amount) * 100)}%
@@ -849,13 +869,13 @@ export default function QuarterlyEstimatedTaxesPage() {
                     </div>
 
                     {payment.status === "paid" ? (
-                      <p className="text-xs text-emerald-700 font-semibold">✓ Payment Recorded</p>
+                      <p className="text-sm text-emerald-700 font-semibold">✓ Payment Recorded</p>
                     ) : payment.status === "overdue" ? (
-                      <p className="text-xs text-red-700 font-semibold">
+                      <p className="text-sm text-red-700 font-semibold">
                         ⚠ Overdue by {Math.abs(payment.daysUntil)} days
                       </p>
                     ) : (
-                      <p className="text-xs text-blue-700 font-semibold">
+                      <p className="text-sm text-emerald-700 font-semibold">
                         📅 Due in {payment.daysUntil} days
                       </p>
                     )}
@@ -924,8 +944,17 @@ export default function QuarterlyEstimatedTaxesPage() {
             </div>
           </CardContent>
         </Card>
+        ) : (
+          <LockedModule
+            title="Payment Tracking"
+            description="Track what you've paid each quarter and see your payment progress"
+            icon={<CheckCircle className="h-5 w-5 text-emerald-600" />}
+            benefits={["Q1–Q4 payment status cards", "Progress bar per quarter", "Log actual payments made"]}
+          />
+        )}
 
         {/* Quarterly Timeline Visualization */}
+        {isPro ? (
         <Card className="bg-white border border-slate-200 shadow-sm">
           <CardHeader className="pb-3">
             <CardTitle className="text-base font-semibold text-slate-900 flex items-center gap-2">
@@ -937,8 +966,8 @@ export default function QuarterlyEstimatedTaxesPage() {
             <div className="flex h-12 rounded-lg overflow-hidden gap-1">
               {quarterlyPayments.map((payment) => {
                 const statusColors = {
-                  paid: "#10b981",
-                  upcoming: "#3b82f6",
+                  paid: "#059669",
+                  upcoming: "#10b981",
                   overdue: "#ef4444",
                 };
 
@@ -989,7 +1018,7 @@ export default function QuarterlyEstimatedTaxesPage() {
                 <span>Paid</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded bg-blue-600"></div>
+                <div className="w-4 h-4 rounded bg-emerald-500"></div>
                 <span>Upcoming</span>
               </div>
               <div className="flex items-center gap-2">
@@ -999,6 +1028,14 @@ export default function QuarterlyEstimatedTaxesPage() {
             </div>
           </CardContent>
         </Card>
+        ) : (
+          <LockedModule
+            title="2025 Payment Timeline"
+            description="Visual timeline showing your Q1–Q4 payment status at a glance"
+            icon={<Calendar className="h-5 w-5 text-emerald-600" />}
+            benefits={["Color-coded payment status (paid / upcoming / overdue)", "Days until next payment due", "Quick visual progress overview"]}
+          />
+        )}
 
         {/* Annualized Income Method (Pro Feature) */}
         {isPro ? (
@@ -1012,7 +1049,7 @@ export default function QuarterlyEstimatedTaxesPage() {
                 </span>
               </CardTitle>
               <p className="text-sm text-slate-600 mt-2">
-                Optimize payments for variable/seasonal income
+                Calculates your tax liability based on year-to-date income projected out to a full year—pay less in low-income quarters and more in high-income quarters, avoiding underpayment penalties despite uneven income.
               </p>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -1062,7 +1099,7 @@ export default function QuarterlyEstimatedTaxesPage() {
                   </div>
 
                   <div className="overflow-x-auto">
-                    <table className="w-full text-xs">
+                    <table className="w-full text-sm">
                       <thead>
                         <tr className="border-b-2 border-black">
                           <th className="text-left p-2 font-bold">Quarter</th>
@@ -1088,15 +1125,6 @@ export default function QuarterlyEstimatedTaxesPage() {
                     </table>
                   </div>
 
-                  <div className="p-3 bg-purple-50 border border-purple-200 rounded-lg text-xs">
-                    <p className="font-semibold text-purple-900 mb-1">How this works</p>
-                    <p className="text-purple-800">
-                      The annualized income method calculates your tax liability based on
-                      year-to-date income projected out to a full year. This allows you to pay less
-                      in low-income quarters and more in high-income quarters, avoiding underpayment
-                      penalties despite uneven income.
-                    </p>
-                  </div>
                 </>
               )}
             </CardContent>
@@ -1147,7 +1175,7 @@ export default function QuarterlyEstimatedTaxesPage() {
               <div className="space-y-2">
                 <p className="font-bold text-sm">Quarterly Breakdown</p>
                 {penaltyCalculation.quarterlyPenalties.map((qp) => (
-                  <div key={qp.quarter} className="flex justify-between text-xs p-2 bg-red-50 rounded">
+                  <div key={qp.quarter} className="flex justify-between text-sm p-2 bg-red-50 rounded">
                     <span>Q{qp.quarter}</span>
                     <span>{qp.reason}</span>
                     <span className="font-bold">{formatCurrency(qp.penalty)}</span>
@@ -1159,6 +1187,7 @@ export default function QuarterlyEstimatedTaxesPage() {
         )}
 
         {/* Educational Panels */}
+        {isPro ? (
         <div className="grid md:grid-cols-3 gap-4">
           {/* Safe Harbor */}
           <div className="bg-white border border-slate-200 rounded-xl p-5">
@@ -1213,6 +1242,14 @@ export default function QuarterlyEstimatedTaxesPage() {
             </div>
           </div>
         </div>
+        ) : (
+          <LockedModule
+            title="Tax Planning Insights"
+            description="Safe harbor rules, annualized income method, and common mistakes to avoid"
+            icon={<Info className="h-5 w-5 text-slate-500" />}
+            benefits={["Safe harbor rules explained", "Annualized method for variable income", "Common mistakes checklist"]}
+          />
+        )}
 
         {/* Disclaimer */}
         <div className="p-4 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-600">

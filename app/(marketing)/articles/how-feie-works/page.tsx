@@ -59,7 +59,7 @@ export default function FEIEArticle() {
       />
       {/* Back Button */}
       <div className="mb-6">
-        <Link href="/blog">
+        <Link href="https://solofi.io/blog">
           <Button variant="ghost" size="sm" className="gap-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100">
             <ArrowLeft className="h-4 w-4" />
             Back to Blog
@@ -385,15 +385,15 @@ export default function FEIEArticle() {
             <div>
               <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Related articles</p>
               <ul className="space-y-2 text-sm">
-              <li key="working-remotely-from-another-country"><Link href="/articles/working-remotely-from-another-country" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">A US Guide for Working Remotely From Another Country</Link></li>
-              <li key="tax-strategies-2026-self-employed"><Link href="/articles/tax-strategies-2026-self-employed" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Tax Strategies in 2026 for Self-Employed Workers</Link></li>
+              <li key="working-remotely-from-another-country"><Link href="https://solofi.io/articles/working-remotely-from-another-country" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">A US Guide for Working Remotely From Another Country</Link></li>
+              <li key="tax-strategies-2026-self-employed"><Link href="https://solofi.io/articles/tax-strategies-2026-self-employed" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Tax Strategies in 2026 for Self-Employed Workers</Link></li>
               </ul>
             </div>
             <div>
               <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Free tools</p>
               <ul className="space-y-2 text-sm">
-              <li key="fi-calculator"><Link href="/tools/fi-calculator" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">FI Calculator</Link></li>
-              <li key="quarterly-tax"><Link href="/tools/quarterly-tax" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Quarterly Tax Estimator</Link></li>
+              <li key="fi-calculator"><Link href="https://solofi.io/tools" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">FI Calculator</Link></li>
+              <li key="quarterly-tax"><Link href="https://solofi.io/tools" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Quarterly Tax Estimator</Link></li>
               </ul>
             </div>
           </div>
@@ -403,7 +403,7 @@ export default function FEIEArticle() {
         <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 p-8 text-center">
           <h3 className="text-xl font-bold mb-3">Planning to work abroad?</h3>
           <p className="text-slate-500 mb-6">Use our Tax Savings Calculator to estimate your potential savings.</p>
-          <Link href="/tools/tax-savings">
+          <Link href="https://solofi.io/tools">
             <Button className="bg-emerald-600 hover:bg-emerald-700 text-slate-900">
               <Calculator className="mr-2 h-4 w-4" />
               Calculate Savings

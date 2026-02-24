@@ -76,6 +76,7 @@ import {
   Legend,
   BarChart,
   Bar,
+  LabelList,
 } from "recharts";
 import type { NetWorthEntry, NetWorthFormData } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -139,8 +140,8 @@ function CashFlowCard({
         </div>
 
         {/* Bar Chart */}
-        <ResponsiveContainer width="100%" height={140}>
-          <BarChart data={barData} barGap={6} barCategoryGap="40%">
+        <ResponsiveContainer width="100%" height={170}>
+          <BarChart data={barData} barGap={8} barCategoryGap="20%" margin={{ top: 24, right: 8, left: 8, bottom: 0 }}>
             <CartesianGrid vertical={false} stroke="#f1f5f9" />
             <XAxis dataKey="name" hide />
             <YAxis stroke="#cbd5e1" fontSize={10} tickLine={false} axisLine={false} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} width={36} />
@@ -149,17 +150,20 @@ function CashFlowCard({
               formatter={(v, name) => [formatCurrencyLocal(Number(v)), name]}
               labelStyle={{ fontWeight: 600, color: "#0f172a" }}
             />
-            <Legend iconType="circle" iconSize={7} wrapperStyle={{ fontSize: "11px", paddingTop: "4px" }} />
-            <Bar dataKey="income" name="Income" fill="#10b981" radius={[4, 4, 0, 0]} />
-            <Bar dataKey="expenses" name="Expenses" fill="#f59e0b" radius={[4, 4, 0, 0]} />
+            <Bar dataKey="income" name="Income" fill="#10b981" radius={[4, 4, 0, 0]}>
+              <LabelList dataKey="income" position="top" formatter={(v: unknown) => formatCurrencyLocal(Number(v))} style={{ fontSize: 13, fill: "#0f172a", fontWeight: 700 }} />
+            </Bar>
+            <Bar dataKey="expenses" name="Expenses" fill="#ef4444" radius={[4, 4, 0, 0]}>
+              <LabelList dataKey="expenses" position="top" formatter={(v: unknown) => formatCurrencyLocal(Number(v))} style={{ fontSize: 13, fill: "#0f172a", fontWeight: 700 }} />
+            </Bar>
           </BarChart>
         </ResponsiveContainer>
 
         {/* Amount breakdown */}
-        <div className="flex justify-between mt-1 text-xs text-slate-400">
-          <span>{formatCurrencyLocal(income)} income</span>
-          <span>{formatCurrencyLocal(saved >= 0 ? saved : 0)} saved</span>
-          <span>{formatCurrencyLocal(expenses)} expenses</span>
+        <div className="flex justify-between mt-2 pt-2 border-t border-slate-100 text-xs text-slate-500">
+          <span className="text-emerald-600 font-semibold">{formatCurrencyLocal(income)} income</span>
+          <span className={`font-semibold ${saved >= 0 ? "text-emerald-700" : "text-red-500"}`}>{formatCurrencyLocal(saved >= 0 ? saved : 0)} saved</span>
+          <span className="text-red-500 font-semibold">{formatCurrencyLocal(expenses)} expenses</span>
         </div>
       </CardContent>
     </Card>
@@ -804,8 +808,8 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 p-3 sm:p-4">
-      <div className="max-w-6xl mx-auto space-y-4">
+    <div className="space-y-4 py-2">
+      <div>
       {/* Success Banner */}
       <Suspense fallback={null}>
         <UpgradeSuccessBanner />
@@ -882,12 +886,12 @@ export default function DashboardPage() {
       <div className="grid gap-2 grid-cols-2 lg:grid-cols-4">
         <Card className="bg-white border border-slate-200 shadow-sm">
           <CardHeader className="p-3 pb-1 text-center">
-            <CardTitle className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+            <CardTitle className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
               Net Worth
             </CardTitle>
           </CardHeader>
           <CardContent className="p-3 pt-0 text-center">
-            <div className="text-base sm:text-lg font-bold text-slate-900 font-mono break-words">
+            <div className="text-xl sm:text-2xl font-bold text-slate-900 font-mono break-words">
               {latestEntry ? formatCurrency(latestEntry.net_worth) : "$0"}
             </div>
             {latestEntry && (
@@ -900,13 +904,13 @@ export default function DashboardPage() {
 
         <Card className="bg-white border border-slate-200 shadow-sm">
           <CardHeader className="p-3 pb-1 text-center">
-            <CardTitle className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+            <CardTitle className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
               Monthly Change
             </CardTitle>
           </CardHeader>
           <CardContent className="p-3 pt-0 text-center">
             <div
-              className={`text-base sm:text-lg font-bold font-mono break-words ${
+              className={`text-xl sm:text-2xl font-bold font-mono break-words ${
                 monthlyChange >= 0 ? "text-emerald-600" : "text-red-500"
               }`}
             >
@@ -923,12 +927,12 @@ export default function DashboardPage() {
         {/* YTD Change */}
         <Card className="bg-white border border-slate-200 shadow-sm">
           <CardHeader className="p-3 pb-1 text-center">
-            <CardTitle className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+            <CardTitle className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
               YTD Change
             </CardTitle>
           </CardHeader>
           <CardContent className="p-3 pt-0 text-center">
-            <div className={`text-base sm:text-lg font-bold font-mono break-words ${
+            <div className={`text-xl sm:text-2xl font-bold font-mono break-words ${
               growthMetrics.ytd.amount >= 0 ? "text-emerald-600" : "text-red-500"
             }`}>
               {growthMetrics.ytd.amount >= 0 ? "+" : ""}
@@ -946,12 +950,12 @@ export default function DashboardPage() {
         {/* Avg Monthly $ */}
         <Card className="bg-white border border-slate-200 shadow-sm">
           <CardHeader className="p-3 pb-1 text-center">
-            <CardTitle className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+            <CardTitle className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
               Avg Monthly
             </CardTitle>
           </CardHeader>
           <CardContent className="p-3 pt-0 text-center">
-            <div className={`text-base sm:text-lg font-bold font-mono break-words ${
+            <div className={`text-xl sm:text-2xl font-bold font-mono break-words ${
               growthMetrics.avgMonthlyGrowth >= 0 ? "text-blue-600" : "text-red-500"
             }`}>
               {growthMetrics.avgMonthlyGrowth >= 0 ? "+" : ""}
@@ -964,395 +968,420 @@ export default function DashboardPage() {
 
 
 
-      {/* Net Worth Chart */}
-      <Card className="bg-white border border-slate-200 shadow-sm">
-        <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div>
-            <CardTitle className="text-base font-semibold text-slate-900">Net Worth Over Time</CardTitle>
-            <p className="text-xs text-slate-500 mt-0.5">Click a data point to edit · Toggle categories below</p>
-          </div>
-          <div className="flex items-center gap-2 w-full sm:w-auto">
-            {/* Chart-specific date range */}
-            <div className="flex bg-slate-100 rounded-lg p-1 flex-1 sm:flex-initial">
-              {(["3m", "6m", "1y", "all"] as ChartRange[]).map((range) => (
-                <button
-                  key={range}
-                  onClick={() => setChartRange(range)}
-                  className={cn(
-                    "px-2 sm:px-3 py-1 text-xs sm:text-sm rounded-md transition-colors flex-1 sm:flex-initial",
-                    chartRange === range
-                      ? "bg-white text-slate-900 shadow-sm"
-                      : "text-slate-500 hover:text-slate-700"
-                  )}
-                >
-                  {range === "all" ? "All" : range.toUpperCase()}
-                </button>
-              ))}
+      {/* Net Worth Chart + Side Panel */}
+      <div className="grid gap-3 lg:grid-cols-[1fr_380px] items-stretch">
+        {/* Net Worth Over Time */}
+        <Card className="bg-white border border-slate-200 shadow-sm flex flex-col">
+          <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <CardTitle className="text-base font-semibold text-slate-900">Net Worth Over Time</CardTitle>
+              <p className="text-xs text-slate-500 mt-0.5">Click a data point to edit · Toggle categories below</p>
             </div>
-            <Link href="/net-worth" className="hidden sm:block">
-              <Button variant="ghost" size="sm" className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50">
-                View All
-                <ArrowRight className="h-4 w-4 ml-1" />
-              </Button>
-            </Link>
-          </div>
-        </CardHeader>
-        <CardContent>
-          {chartData.length > 0 ? (
-            <>
-              {/* Category Legend with Toggle */}
-              <div className="flex flex-wrap gap-2 sm:gap-3 mb-4 pb-4 border-b border-slate-200">
-                <button
-                  onClick={() => toggleCategory("netWorth")}
-                  className={cn(
-                    "flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm px-2 py-1 rounded-lg transition-opacity",
-                    hiddenCategories.has("netWorth") ? "opacity-40" : "opacity-100"
-                  )}
-                >
-                  <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full" style={{ backgroundColor: '#10b981' }} />
-                  <span className="text-slate-700">Net Worth</span>
-                </button>
-                {Object.entries(ASSET_COLORS).map(([key, color]) => (
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              {/* Chart-specific date range */}
+              <div className="flex bg-slate-100 rounded-lg p-1 flex-1 sm:flex-initial">
+                {(["3m", "6m", "1y", "all"] as ChartRange[]).map((range) => (
                   <button
-                    key={key}
-                    onClick={() => toggleCategory(key)}
+                    key={range}
+                    onClick={() => setChartRange(range)}
                     className={cn(
-                      "flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm px-2 py-1 rounded-lg transition-opacity",
-                      hiddenCategories.has(key) ? "opacity-40" : "opacity-100"
+                      "px-2 sm:px-3 py-1 text-xs sm:text-sm rounded-md transition-colors flex-1 sm:flex-initial",
+                      chartRange === range
+                        ? "bg-white text-slate-900 shadow-sm"
+                        : "text-slate-500 hover:text-slate-700"
                     )}
                   >
-                    <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full" style={{ backgroundColor: color }} />
-                    <span className="text-slate-700">{ASSET_LABELS[key]}</span>
+                    {range === "all" ? "All" : range.toUpperCase()}
                   </button>
                 ))}
               </div>
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={chartData} onClick={handleChartClick} style={{ cursor: "pointer" }}>
-                  <CartesianGrid vertical={false} stroke="#f1f5f9" />
-                  <XAxis
-                    dataKey="date"
-                    stroke="#cbd5e1"
-                    fontSize={10}
-                    tickLine={false}
-                    axisLine={false}
-                  />
-                  <YAxis
-                    stroke="#cbd5e1"
-                    fontSize={10}
-                    tickLine={false}
-                    axisLine={false}
-                    tickFormatter={(value) =>
-                      `$${(value / 1000).toFixed(0)}k`
-                    }
-                    width={44}
-                  />
-                  <Tooltip content={<NetWorthTooltip />} />
-                  {!hiddenCategories.has("netWorth") && (
-                    <Line
-                      type="monotone"
-                      dataKey="netWorth"
-                      name="Net Worth"
-                      stroke="#10b981"
-                      strokeWidth={3}
-                      dot={{ fill: "#10b981", strokeWidth: 2, r: 4 }}
-                      activeDot={{ r: 8, fill: "#10b981", stroke: "#fff", strokeWidth: 2 }}
-                    />
-                  )}
-                  {!hiddenCategories.has("stocks") && (
-                    <Line
-                      type="monotone"
-                      dataKey="stocks"
-                      name="Stocks"
-                      stroke={ASSET_COLORS.stocks}
-                      strokeWidth={1.5}
-                      strokeDasharray="5 5"
-                      dot={false}
-                    />
-                  )}
-                  {!hiddenCategories.has("bonds") && (
-                    <Line
-                      type="monotone"
-                      dataKey="bonds"
-                      name="Bonds"
-                      stroke={ASSET_COLORS.bonds}
-                      strokeWidth={1.5}
-                      strokeDasharray="5 5"
-                      dot={false}
-                    />
-                  )}
-                  {!hiddenCategories.has("cash") && (
-                    <Line
-                      type="monotone"
-                      dataKey="cash"
-                      name="Cash"
-                      stroke={ASSET_COLORS.cash}
-                      strokeWidth={1.5}
-                      strokeDasharray="5 5"
-                      dot={false}
-                    />
-                  )}
-                  {!hiddenCategories.has("real_estate") && (
-                    <Line
-                      type="monotone"
-                      dataKey="real_estate"
-                      name="Real Estate"
-                      stroke={ASSET_COLORS.real_estate}
-                      strokeWidth={1.5}
-                      strokeDasharray="5 5"
-                      dot={false}
-                    />
-                  )}
-                  {!hiddenCategories.has("points_value") && (
-                    <Line
-                      type="monotone"
-                      dataKey="points_value"
-                      name="Points"
-                      stroke={ASSET_COLORS.points_value}
-                      strokeWidth={1.5}
-                      strokeDasharray="5 5"
-                      dot={false}
-                    />
-                  )}
-                  {!hiddenCategories.has("other_assets") && (
-                    <Line
-                      type="monotone"
-                      dataKey="other_assets"
-                      name="Other"
-                      stroke={ASSET_COLORS.other_assets}
-                      strokeWidth={1.5}
-                      strokeDasharray="5 5"
-                      dot={false}
-                    />
-                  )}
-                </LineChart>
-              </ResponsiveContainer>
-            </>
-          ) : (
-            <div className="flex flex-col items-center justify-center h-[300px] text-center">
-              <p className="text-slate-500 mb-4">
-                No data in selected range. Try adjusting the date filter.
-              </p>
-              <Link href="/net-worth">
-                <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Entry
+              <Link href="/net-worth" className="hidden sm:block">
+                <Button variant="ghost" size="sm" className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50">
+                  View All
+                  <ArrowRight className="h-4 w-4 ml-1" />
                 </Button>
               </Link>
             </div>
-          )}
-        </CardContent>
-      </Card>
-
-
-      {/* Asset Allocation and Net Worth Momentum */}
-      <div className="grid gap-3 lg:grid-cols-2">
-        {/* Asset Allocation */}
-        <Card className="bg-white border border-slate-200 shadow-sm">
-
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base font-semibold text-slate-900">Asset Allocation</CardTitle>
-            <p className="text-xs text-slate-500">Current portfolio breakdown</p>
           </CardHeader>
-          <CardContent>
-            {allocationData.length > 0 ? (
-              <div className="space-y-4">
-                {/* Pie Chart */}
-                <div className="relative">
-                  <ResponsiveContainer width="100%" height={320}>
-                    <PieChart>
-                      <defs>
-                        {Object.entries(ASSET_GRADIENTS).map(([key, gradient]) => (
-                          <linearGradient key={key} id={`dash-gradient-${key}`} x1="0" y1="0" x2="1" y2="1">
-                            <stop offset="0%" stopColor={gradient.start} />
-                            <stop offset="100%" stopColor={gradient.end} />
-                          </linearGradient>
-                        ))}
-                      </defs>
-                      <Pie
-                        data={allocationData}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={65}
-                        outerRadius={95}
-                        paddingAngle={3}
-                        dataKey="value"
-                        stroke="none"
-                        labelLine={false}
-                        label={({ name, percent, cx, cy, midAngle, outerRadius: or }: { name?: string; percent?: number; cx?: number; cy?: number; midAngle?: number; outerRadius?: number }) => {
-                          if (!name || !percent || percent < 0.05 || cx == null || cy == null || midAngle == null || or == null) return null;
-                          const RADIAN = Math.PI / 180;
-                          const radius = or + 22;
-                          const x = cx + radius * Math.cos(-midAngle * RADIAN);
-                          const y = cy + radius * Math.sin(-midAngle * RADIAN);
-                          return (
-                            <text x={x} y={y} fill="#475569" textAnchor={x > cx ? "start" : "end"} dominantBaseline="central" fontSize={11} fontWeight={500}>
-                              {`${name} ${(percent * 100).toFixed(0)}%`}
-                            </text>
-                          );
-                        }}
-                      >
-                        {allocationData.map((entry) => (
-                          <Cell
-                            key={`cell-${entry.key}`}
-                            fill={`url(#dash-gradient-${entry.key})`}
-                            className="drop-shadow-sm"
-                          />
-                        ))}
-                      </Pie>
-                      <Tooltip
-                        content={({ active, payload }) => {
-                          if (active && payload && payload.length) {
-                            const item = payload[0].payload;
-                            return (
-                              <div className="bg-white px-3 py-2 rounded-xl shadow-lg border border-slate-200">
-                                <div className="flex items-center gap-2">
-                                  <div
-                                    className="w-3 h-3 rounded-full"
-                                    style={{ backgroundColor: item.color }}
-                                  />
-                                  <span className="font-medium text-slate-900">{item.name}</span>
-                                </div>
-                                <div className="text-lg font-semibold mt-1 text-slate-900">{item.percent.toFixed(1)}%</div>
-                                <div className="text-sm text-slate-500">
-                                  {formatCurrency(item.value)}
-                                </div>
-                              </div>
-                            );
-                          }
-                          return null;
-                        }}
-                      />
-                    </PieChart>
-                  </ResponsiveContainer>
-
-                  {/* Center label */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="text-center">
-                      <div className="text-lg sm:text-xl font-semibold text-slate-900 font-mono">
-                        {formatCurrency(latestEntry?.total_assets || 0)}
-                      </div>
-                      <div className="text-xs text-slate-500">Total Assets</div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Breakdown List */}
-                <div className="space-y-2">
-                  {allocationData.map((item) => (
-                    <div
-                      key={item.key}
-                      className="flex items-center justify-between p-2 sm:p-3 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors border border-slate-100"
+          <CardContent className="flex-1 flex flex-col">
+            {chartData.length > 0 ? (
+              <>
+                {/* Category Legend with Toggle */}
+                <div className="flex flex-wrap gap-2 sm:gap-3 mb-4 pb-4 border-b border-slate-200">
+                  <button
+                    onClick={() => toggleCategory("netWorth")}
+                    className={cn(
+                      "flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm px-2 py-1 rounded-lg transition-opacity",
+                      hiddenCategories.has("netWorth") ? "opacity-40" : "opacity-100"
+                    )}
+                  >
+                    <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full" style={{ backgroundColor: '#10b981' }} />
+                    <span className="text-slate-700">Net Worth</span>
+                  </button>
+                  {Object.entries(ASSET_COLORS).map(([key, color]) => (
+                    <button
+                      key={key}
+                      onClick={() => toggleCategory(key)}
+                      className={cn(
+                        "flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm px-2 py-1 rounded-lg transition-opacity",
+                        hiddenCategories.has(key) ? "opacity-40" : "opacity-100"
+                      )}
                     >
-                      <div className="flex items-center gap-2">
-                        <div
-                          className="w-3 h-3 rounded-full flex-shrink-0"
-                          style={{ backgroundColor: item.color }}
-                        />
-                        <span className="text-sm font-medium text-slate-700">{item.name}</span>
-                      </div>
-                      <div className="flex items-center gap-2 sm:gap-3">
-                        <span className="text-sm font-semibold" style={{ color: item.color }}>
-                          {item.percent.toFixed(1)}%
-                        </span>
-                        <span className="text-xs text-slate-500 w-16 sm:w-20 text-right font-mono">
-                          {formatCurrency(item.value)}
-                        </span>
-                      </div>
-                    </div>
+                      <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full" style={{ backgroundColor: color }} />
+                      <span className="text-slate-700">{ASSET_LABELS[key]}</span>
+                    </button>
                   ))}
                 </div>
-              </div>
+                <div className="flex-1 min-h-[300px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={chartData} onClick={handleChartClick} style={{ cursor: "pointer" }}>
+                    <CartesianGrid vertical={false} stroke="#f1f5f9" />
+                    <XAxis
+                      dataKey="date"
+                      tick={{ fill: "#0f172a", fontSize: 10 }}
+                      tickLine={false}
+                      axisLine={false}
+                    />
+                    <YAxis
+                      tick={{ fill: "#0f172a", fontSize: 10 }}
+                      tickLine={false}
+                      axisLine={false}
+                      tickFormatter={(value) =>
+                        `$${(value / 1000).toFixed(0)}k`
+                      }
+                      width={44}
+                    />
+                    <Tooltip content={<NetWorthTooltip />} />
+                    {!hiddenCategories.has("netWorth") && (
+                      <Line
+                        type="monotone"
+                        dataKey="netWorth"
+                        name="Net Worth"
+                        stroke="#10b981"
+                        strokeWidth={3}
+                        dot={{ fill: "#10b981", strokeWidth: 2, r: 4 }}
+                        activeDot={{ r: 8, fill: "#10b981", stroke: "#fff", strokeWidth: 2 }}
+                      />
+                    )}
+                    {!hiddenCategories.has("stocks") && (
+                      <Line
+                        type="monotone"
+                        dataKey="stocks"
+                        name="Stocks"
+                        stroke={ASSET_COLORS.stocks}
+                        strokeWidth={1.5}
+                        strokeDasharray="5 5"
+                        dot={false}
+                      />
+                    )}
+                    {!hiddenCategories.has("bonds") && (
+                      <Line
+                        type="monotone"
+                        dataKey="bonds"
+                        name="Bonds"
+                        stroke={ASSET_COLORS.bonds}
+                        strokeWidth={1.5}
+                        strokeDasharray="5 5"
+                        dot={false}
+                      />
+                    )}
+                    {!hiddenCategories.has("cash") && (
+                      <Line
+                        type="monotone"
+                        dataKey="cash"
+                        name="Cash"
+                        stroke={ASSET_COLORS.cash}
+                        strokeWidth={1.5}
+                        strokeDasharray="5 5"
+                        dot={false}
+                      />
+                    )}
+                    {!hiddenCategories.has("real_estate") && (
+                      <Line
+                        type="monotone"
+                        dataKey="real_estate"
+                        name="Real Estate"
+                        stroke={ASSET_COLORS.real_estate}
+                        strokeWidth={1.5}
+                        strokeDasharray="5 5"
+                        dot={false}
+                      />
+                    )}
+                    {!hiddenCategories.has("points_value") && (
+                      <Line
+                        type="monotone"
+                        dataKey="points_value"
+                        name="Points"
+                        stroke={ASSET_COLORS.points_value}
+                        strokeWidth={1.5}
+                        strokeDasharray="5 5"
+                        dot={false}
+                      />
+                    )}
+                    {!hiddenCategories.has("other_assets") && (
+                      <Line
+                        type="monotone"
+                        dataKey="other_assets"
+                        name="Other"
+                        stroke={ASSET_COLORS.other_assets}
+                        strokeWidth={1.5}
+                        strokeDasharray="5 5"
+                        dot={false}
+                      />
+                    )}
+                  </LineChart>
+                </ResponsiveContainer>
+                </div>
+              </>
             ) : (
-              <div className="flex items-center justify-center h-[300px] text-slate-500">
-                No asset data available
+              <div className="flex flex-col items-center justify-center h-[300px] text-center">
+                <p className="text-slate-500 mb-4">
+                  No data in selected range. Try adjusting the date filter.
+                </p>
+                <Link href="/net-worth">
+                  <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Entry
+                  </Button>
+                </Link>
               </div>
             )}
           </CardContent>
-      </Card>
+        </Card>
 
-      {/* Net Worth Momentum */}
-        {momentumMetrics && (
+        {/* Right column: Asset Allocation + Net Worth Momentum stacked */}
+        <div className="flex flex-col gap-3 min-h-0">
+          {/* Asset Allocation */}
           <Card className="bg-white border border-slate-200 shadow-sm">
             <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2 text-base font-semibold text-slate-900">
-                <TrendingUpIcon className="h-4 w-4 text-emerald-600" />
-                Net Worth Momentum
-              </CardTitle>
-              <p className="text-xs text-slate-500">Savings vs. market returns over 12 months</p>
+              <CardTitle className="text-base font-semibold text-slate-900">Asset Allocation</CardTitle>
+              <p className="text-xs text-slate-500">Current portfolio breakdown</p>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 cursor-pointer hover:bg-emerald-50 hover:border-emerald-200 transition-all">
-                      <p className="text-xs font-medium text-slate-500 mb-1 flex items-center gap-2">
-                        Monthly Velocity
-                        <span className="text-slate-400">(click for trend)</span>
-                      </p>
-                      <p className="text-xl font-bold text-emerald-600">
-                        {formatVelocity(momentumMetrics.velocity)}
-                      </p>
-                      <p className="text-xs text-slate-400 mt-1">avg monthly net worth increase</p>
+              {allocationData.length > 0 ? (
+                <div>
+                  {/* Pie Chart */}
+                  <div className="relative">
+                    <ResponsiveContainer width="100%" height={220}>
+                      <PieChart>
+                        <defs>
+                          {Object.entries(ASSET_GRADIENTS).map(([key, gradient]) => (
+                            <linearGradient key={key} id={`dash-gradient-${key}`} x1="0" y1="0" x2="1" y2="1">
+                              <stop offset="0%" stopColor={gradient.start} />
+                              <stop offset="100%" stopColor={gradient.end} />
+                            </linearGradient>
+                          ))}
+                        </defs>
+                        <Pie
+                          data={allocationData}
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={50}
+                          outerRadius={75}
+                          paddingAngle={3}
+                          dataKey="value"
+                          stroke="none"
+                          labelLine={false}
+                          label={({ name, percent, cx, cy, midAngle, outerRadius: or }: { name?: string; percent?: number; cx?: number; cy?: number; midAngle?: number; outerRadius?: number }) => {
+                            if (!name || !percent || percent < 0.05 || cx == null || cy == null || midAngle == null || or == null) return null;
+                            const RADIAN = Math.PI / 180;
+                            const radius = or + 18;
+                            const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                            const y = cy + radius * Math.sin(-midAngle * RADIAN);
+                            return (
+                              <text x={x} y={y} fill="#475569" textAnchor={x > cx ? "start" : "end"} dominantBaseline="central" fontSize={10} fontWeight={500}>
+                                {`${name} ${Math.round(percent * 100)}%`}
+                              </text>
+                            );
+                          }}
+                        >
+                          {allocationData.map((entry) => (
+                            <Cell
+                              key={`cell-${entry.key}`}
+                              fill={`url(#dash-gradient-${entry.key})`}
+                              className="drop-shadow-sm"
+                            />
+                          ))}
+                        </Pie>
+                        <Tooltip
+                          content={({ active, payload }) => {
+                            if (active && payload && payload.length) {
+                              const item = payload[0].payload;
+                              return (
+                                <div className="bg-white px-3 py-2 rounded-xl shadow-lg border border-slate-200">
+                                  <div className="flex items-center gap-2">
+                                    <div
+                                      className="w-3 h-3 rounded-full"
+                                      style={{ backgroundColor: item.color }}
+                                    />
+                                    <span className="font-medium text-slate-900">{item.name}</span>
+                                  </div>
+                                  <div className="text-lg font-semibold mt-1 text-slate-900">{Math.round(item.percent)}%</div>
+                                  <div className="text-sm text-slate-500">
+                                    {formatCurrency(item.value)}
+                                  </div>
+                                </div>
+                              );
+                            }
+                            return null;
+                          }}
+                        />
+                      </PieChart>
+                    </ResponsiveContainer>
+
+                    {/* Center label */}
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                      <div className="text-center">
+                        <div className="text-sm font-semibold text-slate-900 font-mono">
+                          {formatCurrency(latestEntry?.total_assets || 0)}
+                        </div>
+                        <div className="text-xs text-slate-500">Total Assets</div>
+                      </div>
                     </div>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-80 p-4 bg-white border border-slate-200 rounded-lg shadow-lg">
-                    <div className="space-y-3">
-                      <p className="font-bold text-sm text-slate-900">Net Worth Velocity Trend</p>
-                      <ResponsiveContainer width="100%" height={150}>
-                        <LineChart data={chartData.slice(-12)}>
-                          <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                          <XAxis
-                            dataKey="date"
-                            stroke="#94a3b8"
-                            fontSize={10}
-                            tickFormatter={(date) => {
-                              const d = new Date(date);
-                              return `${d.getMonth() + 1}/${d.getDate().toString().slice(-2)}`;
-                            }}
-                          />
-                          <YAxis
-                            stroke="#94a3b8"
-                            fontSize={10}
-                            tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
-                          />
-                          <Tooltip
-                            contentStyle={{ backgroundColor: "#fff", border: "2px solid #000", borderRadius: "8px", padding: "8px" }}
-                            labelStyle={{ fontWeight: "bold", fontSize: "12px" }}
-                            formatter={(value: any) => [formatCurrency(Number(value)), "Net Worth"]}
-                          />
-                          <Line
-                            type="monotone"
-                            dataKey="netWorth"
-                            stroke="#10b981"
-                            strokeWidth={2}
-                            dot={{ fill: "#10b981", r: 3 }}
-                          />
-                        </LineChart>
-                      </ResponsiveContainer>
-                      <p className="text-xs text-slate-600">
-                        Showing last 12 months of net worth progression. Velocity is calculated from the slope of this trend line.
-                      </p>
-                    </div>
-                  </PopoverContent>
-                </Popover>
-                <div className="p-3 rounded-lg bg-slate-50 border border-slate-200">
-                  <p className="text-xs font-medium text-slate-500 mb-1">12-Month Change</p>
-                  <p className="text-xl font-bold text-slate-900">
-                    {formatCurrency(momentumMetrics.contribution12mo.totalChange)}
-                  </p>
-                  <p className="text-xs text-slate-400 mt-0.5">total net worth change</p>
+                  </div>
                 </div>
-                <div className="p-3 rounded-lg bg-slate-50 border border-slate-200">
-                  <p className="text-xs font-medium text-slate-500 mb-1">Net Contributions</p>
-                  <p className="text-xl font-bold text-emerald-600">
-                    {formatCurrency(momentumMetrics.contribution12mo.netContributions)}
-                  </p>
-                  <p className="text-xs text-slate-400 mt-0.5">new money added this year</p>
+              ) : (
+                <div className="flex items-center justify-center h-[200px] text-slate-500">
+                  No asset data available
                 </div>
-              </div>
+              )}
             </CardContent>
           </Card>
-        )}
+
+          {/* Net Worth Momentum */}
+          {momentumMetrics && (
+            <Card className="bg-white border border-slate-200 shadow-sm">
+              <CardHeader className="pb-2">
+                <CardTitle className="flex items-center gap-2 text-base font-semibold text-slate-900">
+                  <TrendingUpIcon className="h-4 w-4 text-emerald-600" />
+                  Net Worth Momentum
+                </CardTitle>
+                <p className="text-xs text-slate-500">Savings vs. market returns over 12 months</p>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 cursor-pointer hover:bg-emerald-50 hover:border-emerald-200 transition-all text-center">
+                        <p className="text-xs font-medium text-slate-500 mb-1 flex items-center justify-center gap-2">
+                          Monthly Velocity
+                          <span className="text-slate-400">(click for trend)</span>
+                        </p>
+                        <p className="text-xl font-bold text-emerald-600">
+                          {formatVelocity(momentumMetrics.velocity)}
+                        </p>
+                        <p className="text-xs text-slate-400 mt-1">avg monthly net worth increase</p>
+                      </div>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80 p-4 bg-white border border-slate-200 rounded-lg shadow-lg">
+                      <div className="space-y-3">
+                        <p className="font-bold text-sm text-slate-900">Net Worth Velocity Trend</p>
+                        <ResponsiveContainer width="100%" height={150}>
+                          <LineChart data={chartData.slice(-12)}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                            <XAxis
+                              dataKey="date"
+                              stroke="#94a3b8"
+                              fontSize={10}
+                              tickFormatter={(date) => {
+                                const d = new Date(date);
+                                return `${d.getMonth() + 1}/${d.getDate().toString().slice(-2)}`;
+                              }}
+                            />
+                            <YAxis
+                              stroke="#94a3b8"
+                              fontSize={10}
+                              tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
+                            />
+                            <Tooltip
+                              contentStyle={{ backgroundColor: "#fff", border: "2px solid #000", borderRadius: "8px", padding: "8px" }}
+                              labelStyle={{ fontWeight: "bold", fontSize: "12px" }}
+                              formatter={(value: any) => [formatCurrency(Number(value)), "Net Worth"]}
+                            />
+                            <Line
+                              type="monotone"
+                              dataKey="netWorth"
+                              stroke="#10b981"
+                              strokeWidth={2}
+                              dot={{ fill: "#10b981", r: 3 }}
+                            />
+                          </LineChart>
+                        </ResponsiveContainer>
+                        <p className="text-xs text-slate-600">
+                          Showing last 12 months of net worth progression. Velocity is calculated from the slope of this trend line.
+                        </p>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                  <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 text-center">
+                    <p className="text-xs font-medium text-slate-500 mb-1">12-Month Change</p>
+                    <p className="text-xl font-bold text-slate-900">
+                      {formatCurrency(momentumMetrics.contribution12mo.totalChange)}
+                    </p>
+                    <p className="text-xs text-slate-400 mt-0.5">total net worth change</p>
+                  </div>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 cursor-pointer hover:bg-emerald-50 hover:border-emerald-200 transition-all text-center">
+                        <p className="text-xs font-medium text-slate-500 mb-1 flex items-center justify-center gap-2">
+                          Net Contributions
+                          <span className="text-slate-400">(click for breakdown)</span>
+                        </p>
+                        <p className="text-xl font-bold text-emerald-600">
+                          {formatCurrency(momentumMetrics.contribution12mo.netContributions)}
+                        </p>
+                        <p className="text-xs text-slate-400 mt-0.5">new money added this year</p>
+                      </div>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80 p-4 bg-white border border-slate-200 rounded-lg shadow-lg">
+                      <div className="space-y-3">
+                        <p className="font-bold text-sm text-slate-900">12-Month Contribution Breakdown</p>
+                        <div className="space-y-2">
+                          <div className="flex justify-between text-sm">
+                            <span className="text-slate-500">Total Change</span>
+                            <span className="font-semibold text-slate-900">{formatCurrency(momentumMetrics.contribution12mo.totalChange)}</span>
+                          </div>
+                          <div className="flex justify-between text-sm">
+                            <span className="text-slate-500">Est. Market Growth (7%)</span>
+                            <span className="font-semibold text-blue-600">{formatCurrency(momentumMetrics.contribution12mo.portfolioGrowth)}</span>
+                          </div>
+                          <div className="flex justify-between text-sm border-t border-slate-100 pt-2">
+                            <span className="text-slate-500">Net Contributions</span>
+                            <span className="font-semibold text-emerald-600">{formatCurrency(momentumMetrics.contribution12mo.netContributions)}</span>
+                          </div>
+                        </div>
+                        <ResponsiveContainer width="100%" height={120}>
+                          <BarChart data={[
+                            { name: "Market", value: momentumMetrics.contribution12mo.portfolioGrowth, fill: "#3b82f6" },
+                            { name: "Savings", value: momentumMetrics.contribution12mo.netContributions, fill: "#10b981" },
+                          ]} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
+                            <XAxis dataKey="name" tick={{ fontSize: 11 }} tickLine={false} axisLine={false} />
+                            <YAxis hide />
+                            <Tooltip
+                              contentStyle={{ backgroundColor: "#fff", border: "1px solid #e2e8f0", borderRadius: "8px", fontSize: "12px" }}
+                              formatter={(v: unknown) => [formatCurrency(Number(v)), ""]}
+                            />
+                            <Bar dataKey="value" radius={[4, 4, 0, 0]}>
+                              {[
+                                { name: "Market", fill: "#3b82f6" },
+                                { name: "Savings", fill: "#10b981" },
+                              ].map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={entry.fill} />
+                              ))}
+                            </Bar>
+                          </BarChart>
+                        </ResponsiveContainer>
+                        <p className="text-xs text-slate-600">
+                          Net contributions = total 12-month change minus estimated 7% market appreciation on starting balance.
+                        </p>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </div>
       </div>
 
       {/* Cash Flow - Latest month + expandable history */}

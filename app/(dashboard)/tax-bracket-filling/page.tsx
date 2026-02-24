@@ -41,7 +41,7 @@ import {
   ReferenceLine,
   ReferenceArea,
 } from "recharts";
-import { TrendingUp, Download, Settings, AlertTriangle, Lightbulb, Target, Edit, Lock, Sparkles } from "lucide-react";
+import { TrendingUp, Download, Settings, AlertTriangle, Lightbulb, Target, Edit, Lock, Sparkles, DollarSign } from "lucide-react";
 import type { EntitlementTier } from "@/lib/types";
 
 // ========== TypeScript Interfaces ==========
@@ -1554,72 +1554,112 @@ export default function TaxBracketFillingPage() {
 
       {/* Educational Panels */}
       {isPro && (
-      <div className="grid md:grid-cols-2 gap-4">
-        <div className="bg-white border border-slate-200 rounded-xl p-5">
-          <h3 className="font-medium text-slate-900 mb-3">Why Gradual Bracket Filling Reduces Lifetime Taxes</h3>
-          <p className="text-sm text-slate-500 leading-relaxed">
-            Progressive taxation means your effective rate increases as income rises. By intentionally filling lower brackets each year instead
-            of taking large distributions later, you minimize the amount of income taxed at higher marginal rates. A $50k conversion at 12%
-            is far better than a $50k RMD at 24%. Over 20-30 years, this compounds to six-figure tax savings.
-          </p>
-        </div>
+      <div className="grid md:grid-cols-2 gap-6">
+        <Card className="border border-slate-200">
+          <CardHeader>
+            <CardTitle className="text-xl font-black flex items-center gap-2">
+              <TrendingUp className="h-6 w-6 text-emerald-600" />
+              Why Gradual Bracket Filling Reduces Lifetime Taxes
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-base font-medium text-slate-700 leading-relaxed space-y-3">
+            <p>
+              Progressive taxation means your effective rate increases as income rises. By intentionally filling lower brackets each year instead
+              of taking large distributions later, you minimize the amount of income taxed at higher marginal rates. A $50k conversion at 12%
+              is far better than a $50k RMD at 24%. Over 20-30 years, this compounds to six-figure tax savings.
+            </p>
+          </CardContent>
+        </Card>
 
-        <div className="bg-white border border-slate-200 rounded-xl p-5">
-          <h3 className="font-medium text-slate-900 mb-3">How Variable Income Impacts Bracket Strategy</h3>
-          <p className="text-sm text-slate-500 leading-relaxed">
-            Consultants and freelancers with fluctuating income should maximize bracket filling in low-earning years. A year with $80k income
-            leaves room to fill the 12% or 22% bracket with conversions. A $200k year does not. By front-loading conversions during lean years,
-            you use bracket space that would otherwise go to waste while avoiding high-rate conversions during peak income years.
-          </p>
-        </div>
+        <Card className="border border-slate-200">
+          <CardHeader>
+            <CardTitle className="text-xl font-black flex items-center gap-2">
+              <DollarSign className="h-6 w-6 text-blue-600" />
+              How Variable Income Impacts Bracket Strategy
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-base font-medium text-slate-700 leading-relaxed space-y-3">
+            <p>
+              Consultants and freelancers with fluctuating income should maximize bracket filling in low-earning years. A year with $80k income
+              leaves room to fill the 12% or 22% bracket with conversions. A $200k year does not. By front-loading conversions during lean years,
+              you use bracket space that would otherwise go to waste while avoiding high-rate conversions during peak income years.
+            </p>
+          </CardContent>
+        </Card>
 
-        <div className="bg-white border border-slate-200 rounded-xl p-5">
-          <h3 className="font-medium text-slate-900 mb-3">Why Early Retirement Gap Years Are So Valuable</h3>
-          <p className="text-sm text-slate-500 leading-relaxed">
-            The 5-15 years between early retirement (age 50-60) and Social Security/RMDs (age 67-72) represent your peak optimization window.
-            With no earned income, no required distributions, and potentially no Social Security, your taxable income is just what you choose
-            to withdraw. This creates artificially low income years where you can fill the 12% and 22% brackets almost entirely with Roth
-            conversions or capital gains harvesting. This window closes permanently once floor income begins.
-          </p>
-          <Link href="/early-retirement" className="inline-flex items-center gap-1 text-xs text-emerald-600 hover:text-emerald-700 font-medium mt-3">
-            Explore Early Retirement planning →
-          </Link>
-        </div>
+        <Card className="border border-slate-200">
+          <CardHeader>
+            <CardTitle className="text-xl font-black flex items-center gap-2">
+              <Target className="h-6 w-6 text-emerald-600" />
+              Why Early Retirement Gap Years Are So Valuable
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-base font-medium text-slate-700 leading-relaxed space-y-3">
+            <p>
+              The 5-15 years between early retirement (age 50-60) and Social Security/RMDs (age 67-72) represent your peak optimization window.
+              With no earned income, no required distributions, and potentially no Social Security, your taxable income is just what you choose
+              to withdraw. This creates artificially low income years where you can fill the 12% and 22% brackets almost entirely with Roth
+              conversions or capital gains harvesting. This window closes permanently once floor income begins.
+            </p>
+            <Link href="/early-retirement" className="inline-flex items-center gap-1 text-sm text-emerald-700 hover:text-emerald-800 font-semibold">
+              Explore Early Retirement planning →
+            </Link>
+          </CardContent>
+        </Card>
 
-        <div className="bg-white border border-slate-200 rounded-xl p-5">
-          <h3 className="font-medium text-slate-900 mb-3">How FEIE Transitions Change Tax Stacking</h3>
-          <p className="text-sm text-slate-500 leading-relaxed">
-            If you've been using the Foreign Earned Income Exclusion and plan to return to the US tax system, your first 2-3 years back create
-            unique opportunities. You may have minimal US income initially while re-establishing, combined with large Traditional IRA balances
-            that were never optimized. Aggressive Roth conversions during these transition years can dramatically reduce future RMD exposure
-            before normal income resumes.
-          </p>
-          <Link href="/feie-eligibility" className="inline-flex items-center gap-1 text-xs text-emerald-600 hover:text-emerald-700 font-medium mt-3">
-            Check FEIE eligibility →
-          </Link>
-        </div>
+        <Card className="border border-slate-200">
+          <CardHeader>
+            <CardTitle className="text-xl font-black flex items-center gap-2">
+              <Lightbulb className="h-6 w-6 text-purple-600" />
+              How FEIE Transitions Change Tax Stacking
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-base font-medium text-slate-700 leading-relaxed space-y-3">
+            <p>
+              If you've been using the Foreign Earned Income Exclusion and plan to return to the US tax system, your first 2-3 years back create
+              unique opportunities. You may have minimal US income initially while re-establishing, combined with large Traditional IRA balances
+              that were never optimized. Aggressive Roth conversions during these transition years can dramatically reduce future RMD exposure
+              before normal income resumes.
+            </p>
+            <Link href="/feie-eligibility" className="inline-flex items-center gap-1 text-sm text-purple-700 hover:text-purple-800 font-semibold">
+              Check FEIE eligibility →
+            </Link>
+          </CardContent>
+        </Card>
 
-        <div className="bg-white border border-slate-200 rounded-xl p-5">
-          <h3 className="font-medium text-slate-900 mb-3">Pre-Medicare Income Planning Considerations</h3>
-          <p className="text-sm text-slate-500 leading-relaxed">
-            Before age 65, you must balance bracket filling with ACA marketplace subsidy preservation. Exceeding MAGI thresholds ($60k single,
-            $80k married) eliminates subsidies worth $5k-$15k annually. Additionally, high income at ages 63-64 triggers IRMAA surcharges
-            at 65-66 due to the 2-year lookback. Strategic bracket filling pre-65 means staying just below subsidy cliffs while maximizing
-            optimization, then ramping up conversions after Medicare enrollment.
-          </p>
-        </div>
+        <Card className="border border-slate-200">
+          <CardHeader>
+            <CardTitle className="text-xl font-black flex items-center gap-2">
+              <AlertTriangle className="h-6 w-6 text-amber-600" />
+              Pre-Medicare Income Planning Considerations
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-base font-medium text-slate-700 leading-relaxed space-y-3">
+            <p>
+              Before age 65, you must balance bracket filling with ACA marketplace subsidy preservation. Exceeding MAGI thresholds ($60k single,
+              $80k married) eliminates subsidies worth $5k-$15k annually. Additionally, high income at ages 63-64 triggers IRMAA surcharges
+              at 65-66 due to the 2-year lookback. Strategic bracket filling pre-65 means staying just below subsidy cliffs while maximizing
+              optimization, then ramping up conversions after Medicare enrollment.
+            </p>
+          </CardContent>
+        </Card>
 
-        <div className="bg-white border border-slate-200 rounded-xl p-5">
-          <h3 className="font-medium text-slate-900 mb-3">Common Bracket Filling Mistakes to Avoid</h3>
-          <div className="space-y-1.5 text-sm text-slate-500 leading-relaxed">
-            <p>• <strong className="text-slate-700">Converting too much in one year:</strong> Jumping tax brackets negates the benefit</p>
-            <p>• <strong className="text-slate-700">Ignoring healthcare subsidies:</strong> A $1 income increase can cost thousands in lost subsidies</p>
-            <p>• <strong className="text-slate-700">Triggering IRMAA before Medicare:</strong> High income at 63 means surcharges at 65</p>
-            <p>• <strong className="text-slate-700">Not planning for RMDs:</strong> Waiting until 72 means forced high-tax distributions</p>
-            <p>• <strong className="text-slate-700">Forgetting capital gains stacking:</strong> Gains stack on top of ordinary income, affecting rates</p>
-            <p>• <strong className="text-slate-700">Over-depleting taxable accounts:</strong> You still need money to live on</p>
-          </div>
-        </div>
+        <Card className="border border-slate-200">
+          <CardHeader>
+            <CardTitle className="text-xl font-black flex items-center gap-2">
+              <AlertTriangle className="h-6 w-6 text-red-600" />
+              Common Bracket Filling Mistakes to Avoid
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="text-base font-medium text-slate-700 leading-relaxed space-y-3">
+            <p><strong>Converting too much in one year:</strong> Jumping tax brackets negates the benefit.</p>
+            <p><strong>Ignoring healthcare subsidies:</strong> A $1 income increase can cost thousands in lost subsidies.</p>
+            <p><strong>Triggering IRMAA before Medicare:</strong> High income at 63 means surcharges at 65.</p>
+            <p><strong>Not planning for RMDs:</strong> Waiting until 72 means forced high-tax distributions.</p>
+            <p><strong>Forgetting capital gains stacking:</strong> Gains stack on top of ordinary income, affecting rates.</p>
+            <p><strong>Over-depleting taxable accounts:</strong> You still need money to live on.</p>
+          </CardContent>
+        </Card>
       </div>
       )}
 

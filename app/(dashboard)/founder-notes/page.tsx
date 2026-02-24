@@ -13,6 +13,34 @@ interface ChangelogEntry {
 
 const changelogData: ChangelogEntry[] = [
   {
+    date: "2026-02-23",
+    title: "Documentation Section Launch",
+    type: "feature",
+    content: "Built a comprehensive documentation overview covering every tool in the app. Wanted a single place where you can understand what each tool does, how to use it, and what to watch for—before you even open it.",
+    details: [
+      "Your Details: Net Worth tracking and Credit Cards",
+      "Analysis: Trajectory, Retirement Calculator, Early Retirement (FIRE), Withdrawal Stress Test, Roth Conversion, Geo Arbitrage",
+      "Tax Optimization: Portfolio Optimizer, Tax Calculator, Tax Bracket Filling, Lifetime Tax Map, Tax Optimization, Quarterly Estimated Taxes, Freelance Rate Calculator, QBI Deduction, HSA Calculator",
+      "Each tool includes a plain-English description and a Pro tip",
+      "Available at /learn"
+    ]
+  },
+  {
+    date: "2026-02-20",
+    title: "Quarterly Estimated Tax Optimizer Launch",
+    type: "feature",
+    content: "Built a full quarterly estimated tax calculator for self-employed professionals—one of the most consistently confusing parts of running your own business. The goal was to make it impossible to miss a payment or get hit with an underpayment penalty.",
+    details: [
+      "Safe Harbor Calculation: automatically computes the lower of prior year (100%/110% based on AGI) and current year (90%) methods—picks the one that keeps you penalty-free",
+      "Payment Tracking: Q1–Q4 cards with due dates, progress bars, and the ability to log actual payments made",
+      "2025 Payment Timeline: color-coded visual (Apr 15, Jun 15, Sep 15, Jan 15) with paid/upcoming/overdue status",
+      "Annualized Income Installment Method (Pro): for freelancers with variable/seasonal income—calculates quarter-by-quarter obligations based on actual income earned",
+      "Underpayment Penalty Calculator (Pro): shows estimated IRS penalties if payments fall short",
+      "Green color theme throughout to feel distinct from the rest of the tax tools",
+      "Educational panels on safe harbor rules, annualized method, and common mistakes (Pro)"
+    ]
+  },
+  {
     date: "2026-02-06",
     title: "Roth Conversion Strategy Engine Launch",
     type: "feature",
@@ -136,13 +164,22 @@ export default function FounderNotesPage() {
       </div>
 
       {/* Introduction */}
-      <div className="space-y-3">
-        <p className="text-sm text-slate-600 leading-relaxed">
-          I'm Justin. I built SoloFI because I was tired of paying $200/month for basic retirement calculators when I left consulting to go solo. Most tools are designed for W-2 employees with steady paychecks and not for DIY self-employed people like us dealing with variable income, multiple revenue streams, and actually wanting to understand the math.
-        </p>
-        <p className="text-sm text-slate-600 leading-relaxed">
-          Shipping fast, breaking things occasionally, fixing them quickly. Everything I build gets posted here. Message me on the feedback widget if something breaks or if you have a feature request.
-        </p>
+      <div className="flex flex-col sm:flex-row items-start gap-6">
+        <div className="flex-shrink-0">
+          <img
+            src="/creative/sevillapic_hs.jpg"
+            alt="Justin Leu, Founder of SoloFI"
+            className="w-28 h-28 sm:w-32 sm:h-32 rounded-xl object-cover shadow-sm"
+          />
+        </div>
+        <div className="space-y-3">
+          <p className="text-sm text-slate-600 leading-relaxed">
+            I'm Justin. I built SoloFI because I was tired of paying $200/month for basic retirement calculators when I left consulting to go solo. Most tools are designed for W-2 employees with steady paychecks and not for DIY self-employed people like us dealing with variable income, multiple revenue streams, and actually wanting to understand the math.
+          </p>
+          <p className="text-sm text-slate-600 leading-relaxed">
+            Shipping fast, breaking things occasionally, fixing them quickly. Everything I build gets posted here. Message me on the feedback widget if something breaks or if you have a feature request.
+          </p>
+        </div>
       </div>
 
       {/* Changelog Entries */}

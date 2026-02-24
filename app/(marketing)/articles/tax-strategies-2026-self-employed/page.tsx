@@ -59,7 +59,7 @@ export default function TaxStrategiesArticle() {
       />
       {/* Back Button */}
       <div className="mb-6">
-        <Link href="/blog">
+        <Link href="https://solofi.io/blog">
           <Button variant="ghost" size="sm" className="gap-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100">
             <ArrowLeft className="h-4 w-4" />
             Back to Blog
@@ -331,17 +331,17 @@ export default function TaxStrategiesArticle() {
             <div>
               <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Related articles</p>
               <ul className="space-y-2 text-sm">
-              <li key="30-percent-rule-self-employment-taxes"><Link href="/articles/30-percent-rule-self-employment-taxes" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">The 30% Rule for Self-Employment Taxes</Link></li>
-              <li key="overlooked-tax-deductions-consultants"><Link href="/articles/overlooked-tax-deductions-consultants" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Top 10 Overlooked Tax Deductions for Consultants</Link></li>
-              <li key="sole-proprietor-vs-llc"><Link href="/articles/sole-proprietor-vs-llc" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Sole Proprietor vs. LLC: Which Structure Saves You More?</Link></li>
+              <li key="30-percent-rule-self-employment-taxes"><Link href="https://solofi.io/articles/30-percent-rule-self-employment-taxes" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">The 30% Rule for Self-Employment Taxes</Link></li>
+              <li key="overlooked-tax-deductions-consultants"><Link href="https://solofi.io/articles/overlooked-tax-deductions-consultants" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Top 10 Overlooked Tax Deductions for Consultants</Link></li>
+              <li key="sole-proprietor-vs-llc"><Link href="https://solofi.io/articles/sole-proprietor-vs-llc" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Sole Proprietor vs. LLC: Which Structure Saves You More?</Link></li>
               </ul>
             </div>
             <div>
               <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Free tools</p>
               <ul className="space-y-2 text-sm">
-              <li key="scorp-calculator"><Link href="/tools/scorp-calculator" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">S-Corp Calculator</Link></li>
-              <li key="tax-savings"><Link href="/tools/tax-savings" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Tax Savings Calculator</Link></li>
-              <li key="quarterly-tax"><Link href="/tools/quarterly-tax" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Quarterly Tax Estimator</Link></li>
+              <li key="scorp-calculator"><Link href="https://solofi.io/tools" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">S-Corp Calculator</Link></li>
+              <li key="tax-savings"><Link href="https://solofi.io/tools" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Tax Savings Calculator</Link></li>
+              <li key="quarterly-tax"><Link href="https://solofi.io/tools" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Quarterly Tax Estimator</Link></li>
               </ul>
             </div>
           </div>
@@ -351,7 +351,7 @@ export default function TaxStrategiesArticle() {
         <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-purple-500/20 to-pink-500/20 p-8 text-center">
           <h3 className="text-xl font-bold mb-3">Ready to optimize your taxes?</h3>
           <p className="text-slate-500 mb-6">Explore our free tools and calculators to help you save on taxes.</p>
-          <Link href="/tools">
+          <Link href="https://solofi.io/tools">
             <Button className="bg-emerald-600 hover:bg-emerald-700 text-slate-900">
               <Calculator className="mr-2 h-4 w-4" />
               Explore Free Tools

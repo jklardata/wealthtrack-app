@@ -36,17 +36,49 @@ export async function POST(request: NextRequest) {
       case 'checkout.session.completed': {
         const session = event.data.object as Stripe.Checkout.Session;
 
-        if (session.mode !== 'subscription' || !session.subscription || !session.customer) {
-          break;
-        }
-
-        const subscriptionId = typeof session.subscription === 'string'
-          ? session.subscription
-          : session.subscription.id;
+        if (!session.customer) break;
 
         const customerId = typeof session.customer === 'string'
           ? session.customer
           : session.customer.id;
+
+        // Handle one-time lifetime payment
+        if (session.mode === 'payment') {
+          const lineItems = await stripe.checkout.sessions.listLineItems(session.id, { limit: 1 });
+          const priceId = lineItems.data[0]?.price?.id ?? '';
+          let tier = getTierFromPriceId(priceId);
+
+          if (tier === 'free' && lineItems.data[0]?.price?.product) {
+            const product = await stripe.products.retrieve(lineItems.data[0].price.product as string);
+            tier = getTierFromMetadata(product.metadata);
+          }
+
+          console.log('Webhook: Processing lifetime checkout.session.completed', { priceId, tier, customerId });
+
+          const { error } = await supabase
+            .from('subscriptions')
+            .update({
+              entitlement_tier: tier,
+              status: 'active',
+              current_period_end: null,
+            })
+            .eq('stripe_customer_id', customerId);
+
+          if (error) {
+            console.error('Error updating lifetime subscription:', error);
+            return NextResponse.json({ error: 'Database update failed' }, { status: 500 });
+          }
+
+          console.log(`Lifetime access granted for customer: ${customerId}, tier: ${tier}`);
+          break;
+        }
+
+        // Handle recurring subscription
+        if (session.mode !== 'subscription' || !session.subscription) break;
+
+        const subscriptionId = typeof session.subscription === 'string'
+          ? session.subscription
+          : session.subscription.id;
 
         // Fetch the subscription to get the price/product details
         const subscription = await stripe.subscriptions.retrieve(subscriptionId);
@@ -71,7 +103,6 @@ export async function POST(request: NextRequest) {
         });
 
         // Update subscription in database
-        // Get current_period_end from the first subscription item
         const periodEndTimestamp = subscription.items.data[0]?.current_period_end;
         const periodEnd = periodEndTimestamp
           ? new Date(periodEndTimestamp * 1000).toISOString()

@@ -59,7 +59,7 @@ export default function WorkingRemotelyArticle() {
       />
       {/* Back Button */}
       <div className="mb-6">
-        <Link href="/blog">
+        <Link href="https://solofi.io/blog">
           <Button variant="ghost" size="sm" className="gap-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100">
             <ArrowLeft className="h-4 w-4" />
             Back to Blog
@@ -282,15 +282,15 @@ export default function WorkingRemotelyArticle() {
             <div>
               <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Related articles</p>
               <ul className="space-y-2 text-sm">
-              <li key="how-feie-works"><Link href="/articles/how-feie-works" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">How the Foreign Earned Income Exclusion (FEIE) Works</Link></li>
-              <li key="best-bank-accounts-for-consultants"><Link href="/articles/best-bank-accounts-for-consultants" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Best Bank Accounts for Independent Consultants</Link></li>
+              <li key="how-feie-works"><Link href="https://solofi.io/articles/how-feie-works" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">How the Foreign Earned Income Exclusion (FEIE) Works</Link></li>
+              <li key="best-bank-accounts-for-consultants"><Link href="https://solofi.io/articles/best-bank-accounts-for-consultants" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Best Bank Accounts for Independent Consultants</Link></li>
               </ul>
             </div>
             <div>
               <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Free tools</p>
               <ul className="space-y-2 text-sm">
-              <li key="fi-calculator"><Link href="/tools/fi-calculator" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">FI Calculator</Link></li>
-              <li key="quarterly-tax"><Link href="/tools/quarterly-tax" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Quarterly Tax Estimator</Link></li>
+              <li key="fi-calculator"><Link href="https://solofi.io/tools" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">FI Calculator</Link></li>
+              <li key="quarterly-tax"><Link href="https://solofi.io/tools" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Quarterly Tax Estimator</Link></li>
               </ul>
             </div>
           </div>

@@ -59,7 +59,7 @@ export default function ThirtyPercentRuleArticle() {
       />
       {/* Back Button */}
       <div className="mb-6">
-        <Link href="/blog">
+        <Link href="https://solofi.io/blog">
           <Button variant="ghost" size="sm" className="gap-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100">
             <ArrowLeft className="h-4 w-4" />
             Back to Blog
@@ -488,15 +488,15 @@ export default function ThirtyPercentRuleArticle() {
             <div>
               <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Related articles</p>
               <ul className="space-y-2 text-sm">
-              <li key="tax-strategies-2026-self-employed"><Link href="/articles/tax-strategies-2026-self-employed" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Tax Strategies in 2026 for Self-Employed Workers</Link></li>
-              <li key="overlooked-tax-deductions-consultants"><Link href="/articles/overlooked-tax-deductions-consultants" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Top 10 Overlooked Tax Deductions for Consultants</Link></li>
+              <li key="tax-strategies-2026-self-employed"><Link href="https://solofi.io/articles/tax-strategies-2026-self-employed" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Tax Strategies in 2026 for Self-Employed Workers</Link></li>
+              <li key="overlooked-tax-deductions-consultants"><Link href="https://solofi.io/articles/overlooked-tax-deductions-consultants" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Top 10 Overlooked Tax Deductions for Consultants</Link></li>
               </ul>
             </div>
             <div>
               <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Free tools</p>
               <ul className="space-y-2 text-sm">
-              <li key="quarterly-tax"><Link href="/tools/quarterly-tax" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Quarterly Tax Estimator</Link></li>
-              <li key="tax-savings"><Link href="/tools/tax-savings" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Tax Savings Calculator</Link></li>
+              <li key="quarterly-tax"><Link href="https://solofi.io/tools" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Quarterly Tax Estimator</Link></li>
+              <li key="tax-savings"><Link href="https://solofi.io/tools" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Tax Savings Calculator</Link></li>
               </ul>
             </div>
           </div>
@@ -506,7 +506,7 @@ export default function ThirtyPercentRuleArticle() {
         <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-emerald-500/20 to-teal-500/20 p-8 text-center">
           <h3 className="text-xl font-bold mb-3">Calculate Your Exact Tax Rate</h3>
           <p className="text-slate-600 mb-6">Explore our free tools to help you plan and manage your taxes effectively.</p>
-          <Link href="/tools">
+          <Link href="https://solofi.io/tools">
             <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
               <Calculator className="mr-2 h-4 w-4" />
               Explore Free Tools

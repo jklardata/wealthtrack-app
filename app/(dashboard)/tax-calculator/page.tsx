@@ -710,26 +710,6 @@ export default function TaxCalculatorPage() {
         </p>
       </div>
 
-      {/* Key Insight Card */}
-      {sCorpSavings > 1000 && (
-        <Card className="border-primary/30 bg-emerald-600/5">
-          <CardContent className="pt-6">
-            <div className="flex items-start gap-3">
-              <CheckCircle className="h-6 w-6 text-emerald-600 mt-0.5" />
-              <div>
-                <p className="text-lg font-semibold text-emerald-600">
-                  S-Corp could save you {formatCurrency(sCorpSavings)}/year
-                </p>
-                <p className="text-sm text-slate-500 mt-1">
-                  By paying yourself a {formatCurrency(calculations[1].salary)} salary and taking {formatCurrency(calculations[1].distributions)} as distributions,
-                  you avoid {formatCurrency(calculations[0].seTax - calculations[1].ficaEmployee - calculations[1].ficaEmployer)} in self-employment taxes.
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
       {/* Input Section */}
       <div className="grid gap-4 md:gap-6 lg:grid-cols-2">
         {/* Left column: Income & Business + S-Corp */}
@@ -1423,21 +1403,21 @@ export default function TaxCalculatorPage() {
                     </span>
                   </TableCell>
                 </TableRow>
-                <TableRow>
-                  <TableCell className="font-medium">
+                <TableRow className="bg-emerald-50 border-y-2 border-emerald-200">
+                  <TableCell className="font-bold text-emerald-900">
                     <div>
                       Total Tax Savings
-                      <p className="text-xs text-slate-500">From 401k, HSA, expenses, QBI, TLH, FEIE</p>
+                      <p className="text-xs font-normal text-emerald-700">From 401k, HSA, expenses, QBI, TLH, FEIE</p>
                     </div>
                   </TableCell>
                   <TableCell>
-                    <span className="text-green-600 font-medium">{formatCurrency(calculations[0].totalTaxSavings)}</span>
+                    <span className="text-emerald-700 font-bold text-base">{formatCurrency(calculations[0].totalTaxSavings)}</span>
                   </TableCell>
                   <TableCell>
-                    <span className="font-medium">{formatCurrency(calculations[2].totalTaxSavings)}</span>
+                    <span className="font-bold">{formatCurrency(calculations[2].totalTaxSavings)}</span>
                   </TableCell>
                   <TableCell className="text-right">
-                    <span className={tradeoffsData.totalTaxSavingsDiff > 0 ? "text-green-600" : "text-red-500"}>
+                    <span className={`font-bold ${tradeoffsData.totalTaxSavingsDiff > 0 ? "text-emerald-700" : "text-red-500"}`}>
                       {tradeoffsData.totalTaxSavingsDiff > 0 ? "+" : ""}{formatCurrency(tradeoffsData.totalTaxSavingsDiff)}
                     </span>
                   </TableCell>
@@ -1480,10 +1460,11 @@ export default function TaxCalculatorPage() {
           </div>
 
           {/* Summary insight */}
-          <div className="mt-4 p-4 rounded-lg bg-muted/50">
+          <div className="mt-4">
             <div className="flex items-start gap-3">
               {tradeoffsData.totalWealthDiff > 0 ? (
-                <>
+                <div className="w-full p-4 rounded-lg bg-emerald-50 border border-emerald-200">
+                  <div className="flex items-start gap-3">
                   <CheckCircle className="h-5 w-5 text-green-600 mt-0.5" />
                   <div>
                     <p className="font-medium text-green-600">Self-employment wins by {formatCurrency(tradeoffsData.totalWealthDiff)} in total wealth</p>
@@ -1497,19 +1478,22 @@ export default function TaxCalculatorPage() {
                       )}
                     </p>
                   </div>
-                </>
+                  </div>
+                </div>
               ) : (
-                <>
-                  <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5" />
+                <div className="w-full p-4 rounded-lg bg-emerald-800 border border-emerald-900">
+                  <div className="flex items-start gap-3">
+                  <AlertTriangle className="h-5 w-5 text-white mt-0.5 flex-shrink-0" />
                   <div>
-                    <p className="font-medium text-amber-500">W-2 wins by {formatCurrency(Math.abs(tradeoffsData.totalWealthDiff))} in total wealth</p>
-                    <p className="text-sm text-slate-500 mt-1">
+                    <p className="font-semibold text-white">W-2 wins by {formatCurrency(Math.abs(tradeoffsData.totalWealthDiff))} in total wealth</p>
+                    <p className="text-sm text-emerald-100 mt-1">
                       At your income level, the SE tax burden ({formatCurrency(calculations[0].seTax)}) outweighs the
                       self-employment benefits. Consider S-Corp election to save {formatCurrency(sCorpSavings)} by
                       avoiding SE tax on distributions.
                     </p>
                   </div>
-                </>
+                  </div>
+                </div>
               )}
             </div>
           </div>
@@ -1518,82 +1502,87 @@ export default function TaxCalculatorPage() {
           {(calculations[0].taxSavingsFrom401k > 0 || calculations[0].taxSavingsFromHSA > 0 ||
             calculations[0].taxSavingsFromExpenses > 0 || calculations[0].taxSavingsFromTLH > 0 ||
             calculations[0].feieExclusion > 0 || calculations[0].qbiDeduction > 0) && (
-            <div className="mt-4 p-4 rounded-lg bg-emerald-50 border border-emerald-200">
-              <div className="flex items-center gap-2 mb-3">
-                <CheckCircle className="h-5 w-5 text-emerald-600" />
-                <h4 className="font-semibold text-emerald-900">Your Tax-Saving Actions</h4>
+            <div className="mt-4 p-5 rounded-xl bg-emerald-900 border border-emerald-800">
+              <div className="flex items-center justify-between gap-2 mb-3">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-5 w-5 text-emerald-300" />
+                  <h4 className="font-bold text-white">Your Tax-Saving Actions</h4>
+                </div>
+                <span className="text-2xl font-black text-emerald-300">
+                  {formatCurrency(calculations[0].totalTaxSavings)} saved
+                </span>
               </div>
-              <p className="text-sm text-emerald-800 mb-3">
+              <p className="text-sm text-emerald-200 mb-3">
                 Here's how each strategy you're using lowers your tax bill:
               </p>
               <div className="space-y-2">
                 {calculations[0].taxSavingsFrom401k > 0 && (
-                  <div className="flex items-center justify-between p-2 bg-white/60 rounded">
-                    <span className="text-sm text-slate-700">
+                  <div className="flex items-center justify-between p-2 bg-white/10 rounded">
+                    <span className="text-sm text-emerald-100">
                       💰 Contributing {formatCurrency(calculations[0].retirement401k)} to Solo 401k/SEP IRA
                     </span>
-                    <span className="text-sm font-semibold text-emerald-600">
+                    <span className="text-sm font-bold text-emerald-300">
                       Saves ~{formatCurrency(calculations[0].taxSavingsFrom401k)}
                     </span>
                   </div>
                 )}
                 {calculations[0].taxSavingsFromHSA > 0 && (
-                  <div className="flex items-center justify-between p-2 bg-white/60 rounded">
-                    <span className="text-sm text-slate-700">
+                  <div className="flex items-center justify-between p-2 bg-white/10 rounded">
+                    <span className="text-sm text-emerald-100">
                       🏥 Contributing {formatCurrency(calculations[0].hsaContribution)} to HSA
                     </span>
-                    <span className="text-sm font-semibold text-emerald-600">
+                    <span className="text-sm font-bold text-emerald-300">
                       Saves ~{formatCurrency(calculations[0].taxSavingsFromHSA)}
                     </span>
                   </div>
                 )}
                 {calculations[0].taxSavingsFromExpenses > 0 && (
-                  <div className="flex items-center justify-between p-2 bg-white/60 rounded">
-                    <span className="text-sm text-slate-700">
+                  <div className="flex items-center justify-between p-2 bg-white/10 rounded">
+                    <span className="text-sm text-emerald-100">
                       📊 Deducting {formatCurrency(expenses)} in business expenses
                     </span>
-                    <span className="text-sm font-semibold text-emerald-600">
+                    <span className="text-sm font-bold text-emerald-300">
                       Saves ~{formatCurrency(calculations[0].taxSavingsFromExpenses)}
                     </span>
                   </div>
                 )}
                 {calculations[0].qbiDeduction > 0 && (
-                  <div className="flex items-center justify-between p-2 bg-white/60 rounded">
-                    <span className="text-sm text-slate-700">
+                  <div className="flex items-center justify-between p-2 bg-white/10 rounded">
+                    <span className="text-sm text-emerald-100">
                       🏢 Claiming {formatCurrency(calculations[0].qbiDeduction)} QBI deduction
                     </span>
-                    <span className="text-sm font-semibold text-emerald-600">
+                    <span className="text-sm font-bold text-emerald-300">
                       Saves ~{formatCurrency(calculations[0].qbiDeduction * 0.32)}
                     </span>
                   </div>
                 )}
                 {calculations[0].taxSavingsFromTLH > 0 && (
-                  <div className="flex items-center justify-between p-2 bg-white/60 rounded">
-                    <span className="text-sm text-slate-700">
+                  <div className="flex items-center justify-between p-2 bg-white/10 rounded">
+                    <span className="text-sm text-emerald-100">
                       📉 Tax loss harvesting {formatCurrency(calculations[0].taxLossHarvesting)}
                     </span>
-                    <span className="text-sm font-semibold text-emerald-600">
+                    <span className="text-sm font-bold text-emerald-300">
                       Saves ~{formatCurrency(calculations[0].taxSavingsFromTLH)}
                     </span>
                   </div>
                 )}
                 {calculations[0].feieExclusion > 0 && (
-                  <div className="flex items-center justify-between p-2 bg-white/60 rounded">
-                    <span className="text-sm text-slate-700">
+                  <div className="flex items-center justify-between p-2 bg-white/10 rounded">
+                    <span className="text-sm text-emerald-100">
                       ✈️ Claiming FEIE ({formatCurrency(calculations[0].feieExclusion)} excluded)
                     </span>
-                    <span className="text-sm font-semibold text-emerald-600">
+                    <span className="text-sm font-bold text-emerald-300">
                       Saves ~{formatCurrency(calculations[0].feieExclusion * 0.18)}
                     </span>
                   </div>
                 )}
-                <div className="flex items-center justify-between p-3 bg-emerald-600 text-white rounded font-semibold mt-2">
+                <div className="flex items-center justify-between p-3 bg-emerald-500 text-white rounded font-bold mt-2">
                   <span className="text-sm">Combined Annual Tax Savings</span>
-                  <span className="text-base">{formatCurrency(calculations[0].totalTaxSavings)}</span>
+                  <span className="text-lg font-black">{formatCurrency(calculations[0].totalTaxSavings)}</span>
                 </div>
               </div>
               {quarterlyTax > 0 && (
-                <p className="text-xs text-emerald-800 mt-3 pt-3 border-t border-emerald-200">
+                <p className="text-xs text-emerald-300 mt-3 pt-3 border-t border-emerald-700">
                   💡 Your quarterly estimated tax payment is {formatCurrency(quarterlyTax)} (federal + SE tax).
                   These savings reduce what you owe compared to not taking these actions.
                 </p>
@@ -1609,43 +1598,46 @@ export default function TaxCalculatorPage() {
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">Total Wealth Build Comparison</CardTitle>
-            <p className="text-sm text-slate-500">Take-home + 401k + HSA contributions</p>
+            <p className="text-sm text-slate-500">Take-home + retirement + HSA — what you actually keep</p>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={comparisonData} layout="vertical" margin={{ right: 80 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                <XAxis
-                  type="number"
-                  tickFormatter={(v) => `$${(v/1000).toFixed(0)}k`}
-                  stroke="#64748b"
-                />
-                <YAxis
-                  type="category"
-                  dataKey="name"
-                  width={100}
-                  stroke="#64748b"
-                />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "#ffffff",
-                    border: "1px solid #e2e8f0",
-                    borderRadius: "8px",
-                  }}
-                  formatter={(value) => formatCurrency(value as number)}
-                />
-                <Bar dataKey="Total Wealth" radius={[0, 4, 4, 0]} label={{
-                  position: 'right',
-                  formatter: (value) => typeof value === 'number' ? formatCurrency(value) : String(value),
-                  fill: '#64748b',
-                  fontSize: 12
-                }}>
-                  {comparisonData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
+            <div className="space-y-3 mb-4">
+              {comparisonData.map((entry) => {
+                const maxWealth = Math.max(...comparisonData.map(d => d["Total Wealth"]));
+                const pct = maxWealth > 0 ? (entry["Total Wealth"] / maxWealth) * 100 : 0;
+                return (
+                  <div key={entry.name}>
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="text-sm font-medium text-slate-700">{entry.name}</span>
+                      <span className="text-sm font-bold" style={{ color: entry.color }}>
+                        {formatCurrency(entry["Total Wealth"])}
+                      </span>
+                    </div>
+                    <div className="w-full bg-slate-100 rounded-full h-8 relative overflow-hidden">
+                      <div
+                        className="h-full rounded-full transition-all duration-500 flex items-center pl-3"
+                        style={{ width: `${pct}%`, backgroundColor: entry.color }}
+                      >
+                        <span className="text-xs font-medium text-white whitespace-nowrap">
+                          {pct.toFixed(0)}%
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex justify-between text-xs text-slate-400 mt-0.5">
+                      <span>Take-home: {formatCurrency(entry["Take-Home"])}</span>
+                      <span>Retirement + HSA: {formatCurrency(entry["Retirement + HSA"])}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="p-4 bg-emerald-700 rounded-xl">
+              <p className="text-xs text-emerald-200 uppercase font-bold tracking-wider mb-1">Best Strategy</p>
+              <p className="text-lg font-black text-white">{bestStrategy.structure}</p>
+              <p className="text-sm text-emerald-200 mt-0.5">
+                Builds <span className="font-bold text-white">{formatCurrency(bestStrategy.totalWealthBuild)}</span> in total annual wealth
+              </p>
+            </div>
           </CardContent>
         </Card>
 
@@ -1658,41 +1650,63 @@ export default function TaxCalculatorPage() {
             <p className="text-sm text-slate-500">Where your gross income goes</p>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={solePropTaxData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={50}
-                  outerRadius={90}
-                  paddingAngle={2}
-                  dataKey="value"
-                  label={({ name, percent }) => `${name}: ${((percent ?? 0) * 100).toFixed(0)}%`}
-                  labelLine={{ stroke: '#64748b', strokeWidth: 1 }}
+            <div className="relative">
+              <ResponsiveContainer width="100%" height={240}>
+                <PieChart>
+                  <Pie
+                    data={solePropTaxData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={70}
+                    outerRadius={110}
+                    paddingAngle={3}
+                    dataKey="value"
+                    stroke="none"
+                  >
+                    {solePropTaxData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "#ffffff",
+                      border: "1px solid #e2e8f0",
+                      borderRadius: "8px",
+                    }}
+                    formatter={(value) => formatCurrency(value as number)}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="text-center">
+                  <div className="text-xl font-bold text-slate-900">
+                    {formatPercent(calculations[0].effectiveRate)}
+                  </div>
+                  <div className="text-xs text-slate-500">eff. rate</div>
+                </div>
+              </div>
+            </div>
+            <div className="space-y-1.5 mt-2">
+              {solePropTaxData.map((item) => (
+                <div
+                  key={item.name}
+                  className="flex items-center justify-between p-2 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors"
                 >
-                  {solePropTaxData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "#ffffff",
-                    border: "1px solid #e2e8f0",
-                    borderRadius: "8px",
-                  }}
-                  formatter={(value) => formatCurrency(value as number)}
-                />
-                <Legend
-                  verticalAlign="bottom"
-                  height={36}
-                  formatter={(value, entry) => {
-                    const item = solePropTaxData.find(d => d.name === value);
-                    return `${value}: ${item ? formatCurrency(item.value) : ''}`;
-                  }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: item.color }} />
+                    <span className="text-sm font-medium text-slate-700">{item.name}</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm font-bold" style={{ color: item.color }}>
+                      {gross > 0 ? ((item.value / gross) * 100).toFixed(1) : "0.0"}%
+                    </span>
+                    <span className="text-xs text-slate-500 w-20 text-right">
+                      {formatCurrency(item.value)}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -1710,7 +1724,7 @@ export default function TaxCalculatorPage() {
               Advanced calculators and optimization strategies
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-3">
+          <CardContent className="space-y-4">
             <a href="/quarterly-estimated-taxes">
               <div className="p-4 rounded-lg border border-slate-200 hover:bg-emerald-50 transition-colors cursor-pointer">
                 <div className="flex items-center justify-between">
@@ -1734,6 +1748,36 @@ export default function TaxCalculatorPage() {
                     <div>
                       <p className="font-bold text-slate-900">Tax Optimization</p>
                       <p className="text-sm text-slate-600">Multi-year strategies to minimize lifetime taxes</p>
+                    </div>
+                  </div>
+                  <ArrowRight className="h-5 w-5 text-slate-400" />
+                </div>
+              </div>
+            </a>
+
+            <a href="/tax-bracket-filling">
+              <div className="p-4 rounded-lg border border-slate-200 hover:bg-amber-50 transition-colors cursor-pointer">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <DollarSign className="h-5 w-5 text-amber-600" />
+                    <div>
+                      <p className="font-bold text-slate-900">Tax Bracket Filling</p>
+                      <p className="text-sm text-slate-600">Fill remaining bracket room with Roth conversions or capital gains</p>
+                    </div>
+                  </div>
+                  <ArrowRight className="h-5 w-5 text-slate-400" />
+                </div>
+              </div>
+            </a>
+
+            <a href="/lifetime-tax-map">
+              <div className="p-4 rounded-lg border border-slate-200 hover:bg-violet-50 transition-colors cursor-pointer">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <FileText className="h-5 w-5 text-violet-600" />
+                    <div>
+                      <p className="font-bold text-slate-900">Lifetime Tax Map</p>
+                      <p className="text-sm text-slate-600">Visualize your marginal tax rate across your entire life</p>
                     </div>
                   </div>
                   <ArrowRight className="h-5 w-5 text-slate-400" />

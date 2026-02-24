@@ -28,6 +28,8 @@ import {
   Map,
   Calendar,
   DollarSign,
+  Percent,
+  Heart,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -61,7 +63,7 @@ const navGroups: NavGroup[] = [
     items: [
       { href: "/profile", label: "Profile", icon: User },
       { href: "/net-worth", label: "Net Worth", icon: TrendingUp },
-      { href: "/credit-cards", label: "Credit Cards", icon: CreditCard },
+      { href: "/credit-cards", label: "Credit Cards", icon: CreditCard, disabled: true },
     ],
   },
   {
@@ -86,6 +88,8 @@ const navGroups: NavGroup[] = [
       { href: "/quarterly-estimated-taxes", label: "Quarterly Est. Taxes", icon: Calendar },
       { href: "/tax-bracket-filling", label: "Tax Bracket Filling", icon: Target },
       { href: "/lifetime-tax-map", label: "Lifetime Tax Map", icon: Map },
+      { href: "/qbi-deduction", label: "QBI Deduction", icon: Percent },
+      { href: "/hsa-calculator", label: "HSA Calculator", icon: Heart },
     ],
   },
   {
@@ -116,7 +120,7 @@ function Sidebar({ className }: { className?: string }) {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-2 py-2 overflow-y-auto space-y-3">
+      <nav className="flex-1 px-2 py-2 overflow-y-auto space-y-5">
         {navGroups.map((group, groupIdx) => (
           <div key={groupIdx}>
             {group.label && (

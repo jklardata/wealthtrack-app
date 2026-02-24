@@ -59,7 +59,7 @@ export default function SoleProprietorVsLLCArticle() {
       />
       {/* Back Button */}
       <div className="mb-6">
-        <Link href="/blog">
+        <Link href="https://solofi.io/blog">
           <Button variant="ghost" size="sm" className="gap-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100">
             <ArrowLeft className="h-4 w-4" />
             Back to Blog
@@ -588,15 +588,15 @@ export default function SoleProprietorVsLLCArticle() {
             <div>
               <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Related articles</p>
               <ul className="space-y-2 text-sm">
-              <li key="become-self-employed-freelancer-2026"><Link href="/articles/become-self-employed-freelancer-2026" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">How to Become a Self-Employed Freelancer in 2026</Link></li>
-              <li key="tax-strategies-2026-self-employed"><Link href="/articles/tax-strategies-2026-self-employed" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Tax Strategies in 2026 for Self-Employed Workers</Link></li>
-              <li key="best-bank-accounts-for-consultants"><Link href="/articles/best-bank-accounts-for-consultants" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Best Bank Accounts for Independent Consultants</Link></li>
+              <li key="become-self-employed-freelancer-2026"><Link href="https://solofi.io/articles/become-self-employed-freelancer-2026" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">How to Become a Self-Employed Freelancer in 2026</Link></li>
+              <li key="tax-strategies-2026-self-employed"><Link href="https://solofi.io/articles/tax-strategies-2026-self-employed" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Tax Strategies in 2026 for Self-Employed Workers</Link></li>
+              <li key="best-bank-accounts-for-consultants"><Link href="https://solofi.io/articles/best-bank-accounts-for-consultants" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Best Bank Accounts for Independent Consultants</Link></li>
               </ul>
             </div>
             <div>
               <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Free tools</p>
               <ul className="space-y-2 text-sm">
-              <li key="scorp-calculator"><Link href="/tools/scorp-calculator" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">S-Corp Calculator</Link></li>
+              <li key="scorp-calculator"><Link href="https://solofi.io/tools" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">S-Corp Calculator</Link></li>
               </ul>
             </div>
           </div>
@@ -606,7 +606,7 @@ export default function SoleProprietorVsLLCArticle() {
         <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-blue-500/20 to-purple-500/20 p-8 text-center">
           <h3 className="text-xl font-bold mb-3">Calculate Your Tax Savings Potential</h3>
           <p className="text-slate-600 mb-6">Explore our free tools to help you make smart business structure decisions.</p>
-          <Link href="/tools">
+          <Link href="https://solofi.io/tools">
             <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
               <Calculator className="mr-2 h-4 w-4" />
               Explore Free Tools

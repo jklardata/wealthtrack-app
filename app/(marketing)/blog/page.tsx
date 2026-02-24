@@ -355,31 +355,31 @@ export default function BlogPage() {
             Free Tools
           </h2>
           <div className="grid md:grid-cols-5 gap-6">
-            <Link href="/tools/tax-savings">
+            <Link href="https://solofi.io/tools">
               <div className="p-6 rounded-2xl border border-slate-200 bg-white hover:border-emerald-300 hover:shadow-lg transition-all h-full">
                 <h3 className="font-medium mb-2 text-slate-900">Tax Savings Calculator</h3>
                 <p className="text-sm text-slate-600">Find your Solo 401k, S-Corp, and HSA opportunities.</p>
               </div>
             </Link>
-            <Link href="/tools/fi-calculator">
+            <Link href="https://solofi.io/tools">
               <div className="p-6 rounded-2xl border border-slate-200 bg-white hover:border-emerald-300 hover:shadow-lg transition-all h-full">
                 <h3 className="font-medium mb-2 text-slate-900">FI Calculator</h3>
                 <p className="text-sm text-slate-600">Calculate your path to financial independence.</p>
               </div>
             </Link>
-            <Link href="/tools/roth-conversion">
+            <Link href="https://solofi.io/tools">
               <div className="p-6 rounded-2xl border border-slate-200 bg-white hover:border-emerald-300 hover:shadow-lg transition-all h-full">
                 <h3 className="font-medium mb-2 text-slate-900">Roth Conversion Ladder</h3>
                 <p className="text-sm text-slate-600">Access retirement funds before 59½.</p>
               </div>
             </Link>
-            <Link href="/tools/net-worth-quiz">
+            <Link href="https://solofi.io/tools">
               <div className="p-6 rounded-2xl border border-slate-200 bg-white hover:border-emerald-300 hover:shadow-lg transition-all h-full">
                 <h3 className="font-medium mb-2 text-slate-900">Net Worth Quiz</h3>
                 <p className="text-sm text-slate-600">Assess your financial tracking habits.</p>
               </div>
             </Link>
-            <Link href="/tools/freelance-checklist">
+            <Link href="https://solofi.io/tools">
               <div className="p-6 rounded-2xl border border-slate-200 bg-white hover:border-emerald-300 hover:shadow-lg transition-all h-full">
                 <h3 className="font-medium mb-2 text-slate-900">Freelance Checklist</h3>
                 <p className="text-sm text-slate-600">First-year financial setup guide.</p>

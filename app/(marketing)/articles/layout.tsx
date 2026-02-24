@@ -15,10 +15,10 @@ export default function ArticlesLayout({
           SoloFI
         </Link>
         <div className="flex items-center gap-6">
-          <Link href="/blog" className="text-sm text-slate-600 hover:text-slate-900 hidden md:block">
+          <Link href="https://solofi.io/blog" className="text-sm text-slate-600 hover:text-slate-900 hidden md:block">
             Blog
           </Link>
-          <Link href="/tools/tax-savings" className="text-sm text-slate-600 hover:text-slate-900 hidden md:block">
+          <Link href="https://solofi.io/tools" className="text-sm text-slate-600 hover:text-slate-900 hidden md:block">
             Free Tools
           </Link>
           <Link href="/sign-up">
@@ -47,7 +47,7 @@ export default function ArticlesLayout({
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-slate-500">
           <span>© 2026 SoloFI</span>
           <div className="flex gap-6">
-            <Link href="/blog" className="hover:text-slate-900">Blog</Link>
+            <Link href="https://solofi.io/blog" className="hover:text-slate-900">Blog</Link>
             <Link href="/privacy" className="hover:text-slate-900">Privacy</Link>
             <Link href="/terms" className="hover:text-slate-900">Terms</Link>
           </div>

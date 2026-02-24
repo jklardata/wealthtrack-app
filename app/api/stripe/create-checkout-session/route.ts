@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'User email not found' }, { status: 400 });
     }
 
-    const { priceId, trialDays } = await request.json();
+    const { priceId, trialDays, isLifetime } = await request.json();
     if (!priceId) {
       console.error('Missing priceId in request');
       return NextResponse.json({ error: 'Price ID is required' }, { status: 400 });
@@ -97,6 +97,18 @@ export async function POST(request: NextRequest) {
     });
 
     const createSession = async (customerId: string) => {
+      if (isLifetime) {
+        return stripe.checkout.sessions.create({
+          customer: customerId,
+          mode: 'payment',
+          line_items: [{ price: priceId, quantity: 1 }],
+          success_url: `${appUrl}/dashboard?success=true&tier=${tier}`,
+          cancel_url: `${appUrl}/upgrade?canceled=true`,
+          payment_intent_data: {
+            metadata: { clerk_user_id: userId },
+          },
+        });
+      }
       return stripe.checkout.sessions.create({
         customer: customerId,
         mode: 'subscription',

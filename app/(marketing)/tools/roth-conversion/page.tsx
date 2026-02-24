@@ -783,6 +783,27 @@ export default function RothConversionLeadMagnet() {
         </p>
       </main>
 
+      {/* Share */}
+      <div className="max-w-4xl mx-auto px-6 py-6 flex items-center justify-center gap-3 flex-wrap">
+        <span className="text-sm text-slate-500">Share this free tool:</span>
+        <a
+          href="https://twitter.com/intent/tweet?text=Free%20Roth%20conversion%20ladder%20planner%20for%20early%20retirement%E2%80%94by%20SoloFI%20solofi.io/tools/roth-conversion%20%23RothIRA%20%23FIRE"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-black text-white hover:bg-slate-800 transition-colors"
+        >
+          𝕏 Twitter/X
+        </a>
+        <a
+          href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A//solofi.io/tools/roth-conversion"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-blue-700 text-white hover:bg-blue-800 transition-colors"
+        >
+          in LinkedIn
+        </a>
+      </div>
+
       {/* Footer */}
       <footer className="border-t border-white/10 py-12 mt-16">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-white/40">

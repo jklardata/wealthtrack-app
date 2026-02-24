@@ -46,6 +46,7 @@ import {
   Clock,
   Info,
   HelpCircle,
+  Share2,
 } from "lucide-react";
 import { CITIES, DEFAULT_WEIGHTS, type CityData } from "@/lib/col-data";
 import {
@@ -1330,6 +1331,37 @@ export default function GeoArbitragePage() {
                                   </div>
                                 </div>
                               )}
+
+                              {/* Share */}
+                              <div className="pt-3 border-t flex items-center gap-3 flex-wrap">
+                                <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                                  <Share2 className="h-3.5 w-3.5" />
+                                  <span>Share</span>
+                                </div>
+                                <a
+                                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                                    `🌎 Geo Arbitrage: ${analysis.canAchieveFI && isFinite(analysis.yearsToFI)
+                                      ? `${analysis.city.city_name} puts me at FI in ${analysis.yearsToFI.toFixed(0)} years`
+                                      : `Modeling ${analysis.city.city_name}`
+                                    }${!isBaseline && analysis.deltaYears < -0.5 ? ` (${Math.abs(analysis.deltaYears).toFixed(0)} yrs faster)` : !isBaseline && analysis.deltaYears > 0.5 ? ` (${analysis.deltaYears.toFixed(0)} yrs slower)` : ""}. SoloFI: tax optimization and retirement outcomes for the self-employed, business owners, and FIRE seekers. solofi.io #FIRE #GeoArbitrage`
+                                  )}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg bg-black text-white hover:bg-gray-800 transition-colors font-medium"
+                                >
+                                  𝕏 Twitter/X
+                                </a>
+                                <a
+                                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent("https://solofi.io/geo-arbitrage")}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg bg-blue-700 text-white hover:bg-blue-800 transition-colors font-medium"
+                                >
+                                  in LinkedIn
+                                </a>
+                              </div>
                             </div>
                           </TableCell>
                         </TableRow>

@@ -16,10 +16,10 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "SoloFI | Financial Independence for Consultants",
-  description: "Build wealth. Reduce taxes. Retire on your terms. Built for self-employed professionals and independent consultants.",
+  description: "Tax optimization and retirement outcomes for the self-employed, business owners, and FIRE seekers.",
   openGraph: {
     title: "SoloFI | Financial Independence for Consultants",
-    description: "Build wealth. Reduce taxes. Retire on your terms. Built for self-employed professionals and independent consultants.",
+    description: "Tax optimization and retirement outcomes for the self-employed, business owners, and FIRE seekers.",
     url: "https://solofi.io",
     siteName: "SoloFI",
     images: [
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "SoloFI - Financial Independence for Consultants",
-    description: "Build wealth. Reduce taxes. Retire on your terms.",
+    description: "Tax optimization and retirement outcomes for the self-employed, business owners, and FIRE seekers.",
     images: ["https://solofi.io/api/og?title=Financial%20Independence%20for%20Consultants&category=Financial%20Planning"],
   },
   alternates: {
@@ -51,7 +51,7 @@ const websiteJsonLd = {
       "@id": "https://solofi.io/#website",
       url: "https://solofi.io",
       name: "SoloFI",
-      description: "Financial decision engine for self-employed professionals",
+      description: "Tax optimization and retirement outcomes for the self-employed, business owners, and FIRE seekers.",
       potentialAction: {
         "@type": "SearchAction",
         target: "https://solofi.io/blog?q={search_term_string}",

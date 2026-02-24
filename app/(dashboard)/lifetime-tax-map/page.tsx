@@ -442,95 +442,34 @@ export default function LifetimeTaxMapPage() {
       </div>
 
       {/* Educational Guide */}
-      <Card className="border border-slate-200 bg-gradient-to-br from-emerald-50 via-white to-blue-50">
-        <CardHeader>
-          <CardTitle className="text-3xl font-black flex items-center gap-3">
-            <Target className="h-8 w-8 text-emerald-600" />
-            Understanding Your Lifetime Tax Map
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
+      <Card className="bg-gradient-to-br from-blue-50 via-white to-indigo-50 border-blue-200 shadow-sm">
+        <CardContent className="pt-6">
           <div className="space-y-4">
-            <div>
-              <p className="text-lg font-bold text-slate-900 mb-3">What a Lifetime Tax Map Is</p>
-              <p className="text-base font-medium text-slate-700 leading-relaxed">
-                A lifetime tax map is a visual timeline showing your projected tax exposure from today through life expectancy.
-                Unlike annual tax planning that focuses on minimizing this year's bill, a lifetime tax map reveals decades-long
-                patterns in your tax burden. It shows when you'll pay the most taxes, when you'll pay the least, and crucially,
-                when you have opportunities to shift income across years to reduce your total lifetime tax bill. This is strategic
-                tax planning at the highest level.
-              </p>
-            </div>
-
-            <div>
-              <p className="text-lg font-bold text-slate-900 mb-3">Why Lifetime Tax Exposure Matters More Than Annual Taxes</p>
-              <p className="text-base font-medium text-slate-700 leading-relaxed">
-                Most people optimize taxes one year at a time. But this misses the bigger picture. If you pay 12% tax on a Roth
-                conversion this year to avoid 24% tax on RMDs in 20 years, you've cut your tax rate in half on that money. That's
-                a 50% savings, but only visible when you look at the full timeline. Similarly, harvesting capital gains at 0% during
-                low-income early retirement years instead of paying 15% later creates permanent tax savings. Lifetime tax minimization
-                often means strategically paying some tax now to avoid much larger tax bills later. You can't see these opportunities
-                in a single tax year.
-              </p>
-            </div>
-
-            <div>
-              <p className="text-lg font-bold text-slate-900 mb-3">How Early Retirement Creates Unique Tax Windows</p>
-              <p className="text-base font-medium text-slate-700 leading-relaxed">
-                When you retire early at 50-60, you create a 5-15 year window before Social Security and RMDs begin. During this gap,
-                your taxable income drops to nearly zero if you live off Roth withdrawals or taxable account principal. This creates
-                artificially low-income years where you can fill the 12% and 22% tax brackets with Roth conversions and capital gains
-                harvesting. Once Social Security begins and RMDs kick in at 72, your income floor rises permanently and this window
-                closes forever. The lifetime tax map shows exactly when these windows open and close, allowing you to plan decades in advance.
-              </p>
-            </div>
-
-            <div>
-              <p className="text-lg font-bold text-slate-900 mb-3">How to Read the Timeline Visualization</p>
-              <div className="space-y-2 text-base font-medium text-slate-700 leading-relaxed">
-                <p>• <strong>Horizontal axis:</strong> Your age from today through life expectancy, showing the full financial timeline</p>
-                <p>• <strong>Income layers (stacked areas):</strong> Different income sources stacked to show total annual income composition</p>
-                <p>• <strong>Tax rate heatmap (background shading):</strong> Color intensity shows effective tax rate—darker means higher taxes</p>
-                <p>• <strong>Cumulative tax line:</strong> Rising curve showing total taxes paid over your lifetime</p>
-                <p>• <strong>Vertical markers:</strong> Key events like retirement, Medicare eligibility, RMD start, Social Security claim</p>
-                <p>• <strong>Gap year shading:</strong> Green highlighted periods showing optimal tax optimization windows</p>
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                <Map className="h-5 w-5 text-blue-600" />
               </div>
-            </div>
-
-            <div>
-              <p className="text-lg font-bold text-slate-900 mb-3">What Different Colors and Layers Represent</p>
-              <div className="space-y-2 text-base font-medium text-slate-700 leading-relaxed">
-                <p>• <strong>Blue layer:</strong> Consulting and earned income from active work</p>
-                <p>• <strong>Purple layer:</strong> Roth conversions creating taxable income strategically</p>
-                <p>• <strong>Green layer:</strong> Capital gains harvested from taxable brokerage accounts</p>
-                <p>• <strong>Orange layer:</strong> Portfolio withdrawals funding retirement spending</p>
-                <p>• <strong>Yellow layer:</strong> Social Security income starting at claim age</p>
-                <p>• <strong>Background heat:</strong> Red/orange indicates high tax years, green indicates low tax years</p>
-              </div>
-            </div>
-
-            <div>
-              <p className="text-lg font-bold text-slate-900 mb-3">How This Tool Helps Identify Strategy Opportunities</p>
-              <p className="text-base font-medium text-slate-700 leading-relaxed">
-                The timeline immediately reveals mismatches between income and tax strategy. Years with low income but no Roth
-                conversions signal missed opportunities. Spikes in effective tax rate at age 72+ show RMD-driven tax problems
-                that could have been mitigated earlier. FEIE transition years show exactly when returning to US taxation creates
-                conversion windows. Pre-Medicare years highlight when to stay below ACA subsidy limits. The cumulative tax curve
-                shows whether your strategy is working or you're leaving hundreds of thousands on the table.
-              </p>
-            </div>
-
-            <div>
-              <p className="text-lg font-bold text-slate-900 mb-3">Key Assumptions Included in This Model</p>
-              <div className="space-y-2 text-base font-medium text-slate-700 leading-relaxed">
-                <p>• Federal income tax only (state taxes not modeled)</p>
-                <p>• 2026 tax brackets held constant unless future assumption changed</p>
-                <p>• Portfolio returns assumed constant (no sequence of returns risk)</p>
-                <p>• Standard deduction used (itemized deductions not modeled)</p>
-                <p>• Healthcare subsidy calculations use simplified MAGI thresholds</p>
-                <p>• IRMAA surcharges use current thresholds with 2-year lookback</p>
-                <p>• Withdrawal sequencing: taxable first, then Traditional IRA, then Roth</p>
-                <p>• Capital gains assume long-term treatment and existing basis</p>
+              <div>
+                <h3 className="text-lg font-semibold text-slate-900 mb-3">
+                  Understanding Your Lifetime Tax Map
+                </h3>
+                <div className="text-sm text-slate-700 space-y-3 leading-relaxed">
+                  <p>
+                    A lifetime tax map is a visual timeline showing your projected tax exposure from today through life expectancy. Unlike annual tax planning that focuses on minimizing this year's bill, it reveals decades-long patterns in your tax burden—when you'll pay the most, when you'll pay the least, and crucially, when you have opportunities to shift income across years to reduce your total lifetime tax bill.
+                  </p>
+                  <p>
+                    <strong>Why lifetime exposure matters more than annual taxes:</strong> Most people optimize taxes one year at a time. But this misses the bigger picture. If you pay 12% on a Roth conversion today to avoid 24% on RMDs in 20 years, you've cut your effective tax rate in half on that money. Lifetime tax minimization often means strategically paying some tax now to avoid much larger bills later—opportunities invisible in a single tax year.
+                  </p>
+                  <p>
+                    <strong>How early retirement creates unique windows:</strong> When you retire early at 50–60, you create a 5–15 year gap before Social Security and RMDs begin. During this period, taxable income drops to near zero if you live off Roth withdrawals or taxable account principal—creating artificially low-income years ideal for filling the 12% and 22% brackets with Roth conversions and capital gains harvesting. Once Social Security and RMDs begin, your income floor rises permanently and this window closes forever.
+                  </p>
+                  <p>
+                    <strong>How to read the visualization:</strong> The horizontal axis shows your age across your full financial timeline. Stacked colored areas represent different income sources (blue = consulting, purple = Roth conversions, green = capital gains, orange = withdrawals, yellow = Social Security). The red line tracks cumulative lifetime taxes paid. Vertical dashed lines mark key events—retirement, Medicare eligibility, RMD start, Social Security claim. Green-shaded regions indicate optimal tax optimization windows (gap years).
+                  </p>
+                  <p>
+                    <strong>Key model assumptions:</strong> Federal income tax only (no state taxes). 2026 brackets held constant unless the future assumption is changed. Portfolio returns assumed constant with no sequence-of-returns risk. Standard deduction used throughout. Withdrawal sequencing: taxable first, then Traditional IRA, then Roth. Healthcare subsidy and IRMAA thresholds use simplified current-year rules.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -538,53 +477,54 @@ export default function LifetimeTaxMapPage() {
       </Card>
 
       {/* Input Controls */}
-      <Card className="border border-slate-200">
+      <Card className="bg-white border border-slate-200 shadow-sm">
         <CardHeader>
-          <CardTitle className="text-2xl font-black">Your Lifetime Projection Inputs</CardTitle>
+          <CardTitle className="text-base font-semibold">Your Lifetime Projection Inputs</CardTitle>
+          <p className="text-sm text-slate-500">Adjust your financial scenario assumptions</p>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="basic" className="w-full">
             <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="basic" className="font-bold">Basic</TabsTrigger>
-              <TabsTrigger value="income" className="font-bold">Income</TabsTrigger>
-              <TabsTrigger value="strategy" className="font-bold">Strategy</TabsTrigger>
+              <TabsTrigger value="basic">Basic</TabsTrigger>
+              <TabsTrigger value="income">Income</TabsTrigger>
+              <TabsTrigger value="strategy">Strategy</TabsTrigger>
             </TabsList>
 
             {/* Basic Tab */}
             <TabsContent value="basic" className="space-y-6 mt-6">
               <div className="grid md:grid-cols-3 gap-6">
                 <div>
-                  <Label className="text-base font-bold">Current Age</Label>
+                  <Label className="text-sm font-medium">Current Age</Label>
                   <Input
                     type="number"
                     value={currentAge}
                     onChange={(e) => setCurrentAge(Number(e.target.value))}
-                    className="text-base font-semibold"
+                    className="mt-1"
                   />
                 </div>
                 <div>
-                  <Label className="text-base font-bold">Retirement Age</Label>
+                  <Label className="text-sm font-medium">Retirement Age</Label>
                   <Input
                     type="number"
                     value={retirementAge}
                     onChange={(e) => setRetirementAge(Number(e.target.value))}
-                    className="text-base font-semibold"
+                    className="mt-1"
                   />
                 </div>
                 <div>
-                  <Label className="text-base font-bold">Life Expectancy</Label>
+                  <Label className="text-sm font-medium">Life Expectancy</Label>
                   <Input
                     type="number"
                     value={lifeExpectancy}
                     onChange={(e) => setLifeExpectancy(Number(e.target.value))}
-                    className="text-base font-semibold"
+                    className="mt-1"
                   />
                 </div>
 
                 <div>
-                  <Label className="text-base font-bold">Filing Status</Label>
+                  <Label className="text-sm font-medium">Filing Status</Label>
                   <Select value={filingStatus} onValueChange={(v: FilingStatus) => setFilingStatus(v)}>
-                    <SelectTrigger className="text-base font-semibold">
+                    <SelectTrigger className="mt-1">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -595,58 +535,58 @@ export default function LifetimeTaxMapPage() {
                 </div>
 
                 <div>
-                  <Label className="text-base font-bold">Traditional IRA Balance</Label>
+                  <Label className="text-sm font-medium">Traditional IRA Balance</Label>
                   <Input
                     type="number"
                     value={traditionalBalance}
                     onChange={(e) => setTraditionalBalance(Number(e.target.value))}
-                    className="text-base font-semibold"
+                    className="mt-1"
                   />
                 </div>
                 <div>
-                  <Label className="text-base font-bold">Roth IRA Balance</Label>
+                  <Label className="text-sm font-medium">Roth IRA Balance</Label>
                   <Input
                     type="number"
                     value={rothBalance}
                     onChange={(e) => setRothBalance(Number(e.target.value))}
-                    className="text-base font-semibold"
+                    className="mt-1"
                   />
                 </div>
                 <div>
-                  <Label className="text-base font-bold">Taxable Brokerage Balance</Label>
+                  <Label className="text-sm font-medium">Taxable Brokerage Balance</Label>
                   <Input
                     type="number"
                     value={taxableBalance}
                     onChange={(e) => setTaxableBalance(Number(e.target.value))}
-                    className="text-base font-semibold"
+                    className="mt-1"
                   />
                 </div>
 
                 <div>
-                  <Label className="text-base font-bold">Annual Spending Target</Label>
+                  <Label className="text-sm font-medium">Annual Spending Target</Label>
                   <Input
                     type="number"
                     value={annualSpending}
                     onChange={(e) => setAnnualSpending(Number(e.target.value))}
-                    className="text-base font-semibold"
+                    className="mt-1"
                   />
                 </div>
                 <div>
-                  <Label className="text-base font-bold">Expected Portfolio Return (%)</Label>
+                  <Label className="text-sm font-medium">Expected Portfolio Return (%)</Label>
                   <Input
                     type="number"
                     value={expectedReturn}
                     onChange={(e) => setExpectedReturn(Number(e.target.value))}
-                    className="text-base font-semibold"
+                    className="mt-1"
                   />
                 </div>
                 <div>
-                  <Label className="text-base font-bold">Inflation Rate (%)</Label>
+                  <Label className="text-sm font-medium">Inflation Rate (%)</Label>
                   <Input
                     type="number"
                     value={inflationRate}
                     onChange={(e) => setInflationRate(Number(e.target.value))}
-                    className="text-base font-semibold"
+                    className="mt-1"
                   />
                 </div>
               </div>
@@ -656,55 +596,55 @@ export default function LifetimeTaxMapPage() {
             <TabsContent value="income" className="space-y-6 mt-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <Label className="text-base font-bold">Base Consulting Income</Label>
+                  <Label className="text-sm font-medium">Base Consulting Income</Label>
                   <Input
                     type="number"
                     value={baseConsultingIncome}
                     onChange={(e) => setBaseConsultingIncome(Number(e.target.value))}
-                    className="text-base font-semibold"
+                    className="mt-1"
                   />
                   <p className="text-xs text-slate-500 mt-1">Annual income before retirement</p>
                 </div>
 
                 <div>
-                  <Label className="text-base font-bold">Social Security Start Age</Label>
+                  <Label className="text-sm font-medium">Social Security Start Age</Label>
                   <Input
                     type="number"
                     value={socialSecurityStartAge || ""}
                     onChange={(e) => setSocialSecurityStartAge(e.target.value ? Number(e.target.value) : null)}
-                    className="text-base font-semibold"
+                    className="mt-1"
                   />
                 </div>
 
                 {socialSecurityStartAge && (
                   <div>
-                    <Label className="text-base font-bold">Annual Social Security Amount</Label>
+                    <Label className="text-sm font-medium">Annual Social Security Amount</Label>
                     <Input
                       type="number"
                       value={socialSecurityAmount}
                       onChange={(e) => setSocialSecurityAmount(Number(e.target.value))}
-                      className="text-base font-semibold"
+                      className="mt-1"
                     />
                   </div>
                 )}
 
                 <div>
-                  <Label className="text-base font-bold">Pre-Medicare Healthcare Cost</Label>
+                  <Label className="text-sm font-medium">Pre-Medicare Healthcare Cost</Label>
                   <Input
                     type="number"
                     value={healthcareCostPreMedicare}
                     onChange={(e) => setHealthcareCostPreMedicare(Number(e.target.value))}
-                    className="text-base font-semibold"
+                    className="mt-1"
                   />
                 </div>
 
                 <div>
-                  <Label className="text-base font-bold">Post-Medicare Healthcare Cost</Label>
+                  <Label className="text-sm font-medium">Post-Medicare Healthcare Cost</Label>
                   <Input
                     type="number"
                     value={healthcareCostPostMedicare}
                     onChange={(e) => setHealthcareCostPostMedicare(Number(e.target.value))}
-                    className="text-base font-semibold"
+                    className="mt-1"
                   />
                 </div>
               </div>
@@ -714,9 +654,9 @@ export default function LifetimeTaxMapPage() {
             <TabsContent value="strategy" className="space-y-6 mt-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <Label className="text-base font-bold">Strategy Scenario</Label>
+                  <Label className="text-sm font-medium">Strategy Scenario</Label>
                   <Select value={strategyScenario} onValueChange={setStrategyScenario}>
-                    <SelectTrigger className="text-base font-semibold">
+                    <SelectTrigger className="mt-1">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -729,9 +669,9 @@ export default function LifetimeTaxMapPage() {
                 </div>
 
                 <div>
-                  <Label className="text-base font-bold">Future Tax Rate Assumption</Label>
+                  <Label className="text-sm font-medium">Future Tax Rate Assumption</Label>
                   <Select value={futureTaxAssumption} onValueChange={(v: FutureTaxAssumption) => setFutureTaxAssumption(v)}>
-                    <SelectTrigger className="text-base font-semibold">
+                    <SelectTrigger className="mt-1">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -748,14 +688,14 @@ export default function LifetimeTaxMapPage() {
       </Card>
 
       {/* Main Timeline Visualization */}
-      <Card className="border border-slate-200">
+      <Card className="bg-white border border-slate-200 shadow-sm">
         <CardHeader>
-          <CardTitle className="text-3xl font-black flex items-center gap-3">
-            <TrendingUp className="h-8 w-8 text-emerald-600" />
+          <CardTitle className="text-base font-semibold flex items-center gap-2">
+            <TrendingUp className="h-5 w-5 text-emerald-600" />
             Your Lifetime Tax Exposure Timeline
           </CardTitle>
-          <p className="text-base font-semibold text-slate-600 mt-2">
-            Full visualization showing income layers, tax rates, and cumulative tax burden across {lifeExpectancy - currentAge} years
+          <p className="text-sm text-slate-500 mt-1">
+            Income layers, tax rates, and cumulative tax burden across {lifeExpectancy - currentAge} years
           </p>
         </CardHeader>
         <CardContent>
@@ -912,28 +852,28 @@ export default function LifetimeTaxMapPage() {
       </Card>
 
       {/* Advisory Summary */}
-      <Card className={isPro ? "border border-slate-200 bg-gradient-to-br from-amber-50 via-white to-emerald-50" : "bg-slate-100 border-2 border-slate-300"}>
+      <Card className={isPro ? "bg-white border border-slate-200 shadow-sm" : "bg-slate-50 border border-slate-200"}>
         <CardHeader>
-          <CardTitle className={`text-3xl font-black flex items-center gap-3 ${!isPro && "text-slate-400"}`}>
-            {!isPro && <Lock className="h-8 w-8 text-slate-400" />}
-            {isPro && <Lightbulb className="h-8 w-8 text-amber-600" />}
+          <CardTitle className={`text-base font-semibold flex items-center gap-2 ${!isPro && "text-slate-400"}`}>
+            {!isPro && <Lock className="h-4 w-4 text-slate-400" />}
+            {isPro && <Lightbulb className="h-5 w-5 text-amber-600" />}
             Strategic Insights from Your Lifetime Tax Map
-            {!isPro && <span className="ml-2 text-sm font-bold text-amber-600 bg-amber-100 px-3 py-1 rounded-full border-2 border-amber-300">Pro Only</span>}
+            {!isPro && <span className="ml-2 text-xs font-medium text-amber-600 bg-amber-100 px-2 py-0.5 rounded-full border border-amber-200">Pro Only</span>}
           </CardTitle>
         </CardHeader>
         {!isPro ? (
           <CardContent>
-            <div className="text-center py-12">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-200 mb-4">
-                <Lock className="h-8 w-8 text-slate-400" />
+            <div className="text-center py-8">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-200 mb-3">
+                <Lock className="h-5 w-5 text-slate-400" />
               </div>
-              <h3 className="text-xl font-black text-slate-700 mb-2">Unlock Strategic Insights</h3>
-              <p className="text-base font-semibold text-slate-600 mb-6 max-w-md mx-auto">
+              <h3 className="text-sm font-semibold text-slate-700 mb-1.5">Unlock Strategic Insights</h3>
+              <p className="text-xs text-slate-500 mb-4 max-w-md mx-auto">
                 Get lifetime tax burden projections, low-tax opportunity windows, gap year conversion insights, high-risk year analysis, and strategy impact assessments.
               </p>
               <Link href="/upgrade">
-                <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-lg px-8 py-6">
-                  <Sparkles className="h-5 w-5 mr-2" />
+                <Button className="bg-emerald-600 hover:bg-emerald-700 text-white text-sm px-6 py-2">
+                  <Sparkles className="h-4 w-4 mr-1.5" />
                   Upgrade to Pro
                 </Button>
               </Link>
@@ -1034,16 +974,16 @@ export default function LifetimeTaxMapPage() {
       </Card>
 
       {/* Detailed Year-by-Year Table */}
-      <Card className={isPro ? "border border-slate-200" : "bg-slate-100 border-2 border-slate-300"}>
+      <Card className={isPro ? "bg-white border border-slate-200 shadow-sm" : "bg-slate-50 border border-slate-200"}>
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
-            <CardTitle className={`text-2xl font-black flex items-center gap-3 ${!isPro && "text-slate-400"}`}>
-              {!isPro && <Lock className="h-6 w-6 text-slate-400" />}
+            <CardTitle className={`text-base font-semibold flex items-center gap-2 ${!isPro && "text-slate-400"}`}>
+              {!isPro && <Lock className="h-4 w-4 text-slate-400" />}
               Year-by-Year Tax Projection Detail
-              {!isPro && <span className="ml-2 text-sm font-bold text-amber-600 bg-amber-100 px-3 py-1 rounded-full border-2 border-amber-300">Pro Only</span>}
+              {!isPro && <span className="ml-2 text-xs font-medium text-amber-600 bg-amber-100 px-2 py-0.5 rounded-full border border-amber-200">Pro Only</span>}
             </CardTitle>
             {isPro && (
-              <p className="text-sm font-semibold text-slate-600 mt-1">
+              <p className="text-sm text-slate-500 mt-0.5">
                 Complete breakdown of income sources, taxes, and balances for every year
               </p>
             )}
@@ -1057,17 +997,17 @@ export default function LifetimeTaxMapPage() {
         </CardHeader>
         {!isPro ? (
           <CardContent>
-            <div className="text-center py-12">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-200 mb-4">
-                <Lock className="h-8 w-8 text-slate-400" />
+            <div className="text-center py-8">
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-200 mb-3">
+                <Lock className="h-5 w-5 text-slate-400" />
               </div>
-              <h3 className="text-xl font-black text-slate-700 mb-2">Unlock Detailed Projections</h3>
-              <p className="text-base font-semibold text-slate-600 mb-6 max-w-md mx-auto">
+              <h3 className="text-sm font-semibold text-slate-700 mb-1.5">Unlock Detailed Projections</h3>
+              <p className="text-xs text-slate-500 mb-4 max-w-md mx-auto">
                 Get complete year-by-year projections with income sources, conversions, gains, taxes, cumulative lifetime taxes, and account balances.
               </p>
               <Link href="/upgrade">
-                <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-lg px-8 py-6">
-                  <Sparkles className="h-5 w-5 mr-2" />
+                <Button className="bg-emerald-600 hover:bg-emerald-700 text-white text-sm px-6 py-2">
+                  <Sparkles className="h-4 w-4 mr-1.5" />
                   Upgrade to Pro
                 </Button>
               </Link>

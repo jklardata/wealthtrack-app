@@ -1000,19 +1000,19 @@ function RetirementPageContent() {
                       </filter>
                     </defs>
 
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" strokeOpacity={0.5} />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
 
                     <XAxis
                       dataKey="year"
-                      axisLine={{ stroke: '#9ca3af', strokeWidth: 1 }}
-                      tickLine={{ stroke: '#9ca3af' }}
-                      tick={{ fill: '#6b7280', fontSize: 12 }}
+                      stroke="#94a3b8"
+                      tick={{ fill: "#64748b", fontSize: 14, fontWeight: 500 }}
                       label={{
                         value: "Years from Now",
                         position: "insideBottom",
                         offset: -10,
-                        fill: '#6b7280',
-                        fontSize: 12,
+                        fill: "#64748b",
+                        fontSize: 14,
+                        fontWeight: 500,
                       }}
                     />
 
@@ -1021,9 +1021,8 @@ function RetirementPageContent() {
                         if (value >= 1000000) return `$${(value / 1000000).toFixed(1)}M`;
                         return `$${(value / 1000).toFixed(0)}k`;
                       }}
-                      axisLine={{ stroke: '#9ca3af', strokeWidth: 1 }}
-                      tickLine={{ stroke: '#9ca3af' }}
-                      tick={{ fill: '#6b7280', fontSize: 12 }}
+                      stroke="#94a3b8"
+                      tick={{ fill: "#64748b", fontSize: 14, fontWeight: 500 }}
                       width={70}
                     />
 
@@ -1128,15 +1127,12 @@ function RetirementPageContent() {
                       type="monotone"
                       dataKey="Net Worth"
                       stroke="#3b82f6"
-                      strokeWidth={3}
+                      strokeWidth={4}
                       dot={false}
-                      activeDot={{
-                        r: 6,
-                        fill: "#3b82f6",
-                        stroke: "#fff",
-                        strokeWidth: 2,
-                      }}
-                      filter="url(#glow)"
+                      activeDot={{ r: 7, fill: "#3b82f6", stroke: "#fff", strokeWidth: 2 }}
+                      isAnimationActive={true}
+                      animationDuration={1500}
+                      animationEasing="ease-in-out"
                     />
                   </ComposedChart>
                 </ResponsiveContainer>

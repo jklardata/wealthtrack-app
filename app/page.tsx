@@ -253,9 +253,6 @@ export default function Landing21() {
           </span>
         </Link>
         <div className="flex items-center gap-2 sm:gap-4">
-          <Link href="/learn" className="hidden md:block text-slate-600 hover:text-slate-900 text-sm">
-            Documentation
-          </Link>
           <Link href="/blog" className="hidden md:block text-slate-600 hover:text-slate-900 text-sm">
             Resources
           </Link>

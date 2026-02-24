@@ -12,7 +12,7 @@ const docNav = [
       { href: "/learn", label: "Overview", icon: BookOpen, exact: true },
       { href: "/learn/methodology", label: "Methodology", icon: Cpu },
       { href: "/learn/glossary", label: "Glossary", icon: FileText },
-      { href: "/faq", label: "FAQ", icon: HelpCircle, exact: true },
+      { href: "/learn/faq", label: "FAQ", icon: HelpCircle, exact: true },
     ],
   },
 ];

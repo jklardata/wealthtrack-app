@@ -738,44 +738,40 @@ export default function NetWorthPage() {
         </p>
       </div>
 
-      {/* Main layout: controls + entries (left) + educational guide (right) */}
-      <div className="flex flex-col lg:flex-row gap-5 items-start">
-        {/* Educational Guide — right column */}
-        <div className="lg:w-72 lg:flex-shrink-0 lg:order-2 w-full">
-        {/* Educational Introduction */}
-        <Card className="bg-gradient-to-br from-emerald-50 via-white to-teal-50 border-emerald-200 shadow-sm">
-          <CardContent className="pt-6">
-            <div className="space-y-4">
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
-                  <TrendingUp className="h-5 w-5 text-emerald-600" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-slate-900 mb-2">
-                    Why Track Your Net Worth?
-                  </h3>
-                  <div className="text-sm text-slate-700 space-y-3 leading-relaxed">
-                    <p>
-                      Your net worth—the difference between what you own and what you owe—is the single most important metric for measuring long-term financial health. While income tells you how much money flows through your hands, net worth reveals how much you&apos;re actually keeping and building over time. It&apos;s the ultimate scorecard for wealth accumulation and financial progress.
-                    </p>
-                    <p>
-                      <strong>Tracking net worth monthly creates accountability and reveals trends.</strong> Many individuals experience lifestyle inflation: as income rises, so do expenses, leaving net worth stagnant despite earning more. By recording your complete financial picture each month, you gain immediate visibility into whether you&apos;re making genuine progress or simply running in place. This single habit has transformed more financial lives than any budgeting app or investment strategy.
-                    </p>
-                    <p>
-                      <strong>The first of the month is an ideal tracking cadence.</strong> Capturing your financial snapshot on the same calendar day each month—typically the 1st—provides clean month-over-month comparisons and removes variance from different month lengths. It also creates a ritual: you start each month by taking stock of where you stand, reviewing last month&apos;s changes, and setting intentions for the weeks ahead. This consistency compounds into powerful insight over years.
-                    </p>
-                    <p className="text-slate-600 italic">
-                      As a financial advisor would tell you: net worth is a lagging indicator of the small decisions you make daily. Track it consistently, and you&apos;ll develop an intuition for which behaviors move the needle. That coffee habit? Probably irrelevant. That annual bonus you invested instead of spent? Compounding visibly each month. The data doesn&apos;t lie, and over time, it becomes your most trusted financial advisor.
-                    </p>
-                  </div>
+      {/* Educational Introduction */}
+      <Card className="bg-gradient-to-br from-emerald-50 via-white to-teal-50 border-emerald-200 shadow-sm">
+        <CardContent className="pt-6">
+          <div className="space-y-4">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                <TrendingUp className="h-5 w-5 text-emerald-600" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-slate-900 mb-2">
+                  Why Track Your Net Worth?
+                </h3>
+                <div className="text-sm text-slate-700 space-y-3 leading-relaxed">
+                  <p>
+                    Your net worth—the difference between what you own and what you owe—is the single most important metric for measuring long-term financial health. While income tells you how much money flows through your hands, net worth reveals how much you&apos;re actually keeping and building over time. It&apos;s the ultimate scorecard for wealth accumulation and financial progress.
+                  </p>
+                  <p>
+                    <strong>Tracking net worth monthly creates accountability and reveals trends.</strong> Many individuals experience lifestyle inflation: as income rises, so do expenses, leaving net worth stagnant despite earning more. By recording your complete financial picture each month, you gain immediate visibility into whether you&apos;re making genuine progress or simply running in place. This single habit has transformed more financial lives than any budgeting app or investment strategy.
+                  </p>
+                  <p>
+                    <strong>The first of the month is an ideal tracking cadence.</strong> Capturing your financial snapshot on the same calendar day each month—typically the 1st—provides clean month-over-month comparisons and removes variance from different month lengths. It also creates a ritual: you start each month by taking stock of where you stand, reviewing last month&apos;s changes, and setting intentions for the weeks ahead. This consistency compounds into powerful insight over years.
+                  </p>
+                  <p className="text-slate-600 italic">
+                    As a financial advisor would tell you: net worth is a lagging indicator of the small decisions you make daily. Track it consistently, and you&apos;ll develop an intuition for which behaviors move the needle. That coffee habit? Probably irrelevant. That annual bonus you invested instead of spent? Compounding visibly each month. The data doesn&apos;t lie, and over time, it becomes your most trusted financial advisor.
+                  </p>
                 </div>
               </div>
             </div>
-          </CardContent>
-        </Card>
-        </div>
-        {/* Controls + entries — left column */}
-        <div className="flex-1 min-w-0 lg:order-1 space-y-4">
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Controls + entries */}
+      <div className="space-y-4">
         <div className="flex flex-wrap gap-2">
           <Button
             variant="outline"
@@ -1204,8 +1200,7 @@ export default function NetWorthPage() {
           )}
         </CardContent>
       </Card>
-        </div> {/* closes left column */}
-      </div> {/* closes flex row */}
+      </div>
       </div>
     </div>
   );

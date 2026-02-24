@@ -13,14 +13,25 @@ export default function AboutPage() {
     <div className="min-h-screen bg-gradient-to-b from-white to-slate-50">
       {/* Hero Section */}
       <div className="border-b border-slate-200 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
-          <p className="text-sm font-medium text-emerald-600 uppercase tracking-wider mb-3">The founder</p>
-          <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 mb-6">
-            Hi, I'm Justin.
-          </h1>
-          <p className="text-xl text-slate-600 leading-relaxed">
-            I built SoloFI because I couldn't find the tool I actually needed.
-          </p>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
+          <div className="flex flex-col sm:flex-row items-start gap-10">
+            <div className="flex-shrink-0">
+              <img
+                src="/creative/solofijustin.jpg"
+                alt="Justin Leu, Founder of SoloFI"
+                className="w-40 h-40 sm:w-52 sm:h-52 rounded-2xl object-cover shadow-md"
+              />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-emerald-600 uppercase tracking-wider mb-3">The founder</p>
+              <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 mb-6">
+                Hi, I'm Justin.
+              </h1>
+              <p className="text-xl text-slate-600 leading-relaxed">
+                I built SoloFI because I couldn't find the tool I actually needed.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 

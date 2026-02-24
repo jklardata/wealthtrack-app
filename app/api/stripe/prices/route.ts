@@ -5,6 +5,7 @@ export async function GET() {
     pro: {
       monthly: process.env.STRIPE_PRICE_PRO_MONTHLY || process.env.NEXT_PUBLIC_STRIPE_PRICE_PRO_MONTHLY || '',
       yearly: process.env.STRIPE_PRICE_PRO_YEARLY || process.env.NEXT_PUBLIC_STRIPE_PRICE_PRO_YEARLY || '',
+      lifetime: process.env.STRIPE_PRICE_PRO_LIFETIME || process.env.NEXT_PUBLIC_STRIPE_PRICE_PRO_LIFETIME || '',
     },
     premium: {
       monthly: process.env.STRIPE_PRICE_PREMIUM_MONTHLY || process.env.NEXT_PUBLIC_STRIPE_PRICE_PREMIUM_MONTHLY || '',

@@ -736,6 +736,27 @@ export default function FEIEChecker() {
         )}
       </main>
 
+      {/* Share */}
+      <div className="max-w-4xl mx-auto px-6 py-6 flex items-center justify-center gap-3 flex-wrap">
+        <span className="text-sm text-slate-500">Share this free tool:</span>
+        <a
+          href="https://twitter.com/intent/tweet?text=Check%20your%20FEIE%20eligibility%20for%20free%E2%80%94tool%20for%20self-employed%20expats%20by%20SoloFI%20solofi.io/tools/feie-checker%20%23FEIE%20%23Expat"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-black text-white hover:bg-slate-800 transition-colors"
+        >
+          𝕏 Twitter/X
+        </a>
+        <a
+          href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A//solofi.io/tools/feie-checker"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-blue-700 text-white hover:bg-blue-800 transition-colors"
+        >
+          in LinkedIn
+        </a>
+      </div>
+
       <footer className="border-t mt-12 py-8">
         <div className="max-w-4xl mx-auto px-6 flex justify-between items-center text-sm text-slate-500">
           <span>&copy; 2025 SoloFI</span>
