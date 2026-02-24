@@ -11,6 +11,7 @@ interface UpgradeButtonProps {
   variant?: "default" | "outline" | "secondary" | "ghost";
   className?: string;
   disabled?: boolean;
+  couponCode?: string;
 }
 
 export function UpgradeButton({
@@ -19,6 +20,7 @@ export function UpgradeButton({
   variant = "default",
   className,
   disabled = false,
+  couponCode,
 }: UpgradeButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
   const { isPro } = useSubscription();
@@ -44,7 +46,7 @@ export function UpgradeButton({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ priceId }),
+        body: JSON.stringify({ priceId, ...(couponCode && { couponCode }) }),
       });
 
       console.log("Response status:", response.status);

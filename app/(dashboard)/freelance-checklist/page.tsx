@@ -179,7 +179,7 @@ export default function FreelanceChecklistPage() {
         <div>
           <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
             <ClipboardList className="h-5 w-5 text-emerald-600" />
-            First-Year Freelancer Financial Checklist
+            Self Employed Financial Checklist
           </h1>
           <p className="text-base text-slate-500 mt-1">
             30+ tasks to set up your finances when going self-employed. Progress saves automatically.
@@ -204,29 +204,24 @@ export default function FreelanceChecklistPage() {
       </div>
 
       {/* Progress Bar */}
-      <Card className="bg-white border border-slate-200">
-        <CardContent className="py-4">
-          <div className="flex justify-between text-sm text-slate-600 mb-2">
-            <span className="font-medium">Overall Progress</span>
-            <span className={completedItems === TOTAL_ITEMS ? "text-emerald-600 font-semibold" : ""}>
-              {completedItems} of {TOTAL_ITEMS} complete
-              {completedItems === TOTAL_ITEMS && " 🎉"}
-            </span>
-          </div>
-          <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-emerald-500 transition-all duration-500 rounded-full"
-              style={{ width: `${progressPct}%` }}
-            />
-          </div>
-          <div className="flex justify-between mt-2">
-            <span className="text-xs text-slate-400">{progressPct}% complete</span>
-            <span className="text-xs text-slate-400">
-              {CHECKLIST_SECTIONS.length} categories
-            </span>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="p-5 bg-emerald-800 rounded-xl">
+        <div className="flex justify-between items-center mb-3">
+          <span className="text-sm font-bold text-emerald-200 uppercase tracking-wider">Overall Progress</span>
+          <span className="text-white font-semibold text-sm">
+            {completedItems} of {TOTAL_ITEMS} complete{completedItems === TOTAL_ITEMS && " 🎉"}
+          </span>
+        </div>
+        <div className="h-3 bg-emerald-900 rounded-full overflow-hidden">
+          <div
+            className="h-full bg-white transition-all duration-500 rounded-full"
+            style={{ width: `${progressPct}%` }}
+          />
+        </div>
+        <div className="flex justify-between mt-2">
+          <span className="text-sm text-emerald-200">{progressPct}% complete</span>
+          <span className="text-sm text-emerald-200">{CHECKLIST_SECTIONS.length} categories</span>
+        </div>
+      </div>
 
       {/* Section summary strip */}
       <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 print:hidden">

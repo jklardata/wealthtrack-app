@@ -24,6 +24,7 @@ function PricingContent() {
   const [billingInterval, setBillingInterval] = useState<BillingInterval>("monthly");
   const [priceIds, setPriceIds] = useState<PriceIds | null>(null);
   const canceled = searchParams.get("canceled");
+  const promoCode = searchParams.get("promo") || undefined;
 
   useEffect(() => {
     async function fetchData() {
@@ -117,6 +118,11 @@ function PricingContent() {
         {canceled && (
           <div className="bg-yellow-500/10 border border-yellow-500/20 text-yellow-600 dark:text-yellow-400 px-4 py-2 rounded-lg inline-block">
             Checkout was canceled. Feel free to try again when you&apos;re ready.
+          </div>
+        )}
+        {promoCode && (
+          <div className="bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 px-4 py-2 rounded-lg inline-flex items-center gap-2">
+            <span className="font-semibold">🎉 {promoCode}</span> — 50% off applied at checkout
           </div>
         )}
 
@@ -221,11 +227,12 @@ function PricingContent() {
                 ) : (
                   <UpgradeButton
                     priceId={getPriceId(key as "pro")}
+                    couponCode={promoCode}
                     className="w-full"
                     variant={popular ? "default" : "outline"}
                     disabled={isCurrent || isLoading}
                   >
-                    {isCurrent ? "Current Plan" : `Upgrade to ${tier.name}`}
+                    {isCurrent ? "Current Plan" : promoCode ? `Upgrade at 50% off` : `Upgrade to ${tier.name}`}
                   </UpgradeButton>
                 )}
               </CardFooter>

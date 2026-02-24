@@ -63,6 +63,7 @@ export default function SettingsPage() {
   const [promoCode, setPromoCode] = useState("");
   const [promoLoading, setPromoLoading] = useState(false);
   const [promoMessage, setPromoMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [promoRedirectUrl, setPromoRedirectUrl] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchSettings() {
@@ -431,11 +432,16 @@ export default function SettingsPage() {
       if (response.ok) {
         setPromoMessage({ type: "success", text: data.message });
         setPromoCode("");
-        // Refresh subscription status
-        const subResponse = await fetch("/api/stripe/subscription");
-        if (subResponse.ok) {
-          const subData = await subResponse.json();
-          setSubscription(subData);
+        if (data.type === "discount" && data.redirectUrl) {
+          // Discount code — don't upgrade, redirect to checkout instead
+          setPromoRedirectUrl(data.redirectUrl);
+        } else {
+          // Direct upgrade code — refresh subscription status
+          const subResponse = await fetch("/api/stripe/subscription");
+          if (subResponse.ok) {
+            const subData = await subResponse.json();
+            setSubscription(subData);
+          }
         }
       } else {
         setPromoMessage({ type: "error", text: data.error || "Invalid promo code" });
@@ -585,6 +591,15 @@ export default function SettingsPage() {
                   )}
                   {promoMessage.text}
                 </div>
+              )}
+              {promoRedirectUrl && (
+                <Button
+                  size="sm"
+                  className="mt-2 w-full bg-emerald-600 hover:bg-emerald-700 text-white"
+                  onClick={() => router.push(promoRedirectUrl)}
+                >
+                  Complete your upgrade at 50% off →
+                </Button>
               )}
             </div>
           )}

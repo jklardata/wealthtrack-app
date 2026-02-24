@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'User email not found' }, { status: 400 });
     }
 
-    const { priceId, trialDays, isLifetime } = await request.json();
+    const { priceId, trialDays, isLifetime, couponCode } = await request.json();
     if (!priceId) {
       console.error('Missing priceId in request');
       return NextResponse.json({ error: 'Price ID is required' }, { status: 400 });
@@ -96,6 +96,11 @@ export async function POST(request: NextRequest) {
       cancelUrl: `${appUrl}/upgrade?canceled=true`
     });
 
+    // Resolve coupon ID for discount codes (e.g. EARLYWEALTH = 50% off)
+    const stripeCouponId =
+      couponCode === 'EARLYWEALTH' ? process.env.STRIPE_COUPON_EARLYWEALTH : undefined;
+    const discounts = stripeCouponId ? [{ coupon: stripeCouponId }] : undefined;
+
     const createSession = async (customerId: string) => {
       if (isLifetime) {
         return stripe.checkout.sessions.create({
@@ -107,6 +112,7 @@ export async function POST(request: NextRequest) {
           payment_intent_data: {
             metadata: { clerk_user_id: userId },
           },
+          ...(discounts && { discounts }),
         });
       }
       return stripe.checkout.sessions.create({
@@ -119,6 +125,7 @@ export async function POST(request: NextRequest) {
           metadata: { clerk_user_id: userId },
           ...(trialDays && { trial_period_days: trialDays }),
         },
+        ...(discounts && { discounts }),
       });
     };
 

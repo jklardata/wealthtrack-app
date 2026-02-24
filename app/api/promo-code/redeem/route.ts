@@ -11,11 +11,11 @@ const VALID_PROMO_CODES: Record<string, {
     tier: 'pro',
     duration: 'lifetime',
   },
-  'EARLYWEALTH': {
-    tier: 'pro',
-    duration: 'trial',
-    trialDays: 365, // 50% off first year — free first year for early access
-  },
+};
+
+// Discount codes redirect to Stripe checkout with a coupon — no direct upgrade
+const DISCOUNT_CODES: Record<string, { percentOff: number; label: string }> = {
+  'EARLYWEALTH': { percentOff: 50, label: '50% off your first year' },
 };
 
 export async function POST(request: NextRequest) {
@@ -28,6 +28,16 @@ export async function POST(request: NextRequest) {
     const { code } = await request.json();
     if (!code) {
       return NextResponse.json({ error: 'Promo code is required' }, { status: 400 });
+    }
+
+    // Check discount codes first — these redirect to Stripe checkout rather than upgrading directly
+    const discountConfig = DISCOUNT_CODES[code.toUpperCase()];
+    if (discountConfig) {
+      return NextResponse.json({
+        type: 'discount',
+        message: `${code.toUpperCase()} unlocked ${discountConfig.label}!`,
+        redirectUrl: `/upgrade?promo=${code.toUpperCase()}`,
+      });
     }
 
     const promoConfig = VALID_PROMO_CODES[code.toUpperCase()];
