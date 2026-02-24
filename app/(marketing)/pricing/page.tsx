@@ -110,30 +110,38 @@ export default function PricingPage() {
       </section>
 
       {/* Billing Toggle */}
-      <div className="flex items-center justify-center gap-3 mb-12">
-        <button
-          onClick={() => setBillingInterval("monthly")}
-          className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
-            billingInterval === "monthly"
-              ? "bg-slate-900 text-white"
-              : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
-          }`}
-        >
-          Monthly
-        </button>
-        <button
-          onClick={() => setBillingInterval("yearly")}
-          className={`px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2 ${
-            billingInterval === "yearly"
-              ? "bg-slate-900 text-white"
-              : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
-          }`}
-        >
-          Yearly
-          <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-semibold">
-            Save ${yearlySavings}
-          </span>
-        </button>
+      <div className="flex flex-col items-center gap-3 mb-12">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setBillingInterval("monthly")}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+              billingInterval === "monthly"
+                ? "bg-slate-900 text-white"
+                : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
+            }`}
+          >
+            Monthly
+          </button>
+          <button
+            onClick={() => setBillingInterval("yearly")}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2 ${
+              billingInterval === "yearly"
+                ? "bg-slate-900 text-white"
+                : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
+            }`}
+          >
+            Yearly
+            <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-semibold">
+              Save ${yearlySavings}
+            </span>
+          </button>
+        </div>
+        {billingInterval === "yearly" && (
+          <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm px-4 py-2 rounded-lg">
+            <span className="font-semibold">🎉 Early access offer:</span>
+            use code <span className="font-mono font-bold bg-emerald-100 px-1.5 py-0.5 rounded">EARLYWEALTH</span> at checkout for <span className="font-semibold">50% off your first year</span>
+          </div>
+        )}
       </div>
 
       {/* Pricing Cards */}

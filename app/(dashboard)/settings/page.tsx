@@ -22,6 +22,7 @@ import {
   FileText,
   Trash2,
   RefreshCw,
+  Copy,
 } from "lucide-react";
 import type { UserSettings, EntitlementTier, TaxReturn } from "@/lib/types";
 import { PRICING_TIERS } from "@/lib/stripe-config";
@@ -64,6 +65,27 @@ export default function SettingsPage() {
   const [promoLoading, setPromoLoading] = useState(false);
   const [promoMessage, setPromoMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [promoRedirectUrl, setPromoRedirectUrl] = useState<string | null>(null);
+  const [headersCopied, setHeadersCopied] = useState(false);
+
+  const SHEET_HEADERS = "Date\tStocks\tBonds\tCash\tReal Estate\tPoints Value\tCommodities\tOther Assets\tTotal Debts\tNotes\tPre-tax Monthly Income\tMonthly Expenses";
+
+  const handleCopyHeaders = async () => {
+    try {
+      await navigator.clipboard.writeText(SHEET_HEADERS);
+      setHeadersCopied(true);
+      setTimeout(() => setHeadersCopied(false), 2000);
+    } catch {
+      // Fallback for browsers that don't support clipboard API
+      const el = document.createElement("textarea");
+      el.value = SHEET_HEADERS;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand("copy");
+      document.body.removeChild(el);
+      setHeadersCopied(true);
+      setTimeout(() => setHeadersCopied(false), 2000);
+    }
+  };
 
   useEffect(() => {
     async function fetchSettings() {
@@ -623,14 +645,26 @@ export default function SettingsPage() {
             <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
               <li>
                 Create a new Google Sheet and copy these column headers into row 1:
-                <br />
-                <div className="mt-2 bg-transparent border rounded p-2">
-                  <code className="text-xs select-all">
-                    Date	Stocks	Bonds	Cash	Real Estate	Points Value	Commodities	Other Assets	Total Debts	Notes	Pre-tax Monthly Income	Monthly Expenses
+                <div className="mt-2 flex items-center gap-2 flex-wrap">
+                  <code className="text-xs bg-muted px-2 py-1 rounded border text-muted-foreground flex-1 min-w-0 truncate">
+                    Date | Stocks | Bonds | Cash | Real Estate | Points Value | Commodities | Other Assets | Total Debts | Notes | Pre-tax Monthly Income | Monthly Expenses
                   </code>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className="flex-shrink-0 h-7 text-xs gap-1"
+                    onClick={handleCopyHeaders}
+                  >
+                    {headersCopied ? (
+                      <><Check className="h-3 w-3 text-emerald-600" /> Copied!</>
+                    ) : (
+                      <><Copy className="h-3 w-3" /> Copy Headers</>
+                    )}
+                  </Button>
                 </div>
                 <p className="text-xs mt-1 text-muted-foreground">
-                  Click to select, then Ctrl+C (or Cmd+C) to copy. Paste into row 1 of your sheet.
+                  Click "Copy Headers" then paste into cell A1 of your sheet — each column will land in its own cell.
                 </p>
               </li>
               <li>Add your data starting from row 2</li>
