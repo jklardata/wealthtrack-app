@@ -30,6 +30,7 @@ import {
   DollarSign,
   Percent,
   Heart,
+  ClipboardList,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -77,6 +78,7 @@ const navGroups: NavGroup[] = [
       { href: "/geo-arbitrage", label: "Geo Arbitrage", icon: Globe },
       { href: "/feie-eligibility", label: "FEIE Eligibility", icon: Globe },
       { href: "/freelance-rate", label: "Freelance Rate", icon: DollarSign },
+      { href: "/freelance-checklist", label: "Freelance Checklist", icon: ClipboardList },
     ],
   },
   {
