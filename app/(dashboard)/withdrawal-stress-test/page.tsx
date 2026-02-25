@@ -193,7 +193,7 @@ export default function WithdrawalStressTestPage() {
             Withdrawal Stress Test
           </h1>
           <p className="text-slate-500 mt-1">
-            Monte Carlo simulation to test your retirement withdrawal strategy
+            Run thousands of simulated scenarios to see how long your money lasts in retirement.
           </p>
         </div>
 
@@ -207,23 +207,14 @@ export default function WithdrawalStressTestPage() {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-slate-900 mb-2">
-                    Understanding Monte Carlo Simulations for Retirement Planning
+                    How This Works
                   </h3>
                   <div className="text-sm text-slate-700 space-y-3 leading-relaxed">
                     <p>
-                      A Monte Carlo simulation is a sophisticated mathematical technique that runs thousands of hypothetical scenarios to assess the probability of your retirement plan succeeding. Rather than assuming your portfolio will grow at a fixed rate every year—which never happens in reality—this method accounts for market volatility by simulating hundreds or thousands of different return sequences, each with realistic variation.
+                      Instead of assuming your portfolio grows at a fixed rate every year, this tool simulates thousands of different market scenarios including bad years at the worst possible time. It then shows you how often your money lasts the full retirement period.
                     </p>
                     <p>
-                      <strong>Why this matters for your withdrawal strategy:</strong> The traditional "4% rule" was derived from historical data, but it doesn't account for sequence-of-returns risk—the danger of experiencing poor market performance early in retirement when you're making withdrawals. A Monte Carlo simulation reveals how different market conditions affect your plan's viability. If you retire into a bear market and withdraw aggressively, your portfolio may never recover. This tool shows you the probability of success under various scenarios.
-                    </p>
-                    <p>
-                      <strong>How to interpret the results:</strong> The success rate represents the percentage of simulated scenarios where your portfolio lasted the full retirement period without running out of money. A 90% success rate means in 900 out of 1,000 simulations, your money lasted. Most financial advisors recommend targeting at least an 80-90% success rate, though your personal risk tolerance may vary. The chart also shows the median portfolio balance over time, plus the 10th and 90th percentile outcomes, giving you a sense of both best-case and worst-case scenarios.
-                    </p>
-                    <p>
-                      <strong>Key variables that affect your outcome:</strong> Your withdrawal rate (annual spending divided by starting portfolio) is the primary driver. Higher withdrawal rates dramatically reduce success probability. Market return assumptions matter too—being too optimistic can give false confidence, while being too conservative may cause you to under-spend and miss enjoying your wealth. Volatility (standard deviation) captures how much returns fluctuate year-to-year; higher volatility increases the range of possible outcomes and slightly reduces success rates due to sequence-of-returns risk.
-                    </p>
-                    <p className="text-slate-600 italic">
-                      As a financial advisor would tell you: run this simulation with your actual numbers, then stress-test it. What if you retire in a market crash? What if inflation is higher than expected? What if you live to 100? Understanding your plan's resilience across scenarios is more valuable than knowing a single projected outcome. This isn't about predicting the future—it's about understanding the range of possibilities and making informed decisions accordingly.
+                      <strong>How to read the results:</strong> the success rate is the percentage of scenarios where your portfolio survived. Most advisors recommend targeting 80 to 90%. The chart shows your median balance over time plus the 10th and 90th percentile outcomes so you can see both the optimistic and pessimistic cases.
                     </p>
                   </div>
                 </div>

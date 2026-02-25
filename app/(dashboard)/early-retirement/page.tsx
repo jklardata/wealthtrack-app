@@ -304,8 +304,7 @@ export default function EarlyRetirementPage() {
             Early Retirement Control Center
           </h1>
           <p className="text-slate-500 mt-1">
-            Your decision dashboard for financial independence - not predictions,
-            but clarity
+            See your numbers, model scenarios, and find your path to financial independence.
           </p>
         </div>
 
@@ -323,19 +322,10 @@ export default function EarlyRetirementPage() {
                   </h3>
                   <div className="text-sm text-slate-700 space-y-3 leading-relaxed">
                     <p>
-                      <strong>If you&apos;re self-employed, you control the two most powerful levers for early retirement: income growth and expense optimization.</strong> Unlike traditional employees constrained by salary schedules and corporate benefit structures, you can directly influence how much you earn and how efficiently you deploy that capital. This flexibility makes early retirement not just possible, but potentially accelerated—if you understand the mechanics and commit to disciplined execution.
+                      As a self-employed person, you control the two biggest levers for early retirement: how much you earn and how much you keep. Your savings rate matters more than your income level.
                     </p>
                     <p>
-                      The FIRE movement (Financial Independence, Retire Early) has validated what many self-employed professionals intuitively understand: your savings rate determines your timeline more than your absolute income. Here&apos;s the math that matters: at a 50% savings rate, you can retire in approximately 17 years. Increase that to 70%, and you&apos;re looking at under 9 years. For self-employed individuals who can scale income without proportionally scaling lifestyle, these aggressive savings rates aren&apos;t theoretical—they&apos;re achievable through strategic business decisions and intentional lifestyle design.
-                    </p>
-                    <p>
-                      <strong>Your income trajectory is uniquely non-linear.</strong> A traditional employee might see 3-5% annual raises. You can double your effective income by landing one major client, launching a leveraged product, or optimizing pricing strategy. But here&apos;s the critical insight: increasing income only accelerates retirement if you resist lifestyle inflation. That extra $50,000 in annual revenue becomes 3-4 additional years of financial runway when invested, or zero additional freedom when absorbed into a larger home or luxury vehicle.
-                    </p>
-                    <p>
-                      <strong>Savings rate is the compounding force multiplier.</strong> Consider two self-employed professionals: One earns $150,000 annually and saves 30% ($45,000). Another earns $100,000 but saves 50% ($50,000). The lower earner retires earlier because they&apos;ve optimized the relationship between earning and spending. For self-employed individuals, this often means strategic decisions around business expenses (is that office necessary, or does remote work suffice?), tax-advantaged retirement account contributions (maximize Solo 401(k) and SEP-IRA limits), and ruthless evaluation of recurring subscriptions and tools that don&apos;t directly generate revenue.
-                    </p>
-                    <p className="text-slate-600 italic">
-                      Think of early retirement planning as engineering your escape velocity. Your income is the initial thrust, but your savings rate determines whether you break free from the gravitational pull of perpetual work. Every percentage point increase in savings rate translates to months or years of reclaimed life. The control center below helps you model these variables, explore scenarios, and identify the specific combination of income, savings, and timeline that aligns with your definition of financial independence. The path exists—you just need to illuminate it with data.
+                      <strong>The math is straightforward.</strong> At a 50% savings rate you can retire in about 17 years. At 70%, under 9 years. Increasing income only accelerates retirement if you resist spending more alongside it. Use the inputs below to model your numbers and see what changes your timeline the most.
                     </p>
                   </div>
                 </div>

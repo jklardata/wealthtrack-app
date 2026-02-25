@@ -63,8 +63,10 @@ import {
   User,
 } from "lucide-react";
 import {
+  ComposedChart,
   LineChart,
   Line,
+  Area,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -170,24 +172,24 @@ function CashFlowCard({
   );
 }
 
-// Green-spectrum color palette for asset classes
+// Green/tan/black palette for asset classes
 const ASSET_COLORS = {
-  stocks: "#059669",     // emerald-600
-  bonds: "#10b981",      // emerald-500
-  cash: "#34d399",       // emerald-400
-  real_estate: "#065f46",// emerald-900
-  points_value: "#6ee7b7", // emerald-300
-  other_assets: "#047857", // emerald-700
+  stocks: "#1a5c38",       // deep forest green
+  bonds: "#c9a84c",        // golden tan
+  cash: "#e8d5a3",         // light tan/cream
+  real_estate: "#1a1a1a",  // near black
+  points_value: "#52b788", // medium green
+  other_assets: "#8b7355", // warm brown
 };
 
 // Gradient pairs
 const ASSET_GRADIENTS = {
-  stocks: { start: "#10b981", end: "#059669" },
-  bonds: { start: "#34d399", end: "#10b981" },
-  cash: { start: "#6ee7b7", end: "#34d399" },
-  real_estate: { start: "#047857", end: "#065f46" },
-  points_value: { start: "#a7f3d0", end: "#6ee7b7" },
-  other_assets: { start: "#059669", end: "#047857" },
+  stocks: { start: "#2d7a50", end: "#1a5c38" },
+  bonds: { start: "#d4b466", end: "#c9a84c" },
+  cash: { start: "#f0e5bb", end: "#e8d5a3" },
+  real_estate: { start: "#3d3d3d", end: "#1a1a1a" },
+  points_value: { start: "#6dcb9a", end: "#52b788" },
+  other_assets: { start: "#a08060", end: "#8b7355" },
 };
 
 const ASSET_LABELS: Record<string, string> = {
@@ -341,6 +343,14 @@ export default function DashboardPage() {
   useEffect(() => {
     fetchEntries();
   }, [fetchEntries]);
+
+  // Log login once per browser session
+  useEffect(() => {
+    if (!sessionStorage.getItem("login_logged")) {
+      fetch("/api/log-login", { method: "POST" }).catch(() => {});
+      sessionStorage.setItem("login_logged", "1");
+    }
+  }, []);
 
   // Handle chart data point click
   const handleChartClick = (data: unknown) => {
@@ -653,16 +663,13 @@ export default function DashboardPage() {
                 <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-emerald-50 to-emerald-100 flex items-center justify-center mb-6 shadow-sm">
                   <TrendingUp className="h-10 w-10 text-emerald-600" />
                 </div>
-                <h2 className="text-2xl font-semibold text-slate-900 mb-3">Start Your Financial Journey</h2>
+                <h2 className="text-2xl font-semibold text-slate-900 mb-3">Add your first net worth entry</h2>
                 <div className="text-base text-slate-600 mb-8 max-w-2xl leading-relaxed space-y-3">
                   <p>
-                    Your net worth is the single most important number in personal finance. It's the difference between everything you own and everything you owe—your true financial position.
-                  </p>
-                  <p>
-                    As a self-employed professional, tracking your net worth monthly gives you clarity that income alone can't provide. You'll see if you're actually building wealth or just staying busy. Most consultants are surprised to discover they're earning well but not accumulating assets at the rate they should be.
+                    Net worth is what you own minus what you owe. Tracking it monthly shows whether you're actually building wealth, not just earning income.
                   </p>
                   <p className="font-medium text-slate-700">
-                    The simple act of measuring creates accountability. When you track it, you manage it. When you manage it, it grows.
+                    Add your first entry below to get started. It only takes a minute.
                   </p>
                 </div>
 
@@ -808,7 +815,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="space-y-4 py-2">
+    <div className="space-y-6 py-2">
       <div>
       {/* Success Banner */}
       <Suspense fallback={null}>
@@ -883,7 +890,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Stats Cards - Compact */}
-      <div className="grid gap-2 grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-3 grid-cols-2 lg:grid-cols-4">
         <Card className="bg-white border border-slate-200 shadow-sm">
           <CardHeader className="p-3 pb-1 text-center">
             <CardTitle className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
@@ -969,7 +976,7 @@ export default function DashboardPage() {
 
 
       {/* Net Worth Chart + Side Panel */}
-      <div className="grid gap-3 lg:grid-cols-[1fr_380px] items-stretch">
+      <div className="grid gap-4 lg:grid-cols-[1fr_380px] items-stretch">
         {/* Net Worth Over Time */}
         <Card className="bg-white border border-slate-200 shadow-sm flex flex-col">
           <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -1034,7 +1041,13 @@ export default function DashboardPage() {
                 </div>
                 <div className="flex-1 min-h-[300px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={chartData} onClick={handleChartClick} style={{ cursor: "pointer" }}>
+                  <ComposedChart data={chartData} onClick={handleChartClick} style={{ cursor: "pointer" }}>
+                    <defs>
+                      <linearGradient id="netWorthFill" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.15} />
+                        <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
                     <CartesianGrid vertical={false} stroke="#f1f5f9" />
                     <XAxis
                       dataKey="date"
@@ -1053,12 +1066,13 @@ export default function DashboardPage() {
                     />
                     <Tooltip content={<NetWorthTooltip />} />
                     {!hiddenCategories.has("netWorth") && (
-                      <Line
+                      <Area
                         type="monotone"
                         dataKey="netWorth"
                         name="Net Worth"
                         stroke="#10b981"
                         strokeWidth={3}
+                        fill="url(#netWorthFill)"
                         dot={{ fill: "#10b981", strokeWidth: 2, r: 4 }}
                         activeDot={{ r: 8, fill: "#10b981", stroke: "#fff", strokeWidth: 2 }}
                       />
@@ -1129,7 +1143,7 @@ export default function DashboardPage() {
                         dot={false}
                       />
                     )}
-                  </LineChart>
+                  </ComposedChart>
                 </ResponsiveContainer>
                 </div>
               </>
@@ -1150,7 +1164,7 @@ export default function DashboardPage() {
         </Card>
 
         {/* Right column: Asset Allocation + Net Worth Momentum stacked */}
-        <div className="flex flex-col gap-3 min-h-0">
+        <div className="flex flex-col gap-4 min-h-0">
           {/* Asset Allocation */}
           <Card className="bg-white border border-slate-200 shadow-sm">
             <CardHeader className="pb-2">
@@ -1431,7 +1445,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Cash Flow - Latest month + expandable history */}
-      <div className="grid lg:grid-cols-2 gap-3">
+      <div className="grid lg:grid-cols-2 gap-4">
         {latestEntry && latestEntry.pre_tax_income > 0 && latestEntry.monthly_expenses > 0 && (
           <CashFlowCard
             latestEntry={latestEntry}
