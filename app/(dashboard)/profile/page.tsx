@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/select";
 import { IncomeSourcesForm } from "../lifetime-income/components/IncomeSourcesForm";
 import { ExpensesForm } from "../lifetime-income/components/ExpensesForm";
-import { User, DollarSign, Calendar, Save, Briefcase, Shield, Users } from "lucide-react";
+import { User, DollarSign, Calendar, Save, Shield, Users } from "lucide-react";
 import type { UserSettings, MaritalStatus, TaxFilingStatus, RiskTolerance } from "@/lib/types";
 import {
   MARITAL_STATUS_OPTIONS,
@@ -32,7 +32,6 @@ export default function ProfilePage() {
 
   // New personal information fields
   const [fullName, setFullName] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("");
   const [maritalStatus, setMaritalStatus] = useState<MaritalStatus | "">("");
   const [numberOfDependents, setNumberOfDependents] = useState("");
   const [stateOfResidence, setStateOfResidence] = useState("");
@@ -40,7 +39,6 @@ export default function ProfilePage() {
   const [riskTolerance, setRiskTolerance] = useState<RiskTolerance | "">("");
   const [lifeExpectancy, setLifeExpectancy] = useState("95");
   const [employerName, setEmployerName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
 
   const [isSaving, setIsSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
@@ -61,7 +59,6 @@ export default function ProfilePage() {
         setDesiredRetirementAge(data.data.desired_retirement_age?.toString() || "");
         // New fields
         setFullName(data.data.full_name || "");
-        setDateOfBirth(data.data.date_of_birth || "");
         setMaritalStatus(data.data.marital_status || "");
         setNumberOfDependents(data.data.number_of_dependents?.toString() || "");
         setStateOfResidence(data.data.state_of_residence || "");
@@ -69,7 +66,6 @@ export default function ProfilePage() {
         setRiskTolerance(data.data.risk_tolerance || "");
         setLifeExpectancy(data.data.life_expectancy_assumption?.toString() || "95");
         setEmployerName(data.data.employer_name || "");
-        setPhoneNumber(data.data.phone_number || "");
       }
     } catch (error) {
       console.error("Error fetching settings:", error);
@@ -90,7 +86,6 @@ export default function ProfilePage() {
           desired_retirement_age: desiredRetirementAge ? parseInt(desiredRetirementAge) : null,
           // New fields
           full_name: fullName || null,
-          date_of_birth: dateOfBirth || null,
           marital_status: maritalStatus || null,
           number_of_dependents: numberOfDependents ? parseInt(numberOfDependents) : null,
           state_of_residence: stateOfResidence || null,
@@ -98,7 +93,6 @@ export default function ProfilePage() {
           risk_tolerance: riskTolerance || null,
           life_expectancy_assumption: lifeExpectancy ? parseInt(lifeExpectancy) : null,
           employer_name: employerName || null,
-          phone_number: phoneNumber || null,
         }),
       });
 
@@ -170,15 +164,6 @@ export default function ProfilePage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="date_of_birth">Date of Birth</Label>
-                <Input
-                  id="date_of_birth"
-                  type="date"
-                  value={dateOfBirth}
-                  onChange={(e) => setDateOfBirth(e.target.value)}
-                />
-              </div>
-              <div className="space-y-2">
                 <Label htmlFor="current_age">Current Age (years)</Label>
                 <Input
                   id="current_age"
@@ -186,16 +171,6 @@ export default function ProfilePage() {
                   placeholder="35"
                   value={currentAge}
                   onChange={(e) => setCurrentAge(e.target.value)}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="phone_number">Phone Number</Label>
-                <Input
-                  id="phone_number"
-                  type="tel"
-                  placeholder="(555) 123-4567"
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
                 />
               </div>
               <div className="space-y-2">

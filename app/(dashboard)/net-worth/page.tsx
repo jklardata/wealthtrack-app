@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,6 +43,9 @@ import {
   DollarSign,
   User,
   Copy,
+  LayoutDashboard,
+  PieChart,
+  ChevronRight,
 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
@@ -356,6 +360,7 @@ function EntryForm({ entry, previousEntry, onSubmit, onClose, isSubmitting }: En
 }
 
 export default function NetWorthPage() {
+  const router = useRouter();
   const [entries, setEntries] = useState<NetWorthEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -416,9 +421,13 @@ export default function NetWorthPage() {
         throw new Error(errorData.error || "Failed to save entry");
       }
 
+      const isNewEntry = !editingEntry?.id;
       await fetchEntries();
       setIsDialogOpen(false);
       setEditingEntry(undefined);
+      if (isNewEntry) {
+        router.push("/dashboard");
+      }
     } catch (err) {
       alert(err instanceof Error ? err.message : "Failed to save entry");
     } finally {
@@ -955,33 +964,62 @@ export default function NetWorthPage() {
       {/* Income/Expenses CTA Banner */}
       {entries.length > 0 && entries.every(e => !e.pre_tax_income && !e.monthly_expenses) && (
         <div className="bg-gradient-to-r from-blue-50 via-cyan-50 to-blue-50 border border-blue-200 rounded-lg p-5">
-          <div className="flex items-start gap-4">
-            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-              <DollarSign className="h-6 w-6 text-blue-600" />
-            </div>
-            <div className="flex-1">
-              <h3 className="font-semibold text-slate-900 mb-2">
-                Track Your Income & Expenses
-              </h3>
-              <p className="text-sm text-slate-600 mb-4">
-                Add your monthly income and expenses to your net worth entries to automatically calculate your savings rate, net profit, and see your complete financial picture.
-              </p>
-              <div className="flex flex-wrap gap-3">
-                <Button
-                  size="sm"
-                  className="bg-blue-600 hover:bg-blue-700 text-white"
-                  onClick={() => setIsDialogOpen(true)}
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Income & Expenses
-                </Button>
-                <Link href="/settings">
-                  <Button size="sm" variant="outline" className="border-blue-200 text-blue-700 hover:bg-blue-50">
-                    <Settings className="h-4 w-4 mr-2" />
-                    Update via Google Sheets
-                  </Button>
-                </Link>
+          <div className="flex flex-col lg:flex-row gap-6">
+            {/* Left: existing content */}
+            <div className="flex items-start gap-4 flex-1">
+              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <DollarSign className="h-6 w-6 text-blue-600" />
               </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-slate-900 mb-2">
+                  Track Your Income & Expenses
+                </h3>
+                <p className="text-sm text-slate-600 mb-4">
+                  Add your monthly income and expenses to your net worth entries to automatically calculate your savings rate, net profit, and see your complete financial picture.
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  <Button
+                    size="sm"
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                    onClick={() => setIsDialogOpen(true)}
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Income & Expenses
+                  </Button>
+                  <Link href="/settings">
+                    <Button size="sm" variant="outline" className="border-blue-200 text-blue-700 hover:bg-blue-50">
+                      <Settings className="h-4 w-4 mr-2" />
+                      Update via Google Sheets
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            {/* Right: callouts */}
+            <div className="flex flex-col gap-2 lg:w-56 shrink-0">
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Explore Next</p>
+              <Link href="/dashboard" className="flex items-center gap-3 bg-white border border-blue-100 rounded-lg px-3 py-2.5 hover:border-blue-300 hover:shadow-sm transition-all group">
+                <div className="w-8 h-8 bg-emerald-100 rounded-md flex items-center justify-center shrink-0">
+                  <LayoutDashboard className="h-4 w-4 text-emerald-600" />
+                </div>
+                <span className="text-sm font-medium text-slate-700 group-hover:text-slate-900 flex-1">Dashboard</span>
+                <ChevronRight className="h-4 w-4 text-slate-400 group-hover:text-slate-600" />
+              </Link>
+              <Link href="/trajectory" className="flex items-center gap-3 bg-white border border-blue-100 rounded-lg px-3 py-2.5 hover:border-blue-300 hover:shadow-sm transition-all group">
+                <div className="w-8 h-8 bg-blue-100 rounded-md flex items-center justify-center shrink-0">
+                  <TrendingUp className="h-4 w-4 text-blue-600" />
+                </div>
+                <span className="text-sm font-medium text-slate-700 group-hover:text-slate-900 flex-1">Trajectory</span>
+                <ChevronRight className="h-4 w-4 text-slate-400 group-hover:text-slate-600" />
+              </Link>
+              <Link href="/portfolio-optimizer" className="flex items-center gap-3 bg-white border border-blue-100 rounded-lg px-3 py-2.5 hover:border-blue-300 hover:shadow-sm transition-all group">
+                <div className="w-8 h-8 bg-violet-100 rounded-md flex items-center justify-center shrink-0">
+                  <PieChart className="h-4 w-4 text-violet-600" />
+                </div>
+                <span className="text-sm font-medium text-slate-700 group-hover:text-slate-900 flex-1">Diversify Your Portfolio</span>
+                <ChevronRight className="h-4 w-4 text-slate-400 group-hover:text-slate-600" />
+              </Link>
             </div>
           </div>
         </div>
