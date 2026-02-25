@@ -16,6 +16,14 @@ const isPublicRoute = createRouteMatcher([
   '/api/stripe/webhooks',
   '/api/newsletter',
   '/creative(.*)',
+  '/sitemap.xml',
+  '/robots.txt',
+  '/about(.*)',
+  '/faq(.*)',
+  '/quarterly-tax-calculator(.*)',
+  '/scorp-calculator(.*)',
+  '/fire-calculator(.*)',
+  '/glossary(.*)',
   '/', // Make root public for marketing site
 ]);
 
