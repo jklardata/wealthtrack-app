@@ -26,6 +26,7 @@ const isPublicRoute = createRouteMatcher([
   '/fire-calculator(.*)',
   '/glossary(.*)',
   '/net-worth(.*)',
+  '/handbooks(.*)',
   '/', // Make root public for marketing site
 ]);
 

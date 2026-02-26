@@ -247,43 +247,37 @@ export default function BlogPage() {
       {/* Handbooks */}
       <section className="py-12 bg-slate-50 border-y border-slate-200">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-sm font-medium text-slate-500 uppercase tracking-wider">
-              Handbooks
-            </h2>
-            <span className="text-xs text-slate-400 bg-slate-200 px-2 py-1 rounded-full">Coming soon</span>
-          </div>
+          <h2 className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-8">
+            Handbooks
+          </h2>
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="group rounded-2xl border border-slate-200 bg-white p-8 opacity-75">
-              <div className="flex items-start justify-between mb-4">
-                <div className="p-3 rounded-xl bg-emerald-50">
+            <Link href="/handbooks/self-employed-tax-handbook">
+              <div className="group rounded-2xl border border-slate-200 bg-white p-8 hover:border-emerald-300 hover:shadow-lg transition-all h-full cursor-pointer">
+                <div className="p-3 rounded-xl bg-emerald-50 w-fit mb-4">
                   <span className="text-2xl">📋</span>
                 </div>
-                <span className="text-xs font-medium text-white bg-slate-400 px-2 py-1 rounded-full">Coming Soon</span>
+                <h3 className="text-xl font-semibold mb-2 text-slate-900 group-hover:text-emerald-600 transition-colors">The Self-Employed Tax Handbook</h3>
+                <p className="text-sm text-slate-600">Everything you need to minimize your tax burden: Solo 401k, S-Corp election, HSA, FEIE, and quarterly estimates — all in one place.</p>
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-slate-900">The Self-Employed Tax Handbook</h3>
-              <p className="text-sm text-slate-600">Everything you need to minimize your tax burden: Solo 401k, S-Corp election, HSA, FEIE, and quarterly estimates — all in one place.</p>
-            </div>
-            <div className="group rounded-2xl border border-slate-200 bg-white p-8 opacity-75">
-              <div className="flex items-start justify-between mb-4">
-                <div className="p-3 rounded-xl bg-blue-50">
+            </Link>
+            <Link href="/handbooks/early-retirement-handbook">
+              <div className="group rounded-2xl border border-slate-200 bg-white p-8 hover:border-blue-300 hover:shadow-lg transition-all h-full cursor-pointer">
+                <div className="p-3 rounded-xl bg-blue-50 w-fit mb-4">
                   <span className="text-2xl">🏔️</span>
                 </div>
-                <span className="text-xs font-medium text-white bg-slate-400 px-2 py-1 rounded-full">Coming Soon</span>
+                <h3 className="text-xl font-semibold mb-2 text-slate-900 group-hover:text-blue-600 transition-colors">The Early Retirement Handbook</h3>
+                <p className="text-sm text-slate-600">A practical guide to retiring early as a self-employed professional: FI numbers, Roth conversions, healthcare, and how to use the gap years window.</p>
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-slate-900">The Early Retirement Handbook</h3>
-              <p className="text-sm text-slate-600">A practical guide to retiring early as a self-employed professional: FI numbers, Roth conversions, healthcare, and how to use the gap years window.</p>
-            </div>
-            <div className="group rounded-2xl border border-slate-200 bg-white p-8 opacity-75">
-              <div className="flex items-start justify-between mb-4">
-                <div className="p-3 rounded-xl bg-violet-50">
+            </Link>
+            <Link href="/handbooks/freelancer-financial-setup-guide">
+              <div className="group rounded-2xl border border-slate-200 bg-white p-8 hover:border-violet-300 hover:shadow-lg transition-all h-full cursor-pointer">
+                <div className="p-3 rounded-xl bg-violet-50 w-fit mb-4">
                   <span className="text-2xl">🚀</span>
                 </div>
-                <span className="text-xs font-medium text-white bg-slate-400 px-2 py-1 rounded-full">Coming Soon</span>
+                <h3 className="text-xl font-semibold mb-2 text-slate-900 group-hover:text-violet-600 transition-colors">The Freelancer's Financial Setup Guide</h3>
+                <p className="text-sm text-slate-600">From your first client to a complete financial system: business banking, tax reserves, retirement accounts, and protecting your income.</p>
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-slate-900">The Freelancer's Financial Setup Guide</h3>
-              <p className="text-sm text-slate-600">From your first client to a complete financial system: business banking, tax reserves, retirement accounts, and protecting your income.</p>
-            </div>
+            </Link>
           </div>
         </div>
       </section>
