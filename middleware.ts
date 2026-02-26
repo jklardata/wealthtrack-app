@@ -25,6 +25,7 @@ const isPublicRoute = createRouteMatcher([
   '/scorp-calculator(.*)',
   '/fire-calculator(.*)',
   '/glossary(.*)',
+  '/net-worth(.*)',
   '/', // Make root public for marketing site
 ]);
 

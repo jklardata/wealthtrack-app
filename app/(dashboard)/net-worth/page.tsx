@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useNetWorth } from "@/hooks/use-net-worth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -46,6 +47,7 @@ import {
   LayoutDashboard,
   PieChart,
   ChevronRight,
+  Shield,
 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
@@ -361,9 +363,21 @@ function EntryForm({ entry, previousEntry, onSubmit, onClose, isSubmitting }: En
 
 export default function NetWorthPage() {
   const router = useRouter();
-  const [entries, setEntries] = useState<NetWorthEntry[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const {
+    entries,
+    loading,
+    error,
+    isGuest,
+    pendingMigration,
+    localEntryCount,
+    migrating,
+    fetchEntries,
+    saveEntry,
+    deleteEntry,
+    deleteEntries,
+    migrateLocalEntries,
+    discardLocalEntries,
+  } = useNetWorth();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingEntry, setEditingEntry] = useState<NetWorthEntry | undefined>();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -375,57 +389,14 @@ export default function NetWorthPage() {
   const [isBulkDeleting, setIsBulkDeleting] = useState(false);
   const [isRemoveAllDialogOpen, setIsRemoveAllDialogOpen] = useState(false);
 
-  // Landing page 21 design - already defined but ensuring consistency
-  const cardClass = "bg-white border border-slate-200 shadow-sm";
-  const headerClass = "text-slate-900 font-medium";
-  const mutedTextClass = "text-slate-500";
-  const positiveClass = "text-emerald-600";
-  const negativeClass = "text-red-500";
-  const primaryBtnClass = "bg-emerald-600 hover:bg-emerald-700 text-white";
-
-  const fetchEntries = useCallback(async () => {
-    try {
-      const response = await fetch("/api/net-worth");
-      if (!response.ok) {
-        throw new Error("Failed to fetch entries");
-      }
-      const result = await response.json();
-      setEntries(result.data || []);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load data");
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchEntries();
-  }, [fetchEntries]);
-
   const handleSubmit = async (data: NetWorthFormData) => {
     setIsSubmitting(true);
     try {
-      const url = editingEntry?.id
-        ? `/api/net-worth/${editingEntry.id}`
-        : "/api/net-worth";
-      const method = editingEntry?.id ? "PUT" : "POST";
-
-      const response = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to save entry");
-      }
-
       const isNewEntry = !editingEntry?.id;
-      await fetchEntries();
+      await saveEntry(data, editingEntry?.id);
       setIsDialogOpen(false);
       setEditingEntry(undefined);
-      if (isNewEntry) {
+      if (isNewEntry && !isGuest) {
         router.push("/dashboard");
       }
     } catch (err) {
@@ -437,17 +408,8 @@ export default function NetWorthPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this entry?")) return;
-
     try {
-      const response = await fetch(`/api/net-worth/${id}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to delete entry");
-      }
-
-      await fetchEntries();
+      await deleteEntry(id);
     } catch (err) {
       alert(err instanceof Error ? err.message : "Failed to delete entry");
     }
@@ -631,32 +593,14 @@ export default function NetWorthPage() {
 
   const handleBulkDelete = async () => {
     if (selectedIds.size === 0) return;
-
     setIsBulkDeleting(true);
     try {
-      const response = await fetch("/api/net-worth", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ids: Array.from(selectedIds) }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to delete entries");
-      }
-
-      const result = await response.json();
+      const count = await deleteEntries(Array.from(selectedIds));
       setSelectedIds(new Set());
       setIsDeleteDialogOpen(false);
-      await fetchEntries();
-      setSyncMessage({
-        type: "success",
-        text: `Successfully deleted ${result.deleted} entries`,
-      });
+      setSyncMessage({ type: "success", text: `Successfully deleted ${count} entries` });
     } catch (err) {
-      setSyncMessage({
-        type: "error",
-        text: err instanceof Error ? err.message : "Failed to delete entries",
-      });
+      setSyncMessage({ type: "error", text: err instanceof Error ? err.message : "Failed to delete entries" });
     } finally {
       setIsBulkDeleting(false);
     }
@@ -664,33 +608,14 @@ export default function NetWorthPage() {
 
   const handleRemoveAll = async () => {
     if (entries.length === 0) return;
-
     setIsBulkDeleting(true);
     try {
-      const allIds = entries.map((e) => e.id);
-      const response = await fetch("/api/net-worth", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ids: allIds }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to delete entries");
-      }
-
-      const result = await response.json();
+      const count = await deleteEntries(entries.map((e) => e.id));
       setSelectedIds(new Set());
       setIsRemoveAllDialogOpen(false);
-      await fetchEntries();
-      setSyncMessage({
-        type: "success",
-        text: `Successfully deleted all ${result.deleted} entries`,
-      });
+      setSyncMessage({ type: "success", text: `Successfully deleted all ${count} entries` });
     } catch (err) {
-      setSyncMessage({
-        type: "error",
-        text: err instanceof Error ? err.message : "Failed to delete entries",
-      });
+      setSyncMessage({ type: "error", text: err instanceof Error ? err.message : "Failed to delete entries" });
     } finally {
       setIsBulkDeleting(false);
     }
@@ -740,12 +665,74 @@ export default function NetWorthPage() {
   return (
     <div className="">
       <div className="space-y-6 py-4">
+      {/* Migration Dialog */}
+      <Dialog open={pendingMigration}>
+        <DialogContent className="max-w-md" onInteractOutside={(e) => e.preventDefault()}>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <RefreshCw className="h-5 w-5 text-emerald-600" />
+              Sync your local data
+            </DialogTitle>
+          </DialogHeader>
+          <div className="py-2 space-y-3">
+            <p className="text-sm text-slate-700">
+              We found <span className="font-semibold text-slate-900">{localEntryCount} {localEntryCount === 1 ? 'entry' : 'entries'}</span> saved on this device from before you signed in.
+            </p>
+            <p className="text-sm text-slate-600">
+              Sync them to your account to access them anywhere, or discard them if you no longer need them.
+            </p>
+          </div>
+          <div className="flex gap-3 pt-2">
+            <Button
+              variant="outline"
+              className="flex-1 border-slate-200 text-slate-700"
+              onClick={discardLocalEntries}
+              disabled={migrating}
+            >
+              Discard
+            </Button>
+            <Button
+              className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white"
+              onClick={migrateLocalEntries}
+              disabled={migrating}
+            >
+              {migrating ? (
+                <>
+                  <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                  Syncing...
+                </>
+              ) : (
+                "Sync to Account"
+              )}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       <div>
         <h1 className="text-2xl font-bold text-slate-900">Net Worth Timeline</h1>
         <p className="text-sm text-slate-500 mt-1">
           Track your net worth over time
         </p>
       </div>
+
+      {/* Guest Banner */}
+      {isGuest && (
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-lg bg-blue-50 border border-blue-200">
+          <div className="flex items-start gap-3">
+            <Shield className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="text-sm font-medium text-slate-900">Your data stays on your device</p>
+              <p className="text-sm text-slate-600">Nothing is sent to our servers. Create a free account to sync across devices and never lose your data.</p>
+            </div>
+          </div>
+          <Link href="/sign-up" className="shrink-0">
+            <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto">
+              Save Progress
+            </Button>
+          </Link>
+        </div>
+      )}
 
       {/* Educational Introduction */}
       <Card className="bg-gradient-to-br from-emerald-50 via-white to-teal-50 border-emerald-200 shadow-sm">
@@ -776,16 +763,18 @@ export default function NetWorthPage() {
       {/* Controls + entries */}
       <div className="space-y-4">
         <div className="flex flex-wrap gap-2">
-          <Button
-            variant="outline"
-            onClick={handleSync}
-            disabled={syncing}
-            className="border border-slate-200 text-slate-700 hover:bg-slate-100"
-          >
-            <RefreshCw className={`h-4 w-4 mr-2 ${syncing ? "animate-spin" : ""}`} />
-            <span className="hidden sm:inline">{syncing ? "Syncing..." : "Sync from Sheet"}</span>
-            <span className="sm:hidden">Sync</span>
-          </Button>
+          {!isGuest && (
+            <Button
+              variant="outline"
+              onClick={handleSync}
+              disabled={syncing}
+              className="border border-slate-200 text-slate-700 hover:bg-slate-100"
+            >
+              <RefreshCw className={`h-4 w-4 mr-2 ${syncing ? "animate-spin" : ""}`} />
+              <span className="hidden sm:inline">{syncing ? "Syncing..." : "Sync from Sheet"}</span>
+              <span className="sm:hidden">Sync</span>
+            </Button>
+          )}
           <Button variant="outline" onClick={handleExportCSV} disabled={entries.length === 0} className="border border-slate-200 text-slate-700 hover:bg-slate-100">
             <Download className="h-4 w-4 mr-2" />
             <span className="hidden sm:inline">Export CSV</span>
