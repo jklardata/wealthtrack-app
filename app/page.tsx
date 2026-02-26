@@ -438,6 +438,10 @@ export default function Landing21() {
               <ul className="space-y-2">
                 <li className="flex items-center gap-2 text-sm text-slate-600">
                   <Check className="h-4 w-4 text-emerald-500" />
+                  No account needed—data stays on your device
+                </li>
+                <li className="flex items-center gap-2 text-sm text-slate-600">
+                  <Check className="h-4 w-4 text-emerald-500" />
                   Net worth tracking over time
                 </li>
                 <li className="flex items-center gap-2 text-sm text-slate-600">
@@ -720,9 +724,9 @@ export default function Landing21() {
               <div className="w-12 h-12 bg-emerald-50 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <Shield className="h-6 w-6 text-emerald-600" />
               </div>
-              <h3 className="font-medium text-slate-900 mb-2">Your data stays yours</h3>
+              <h3 className="font-medium text-slate-900 mb-2">No account required to start</h3>
               <p className="text-sm text-slate-500">
-                No account linking required. No selling data. Export everything anytime. Cancel anytime.
+                Your data is saved locally on your device and never sent to our servers until you choose to create an account. No account linking, no data selling, export everything anytime.
               </p>
             </div>
           </div>
