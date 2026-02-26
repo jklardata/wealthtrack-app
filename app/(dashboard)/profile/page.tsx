@@ -37,8 +37,7 @@ export default function ProfilePage() {
   const [stateOfResidence, setStateOfResidence] = useState("");
   const [taxFilingStatus, setTaxFilingStatus] = useState<TaxFilingStatus | "">("");
   const [riskTolerance, setRiskTolerance] = useState<RiskTolerance | "">("");
-  const [lifeExpectancy, setLifeExpectancy] = useState("95");
-  const [employerName, setEmployerName] = useState("");
+  const [lifeExpectancy, setLifeExpectancy] = useState("85");
 
   const [isSaving, setIsSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
@@ -64,8 +63,7 @@ export default function ProfilePage() {
         setStateOfResidence(data.data.state_of_residence || "");
         setTaxFilingStatus(data.data.tax_filing_status || "");
         setRiskTolerance(data.data.risk_tolerance || "");
-        setLifeExpectancy(data.data.life_expectancy_assumption?.toString() || "95");
-        setEmployerName(data.data.employer_name || "");
+        setLifeExpectancy(data.data.life_expectancy_assumption?.toString() || "85");
       }
     } catch (error) {
       console.error("Error fetching settings:", error);
@@ -92,7 +90,6 @@ export default function ProfilePage() {
           tax_filing_status: taxFilingStatus || null,
           risk_tolerance: riskTolerance || null,
           life_expectancy_assumption: lifeExpectancy ? parseInt(lifeExpectancy) : null,
-          employer_name: employerName || null,
         }),
       });
 
@@ -155,7 +152,7 @@ export default function ProfilePage() {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="full_name">Full Name</Label>
+                <Label htmlFor="full_name">Name</Label>
                 <Input
                   id="full_name"
                   placeholder="John Doe"
@@ -213,15 +210,6 @@ export default function ProfilePage() {
                     ))}
                   </SelectContent>
                 </Select>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="employer_name">Employer Name</Label>
-                <Input
-                  id="employer_name"
-                  placeholder="Company Name"
-                  value={employerName}
-                  onChange={(e) => setEmployerName(e.target.value)}
-                />
               </div>
             </div>
           </div>

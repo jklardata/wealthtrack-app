@@ -168,7 +168,7 @@ export default function BlogPage() {
           </Link>
           <div className="flex items-center gap-6">
             <Link href="/tools" className="text-sm text-slate-600 hover:text-slate-900 hidden md:block">
-              Free Tools
+              Resources
             </Link>
             <Link href="/dashboard">
               <Button className="bg-emerald-600 text-white hover:bg-emerald-700">
@@ -189,7 +189,7 @@ export default function BlogPage() {
             </div>
 
             <h1 className="text-5xl md:text-7xl font-black tracking-tight mb-4 leading-[1.1] text-slate-900">
-              Resources & Insights
+              Learn
             </h1>
 
             <p className="text-xl text-slate-700 font-semibold max-w-2xl">
@@ -244,8 +244,52 @@ export default function BlogPage() {
         </div>
       </section>
 
+      {/* Handbooks */}
+      <section className="py-12 bg-slate-50 border-y border-slate-200">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-sm font-medium text-slate-500 uppercase tracking-wider">
+              Handbooks
+            </h2>
+            <span className="text-xs text-slate-400 bg-slate-200 px-2 py-1 rounded-full">Coming soon</span>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="group rounded-2xl border border-slate-200 bg-white p-8 opacity-75">
+              <div className="flex items-start justify-between mb-4">
+                <div className="p-3 rounded-xl bg-emerald-50">
+                  <span className="text-2xl">📋</span>
+                </div>
+                <span className="text-xs font-medium text-white bg-slate-400 px-2 py-1 rounded-full">Coming Soon</span>
+              </div>
+              <h3 className="text-xl font-semibold mb-2 text-slate-900">The Self-Employed Tax Handbook</h3>
+              <p className="text-sm text-slate-600">Everything you need to minimize your tax burden: Solo 401k, S-Corp election, HSA, FEIE, and quarterly estimates — all in one place.</p>
+            </div>
+            <div className="group rounded-2xl border border-slate-200 bg-white p-8 opacity-75">
+              <div className="flex items-start justify-between mb-4">
+                <div className="p-3 rounded-xl bg-blue-50">
+                  <span className="text-2xl">🏔️</span>
+                </div>
+                <span className="text-xs font-medium text-white bg-slate-400 px-2 py-1 rounded-full">Coming Soon</span>
+              </div>
+              <h3 className="text-xl font-semibold mb-2 text-slate-900">The Early Retirement Handbook</h3>
+              <p className="text-sm text-slate-600">A practical guide to retiring early as a self-employed professional: FI numbers, Roth conversions, healthcare, and how to use the gap years window.</p>
+            </div>
+            <div className="group rounded-2xl border border-slate-200 bg-white p-8 opacity-75">
+              <div className="flex items-start justify-between mb-4">
+                <div className="p-3 rounded-xl bg-violet-50">
+                  <span className="text-2xl">🚀</span>
+                </div>
+                <span className="text-xs font-medium text-white bg-slate-400 px-2 py-1 rounded-full">Coming Soon</span>
+              </div>
+              <h3 className="text-xl font-semibold mb-2 text-slate-900">The Freelancer's Financial Setup Guide</h3>
+              <p className="text-sm text-slate-600">From your first client to a complete financial system: business banking, tax reserves, retirement accounts, and protecting your income.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* All Articles */}
-      <section className="py-16 bg-slate-50">
+      <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-8">
             All Articles
@@ -394,7 +438,7 @@ export default function BlogPage() {
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-slate-400">
           <span>© 2026 SoloFI</span>
           <div className="flex gap-6">
-            <Link href="/blog" className="hover:text-white transition-colors">Blog</Link>
+            <Link href="/blog" className="hover:text-white transition-colors">Learn</Link>
             <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
             <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
           </div>

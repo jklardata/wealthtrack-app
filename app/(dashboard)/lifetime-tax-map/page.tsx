@@ -491,19 +491,19 @@ export default function LifetimeTaxMapPage() {
                 </h3>
                 <div className="text-sm text-slate-700 space-y-3 leading-relaxed">
                   <p>
-                    A lifetime tax map is a visual timeline showing your projected tax exposure from today through life expectancy. Unlike annual tax planning that focuses on minimizing this year's bill, it reveals decades-long patterns in your tax burden—when you'll pay the most, when you'll pay the least, and crucially, when you have opportunities to shift income across years to reduce your total lifetime tax bill.
+                    A lifetime tax map shows your projected tax exposure from today through life expectancy. Unlike annual tax planning, it reveals decades of patterns in your tax burden and when you have opportunities to shift income across years to cut your total lifetime bill.
                   </p>
                   <p>
-                    <strong>Why lifetime exposure matters more than annual taxes:</strong> Most people optimize taxes one year at a time. But this misses the bigger picture. If you pay 12% on a Roth conversion today to avoid 24% on RMDs in 20 years, you've cut your effective tax rate in half on that money. Lifetime tax minimization often means strategically paying some tax now to avoid much larger bills later—opportunities invisible in a single tax year.
+                    <strong>Why lifetime exposure matters:</strong> most people optimize taxes one year at a time. Paying 12% on a Roth conversion today to avoid 24% on RMDs in 20 years cuts your effective rate in half on that money. The strategy is to pay some tax now to avoid larger bills later.
                   </p>
                   <p>
-                    <strong>How early retirement creates unique windows:</strong> When you retire early at 50–60, you create a 5–15 year gap before Social Security and RMDs begin. During this period, taxable income drops to near zero if you live off Roth withdrawals or taxable account principal—creating artificially low-income years ideal for filling the 12% and 22% brackets with Roth conversions and capital gains harvesting. Once Social Security and RMDs begin, your income floor rises permanently and this window closes forever.
+                    <strong>Early retirement creates unique windows:</strong> retiring at 50-60 opens a gap before Social Security and RMDs begin. Taxable income can near zero during those years, making them ideal for Roth conversions and capital gains harvesting at low rates. Once RMDs start, this window closes permanently.
                   </p>
                   <p>
-                    <strong>How to read the visualization:</strong> The horizontal axis shows your age across your full financial timeline. Stacked colored areas represent different income sources (blue = consulting, purple = Roth conversions, green = capital gains, orange = withdrawals, yellow = Social Security). The red line tracks cumulative lifetime taxes paid. Vertical dashed lines mark key events—retirement, Medicare eligibility, RMD start, Social Security claim. Green-shaded regions indicate optimal tax optimization windows (gap years).
+                    <strong>Reading the chart:</strong> the horizontal axis is your age. Colored stacked areas show income sources. The red line tracks cumulative taxes paid. Dashed vertical lines mark key events like retirement, Medicare, RMDs, and Social Security. Green-shaded regions are your best optimization windows.
                   </p>
                   <p>
-                    <strong>Key model assumptions:</strong> Federal income tax only (no state taxes). 2026 brackets held constant unless the future assumption is changed. Portfolio returns assumed constant with no sequence-of-returns risk. Standard deduction used throughout. Withdrawal sequencing: taxable first, then Traditional IRA, then Roth. Healthcare subsidy and IRMAA thresholds use simplified current-year rules.
+                    <strong>Assumptions:</strong> federal income tax only, no state taxes. 2026 brackets held constant unless changed. Standard deduction throughout. Withdrawals go taxable first, then Traditional IRA, then Roth.
                   </p>
                 </div>
               </div>

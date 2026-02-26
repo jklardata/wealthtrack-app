@@ -23,6 +23,7 @@ import {
   LineChart,
   Activity,
   MessageSquare,
+  GraduationCap,
   RefreshCw,
   Target,
   Map,
@@ -98,7 +99,8 @@ const navGroups: NavGroup[] = [
     label: "Account",
     items: [
       { href: "/learn", label: "Documentation", icon: FileText },
-      { href: "/blog", label: "Resources", icon: BookOpen },
+      { href: "/tools", label: "Resources", icon: BookOpen },
+      { href: "/blog", label: "Learn", icon: GraduationCap },
       { href: "/pricing", label: "Pricing", icon: Sparkles },
       { href: "/founder-notes", label: "Founder Notes", icon: MessageSquare },
       { href: "/settings", label: "Settings", icon: Settings },

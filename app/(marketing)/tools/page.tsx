@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Calculator, TrendingUp, Repeat, CheckSquare, FileText, Sparkles, Globe, DollarSign, Landmark } from "lucide-react";
 
 export const metadata = {
-  title: "Free Tools | SoloFI",
+  title: "Resources | SoloFI",
   description: "Free financial calculators and tools for self-employed professionals, consultants, and freelancers.",
 };
 
@@ -134,7 +134,7 @@ export default function ToolsPage() {
           </Link>
           <div className="flex items-center gap-6">
             <Link href="/blog" className="text-sm text-slate-600 hover:text-slate-900 hidden md:block">
-              Blog
+              Learn
             </Link>
             <Link href="/sign-up">
               <Button className="bg-emerald-600 text-white hover:bg-emerald-700">
@@ -155,7 +155,7 @@ export default function ToolsPage() {
             </div>
 
             <h1 className="text-5xl md:text-6xl font-medium tracking-tight mb-6 leading-[1.1] text-slate-900">
-              Financial Tools for the Self-Employed
+              Resources
             </h1>
 
             <p className="text-xl text-slate-600 max-w-2xl">
@@ -290,7 +290,7 @@ export default function ToolsPage() {
             </Link>
             <Link href="/blog">
               <Button size="lg" variant="outline" className="border-slate-300 text-slate-700 hover:bg-slate-100">
-                Read the Blog
+                Learn
               </Button>
             </Link>
           </div>
@@ -302,7 +302,7 @@ export default function ToolsPage() {
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-slate-400">
           <span>© 2026 SoloFI</span>
           <div className="flex gap-6">
-            <Link href="/blog" className="hover:text-white transition-colors">Blog</Link>
+            <Link href="/blog" className="hover:text-white transition-colors">Learn</Link>
             <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
             <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
           </div>

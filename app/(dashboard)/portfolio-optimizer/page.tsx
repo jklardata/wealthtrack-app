@@ -549,7 +549,7 @@ function AllocationBreakdownCard({
       <CardContent>
         <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
           <p className="text-sm text-slate-700 leading-relaxed">
-            Risk management through asset allocation is the primary determinant of long-term portfolio performance—more influential than individual security selection or market timing. Our optimizer analyzes your current holdings, assesses your risk profile through a comprehensive questionnaire, and calculates an efficient frontier allocation that balances growth potential with downside protection. The result is a personalized roadmap showing exactly how to rebalance: which positions to increase, which to trim, and by how much.
+            Asset allocation drives long-term performance more than stock picking or market timing. We analyze your current holdings, assess your risk profile, and calculate an efficient allocation that balances growth with downside protection. The result shows exactly which positions to increase, trim, and by how much.
           </p>
         </div>
         <div className="space-y-4">
@@ -1239,16 +1239,16 @@ export default function PortfolioOptimizerPage() {
                 </h3>
                 <div className="text-sm text-slate-700 space-y-3 leading-relaxed">
                   <p>
-                    Portfolio optimization is a systematic approach to constructing an investment portfolio that aims to maximize expected returns for a given level of risk tolerance. This tool leverages <strong><a href="https://www.investopedia.com/terms/m/modernportfoliotheory.asp" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Modern Portfolio Theory (MPT)</a></strong>, a framework developed by Harry Markowitz that demonstrates how diversification across asset classes can reduce overall portfolio volatility while maintaining or improving returns.
+                    Portfolio optimization helps you build a portfolio that maximizes returns for your risk level. This tool uses <strong><a href="https://www.investopedia.com/terms/m/modernportfoliotheory.asp" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800 underline">Modern Portfolio Theory (MPT)</a></strong>, developed by Harry Markowitz, to show how diversifying across asset classes reduces volatility without sacrificing returns.
                   </p>
                   <p>
-                    The core principle is simple yet powerful: different asset classes don&apos;t move in perfect correlation with each other. When stocks decline, bonds may hold steady or even appreciate. When traditional markets struggle, real estate or commodities may provide stability. By strategically allocating your capital across multiple asset classes—stocks, bonds, cash, real estate, and commodities—you create a portfolio that&apos;s more resilient to market turbulence.
+                    <strong>Why diversification works:</strong> different assets don&apos;t move together. When stocks drop, bonds often hold steady. Spreading capital across stocks, bonds, cash, real estate, and commodities creates a portfolio that weathers market swings better than any single asset class.
                   </p>
                   <p>
-                    <strong>Why optimize your current allocation?</strong> Most investors accumulate assets over time without a cohesive strategy, leading to unintentional concentrations in certain areas. You might discover you&apos;re overweight in stocks during a bull market or holding too much cash that&apos;s eroding to inflation. Optimization identifies these imbalances and provides specific, actionable recommendations to realign your portfolio with your risk tolerance and financial goals.
+                    <strong>Why optimize now:</strong> most investors accumulate assets without a strategy, ending up overweight in one area or holding too much cash eroding to inflation. This tool identifies those imbalances and gives you a specific rebalancing plan aligned with your risk tolerance and goals.
                   </p>
                   <p className="text-slate-600 italic">
-                    Think of portfolio optimization as a financial health checkup. Just as you wouldn&apos;t wait until a medical emergency to visit a doctor, you shouldn&apos;t wait for a market crash to examine whether your portfolio is properly diversified. Regular optimization ensures your asset allocation evolves with both market conditions and your changing financial circumstances.
+                    Think of it as a financial checkup. Regular optimization ensures your allocation evolves with market conditions and your changing circumstances.
                   </p>
                 </div>
               </div>

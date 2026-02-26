@@ -989,7 +989,7 @@ export default function NetWorthPage() {
                 <span className="text-sm font-medium text-slate-700 group-hover:text-slate-900 flex-1">Dashboard</span>
                 <ChevronRight className="h-4 w-4 text-slate-400 group-hover:text-slate-600" />
               </Link>
-              <Link href="/trajectory" className="flex items-center gap-3 bg-white border border-blue-100 rounded-lg px-3 py-2.5 hover:border-blue-300 hover:shadow-sm transition-all group">
+              <Link href="https://app.solofi.io/lifetime-income" className="flex items-center gap-3 bg-white border border-blue-100 rounded-lg px-3 py-2.5 hover:border-blue-300 hover:shadow-sm transition-all group">
                 <div className="w-8 h-8 bg-blue-100 rounded-md flex items-center justify-center shrink-0">
                   <TrendingUp className="h-4 w-4 text-blue-600" />
                 </div>
