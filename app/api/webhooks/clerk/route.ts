@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Webhook } from "svix";
 import { createClient } from "@supabase/supabase-js";
+import { Resend } from "resend";
+import { email1Html } from "@/lib/email-templates";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: NextRequest) {
   const webhookSecret = process.env.CLERK_WEBHOOK_SECRET;
@@ -40,7 +44,51 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
 
-  // Only handle session.created events
+  // Handle user.created — enroll in email drip sequence
+  if (event.type === "user.created") {
+    const userData = event.data;
+    const userId = userData.id as string;
+    const firstName = (userData.first_name as string | null) || null;
+    const emailAddresses = userData.email_addresses as Array<{ id: string; email_address: string }>;
+    const primaryEmailId = userData.primary_email_address_id as string;
+    const email =
+      emailAddresses?.find((e) => e.id === primaryEmailId)?.email_address ||
+      emailAddresses?.[0]?.email_address ||
+      null;
+
+    if (email) {
+      // Insert into email_sequences (ignore if already exists)
+      const { error: dbError } = await supabase.from("email_sequences").upsert(
+        { user_id: userId, email, first_name: firstName, emails_sent: 0, is_pro: false },
+        { onConflict: "user_id" }
+      );
+
+      if (dbError) {
+        console.error("Failed to insert email_sequences record:", dbError);
+      } else {
+        // Send Email 1 immediately
+        const { error: sendError } = await resend.emails.send({
+          from: "Justin at SoloFI <justin@solofi.io>",
+          to: email,
+          subject: "You're in — here's where to start",
+          html: email1Html(firstName),
+        });
+
+        if (sendError) {
+          console.error("Failed to send welcome email:", sendError);
+        } else {
+          await supabase
+            .from("email_sequences")
+            .update({ emails_sent: 1 })
+            .eq("user_id", userId);
+        }
+      }
+    }
+
+    return NextResponse.json({ success: true });
+  }
+
+  // Handle session.created — log user login
   if (event.type !== "session.created") {
     return NextResponse.json({ received: true });
   }
@@ -76,8 +124,8 @@ export async function POST(req: NextRequest) {
   const { error } = await supabase.from("user_logins").insert({
     user_id: userId,
     email,
-    ip_address: null, // Not available in webhook payload
-    user_agent: null, // Not available in webhook payload
+    ip_address: null,
+    user_agent: null,
   });
 
   if (error) {

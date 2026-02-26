@@ -70,6 +70,15 @@ export async function POST(request: NextRequest) {
           }
 
           console.log(`Lifetime access granted for customer: ${customerId}, tier: ${tier}`);
+
+          // Mark user as Pro in email drip sequence to suppress Email 3
+          if (tier !== 'free' && session.customer_details?.email) {
+            await supabase
+              .from('email_sequences')
+              .update({ is_pro: true })
+              .eq('email', session.customer_details.email);
+          }
+
           break;
         }
 
@@ -123,6 +132,15 @@ export async function POST(request: NextRequest) {
         }
 
         console.log(`Subscription activated: ${subscriptionId}, tier: ${tier}`);
+
+        // Mark user as Pro in email drip sequence to suppress Email 3
+        if (tier !== 'free' && session.customer_details?.email) {
+          await supabase
+            .from('email_sequences')
+            .update({ is_pro: true })
+            .eq('email', session.customer_details.email);
+        }
+
         break;
       }
 
