@@ -71,30 +71,28 @@ export function email1Html(firstName: string | null): string {
   const name = firstName || 'there'
   const body = `
     ${p(`Hey ${name},`)}
-    ${p('Welcome to SoloFI.')}
-    ${p('You signed up because you want clarity on your finances—not more noise. So let\'s start with one number: your net worth.')}
-    ${p('Add your accounts here and SoloFI will track your trajectory automatically—whether you\'re growing, stalling, or drifting off course.')}
+    ${p('Welcome to SoloFI. You signed up because you want clarity on your finances, not more noise. So let\'s start with one number: your net worth.')}
+    ${p('Add your accounts and SoloFI will track your trajectory automatically.')}
     ${ctaButton('Set up your net worth →', 'https://solofi.io/dashboard')}
     ${p('It takes 5 minutes. No bank linking. No permissions. Just your numbers.')}
-    ${p('<strong>Not sure where to start?</strong> Run the <a href="https://solofi.io/tools/tax-savings-calculator" style="color:#000000;font-weight:700;">Tax Savings Calculator</a> first—most self-employed folks find $2k–$8k they\'re leaving on the table.')}
+    ${p('Want to understand the numbers behind your finances? The <a href="https://solofi.io/learn" style="color:#000000;font-weight:700;">Learn</a> section has guides on taxes, S-Corps, retirement, and more—written for self-employed professionals, not accountants.')}
     ${signature()}
   `
   return emailWrapper(body)
 }
 
-// ---- Email 2: Day 3 — S-Corp Optimizer ----
+// ---- Email 2: Day 3 — Self-Employed Financial Checklist ----
 export function email2Html(firstName: string | null): string {
   const name = firstName || 'there'
   const body = `
     ${p(`Hey ${name},`)}
-    ${p('If you\'re running an S-Corp (or thinking about one), the single biggest lever you have is your owner salary.')}
-    ${p('Too high—you overpay payroll taxes. Too low—the IRS flags it as tax evasion.')}
-    ${p('The sweet spot saves most consultants $3,000–$8,000 per year. And almost no one hits it without modeling it first.')}
-    ${p('SoloFI\'s S-Corp Optimizer finds that number in about 2 minutes:')}
-    ${ctaButton('Run the S-Corp Optimizer →', 'https://solofi.io/scorp-calculator')}
-    ${p('Plug in your revenue and it shows you exactly what salary to pay yourself, what you\'d save versus an LLC, and whether the S-Corp switch even makes sense at your income level.')}
+    ${p('Most people go self-employed and wing the financial side. They pick up a business account here, figure out taxes later, and hope it all works out.')}
+    ${p('It usually doesn\'t—at least not efficiently.')}
+    ${p('The Self-Employed Financial Checklist walks you through exactly what to set up: business banking, tax accounts, retirement, insurance, and more. In the right order, so nothing falls through the cracks.')}
+    ${ctaButton('Get the Checklist →', 'https://solofi.io/freelance-checklist')}
+    ${p('Takes 10 minutes to read. Saves you from the mistakes most freelancers make in year one.')}
+    ${p('Want to go deeper on taxes? The <a href="https://app.solofi.io/handbooks/self-employed-tax-handbook" style="color:#000000;font-weight:700;">Self-Employed Tax Handbook</a> covers everything from quarterly estimates to deductions to S-Corp strategy.')}
     ${signature()}
-    ${p('<span style="font-size:14px;color:#666666;">Already on an LLC? The comparison view shows you the crossover point—the exact revenue where S-Corp starts winning.</span>')}
   `
   return emailWrapper(body)
 }

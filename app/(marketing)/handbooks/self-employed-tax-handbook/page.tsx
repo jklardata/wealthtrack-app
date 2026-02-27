@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, BookOpen, Calculator, AlertTriangle, DollarSign, CheckSquare } from "lucide-react";
+import PrintButton from "./PrintButton";
 
 export const metadata: Metadata = {
   title: "The Self-Employed Tax Handbook | SoloFI",
@@ -21,14 +22,15 @@ export const metadata: Metadata = {
 export default function SelfEmployedTaxHandbook() {
   return (
     <article>
-      {/* Back Button */}
-      <div className="mb-6">
+      {/* Back Button + Download */}
+      <div className="mb-6 flex items-center justify-between print:hidden">
         <Link href="/blog">
           <Button variant="ghost" size="sm" className="gap-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100">
             <ArrowLeft className="h-4 w-4" />
             Back to Learn
           </Button>
         </Link>
+        <PrintButton />
       </div>
 
       {/* Hero */}
@@ -323,6 +325,95 @@ export default function SelfEmployedTaxHandbook() {
           </div>
         </div>
       </div>
+      {/* Print styles */}
+      <style>{`
+        @media print {
+          @page { margin: 0.75in; size: letter; }
+
+          /* Hide nav, buttons, read-next, CTA */
+          nav, header, footer,
+          .print\\:hidden { display: none !important; }
+
+          body { background: #fff; }
+
+          /* Page title area */
+          article { font-family: Georgia, serif; color: #111; }
+
+          /* Hero block */
+          article > div:nth-child(2) {
+            background: #1a3328 !important;
+            color: #fff !important;
+            border-radius: 4px;
+            padding: 32px !important;
+            margin-bottom: 24px;
+            page-break-inside: avoid;
+          }
+
+          /* Chapter headings */
+          h2 {
+            color: #1a3328 !important;
+            border-bottom: 2px solid #1a3328 !important;
+            font-size: 16pt;
+            margin-top: 24pt;
+            page-break-after: avoid;
+          }
+
+          h3 { color: #1a3328 !important; }
+
+          /* Stat boxes — green/tan alternating */
+          .rounded-xl {
+            border: 1px solid #c8b99a !important;
+            background: #faf6ef !important;
+            page-break-inside: avoid;
+          }
+
+          /* Highlighted/accent boxes */
+          .bg-emerald-50, .bg-emerald-600, .bg-emerald-800 {
+            background: #e8f0eb !important;
+            border: 1px solid #2d5a3d !important;
+          }
+
+          .bg-amber-50 { background: #f2e8d5 !important; border: 1px solid #c8b99a !important; }
+          .bg-blue-50  { background: #e8eef5 !important; border: 1px solid #9ab0c8 !important; }
+          .bg-yellow-50 { background: #fdf6e3 !important; border: 1px solid #d4b08c !important; }
+
+          /* Stat number colors */
+          .text-red-500    { color: #c0392b !important; }
+          .text-amber-500  { color: #d4892b !important; }
+          .text-emerald-600, .text-emerald-700 { color: #1a3328 !important; }
+          .text-blue-600   { color: #1a3358 !important; }
+
+          /* Body text */
+          .text-slate-600, .text-slate-700 { color: #333 !important; }
+          .text-slate-500, .text-slate-400 { color: #555 !important; }
+          .text-slate-900  { color: #111 !important; }
+
+          /* Links */
+          a { color: #1a3328 !important; text-decoration: underline; }
+
+          /* CheckSquare icons */
+          svg { color: #1a3328 !important; }
+
+          /* CTA and read-next — hide in print */
+          article > div:last-child,
+          article > div:nth-last-child(2) { display: none !important; }
+
+          /* Page breaks */
+          section { page-break-inside: avoid; }
+
+          /* SoloFI print header */
+          article::before {
+            content: "SoloFI · solofi.io";
+            display: block;
+            font-size: 9pt;
+            color: #888;
+            text-align: right;
+            margin-bottom: 16pt;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 6pt;
+          }
+        }
+      `}</style>
     </article>
   );
 }
