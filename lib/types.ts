@@ -112,6 +112,7 @@ export interface UserSettings {
   // Employment & Contact
   employer_name: string | null;
   phone_number: string | null;
+  onboarding_completed: boolean | null;
   created_at: string;
   updated_at: string;
 }

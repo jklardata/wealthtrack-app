@@ -92,6 +92,9 @@ export async function POST(request: NextRequest) {
     if ('phone_number' in body) {
       updateData.phone_number = body.phone_number || null;
     }
+    if ('onboarding_completed' in body) {
+      updateData.onboarding_completed = body.onboarding_completed;
+    }
 
     // Upsert settings
     const { data, error } = await supabase

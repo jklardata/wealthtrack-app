@@ -2,8 +2,10 @@
 
 import { useEffect, useState, useMemo, useCallback, Suspense } from "react";
 import Link from "next/link";
+import { useUser } from "@clerk/nextjs";
 import { UpgradeSuccessBanner } from "@/components/upgrade-success-banner";
 import { useSubscription } from "@/hooks/use-subscription";
+import { OnboardingModal } from "@/app/(dashboard)/onboarding/OnboardingModal";
 import {
   calculateMomentum,
   calculateFIProgress,
@@ -314,6 +316,8 @@ function getPresetDateRange(preset: PresetRange): DateRange {
 
 export default function DashboardPage() {
   const { isPro } = useSubscription();
+  const { user } = useUser();
+  const [showOnboarding, setShowOnboarding] = useState(false);
   const [entries, setEntries] = useState<NetWorthEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -343,6 +347,18 @@ export default function DashboardPage() {
   useEffect(() => {
     fetchEntries();
   }, [fetchEntries]);
+
+  // Check onboarding status on mount
+  useEffect(() => {
+    fetch("/api/settings")
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data?.data?.onboarding_completed) {
+          setShowOnboarding(true);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // Log login once per browser session
   useEffect(() => {
@@ -816,6 +832,12 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6 py-2">
+      {showOnboarding && (
+        <OnboardingModal
+          firstName={user?.firstName ?? undefined}
+          onComplete={() => setShowOnboarding(false)}
+        />
+      )}
       <div>
       {/* Success Banner */}
       <Suspense fallback={null}>
