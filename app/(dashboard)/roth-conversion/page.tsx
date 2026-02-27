@@ -41,7 +41,7 @@ import {
   ReferenceLine,
   ReferenceArea,
 } from "recharts";
-import { TrendingUp, Download, ArrowRight, AlertTriangle, Lightbulb, Calculator, Settings, Lock, Sparkles } from "lucide-react";
+import { TrendingUp, Download, ArrowRight, AlertTriangle, Lightbulb, Calculator, Settings, Lock, Sparkles, Info } from "lucide-react";
 import type { EntitlementTier } from "@/lib/types";
 
 interface YearlyProjection {
@@ -629,54 +629,51 @@ export default function RothConversionPage() {
       </div>
 
       {/* Advisory Introduction */}
-      <Card className="bg-gradient-to-br from-blue-50 via-white to-indigo-50 border border-slate-200">
-        <CardContent className="pt-6 space-y-4">
-          <h2 className="text-base font-semibold text-slate-900">Understanding Roth Conversions</h2>
-
-          <p className="text-base font-medium text-slate-800 leading-relaxed">
-            A Roth conversion is when you move money from a traditional IRA or pre-tax retirement account into a Roth IRA. You pay taxes on the converted amount now, but in exchange, that money grows tax-free forever and you never pay taxes on qualified withdrawals. For early retirees, this creates a powerful opportunity.
-          </p>
-
-          <p className="text-base font-medium text-slate-800 leading-relaxed">
-            Here's why this matters for your plan: Once you retire early but before you start Social Security or required minimum distributions, you likely have several years of low taxable income. These are golden years for conversions—you can fill up the lower tax brackets with conversions at rates you'll never see again. You're essentially prepaying taxes at 12% or 22% to avoid paying 24% or 32% later when RMDs kick in.
-          </p>
-
-          <h3 className="text-sm font-semibold text-slate-900 mt-6">How to Use This Tool</h3>
-
-          <p className="text-base font-medium text-slate-800 leading-relaxed">
-            Start by entering your current account balances and retirement assumptions below. The tool will project your account balances year by year, showing exactly when conversions make sense and how much tax you'll pay. Pay special attention to the years between early retirement and age 72—this is your conversion window.
-          </p>
-
-          <div className="space-y-2">
-            <p className="text-base font-bold text-slate-900">• Tax bracket management:</p>
-            <p className="text-base font-medium text-slate-700 pl-4">
-              Convert just enough each year to stay within your target tax bracket. Going from 12% to 22% might still make sense, but jumping to 32% rarely does.
-            </p>
-
-            <p className="text-base font-bold text-slate-900">• Timing matters:</p>
-            <p className="text-base font-medium text-slate-700 pl-4">
-              The best conversion years are when your income is lowest—typically the first few years of early retirement before Social Security or pension income begins.
-            </p>
-
-            <p className="text-base font-bold text-slate-900">• Future withdrawals:</p>
-            <p className="text-base font-medium text-slate-700 pl-4">
-              Money in your Roth IRA gives you tax-free income flexibility later. Unlike traditional IRAs, Roth accounts have no required minimum distributions during your lifetime.
-            </p>
-
-            <p className="text-base font-bold text-slate-900">• What we're assuming:</p>
-            <p className="text-base font-medium text-slate-700 pl-4">
-              This model assumes current tax law continues, uses today's tax brackets adjusted for inflation, and estimates your investment returns based on the rate you specify. We're modeling federal taxes only—state taxes may add 3-8% depending on where you live.
-            </p>
-          </div>
-
-          <div className="mt-6 p-4 bg-white border border-slate-200 rounded-lg">
+      <Card className="bg-gradient-to-br from-blue-50 via-white to-indigo-50 border-blue-200 shadow-sm">
+        <CardContent className="pt-6">
+          <div className="space-y-4">
             <div className="flex items-start gap-3">
-              <AlertTriangle className="h-6 w-6 text-amber-600 flex-shrink-0 mt-1" />
-              <div>
-                <p className="text-sm font-medium text-slate-900 mb-1.5">Critical Decision Points</p>
-                <p className="text-sm text-slate-500 leading-relaxed">
-                  Watch for years where your effective tax rate spikes—those are years to reduce conversions. The visualization below will highlight optimal conversion windows in green. If future tax rates increase (as many advisors expect), converting now becomes even more valuable.
-                </p>
+              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                <Info className="h-5 w-5 text-blue-600" />
+              </div>
+              <div className="space-y-3">
+                <h2 className="text-lg font-semibold text-slate-900">Understanding Roth Conversions</h2>
+
+                <div className="text-sm text-slate-700 space-y-3 leading-relaxed">
+                  <p>
+                    A Roth conversion is when you move money from a traditional IRA or pre-tax retirement account into a Roth IRA. You pay taxes on the converted amount now, but in exchange, that money grows tax-free forever and you never pay taxes on qualified withdrawals. For early retirees, this creates a powerful opportunity.
+                  </p>
+                  <p>
+                    Here&apos;s why this matters for your plan: Once you retire early but before you start Social Security or required minimum distributions, you likely have several years of low taxable income. These are golden years for conversions—you can fill up the lower tax brackets with conversions at rates you&apos;ll never see again. You&apos;re essentially prepaying taxes at 12% or 22% to avoid paying 24% or 32% later when RMDs kick in.
+                  </p>
+                </div>
+
+                <h3 className="text-sm font-semibold text-slate-900 pt-2">How to Use This Tool</h3>
+
+                <div className="text-sm text-slate-700 space-y-3 leading-relaxed">
+                  <p>
+                    Start by entering your current account balances and retirement assumptions below. The tool will project your account balances year by year, showing exactly when conversions make sense and how much tax you&apos;ll pay. Pay special attention to the years between early retirement and age 72—this is your conversion window.
+                  </p>
+
+                  <div className="space-y-2">
+                    <p><strong>Tax bracket management:</strong> Convert just enough each year to stay within your target tax bracket. Going from 12% to 22% might still make sense, but jumping to 32% rarely does.</p>
+                    <p><strong>Timing matters:</strong> The best conversion years are when your income is lowest—typically the first few years of early retirement before Social Security or pension income begins.</p>
+                    <p><strong>Future withdrawals:</strong> Money in your Roth IRA gives you tax-free income flexibility later. Unlike traditional IRAs, Roth accounts have no required minimum distributions during your lifetime.</p>
+                    <p><strong>What we&apos;re assuming:</strong> This model assumes current tax law continues, uses today&apos;s tax brackets adjusted for inflation, and estimates your investment returns based on the rate you specify. We&apos;re modeling federal taxes only—state taxes may add 3–8% depending on where you live.</p>
+                  </div>
+                </div>
+
+                <div className="mt-2 p-4 bg-white border border-slate-200 rounded-lg">
+                  <div className="flex items-start gap-3">
+                    <AlertTriangle className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <p className="text-sm font-semibold text-slate-900 mb-1">Critical Decision Points</p>
+                      <p className="text-sm text-slate-600 leading-relaxed">
+                        Watch for years where your effective tax rate spikes—those are years to reduce conversions. The visualization below will highlight optimal conversion windows in green. If future tax rates increase (as many advisors expect), converting now becomes even more valuable.
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

@@ -623,6 +623,13 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
+      <>
+        {showOnboarding && (
+          <OnboardingModal
+            firstName={user?.firstName ?? undefined}
+            onComplete={() => setShowOnboarding(false)}
+          />
+        )}
       <div className="min-h-screen bg-slate-50 p-3 sm:p-4">
         <div className="max-w-6xl mx-auto space-y-4">
           <div className="flex justify-between items-center">
@@ -651,6 +658,7 @@ export default function DashboardPage() {
           </Card>
         </div>
       </div>
+      </>
     );
   }
 

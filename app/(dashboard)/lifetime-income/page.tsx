@@ -186,49 +186,47 @@ export default function LifetimeIncomePage() {
               <div className="grid gap-2 mt-3">
                 <div className="bg-white/60 p-3 rounded-lg">
                   <p className="font-medium text-slate-900 mb-1">📊 Income Sources</p>
-                  <p className="text-xs">Configure work income, social security benefits, passive income streams, and one-time windfalls in your Profile</p>
+                  <p className="text-sm">Configure work income, social security benefits, passive income streams, and one-time windfalls in your Profile</p>
                 </div>
                 <div className="bg-white/60 p-3 rounded-lg">
                   <p className="font-medium text-slate-900 mb-1">💰 Expenses</p>
-                  <p className="text-xs">Set recurring expenses, medical costs, Medicare, and age-specific one-time expenses to model your spending</p>
+                  <p className="text-sm">Set recurring expenses, medical costs, Medicare, and age-specific one-time expenses to model your spending</p>
                 </div>
                 <div className="bg-white/60 p-3 rounded-lg">
                   <p className="font-medium text-slate-900 mb-1">📈 Projection</p>
-                  <p className="text-xs">See year-by-year portfolio growth accounting for contributions, withdrawals, investment returns, and inflation</p>
+                  <p className="text-sm">See year-by-year portfolio growth accounting for contributions, withdrawals, investment returns, and inflation</p>
                 </div>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-blue-50 border-blue-200">
-          <CardHeader>
-            <CardTitle className="text-xl font-black text-blue-900">How to Use This Tool</CardTitle>
-          </CardHeader>
-          <CardContent className="text-sm text-blue-800 space-y-2">
-            <ol className="list-decimal list-inside space-y-1">
-              <li>Go to your <Link href="/profile" className="underline font-medium">Profile</Link> to add income sources and expenses</li>
-              <li>Enter your current age and net worth in the parameters below</li>
-              <li>Click "Calculate Projection" to see your lifetime net worth trajectory</li>
-              <li>Adjust assumptions and modify income/expenses to model different scenarios</li>
-            </ol>
-          </CardContent>
-        </Card>
-      </div>
+        <div className="flex flex-col gap-6">
+          <Card className="bg-blue-50 border-blue-200">
+            <CardHeader>
+              <CardTitle className="text-xl font-black text-blue-900">How to Use This Tool</CardTitle>
+            </CardHeader>
+            <CardContent className="text-sm text-blue-800 space-y-2">
+              <ol className="list-decimal list-inside space-y-1">
+                <li>Go to your <Link href="/profile" className="underline font-medium">Profile</Link> to add income sources and expenses</li>
+                <li>Enter your current age and net worth in the parameters below</li>
+                <li>Click "Calculate Projection" to see your lifetime net worth trajectory</li>
+                <li>Adjust assumptions and modify income/expenses to model different scenarios</li>
+              </ol>
+            </CardContent>
+          </Card>
 
-      {/* CTA Banner when no data */}
-      {(!currentNetWorth || incomeSources.length === 0 || expenses.length === 0) && (
-        <Card className="bg-gradient-to-r from-emerald-50 via-blue-50 to-purple-50 border-2 border-emerald-300">
-          <CardContent className="py-6">
-            <div className="flex flex-col md:flex-row items-start gap-4">
-              <div className="flex-1">
+          {/* CTA Banner when no data */}
+          {(!currentNetWorth || incomeSources.length === 0 || expenses.length === 0) && (
+            <Card className="bg-gradient-to-r from-emerald-50 via-blue-50 to-purple-50 border-2 border-emerald-300">
+              <CardContent className="py-6">
                 <h3 className="text-lg font-semibold text-slate-900 mb-2">
                   🚀 Get Started with Your Net Worth Projection
                 </h3>
                 <p className="text-sm text-slate-600 mb-4">
                   To create an accurate lifetime projection, you need to:
                 </p>
-                <div className="grid md:grid-cols-2 gap-3 mb-4">
+                <div className="space-y-2 mb-4">
                   {!currentNetWorth && (
                     <div className="flex items-start gap-2 text-sm">
                       <span className="text-red-500 font-bold">1.</span>
@@ -266,11 +264,11 @@ export default function LifetimeIncomePage() {
                     </Link>
                   )}
                 </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+              </CardContent>
+            </Card>
+          )}
+        </div>
+      </div>
 
       {/* Calculation Parameters */}
       <Card>

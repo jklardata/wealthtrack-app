@@ -148,7 +148,7 @@ export function OnboardingModal({ firstName, onComplete }: OnboardingModalProps)
     "Welcome to SoloFI!",
     "Tell us about yourself",
     "Your financial goals",
-    "Your current net worth",
+    "Your current asset allocation",
   ];
 
   const stepSubtitles = [

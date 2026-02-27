@@ -306,18 +306,18 @@ export default function FEIEEligibilityPage() {
                     <Plane className="h-4 w-4 text-emerald-600" />
                     <p className="text-xs font-semibold text-slate-800">Physical Presence</p>
                   </div>
-                  <p className="text-xs text-slate-600">Spend 330+ full days outside the US in any 12-month period. Most straightforward path for digital nomads.</p>
+                  <p className="text-sm text-slate-600">Spend 330+ full days outside the US in any 12-month period. Most straightforward path for digital nomads.</p>
                 </div>
                 <div className="p-3 rounded-lg bg-slate-50 border border-slate-100">
                   <div className="flex items-center gap-2 mb-1.5">
                     <Shield className="h-4 w-4 text-blue-500" />
                     <p className="text-xs font-semibold text-slate-800">Bona Fide Residence</p>
                   </div>
-                  <p className="text-xs text-slate-600">Establish residence in a foreign country for an entire tax year. Better for longer-term expats with a fixed base.</p>
+                  <p className="text-sm text-slate-600">Establish residence in a foreign country for an entire tax year. Better for longer-term expats with a fixed base.</p>
                 </div>
               </div>
               <div className="p-3 bg-blue-50 border border-blue-100 rounded-lg">
-                <p className="text-xs text-blue-800">
+                <p className="text-sm text-blue-800">
                   <span className="font-semibold">Pro-rating:</span> If you were only abroad for part of the year, your exclusion is pro-rated. {result.proRatePercent}% of {formatCurrency(FEIE_LIMIT_2025)} = {formatCurrency(result.estimatedExclusion)}.
                 </p>
               </div>
