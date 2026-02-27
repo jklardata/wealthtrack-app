@@ -316,7 +316,7 @@ function getPresetDateRange(preset: PresetRange): DateRange {
 
 export default function DashboardPage() {
   const { isPro } = useSubscription();
-  const { user } = useUser();
+  const { user, isLoaded: clerkLoaded } = useUser();
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [onboardingChecked, setOnboardingChecked] = useState(false);
   const [entries, setEntries] = useState<NetWorthEntry[]>([]);
@@ -346,11 +346,13 @@ export default function DashboardPage() {
   }, []);
 
   useEffect(() => {
+    if (!clerkLoaded) return;
     fetchEntries();
-  }, [fetchEntries]);
+  }, [fetchEntries, clerkLoaded]);
 
-  // Check onboarding status on mount — must resolve before main content renders
+  // Check onboarding status — wait for Clerk to fully load its session before calling API
   useEffect(() => {
+    if (!clerkLoaded) return;
     fetch("/api/settings")
       .then((res) => res.json())
       .then((data) => {
@@ -360,7 +362,7 @@ export default function DashboardPage() {
       })
       .catch(() => {})
       .finally(() => setOnboardingChecked(true));
-  }, []);
+  }, [clerkLoaded]);
 
   // Log login once per browser session
   useEffect(() => {

@@ -72,7 +72,7 @@ export function email1Html(firstName: string | null): string {
   const body = `
     ${p(`Hey ${name},`)}
     ${p('Welcome to SoloFI. You signed up because you want clarity on your finances, not more noise. So let\'s start with your asset allocation breakdown.')}
-    ${p('Update your details and SoloFI will track your trajectory automatically.')}
+    ${p('Update your details and SoloFI can optimize your portfolio automatically.')}
     ${ctaButton('Update your asset allocation →', 'https://solofi.io/dashboard')}
     ${p('It takes 5 minutes. No bank linking. No permissions. Just your numbers.')}
     ${p('Want to understand the numbers behind your finances? The <a href="https://solofi.io/learn" style="color:#000000;font-weight:700;">Learn</a> section has guides on taxes, S-Corps, retirement, and more—written for self-employed professionals, not accountants.')}
