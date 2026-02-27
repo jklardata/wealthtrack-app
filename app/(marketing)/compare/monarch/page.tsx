@@ -66,6 +66,11 @@ export default function MonarchComparison() {
         { name: "FI Calculator", solofi: true, competitor: false, description: "Financial independence projections" },
         { name: "Roth Conversion Ladder", solofi: true, competitor: false },
         { name: "QBI Deduction Calc", solofi: true, competitor: false },
+        { name: "Portfolio Optimization", solofi: true, competitor: false },
+        { name: "Withdrawal Stress Test", solofi: true, competitor: false, description: "Monte Carlo simulations" },
+        { name: "Lifetime Income Projection", solofi: true, competitor: false },
+        { name: "FEIE Calculator", solofi: true, competitor: false, description: "Foreign Earned Income Exclusion" },
+        { name: "Geographic Arbitrage", solofi: true, competitor: false },
         { name: "Advisor Access", solofi: false, competitor: "paid add-on" },
         { name: "Price", solofi: "Free", competitor: "$15/mo" },
       ]}

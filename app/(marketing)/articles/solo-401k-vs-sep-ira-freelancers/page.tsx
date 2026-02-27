@@ -560,7 +560,7 @@ export default function Solo401kVsSepIraArticle() {
         <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-emerald-500/10 to-slate-500/10 p-8 text-center">
           <h3 className="text-xl font-bold mb-3">Model your retirement savings with SoloFI</h3>
           <p className="text-slate-500 mb-6">Track your net worth, project your trajectory to financial independence, and model Roth conversion scenarios—built for the self-employed.</p>
-          <Link href="https://app.solofi.io/dashboard">
+          <Link href="https://solofi.io/dashboard">
             <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
               Get Started Free
             </Button>

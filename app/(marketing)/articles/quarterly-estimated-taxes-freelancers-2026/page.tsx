@@ -426,7 +426,7 @@ export default function QuarterlyEstimatedTaxesArticle() {
         <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-emerald-500/20 to-teal-500/20 p-8 text-center">
           <h3 className="text-xl font-bold mb-3">Stop guessing on quarterly taxes</h3>
           <p className="text-slate-500 mb-6">SoloFI tracks your income, estimates your quarterly payments, and tells you exactly what to send—so you never get surprised by a tax bill again.</p>
-          <Link href="https://app.solofi.io/dashboard">
+          <Link href="https://solofi.io/dashboard">
             <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
               <DollarSign className="mr-2 h-4 w-4" />
               Get Started Free

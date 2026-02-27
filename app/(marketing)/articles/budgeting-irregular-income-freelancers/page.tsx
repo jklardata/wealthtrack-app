@@ -541,7 +541,7 @@ export default function BudgetingIrregularIncomeArticle() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="https://app.solofi.io/dashboard" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">
+                  <Link href="https://solofi.io/dashboard" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">
                     Net Worth Tracker — Start tracking your progress
                   </Link>
                 </li>
@@ -556,7 +556,7 @@ export default function BudgetingIrregularIncomeArticle() {
           <p className="text-slate-500 mb-6">
             Track your net worth, buffer account, and wealth trajectory—all in one place, built for the self-employed.
           </p>
-          <Link href="https://app.solofi.io/dashboard">
+          <Link href="https://solofi.io/dashboard">
             <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
               <TrendingUp className="mr-2 h-4 w-4" />
               Start tracking your net worth

@@ -63,6 +63,11 @@ export default function QuickBooksComparison() {
         { name: "QBI Deduction Calculator", solofi: true, competitor: false },
         { name: "Bank Connection", solofi: "coming soon", competitor: true },
         { name: "Receipt Scanning", solofi: false, competitor: true },
+        { name: "Portfolio Optimization", solofi: true, competitor: false },
+        { name: "Withdrawal Stress Test", solofi: true, competitor: false, description: "Monte Carlo simulations" },
+        { name: "Lifetime Income Projection", solofi: true, competitor: false },
+        { name: "FEIE Calculator", solofi: true, competitor: false, description: "Foreign Earned Income Exclusion" },
+        { name: "Geographic Arbitrage", solofi: true, competitor: false },
         { name: "Tax Filing Integration", solofi: false, competitor: "TurboTax" },
         { name: "Price", solofi: "Free", competitor: "$15-30/mo" },
       ]}

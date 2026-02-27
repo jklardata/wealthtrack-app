@@ -66,6 +66,11 @@ export default function BonsaiComparison() {
         { name: "HSA Optimization", solofi: true, competitor: false },
         { name: "Roth Conversion Planning", solofi: true, competitor: false },
         { name: "QBI Deduction Calculator", solofi: true, competitor: false },
+        { name: "Portfolio Optimization", solofi: true, competitor: false },
+        { name: "Withdrawal Stress Test", solofi: true, competitor: false, description: "Monte Carlo simulations" },
+        { name: "Lifetime Income Projection", solofi: true, competitor: false },
+        { name: "FEIE Calculator", solofi: true, competitor: false, description: "Foreign Earned Income Exclusion" },
+        { name: "Geographic Arbitrage", solofi: true, competitor: false },
         { name: "Tax Filing", solofi: false, competitor: "Bonsai Tax ($10/mo)" },
         { name: "Price", solofi: "Free", competitor: "$21-79/mo" },
       ]}

@@ -63,6 +63,11 @@ export default function CollectiveComparison() {
         { name: "Roth Conversion Planning", solofi: true, competitor: false },
         { name: "Dedicated Support", solofi: false, competitor: true },
         { name: "Works Without S-Corp", solofi: true, competitor: false, description: "Useful even as sole prop" },
+        { name: "Portfolio Optimization", solofi: true, competitor: false },
+        { name: "Withdrawal Stress Test", solofi: true, competitor: false, description: "Monte Carlo simulations" },
+        { name: "Lifetime Income Projection", solofi: true, competitor: false },
+        { name: "FEIE Calculator", solofi: true, competitor: false, description: "Foreign Earned Income Exclusion" },
+        { name: "Geographic Arbitrage", solofi: true, competitor: false },
         { name: "Annual Cost", solofi: "$0", competitor: "$5,000+" },
       ]}
       verdict={{

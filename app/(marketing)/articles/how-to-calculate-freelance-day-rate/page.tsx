@@ -738,7 +738,7 @@ export default function FreelanceDayRateArticle() {
             SoloFI helps self-employed professionals track income, net worth, and retirement
             progress—all in one place.
           </p>
-          <Link href="https://app.solofi.io/dashboard">
+          <Link href="https://solofi.io/dashboard">
             <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
               <TrendingUp className="mr-2 h-4 w-4" />
               Get Started Free

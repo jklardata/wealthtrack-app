@@ -64,6 +64,11 @@ export default function CopilotComparison() {
         { name: "FI Number Calculator", solofi: true, competitor: false },
         { name: "Roth Conversion Planning", solofi: true, competitor: false },
         { name: "Business vs Personal Split", solofi: true, competitor: false },
+        { name: "Portfolio Optimization", solofi: true, competitor: false },
+        { name: "Withdrawal Stress Test", solofi: true, competitor: false, description: "Monte Carlo simulations" },
+        { name: "Lifetime Income Projection", solofi: true, competitor: false },
+        { name: "FEIE Calculator", solofi: true, competitor: false, description: "Foreign Earned Income Exclusion" },
+        { name: "Geographic Arbitrage", solofi: true, competitor: false },
         { name: "iOS App", solofi: "coming soon", competitor: true },
         { name: "Price", solofi: "Free", competitor: "$10/mo" },
       ]}

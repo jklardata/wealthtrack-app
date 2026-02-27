@@ -366,7 +366,7 @@ export default function HealthInsuranceFreelancersArticle() {
         <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-blue-500/10 to-emerald-500/10 p-8 text-center">
           <h3 className="text-xl font-bold mb-3">Track your full financial picture</h3>
           <p className="text-slate-500 mb-6">SoloFI helps self-employed professionals track net worth, model tax scenarios, and plan for retirement—all in one place.</p>
-          <Link href="https://app.solofi.io/dashboard">
+          <Link href="https://solofi.io/dashboard">
             <Button className="bg-emerald-600 hover:bg-emerald-700 text-white">
               Get Started Free
             </Button>

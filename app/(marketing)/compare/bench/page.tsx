@@ -64,6 +64,11 @@ export default function BenchComparison() {
         { name: "HSA Optimization", solofi: true, competitor: false },
         { name: "Tax Savings Identification", solofi: true, competitor: false, description: "Find deductions you're missing" },
         { name: "Roth Conversion Planning", solofi: true, competitor: false },
+        { name: "Portfolio Optimization", solofi: true, competitor: false },
+        { name: "Withdrawal Stress Test", solofi: true, competitor: false, description: "Monte Carlo simulations" },
+        { name: "Lifetime Income Projection", solofi: true, competitor: false },
+        { name: "FEIE Calculator", solofi: true, competitor: false, description: "Foreign Earned Income Exclusion" },
+        { name: "Geographic Arbitrage", solofi: true, competitor: false },
         { name: "Human Support", solofi: false, competitor: true },
         { name: "Price", solofi: "Free", competitor: "$299+/mo" },
       ]}
