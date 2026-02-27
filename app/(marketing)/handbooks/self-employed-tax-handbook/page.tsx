@@ -286,7 +286,7 @@ export default function SelfEmployedTaxHandbook() {
         </section>
 
         {/* CTA */}
-        <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-emerald-50 to-teal-50 p-8 text-center">
+        <div className="print:hidden rounded-2xl border border-slate-200 bg-gradient-to-br from-emerald-50 to-teal-50 p-8 text-center">
           <h3 className="text-xl font-bold text-slate-900 mb-3">Put this into practice</h3>
           <p className="text-slate-600 mb-6">Use our free tax tools to estimate your savings from S-Corp, Solo 401(k), and more.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -305,7 +305,7 @@ export default function SelfEmployedTaxHandbook() {
         </div>
 
         {/* Read Next */}
-        <div className="rounded-xl border border-slate-200 bg-slate-50 p-6">
+        <div className="print:hidden rounded-xl border border-slate-200 bg-slate-50 p-6">
           <h3 className="font-bold text-slate-900 mb-4">Read next</h3>
           <div className="grid sm:grid-cols-2 gap-4 text-sm">
             <div>
@@ -393,10 +393,6 @@ export default function SelfEmployedTaxHandbook() {
 
           /* CheckSquare icons */
           svg { color: #1a3328 !important; }
-
-          /* CTA and read-next — hide in print */
-          article > div:last-child,
-          article > div:nth-last-child(2) { display: none !important; }
 
           /* Page breaks */
           section { page-break-inside: avoid; }
