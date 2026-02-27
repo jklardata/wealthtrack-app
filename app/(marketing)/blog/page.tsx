@@ -30,6 +30,17 @@ const ARTICLES: Article[] = [
     featured: true,
   },
   {
+    slug: "health-insurance-for-freelancers-2026",
+    title: "Health Insurance for Freelancers: Your Complete 2026 Options Guide",
+    excerpt: "Leaving employer coverage? Here are your best health insurance options as a self-employed professional in 2026—ACA marketplace, COBRA, HSA strategy, and how to deduct 100% of your premiums.",
+    category: "Insurance",
+    categoryColor: "bg-blue-500",
+    readTime: "12 min read",
+    date: "February 2026",
+    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&h=450&fit=crop",
+    featured: true,
+  },
+  {
     slug: "tax-strategies-2026-self-employed",
     title: "Tax Strategies in 2026 for Self-Employed Workers",
     excerpt: "Self-employment comes with a significant tax burden—but also unique opportunities for tax optimization. Here are the most effective strategies for 2026.",
