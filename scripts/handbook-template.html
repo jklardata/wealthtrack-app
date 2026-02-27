@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Self-Employed Tax Handbook | SoloFI</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    color: #111111;
+    background: #ffffff;
+    font-size: 11pt;
+    line-height: 1.7;
+  }
+
+  /* ---- Colors ---- */
+  :root {
+    --green-dark: #1a3328;
+    --green-mid: #2d5a3d;
+    --green-light: #e8f0eb;
+    --tan: #f2e8d5;
+    --tan-border: #c8b99a;
+    --black: #111111;
+    --gray: #555555;
+  }
+
+  /* ---- Cover Page ---- */
+  .cover {
+    page-break-after: always;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--green-dark);
+    color: #ffffff;
+    padding: 80px 64px;
+  }
+
+  .cover .badge {
+    font-size: 10pt;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #a8c5b5;
+    margin-bottom: 24px;
+  }
+
+  .cover h1 {
+    font-size: 36pt;
+    font-weight: 900;
+    line-height: 1.15;
+    color: #ffffff;
+    margin-bottom: 24px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  .cover .subtitle {
+    font-size: 13pt;
+    color: #c8ddd4;
+    max-width: 480px;
+    line-height: 1.6;
+    margin-bottom: 48px;
+  }
+
+  .cover .divider {
+    width: 60px;
+    height: 3px;
+    background: #a8c5b5;
+    margin-bottom: 48px;
+  }
+
+  .cover .footer {
+    font-size: 10pt;
+    color: #a8c5b5;
+    letter-spacing: 1px;
+  }
+
+  /* ---- TOC Page ---- */
+  .toc-page {
+    page-break-after: always;
+    padding: 64px;
+  }
+
+  .toc-page h2 {
+    font-size: 10pt;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green-dark);
+    margin-bottom: 32px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  .toc-item {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #e8e0d4;
+  }
+
+  .toc-num {
+    width: 28px;
+    height: 28px;
+    background: var(--green-dark);
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9pt;
+    font-weight: 700;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    flex-shrink: 0;
+  }
+
+  .toc-title {
+    font-size: 12pt;
+    color: var(--black);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  /* ---- Chapter Pages ---- */
+  .chapter {
+    page-break-before: always;
+    padding: 64px;
+  }
+
+  .chapter-header {
+    background: var(--green-dark);
+    color: #ffffff;
+    padding: 32px 40px;
+    margin: -64px -64px 40px -64px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  .chapter-num {
+    font-size: 9pt;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #a8c5b5;
+    margin-bottom: 8px;
+  }
+
+  .chapter-title {
+    font-size: 20pt;
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 1.2;
+  }
+
+  p {
+    margin-bottom: 14pt;
+    color: #222222;
+  }
+
+  h3 {
+    font-size: 12pt;
+    font-weight: 700;
+    color: var(--green-dark);
+    margin: 20pt 0 8pt;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  /* ---- Stat Boxes ---- */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 20pt 0;
+  }
+
+  .stat-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 20pt 0;
+  }
+
+  .stat-box {
+    border: 1px solid var(--tan-border);
+    background: var(--tan);
+    padding: 16px;
+    text-align: center;
+    page-break-inside: avoid;
+  }
+
+  .stat-box .stat-num {
+    font-size: 22pt;
+    font-weight: 900;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.2;
+  }
+
+  .stat-box .stat-label {
+    font-size: 9pt;
+    color: var(--gray);
+    margin-top: 4px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  .stat-box .stat-sub {
+    font-size: 8pt;
+    color: #888888;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  .red { color: #c0392b; }
+  .amber { color: #b8621a; }
+  .green { color: var(--green-dark); }
+  .blue { color: #1a3358; }
+
+  /* ---- Info Boxes ---- */
+  .info-box {
+    border-left: 4px solid var(--green-dark);
+    background: var(--green-light);
+    padding: 14px 18px;
+    margin: 16pt 0;
+    page-break-inside: avoid;
+  }
+
+  .info-box.tan {
+    border-left-color: var(--tan-border);
+    background: var(--tan);
+  }
+
+  .info-box.amber {
+    border-left-color: #d4892b;
+    background: #fdf6e3;
+  }
+
+  .info-box p { margin: 0; font-size: 10.5pt; }
+  .info-box .label {
+    font-size: 9pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--green-dark);
+    margin-bottom: 6px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  /* ---- Card List ---- */
+  .card {
+    border: 1px solid var(--tan-border);
+    background: #faf6ef;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    page-break-inside: avoid;
+  }
+
+  .card.highlight {
+    border-color: var(--green-mid);
+    background: var(--green-light);
+  }
+
+  .card h3 { margin: 0 0 4px; font-size: 11pt; }
+  .card p { margin: 0; font-size: 10pt; color: #444; }
+  .card .tag {
+    display: inline-block;
+    font-size: 8.5pt;
+    font-weight: 700;
+    color: var(--green-dark);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    margin-top: 6px;
+  }
+
+  /* ---- Quarter Grid ---- */
+  .quarter-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 16pt 0;
+  }
+
+  .quarter-box {
+    border: 1px solid var(--tan-border);
+    background: var(--tan);
+    padding: 14px 10px;
+    text-align: center;
+  }
+
+  .quarter-box .q { font-size: 14pt; font-weight: 900; color: var(--green-dark); font-family: 'Helvetica Neue', Arial, sans-serif; }
+  .quarter-box .due { font-size: 9pt; color: var(--gray); margin-top: 4px; font-family: 'Helvetica Neue', Arial, sans-serif; }
+
+  /* ---- Checklist ---- */
+  .checklist-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #e8e0d4;
+    page-break-inside: avoid;
+  }
+
+  .check-box {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--green-dark);
+    border-radius: 2px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .checklist-item span {
+    font-size: 10.5pt;
+    color: #222;
+  }
+
+  /* ---- Disclaimer ---- */
+  .disclaimer {
+    background: #fdf6e3;
+    border: 1px solid #d4b08c;
+    padding: 14px 18px;
+    margin-bottom: 32pt;
+    page-break-inside: avoid;
+  }
+
+  .disclaimer p { margin: 0; font-size: 9.5pt; color: #555; }
+
+  /* ---- Footer ---- */
+  @page {
+    margin: 0.6in 0.75in;
+    size: letter;
+    @bottom-right {
+      content: "SoloFI · solofi.io";
+      font-size: 8pt;
+      color: #aaa;
+    }
+    @bottom-left {
+      content: counter(page);
+      font-size: 8pt;
+      color: #aaa;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="badge">SoloFI Handbook</div>
+  <h1>The Self-Employed<br>Tax Handbook</h1>
+  <div class="divider"></div>
+  <p class="subtitle">Everything you need to minimize your tax burden as a consultant, freelancer, or independent contractor.</p>
+  <div class="footer">solofi.io · 2026 Edition</div>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc-page">
+  <h2>Contents</h2>
+  <div class="toc-item"><div class="toc-num">1</div><div class="toc-title">Your Tax Situation as a Self-Employed Worker</div></div>
+  <div class="toc-item"><div class="toc-num">2</div><div class="toc-title">Choosing the Right Business Structure</div></div>
+  <div class="toc-item"><div class="toc-num">3</div><div class="toc-title">Solo 401(k): The Most Powerful Account</div></div>
+  <div class="toc-item"><div class="toc-num">4</div><div class="toc-title">Health Insurance and HSA Strategy</div></div>
+  <div class="toc-item"><div class="toc-num">5</div><div class="toc-title">The QBI Deduction (Section 199A)</div></div>
+  <div class="toc-item"><div class="toc-num">6</div><div class="toc-title">Quarterly Estimated Taxes</div></div>
+  <div class="toc-item"><div class="toc-num">7</div><div class="toc-title">Deductions That Save the Most Money</div></div>
+  <div class="toc-item"><div class="toc-num">8</div><div class="toc-title">Year-End Tax Planning Checklist</div></div>
+
+  <div class="disclaimer" style="margin-top: 48px;">
+    <p><strong>Important:</strong> This handbook is for educational purposes only. Consult a qualified CPA or tax professional for advice specific to your situation.</p>
+  </div>
+</div>
+
+<!-- CHAPTER 1 -->
+<div class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-num">Chapter 1</div>
+    <div class="chapter-title">Your Tax Situation as a Self-Employed Worker</div>
+  </div>
+
+  <p>When you're self-employed, you pay both the employee and employer portions of Social Security and Medicare taxes. That's 15.3% on your first $168,600 of net earnings, then 2.9% on everything above that. This is your self-employment (SE) tax, and it's on top of income tax.</p>
+
+  <div class="stat-grid">
+    <div class="stat-box">
+      <div class="stat-num red">15.3%</div>
+      <div class="stat-label">SE tax rate up to $168,600</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num amber">2.9%</div>
+      <div class="stat-label">Medicare-only above $168,600</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num green">50%</div>
+      <div class="stat-label">of SE tax is deductible</div>
+    </div>
+  </div>
+
+  <p>The good news: you can deduct half of your SE tax from gross income before calculating income tax. And with the right strategies, you can dramatically reduce how much SE tax you owe in the first place.</p>
+
+  <div class="info-box">
+    <div class="label">Key Takeaway</div>
+    <p>Most self-employed professionals budget 25–35% of income for taxes. Set this aside with every payment to avoid surprises.</p>
+  </div>
+</div>
+
+<!-- CHAPTER 2 -->
+<div class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-num">Chapter 2</div>
+    <div class="chapter-title">Choosing the Right Business Structure</div>
+  </div>
+
+  <p>Your business structure is your single biggest tax lever. Most self-employed people start as sole proprietors by default, but as income grows, other structures offer significant advantages.</p>
+
+  <div class="card">
+    <h3>Sole Proprietor / Single-Member LLC</h3>
+    <p>Simplest setup. All profit is subject to SE tax. Best when earning under $60–80K net.</p>
+  </div>
+
+  <div class="card highlight">
+    <h3>S-Corporation Election</h3>
+    <p>Split income between salary (SE tax applies) and distributions (no SE tax). At $150K net profit with a $75K salary, you save roughly <strong>$11,500/year</strong> in SE taxes alone.</p>
+    <div class="tag">Recommended once net profit consistently exceeds $80–100K</div>
+  </div>
+
+  <div class="info-box amber">
+    <div class="label">Key Rule</div>
+    <p>Your S-Corp salary must be "reasonable" for your role. The IRS looks at this closely. Most CPAs recommend 40–60% of total profit as salary, with the remainder as distributions.</p>
+  </div>
+</div>
+
+<!-- CHAPTER 3 -->
+<div class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-num">Chapter 3</div>
+    <div class="chapter-title">Solo 401(k): The Most Powerful Account</div>
+  </div>
+
+  <p>The Solo 401(k) lets you contribute as both employee and employer, creating one of the largest annual tax deductions available to any individual.</p>
+
+  <div class="stat-grid">
+    <div class="stat-box">
+      <div class="stat-num blue">$23,500</div>
+      <div class="stat-label">Employee contribution (2026)</div>
+      <div class="stat-sub">$31,000 if age 50+</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num" style="color:#444;">25%</div>
+      <div class="stat-label">Employer contribution</div>
+      <div class="stat-sub">of net SE income</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num green">$70,000</div>
+      <div class="stat-label">Total max (2026)</div>
+      <div class="stat-sub">$77,500 if age 50+</div>
+    </div>
+  </div>
+
+  <p>You can split between traditional (tax deduction now) and Roth (tax-free in retirement). Most high earners front-load traditional contributions to reduce current-year taxes, then shift toward Roth as they approach retirement when marginal rates may be lower.</p>
+
+  <div class="info-box">
+    <div class="label">Deadline</div>
+    <p>The plan must be opened by December 31st of the tax year, but contributions can be made until your filing deadline including extensions.</p>
+  </div>
+</div>
+
+<!-- CHAPTER 4 -->
+<div class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-num">Chapter 4</div>
+    <div class="chapter-title">Health Insurance and HSA Strategy</div>
+  </div>
+
+  <p>Self-employed individuals can deduct 100% of health insurance premiums for themselves and their family. This is an above-the-line deduction that reduces your adjusted gross income directly.</p>
+
+  <p>Pair this with an HSA (Health Savings Account) if you have a qualifying high-deductible health plan. HSAs offer a triple tax advantage: contributions are deductible, growth is tax-free, and withdrawals for medical expenses are tax-free.</p>
+
+  <div class="stat-grid-2">
+    <div class="card">
+      <h3>2026 HSA Limits</h3>
+      <p>Individual: <strong>$4,300</strong></p>
+      <p>Family: <strong>$8,550</strong></p>
+      <p>Age 55+ catch-up: <strong>+$1,000</strong></p>
+    </div>
+    <div class="card highlight">
+      <h3>Combined deduction example</h3>
+      <p>Family premiums ($800/mo): <strong>$9,600</strong></p>
+      <p>HSA family max: <strong>$8,550</strong></p>
+      <p style="color: var(--green-dark); font-weight: 700; margin-top: 8px;">Total deduction: $18,150</p>
+    </div>
+  </div>
+</div>
+
+<!-- CHAPTER 5 -->
+<div class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-num">Chapter 5</div>
+    <div class="chapter-title">The QBI Deduction (Section 199A)</div>
+  </div>
+
+  <p>The Qualified Business Income deduction lets eligible self-employed workers deduct up to 20% of qualified business income from taxable income. On $100K of QBI, that's a $20K deduction worth $4,400–7,400 in tax savings depending on your bracket.</p>
+
+  <div class="info-box tan">
+    <div class="label">2026 Phase-out Thresholds (Specified Service Trades)</div>
+    <div class="stat-grid-2" style="margin: 12px 0 0;">
+      <div>
+        <div style="font-size: 9pt; color: var(--gray); font-family: sans-serif;">Single filer phase-out starts at:</div>
+        <div style="font-size: 18pt; font-weight: 900; color: var(--black); font-family: sans-serif;">$191,950</div>
+      </div>
+      <div>
+        <div style="font-size: 9pt; color: var(--gray); font-family: sans-serif;">Married filing jointly starts at:</div>
+        <div style="font-size: 18pt; font-weight: 900; color: var(--black); font-family: sans-serif;">$383,900</div>
+      </div>
+    </div>
+    <p style="margin-top: 12px; font-size: 10pt;">Most consulting, legal, financial, and health services qualify as specified service trades. The deduction phases out over $50K ($100K married) above these thresholds.</p>
+  </div>
+
+  <div class="info-box amber">
+    <p><strong>Note:</strong> This deduction is currently set to expire after 2025 unless extended by Congress. File with it while it's available.</p>
+  </div>
+</div>
+
+<!-- CHAPTER 6 -->
+<div class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-num">Chapter 6</div>
+    <div class="chapter-title">Quarterly Estimated Taxes</div>
+  </div>
+
+  <p>The IRS requires you to pay taxes as you earn. Miss a quarterly deadline or underpay, and you'll owe underpayment penalties (currently around 8% annualized).</p>
+
+  <p>The safe harbor rule: pay at least 100% of last year's total tax (110% if you earned over $150K), and you avoid all penalties regardless of how much you owe at filing. Most self-employed professionals use this approach — pay 100–110% of prior year taxes in four equal installments, then settle the actual difference in April.</p>
+
+  <div class="quarter-grid">
+    <div class="quarter-box"><div class="q">Q1</div><div class="due">April 15, 2026</div></div>
+    <div class="quarter-box"><div class="q">Q2</div><div class="due">June 16, 2026</div></div>
+    <div class="quarter-box"><div class="q">Q3</div><div class="due">Sept 15, 2026</div></div>
+    <div class="quarter-box"><div class="q">Q4</div><div class="due">Jan 15, 2027</div></div>
+  </div>
+</div>
+
+<!-- CHAPTER 7 -->
+<div class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-num">Chapter 7</div>
+    <div class="chapter-title">Deductions That Save the Most Money</div>
+  </div>
+
+  <p>Every dollar of legitimate deductions reduces your taxable income by your combined marginal rate (income tax + SE tax), typically 35–50% for most self-employed professionals.</p>
+
+  <div class="card">
+    <h3>Home Office</h3>
+    <p>Actual expense method: deduct business-use % of rent, utilities, insurance. A dedicated office in a 1,500 sq ft apartment at 15% = deducting 15% of all housing costs.</p>
+  </div>
+  <div class="card">
+    <h3>Vehicle / Mileage</h3>
+    <p>$0.70/mile standard rate in 2026, or deduct actual expenses (gas, insurance, depreciation) prorated for business use. Log every business trip.</p>
+  </div>
+  <div class="card">
+    <h3>Equipment and Software</h3>
+    <p>Computers, monitors, cameras, subscriptions — all deductible if used for business. Section 179 lets you deduct the full cost in year one instead of depreciating.</p>
+  </div>
+  <div class="card">
+    <h3>Professional Development</h3>
+    <p>Courses, books, conferences, certifications directly related to your business. Maintain receipts and note the business purpose.</p>
+  </div>
+  <div class="card">
+    <h3>Travel</h3>
+    <p>Flights, hotels, and 50% of meals when traveling for business. The trip must be primarily for business — personal days don't disqualify it entirely.</p>
+  </div>
+  <div class="card highlight">
+    <h3>Retirement Contributions</h3>
+    <p>Solo 401(k) contributions directly reduce your taxable income dollar-for-dollar. This is the biggest lever after structure choice.</p>
+  </div>
+</div>
+
+<!-- CHAPTER 8 -->
+<div class="chapter">
+  <div class="chapter-header">
+    <div class="chapter-num">Chapter 8</div>
+    <div class="chapter-title">Year-End Tax Planning Checklist</div>
+  </div>
+
+  <p>Run through this every November and December before the year closes.</p>
+
+  <div class="checklist-item"><div class="check-box"></div><span>Estimate your year-end profit and effective tax rate</span></div>
+  <div class="checklist-item"><div class="check-box"></div><span>Max out Solo 401(k) employee contribution ($23,500 / $31,000 if 50+)</span></div>
+  <div class="checklist-item"><div class="check-box"></div><span>Calculate optimal employer contribution to Solo 401(k)</span></div>
+  <div class="checklist-item"><div class="check-box"></div><span>Fund HSA to the annual maximum</span></div>
+  <div class="checklist-item"><div class="check-box"></div><span>Review all expense receipts — anything you can prepay before Dec 31?</span></div>
+  <div class="checklist-item"><div class="check-box"></div><span>Consider timing of invoices: can you defer income to January?</span></div>
+  <div class="checklist-item"><div class="check-box"></div><span>Assess whether S-Corp election makes sense for next year</span></div>
+  <div class="checklist-item"><div class="check-box"></div><span>Confirm your Q4 estimated tax payment covers safe harbor</span></div>
+  <div class="checklist-item"><div class="check-box"></div><span>Check if Roth conversion makes sense in low-income years</span></div>
+  <div class="checklist-item"><div class="check-box"></div><span>Schedule a year-end meeting with your CPA</span></div>
+
+  <div class="info-box" style="margin-top: 32pt;">
+    <div class="label">Put This Into Practice</div>
+    <p>Use SoloFI's free tax tools to estimate your savings from S-Corp, Solo 401(k), and more at <strong>solofi.io/tools</strong></p>
+  </div>
+</div>
+
+</body>
+</html>

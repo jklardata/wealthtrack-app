@@ -15,11 +15,11 @@ async function generatePdf() {
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
 
-  console.log(`Navigating to ${HANDBOOK_URL}...`);
-  await page.goto(HANDBOOK_URL, { waitUntil: "networkidle2", timeout: 30000 });
-
-  // Emulate print media so @media print styles apply
-  await page.emulateMediaType("print");
+  // Load from local HTML template for reliable rendering
+  const htmlPath = new URL("./handbook-template.html", import.meta.url).href;
+  console.log("Loading HTML template...");
+  await page.goto(htmlPath, { waitUntil: "networkidle0", timeout: 60000 });
+  await new Promise(r => setTimeout(r, 1000));
 
   console.log("Generating PDF...");
   const pdfBuffer = await page.pdf({
