@@ -318,6 +318,7 @@ export default function DashboardPage() {
   const { isPro } = useSubscription();
   const { user } = useUser();
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [onboardingChecked, setOnboardingChecked] = useState(false);
   const [entries, setEntries] = useState<NetWorthEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -348,7 +349,7 @@ export default function DashboardPage() {
     fetchEntries();
   }, [fetchEntries]);
 
-  // Check onboarding status on mount
+  // Check onboarding status on mount — must resolve before main content renders
   useEffect(() => {
     fetch("/api/settings")
       .then((res) => res.json())
@@ -357,7 +358,8 @@ export default function DashboardPage() {
           setShowOnboarding(true);
         }
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setOnboardingChecked(true));
   }, []);
 
   // Log login once per browser session
@@ -621,7 +623,7 @@ export default function DashboardPage() {
     return determineNextActions(latestEntry, fiMetrics, riskMetrics);
   }, [latestEntry, fiMetrics, riskMetrics]);
 
-  if (loading) {
+  if (!onboardingChecked || loading) {
     return (
       <>
         {showOnboarding && (
