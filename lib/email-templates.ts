@@ -97,38 +97,17 @@ export function email2Html(firstName: string | null): string {
   return emailWrapper(body)
 }
 
-// ---- Email 3: Day 7 — Upgrade to Pro ----
+// ---- Email 3: Day 7 — Soft sell / Trajectory ----
 export function email3Html(firstName: string | null): string {
   const name = firstName || 'there'
   const body = `
     ${p(`Hey ${name},`)}
-    ${p('A CPA charges $400/session. A financial advisor takes 1% of your assets—on $500k, that\'s $5,000/year.')}
-    ${p('SoloFI Pro is $10/month.')}
-    ${p('Here\'s the math:')}
-    <table cellpadding="0" cellspacing="0" style="margin:0 0 18px;width:100%;border:2px solid #000000;">
-      <tr style="background:#000000;">
-        <td style="padding:10px 16px;font-size:14px;font-weight:700;color:#ffffff;">Decision</td>
-        <td style="padding:10px 16px;font-size:14px;font-weight:700;color:#ffffff;">Savings</td>
-      </tr>
-      <tr style="border-bottom:1px solid #e0e0e0;">
-        <td style="padding:10px 16px;font-size:14px;color:#111111;">Roth conversion modeled correctly</td>
-        <td style="padding:10px 16px;font-size:14px;color:#111111;font-weight:700;">$5k–$20k over a decade</td>
-      </tr>
-      <tr style="border-bottom:1px solid #e0e0e0;background:#f9f9f9;">
-        <td style="padding:10px 16px;font-size:14px;color:#111111;">S-Corp salary optimized</td>
-        <td style="padding:10px 16px;font-size:14px;color:#111111;font-weight:700;">$3k–$8k per year</td>
-      </tr>
-      <tr>
-        <td style="padding:10px 16px;font-size:14px;color:#111111;">Capital gains timed right</td>
-        <td style="padding:10px 16px;font-size:14px;color:#111111;font-weight:700;">Thousands avoided</td>
-      </tr>
-    </table>
-    ${p('You don\'t need a financial advisor for these decisions. You need the model. That\'s what Pro gives you.')}
-    ${p('<strong>What unlocks at Pro:</strong> Roth conversion ladder · Capital gains simulator · Tax-loss harvesting · Quarterly tax estimates · Saved scenario comparisons · Portfolio rebalancing')}
-    ${p('Use <strong>EARLYWEALTH</strong> at checkout for 50% off your first year—that\'s $60 total, or $5/month.')}
-    ${ctaButton('Upgrade to Pro →', 'https://solofi.io/pricing')}
+    ${p('Most self-employed professionals have no idea if they\'re actually building wealth—or just staying busy.')}
+    ${p('SoloFI\'s Trajectory tool shows you exactly where you\'re headed based on your current net worth, savings rate, and timeline. No guesswork.')}
+    ${ctaButton('Check your trajectory →', 'https://solofi.io/dashboard')}
+    ${p('If the number looks off, that\'s usually a signal to look at three things: your tax setup, your retirement contributions, and your rate.')}
+    ${p('We cover all three inside SoloFI. Some tools are free, and Pro unlocks the deeper modeling if you ever need it.')}
     ${signature()}
-    ${p('<span style="font-size:14px;color:#666666;">14-day money-back guarantee. Cancel anytime.</span>')}
   `
   return emailWrapper(body)
 }
