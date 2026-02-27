@@ -91,7 +91,7 @@ export function email2Html(firstName: string | null): string {
     ${p('The Self-Employed Financial Checklist walks you through exactly what to set up: business banking, tax accounts, retirement, insurance, and more. In the right order, so nothing falls through the cracks.')}
     ${ctaButton('Get the Checklist →', 'https://solofi.io/freelance-checklist')}
     ${p('Takes 10 minutes to read. Saves you from the mistakes most freelancers make in year one.')}
-    ${p('Want to go deeper on taxes? Download the <a href="https://crxddnkwehlwtqegidaf.supabase.co/storage/v1/object/public/assets/handbooks/self-employed-tax-handbook.pdf" style="color:#000000;font-weight:700;">Self-Employed Tax Handbook (PDF)</a>—covers everything from quarterly estimates to deductions to S-Corp strategy.')}
+    ${p('Want to go deeper on taxes? Read the <a href="https://app.solofi.io/handbooks/self-employed-tax-handbook" style="color:#000000;font-weight:700;">Self-Employed Tax Handbook</a>—covers everything from quarterly estimates to deductions to S-Corp strategy.')}
     ${signature()}
   `
   return emailWrapper(body)
