@@ -95,20 +95,41 @@ type PresetRange = "all" | "this-month" | "last-month" | "this-quarter" | "last-
 // ─── Cash Flow Card ───────────────────────────────────────────────────────────
 function CashFlowCard({
   latestEntry,
+  entries = [],
 }: {
   latestEntry: NetWorthEntry;
   chartData?: { date: string; entryId: string; netWorth: number }[];
   entries?: NetWorthEntry[];
 }) {
+  const formatCurrencyLocal = (v: number) =>
+    new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(v);
+
+  // Build multi-month history from entries
+  const monthlyHistory = entries
+    .filter((e) => e.pre_tax_income > 0 && e.monthly_expenses > 0)
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    .slice(-6)
+    .map((e) => ({
+      month: new Date(e.date).toLocaleDateString("en-US", { month: "short", year: "2-digit" }),
+      income: e.pre_tax_income,
+      expenses: e.monthly_expenses,
+      saved: Math.max(0, e.pre_tax_income - e.monthly_expenses),
+      savingsRate: e.pre_tax_income > 0 ? Math.round(((e.pre_tax_income - e.monthly_expenses) / e.pre_tax_income) * 100) : 0,
+    }));
+
+  const barData = monthlyHistory.length > 0 ? monthlyHistory : [{
+    month: "Now",
+    income: latestEntry.pre_tax_income,
+    expenses: latestEntry.monthly_expenses,
+    saved: Math.max(0, latestEntry.pre_tax_income - latestEntry.monthly_expenses),
+    savingsRate: latestEntry.pre_tax_income > 0 ? Math.round(((latestEntry.pre_tax_income - latestEntry.monthly_expenses) / latestEntry.pre_tax_income) * 100) : 0,
+  }];
+
   const income = latestEntry.pre_tax_income;
   const expenses = latestEntry.monthly_expenses;
   const saved = income - expenses;
   const savingsRate = income > 0 ? (saved / income) * 100 : 0;
-
-  const formatCurrencyLocal = (v: number) =>
-    new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(v);
-
-  const barData = [{ name: "This Month", income, expenses }];
+  const avgSavingsRate = barData.reduce((sum, d) => sum + d.savingsRate, 0) / barData.length;
 
   const savingsLabel = savingsRate >= 30 ? "Excellent" : savingsRate >= 20 ? "Good" : "Below target";
   const savingsLabelClass = savingsRate >= 30
@@ -117,57 +138,119 @@ function CashFlowCard({
     ? "bg-blue-100 text-blue-700"
     : "bg-amber-100 text-amber-700";
 
+  const CustomTooltipCF = ({ active, payload, label }: any) => {
+    if (!active || !payload?.length) return null;
+    const d = payload[0]?.payload;
+    return (
+      <div className="bg-white border border-slate-200 rounded-lg shadow-lg p-3 text-xs">
+        <p className="font-semibold text-slate-900 mb-2">{label}</p>
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <div className="w-2.5 h-2.5 rounded-sm bg-emerald-500" />
+            <span className="text-slate-500">Income:</span>
+            <span className="font-semibold text-slate-900 ml-auto pl-4">{formatCurrencyLocal(d?.income ?? 0)}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-2.5 h-2.5 rounded-sm bg-red-400" />
+            <span className="text-slate-500">Expenses:</span>
+            <span className="font-semibold text-slate-900 ml-auto pl-4">{formatCurrencyLocal(d?.expenses ?? 0)}</span>
+          </div>
+          <div className="border-t border-slate-100 pt-1 mt-1 flex items-center gap-2">
+            <div className="w-2.5 h-2.5 rounded-sm bg-blue-400" />
+            <span className="text-slate-500">Saved:</span>
+            <span className={`font-semibold ml-auto pl-4 ${d?.saved >= 0 ? "text-emerald-600" : "text-red-500"}`}>
+              {formatCurrencyLocal(d?.saved ?? 0)} ({d?.savingsRate ?? 0}%)
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
-    <Card className="bg-white border border-slate-200 shadow-sm">
+    <Card className="bg-white border border-slate-200 shadow-sm col-span-full">
       <CardHeader className="pb-2">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex-wrap gap-2">
           <div>
             <CardTitle className="text-base font-semibold text-slate-900">Monthly Cash Flow</CardTitle>
-            <p className="text-xs text-slate-500 mt-0.5">Most recent month</p>
+            <p className="text-xs text-slate-500 mt-0.5">
+              {barData.length > 1 ? `Last ${barData.length} months` : "Most recent month"}
+            </p>
           </div>
-          <Link href="/net-worth" className="text-xs text-emerald-600 hover:text-emerald-700 font-medium flex items-center gap-1">
-            Full history <ArrowRight className="h-3 w-3" />
-          </Link>
+          <div className="flex items-center gap-3">
+            {barData.length > 1 && (
+              <div className="text-right">
+                <p className="text-xs text-slate-400">Avg savings rate</p>
+                <p className={`text-sm font-bold ${avgSavingsRate >= 20 ? "text-emerald-600" : "text-amber-600"}`}>
+                  {avgSavingsRate.toFixed(0)}%
+                </p>
+              </div>
+            )}
+            <Link href="/net-worth" className="text-xs text-emerald-600 hover:text-emerald-700 font-medium flex items-center gap-1">
+              Full history <ArrowRight className="h-3 w-3" />
+            </Link>
+          </div>
         </div>
       </CardHeader>
       <CardContent>
-        {/* Savings Rate */}
-        <div className="flex items-baseline gap-2 mb-3">
-          <span className={`text-3xl font-bold font-mono ${savingsRate >= 20 ? "text-emerald-600" : "text-amber-600"}`}>
-            {savingsRate.toFixed(0)}%
-          </span>
-          <span className="text-sm text-slate-400">saved</span>
-          <span className={`ml-auto text-xs font-medium px-2 py-0.5 rounded-full ${savingsLabelClass}`}>
-            {savingsLabel}
-          </span>
+        {/* Summary stats */}
+        <div className="grid grid-cols-3 gap-3 mb-4">
+          <div className="bg-emerald-50 rounded-lg p-3">
+            <p className="text-xs text-slate-500 mb-1">Income</p>
+            <p className="text-lg font-bold text-emerald-700 font-mono">{formatCurrencyLocal(income)}</p>
+            <p className="text-xs text-slate-400">this month</p>
+          </div>
+          <div className="bg-red-50 rounded-lg p-3">
+            <p className="text-xs text-slate-500 mb-1">Expenses</p>
+            <p className="text-lg font-bold text-red-600 font-mono">{formatCurrencyLocal(expenses)}</p>
+            <p className="text-xs text-slate-400">this month</p>
+          </div>
+          <div className={`rounded-lg p-3 ${saved >= 0 ? "bg-blue-50" : "bg-amber-50"}`}>
+            <p className="text-xs text-slate-500 mb-1">Net Saved</p>
+            <p className={`text-lg font-bold font-mono ${saved >= 0 ? "text-blue-700" : "text-amber-700"}`}>
+              {formatCurrencyLocal(saved)}
+            </p>
+            <span className={`text-xs font-medium px-1.5 py-0.5 rounded-full ${savingsLabelClass}`}>
+              {savingsRate.toFixed(0)}% · {savingsLabel}
+            </span>
+          </div>
         </div>
 
-        {/* Bar Chart */}
-        <ResponsiveContainer width="100%" height={170}>
-          <BarChart data={barData} barGap={8} barCategoryGap="20%" margin={{ top: 24, right: 8, left: 8, bottom: 0 }}>
+        {/* Multi-month grouped bar chart */}
+        <ResponsiveContainer width="100%" height={220}>
+          <BarChart
+            data={barData}
+            barGap={3}
+            barCategoryGap={barData.length === 1 ? "60%" : "25%"}
+            margin={{ top: 8, right: 8, left: 0, bottom: 0 }}
+          >
             <CartesianGrid vertical={false} stroke="#f1f5f9" />
-            <XAxis dataKey="name" hide />
-            <YAxis stroke="#cbd5e1" fontSize={10} tickLine={false} axisLine={false} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} width={36} />
-            <Tooltip
-              contentStyle={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: "8px", fontSize: "12px" }}
-              formatter={(v, name) => [formatCurrencyLocal(Number(v)), name]}
-              labelStyle={{ fontWeight: 600, color: "#0f172a" }}
+            <XAxis
+              dataKey="month"
+              fontSize={11}
+              tickLine={false}
+              axisLine={false}
+              tick={{ fill: "#94a3b8" }}
             />
-            <Bar dataKey="income" name="Income" fill="#10b981" radius={[4, 4, 0, 0]}>
-              <LabelList dataKey="income" position="top" formatter={(v: unknown) => formatCurrencyLocal(Number(v))} style={{ fontSize: 13, fill: "#0f172a", fontWeight: 700 }} />
-            </Bar>
-            <Bar dataKey="expenses" name="Expenses" fill="#ef4444" radius={[4, 4, 0, 0]}>
-              <LabelList dataKey="expenses" position="top" formatter={(v: unknown) => formatCurrencyLocal(Number(v))} style={{ fontSize: 13, fill: "#0f172a", fontWeight: 700 }} />
-            </Bar>
+            <YAxis
+              fontSize={10}
+              tickLine={false}
+              axisLine={false}
+              tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
+              width={38}
+              tick={{ fill: "#94a3b8" }}
+            />
+            <Tooltip content={<CustomTooltipCF />} cursor={{ fill: "#f8fafc" }} />
+            <Legend
+              iconType="square"
+              iconSize={10}
+              formatter={(value) => <span style={{ fontSize: 11, color: "#64748b" }}>{value}</span>}
+            />
+            <Bar dataKey="income" name="Income" fill="#10b981" radius={[3, 3, 0, 0]} maxBarSize={52} />
+            <Bar dataKey="expenses" name="Expenses" fill="#f87171" radius={[3, 3, 0, 0]} maxBarSize={52} />
+            <Bar dataKey="saved" name="Net Saved" fill="#60a5fa" radius={[3, 3, 0, 0]} maxBarSize={52} />
           </BarChart>
         </ResponsiveContainer>
-
-        {/* Amount breakdown */}
-        <div className="flex justify-between mt-2 pt-2 border-t border-slate-100 text-xs text-slate-500">
-          <span className="text-emerald-600 font-semibold">{formatCurrencyLocal(income)} income</span>
-          <span className={`font-semibold ${saved >= 0 ? "text-emerald-700" : "text-red-500"}`}>{formatCurrencyLocal(saved >= 0 ? saved : 0)} saved</span>
-          <span className="text-red-500 font-semibold">{formatCurrencyLocal(expenses)} expenses</span>
-        </div>
       </CardContent>
     </Card>
   );
@@ -1447,17 +1530,17 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Cash Flow - Latest month + expandable history */}
-      <div className="grid lg:grid-cols-2 gap-4">
-        {latestEntry && latestEntry.pre_tax_income > 0 && latestEntry.monthly_expenses > 0 && (
-          <CashFlowCard
-            latestEntry={latestEntry}
-            chartData={chartData}
-            entries={entries}
-          />
-        )}
+      {/* Cash Flow - Multi-month history */}
+      {latestEntry && latestEntry.pre_tax_income > 0 && latestEntry.monthly_expenses > 0 && (
+        <CashFlowCard
+          latestEntry={latestEntry}
+          chartData={chartData}
+          entries={entries}
+        />
+      )}
 
-        {/* Next Best Actions */}
+      {/* Next Best Actions */}
+      <div className="grid lg:grid-cols-2 gap-4">
         {nextActions.length > 0 && (
           <Card className="bg-white border border-slate-200 shadow-sm">
             <CardHeader className="pb-2">

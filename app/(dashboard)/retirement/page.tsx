@@ -862,7 +862,7 @@ function RetirementPageContent() {
 
       {/* Results Section */}
       {results && errors.filter(e => !e.startsWith('Warning:')).length === 0 && (
-        isPro ? (
+        true ? (
         <>
           {/* Key Metrics */}
           <div className="grid gap-3 sm:gap-4 grid-cols-2 md:grid-cols-4">

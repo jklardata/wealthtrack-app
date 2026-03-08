@@ -19,6 +19,28 @@ interface Article {
 
 const ARTICLES: Article[] = [
   {
+    slug: "tax-brackets-2026",
+    title: "2026 Federal Tax Brackets: What's Changed and What It Means for the Self-Employed",
+    excerpt: "The IRS adjusts tax brackets annually for inflation. Here are the 2026 federal income tax brackets, standard deductions, capital gains rates, and retirement contribution limits—and how they affect self-employed professionals.",
+    category: "Taxes",
+    categoryColor: "bg-purple-500",
+    readTime: "12 min read",
+    date: "March 2026",
+    image: "https://images.pexels.com/photos/7068839/pexels-photo-7068839.jpeg?auto=compress&cs=tinysrgb&w=800&h=450&fit=crop",
+    featured: true,
+  },
+  {
+    slug: "taxes-biggest-expense-self-employed",
+    title: "Taxes Are the Biggest Expense for the Self-Employed",
+    excerpt: "Most self-employed professionals underestimate their tax burden. Between self-employment tax and federal income tax, taxes often consume 35–45% of net profit. Here's the full breakdown—and what you can do about it.",
+    category: "Taxes",
+    categoryColor: "bg-purple-500",
+    readTime: "10 min read",
+    date: "February 5, 2026",
+    image: "https://images.pexels.com/photos/6863243/pexels-photo-6863243.jpeg?auto=compress&cs=tinysrgb&w=800&h=450&fit=crop",
+    featured: true,
+  },
+  {
     slug: "how-to-calculate-freelance-day-rate",
     title: "How to Calculate Your Freelance Day Rate (Without Undercutting Yourself)",
     excerpt:
