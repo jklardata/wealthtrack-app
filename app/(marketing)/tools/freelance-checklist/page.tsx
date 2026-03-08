@@ -202,7 +202,7 @@ export default function FreelanceChecklist() {
                     <FileText className="h-8 w-8 text-orange-600" />
                   </div>
                   <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">
-                    The First-Year Freelancer Financial Checklist
+                    The Self Employment Financial Checklist
                   </h1>
                   <p className="text-slate-600">
                     Everything you need to set up your finances when going self-employed.
@@ -267,7 +267,7 @@ export default function FreelanceChecklist() {
             {/* Header */}
             <div className="text-center mb-8 print:mb-4">
               <h1 className="text-3xl font-bold text-slate-900 mb-2">
-                First-Year Freelancer Financial Checklist
+                Self Employment Financial Checklist
               </h1>
               <p className="text-slate-600 print:hidden">
                 Check off tasks as you complete them. Print or save this page for reference.
@@ -383,7 +383,7 @@ export default function FreelanceChecklist() {
 
             {/* Email Capture */}
             <EmailCaptureCard
-              toolName="Freelance Checklist"
+              toolName="Self Employment Checklist"
               resultsSummary={`${completedItems} of ${totalItems} tasks completed`}
               className="mt-8 print:hidden"
             />

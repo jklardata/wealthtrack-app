@@ -356,8 +356,8 @@ export default function LifetimeIncomePage() {
         </CardContent>
       </Card>
 
-      {/* Results Summary - Pro Only */}
-      {isPro ? (
+      {/* Results Summary */}
+      {true ? (
         <>
           {hasCalculated && <ProjectionSummary projection={projection} />}
           {hasCalculated && projection.length > 0 && (

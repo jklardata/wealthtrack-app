@@ -71,7 +71,7 @@ const TOOLS: Tool[] = [
   },
   {
     slug: "freelance-checklist",
-    title: "First-Year Freelance Checklist",
+    title: "Self Employment Checklist",
     description: "Complete financial setup guide for new freelancers and consultants.",
     icon: CheckSquare,
     features: [

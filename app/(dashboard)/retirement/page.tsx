@@ -563,7 +563,7 @@ function RetirementPageContent() {
       })()}
 
       {/* Tax Optimization Strategies */}
-      {isPro ? (
+      {true ? (
         <Card className="border-amber-500/20 bg-gradient-to-r from-amber-500/5 to-primary/5">
           <CardHeader
             className="cursor-pointer select-none"
@@ -734,7 +734,7 @@ function RetirementPageContent() {
       )}
 
       {/* Spending Weights & Cost Breakdown - Side by Side */}
-      {isPro ? (
+      {true ? (
         <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
           {/* Spending Category Weights */}
           <Card className="bg-white border border-slate-200 shadow-sm">

@@ -1,5 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { Resend } from 'resend';
 import { createServerSupabaseClient } from '@/lib/supabase';
+import {
+  freelanceChecklistWelcomeHtml,
+  bankingSetupWelcomeHtml,
+  fiCalculatorWelcomeHtml,
+  rothConversionWelcomeHtml,
+  taxSavingsWelcomeHtml,
+  netWorthQuizWelcomeHtml,
+  scorpCalculatorWelcomeHtml,
+  feieCheckerWelcomeHtml,
+  quarterlyTaxWelcomeHtml,
+  rateCalculatorWelcomeHtml,
+} from '@/lib/email-templates';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Allow requests from the landing page
 const ALLOWED_ORIGINS = [
@@ -29,7 +44,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { email, source, metadata } = body;
+    const { email, source } = body;
 
     if (!email || typeof email !== 'string') {
       return NextResponse.json(
@@ -56,35 +71,58 @@ export async function POST(request: NextRequest) {
       .eq('email', email.toLowerCase())
       .single();
 
+    // Get subscriber ID (used for unsubscribe link)
+    let subscriberId: string;
     if (existing) {
-      return NextResponse.json(
-        { message: 'You\'re already subscribed!' },
-        { status: 200, headers: corsHeaders }
-      );
+      subscriberId = existing.id;
+    } else {
+      const { data: newSub, error } = await supabase
+        .from('newsletter_subscribers')
+        .insert({
+          email: email.toLowerCase(),
+          source: source || 'landing_page',
+          subscribed_at: new Date().toISOString(),
+        })
+        .select('id')
+        .single();
+
+      if (error || !newSub) {
+        console.error('Newsletter signup error:', error);
+        return NextResponse.json(
+          { error: 'Failed to subscribe. Please try again.' },
+          { status: 500, headers: corsHeaders }
+        );
+      }
+      subscriberId = newSub.id;
     }
 
-    // Insert new subscriber with optional source and metadata
-    const insertData: Record<string, unknown> = {
-      email: email.toLowerCase(),
-      source: source || 'landing_page',
-      subscribed_at: new Date().toISOString(),
+    // Build unsubscribe URL using subscriber's UUID as token
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://solofi.io';
+    const unsubscribeUrl = `${baseUrl}/unsubscribe?token=${subscriberId}`;
+
+    // Send welcome email for lead magnet sources
+    const leadMagnetEmails: Record<string, { subject: string; html: () => string }> = {
+      freelance_checklist:        { subject: 'Your Self Employment Financial Checklist', html: freelanceChecklistWelcomeHtml },
+      banking_setup:              { subject: 'Your Freelancer Banking Setup Guide', html: bankingSetupWelcomeHtml },
+      fi_calculator:              { subject: 'Your Financial Independence Comparison', html: fiCalculatorWelcomeHtml },
+      roth_conversion_calculator: { subject: 'Your Roth Conversion Ladder Strategy', html: rothConversionWelcomeHtml },
+      tax_calculator_lead_magnet: { subject: 'Your Tax Savings Breakdown', html: taxSavingsWelcomeHtml },
+      net_worth_quiz:             { subject: 'Your Net Worth Tracking Results', html: netWorthQuizWelcomeHtml },
+      scorp_calculator:           { subject: 'Your S-Corp Analysis', html: scorpCalculatorWelcomeHtml },
+      feie_checker:               { subject: 'Your FEIE Eligibility Results', html: feieCheckerWelcomeHtml },
+      quarterly_tax_estimator:    { subject: 'Your Quarterly Tax Estimate', html: quarterlyTaxWelcomeHtml },
+      rate_calculator:            { subject: 'Your Freelance Rate Breakdown', html: rateCalculatorWelcomeHtml },
     };
 
-    // Add metadata if provided (requires metadata column in table)
-    if (metadata && typeof metadata === 'object') {
-      insertData.metadata = metadata;
-    }
-
-    const { error } = await supabase
-      .from('newsletter_subscribers')
-      .insert(insertData);
-
-    if (error) {
-      console.error('Newsletter signup error:', error);
-      return NextResponse.json(
-        { error: 'Failed to subscribe. Please try again.' },
-        { status: 500, headers: corsHeaders }
-      );
+    const leadMagnet = leadMagnetEmails[source];
+    if (leadMagnet) {
+      const html = leadMagnet.html().replace('{{unsubscribe_url}}', unsubscribeUrl);
+      await resend.emails.send({
+        from: 'Justin at SoloFI <justin@solofi.io>',
+        to: email.toLowerCase(),
+        subject: leadMagnet.subject,
+        html,
+      });
     }
 
     return NextResponse.json(

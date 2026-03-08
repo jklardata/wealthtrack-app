@@ -293,7 +293,7 @@ export default function Landing21() {
               trackingVariant={VARIANT}
               buttonProps={{ size: "lg", className: "bg-emerald-600 hover:bg-emerald-700 text-white px-10 py-6 text-base sm:text-lg" }}
             >
-              Start modeling
+              Start Modeling for Free
               <ArrowRight className="ml-2 h-5 w-5" />
             </TrackedLink>
 
@@ -574,6 +574,28 @@ export default function Landing21() {
         </div>
       </section>
 
+      {/* Photo strip — self-employed professional */}
+      <section className="relative h-72 sm:h-96 overflow-hidden">
+        <img
+          src="https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg?auto=compress&cs=tinysrgb&w=1600&h=600&fit=crop"
+          alt="Self-employed professional working independently"
+          className="w-full h-full object-cover object-center"
+          loading="lazy"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/85 via-slate-900/55 to-slate-900/20" />
+        <div className="absolute inset-0 flex items-center">
+          <div className="max-w-5xl mx-auto px-6">
+            <p className="text-emerald-400 text-xs sm:text-sm font-semibold uppercase tracking-wider mb-2">Built for the self-employed</p>
+            <h2 className="text-2xl sm:text-3xl font-medium text-white mb-3 max-w-xl">
+              Variable income. Complex taxes.<br className="hidden sm:block" /> Big financial decisions.
+            </h2>
+            <p className="text-slate-300 text-sm sm:text-base max-w-md">
+              SoloFI models the tradeoffs so you understand exactly what each decision costs—before you commit.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Tax Optimization Section */}
       <section className="py-24">
         <div className="max-w-5xl mx-auto px-6">
@@ -613,12 +635,37 @@ export default function Landing21() {
                 </li>
               </ul>
             </div>
-            <div className="rounded-xl overflow-hidden border border-slate-200 shadow-sm">
+            <div className="rounded-xl overflow-hidden shadow-sm h-80">
               <img
-                src="/creative/Maximize_your_savings_version_1.png"
-                alt="Maximize your savings with SoloFI"
+                src="https://images.pexels.com/photos/6863243/pexels-photo-6863243.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&fit=crop"
+                alt="Self-employed professional reviewing tax strategy"
                 className="w-full h-full object-cover"
+                loading="lazy"
               />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Photo strip — retirement lifestyle */}
+      <section className="relative h-64 sm:h-80 overflow-hidden">
+        <img
+          src="https://images.pexels.com/photos/3807517/pexels-photo-3807517.jpeg?auto=compress&cs=tinysrgb&w=1600&h=500&fit=crop"
+          alt="Financial freedom and early retirement lifestyle"
+          className="w-full h-full object-cover object-[center_30%]"
+          loading="lazy"
+        />
+        <div className="absolute inset-0 bg-gradient-to-l from-slate-900/85 via-slate-900/55 to-slate-900/20" />
+        <div className="absolute inset-0 flex items-center justify-end">
+          <div className="max-w-5xl mx-auto px-6 w-full flex justify-end">
+            <div className="max-w-md text-right">
+              <p className="text-emerald-400 text-xs sm:text-sm font-semibold uppercase tracking-wider mb-2">Retire on your terms</p>
+              <h2 className="text-2xl sm:text-3xl font-medium text-white mb-3">
+                What does financial independence actually look like for you?
+              </h2>
+              <p className="text-slate-300 text-sm sm:text-base">
+                Model it. Adjust it. Know your number.
+              </p>
             </div>
           </div>
         </div>

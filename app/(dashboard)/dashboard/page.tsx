@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
 import { UpgradeSuccessBanner } from "@/components/upgrade-success-banner";
 import { useSubscription } from "@/hooks/use-subscription";
-import { OnboardingModal } from "@/app/(dashboard)/onboarding/OnboardingModal";
 import {
   calculateMomentum,
   calculateFIProgress,
@@ -317,8 +316,6 @@ function getPresetDateRange(preset: PresetRange): DateRange {
 export default function DashboardPage() {
   const { isPro } = useSubscription();
   const { user, isLoaded: clerkLoaded } = useUser();
-  const [showOnboarding, setShowOnboarding] = useState(false);
-  const [onboardingChecked, setOnboardingChecked] = useState(false);
   const [entries, setEntries] = useState<NetWorthEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -349,20 +346,6 @@ export default function DashboardPage() {
     if (!clerkLoaded) return;
     fetchEntries();
   }, [fetchEntries, clerkLoaded]);
-
-  // Check onboarding status — wait for Clerk to fully load its session before calling API
-  useEffect(() => {
-    if (!clerkLoaded) return;
-    fetch("/api/settings")
-      .then((res) => res.json())
-      .then((data) => {
-        if (!data?.data?.onboarding_completed) {
-          setShowOnboarding(true);
-        }
-      })
-      .catch(() => {})
-      .finally(() => setOnboardingChecked(true));
-  }, [clerkLoaded]);
 
   // Log login once per browser session
   useEffect(() => {
@@ -625,15 +608,8 @@ export default function DashboardPage() {
     return determineNextActions(latestEntry, fiMetrics, riskMetrics);
   }, [latestEntry, fiMetrics, riskMetrics]);
 
-  if (!onboardingChecked || loading) {
+  if (loading) {
     return (
-      <>
-        {showOnboarding && (
-          <OnboardingModal
-            firstName={user?.firstName ?? undefined}
-            onComplete={() => setShowOnboarding(false)}
-          />
-        )}
       <div className="min-h-screen bg-slate-50 p-3 sm:p-4">
         <div className="max-w-6xl mx-auto space-y-4">
           <div className="flex justify-between items-center">
@@ -662,7 +638,6 @@ export default function DashboardPage() {
           </Card>
         </div>
       </div>
-      </>
     );
   }
 
@@ -844,12 +819,6 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6 py-2">
-      {showOnboarding && (
-        <OnboardingModal
-          firstName={user?.firstName ?? undefined}
-          onComplete={() => setShowOnboarding(false)}
-        />
-      )}
       <div>
       {/* Success Banner */}
       <Suspense fallback={null}>

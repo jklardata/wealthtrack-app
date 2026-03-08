@@ -1390,7 +1390,7 @@ export default function PortfolioOptimizerPage() {
           </Card>
 
           {/* Key Metrics */}
-          {isPro ? (
+          {true ? (
             <Card className="bg-white border border-slate-200 shadow-sm">
               <CardHeader>
                 <CardTitle className="font-medium text-slate-900">Expected Performance</CardTitle>

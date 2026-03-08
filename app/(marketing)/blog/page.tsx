@@ -493,7 +493,7 @@ export default function BlogPage() {
             </Link>
             <Link href="https://solofi.io/tools">
               <div className="p-6 rounded-2xl border border-slate-200 bg-white hover:border-emerald-300 hover:shadow-lg transition-all h-full">
-                <h3 className="font-medium mb-2 text-slate-900">Freelance Checklist</h3>
+                <h3 className="font-medium mb-2 text-slate-900">Self Employment Checklist</h3>
                 <p className="text-sm text-slate-600">First-year financial setup guide.</p>
               </div>
             </Link>

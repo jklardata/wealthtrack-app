@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { UserButton } from "@clerk/nextjs";
+import { useEffect, useState } from "react";
+import { UserButton, useUser } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
+import { OnboardingModal } from "@/app/(dashboard)/onboarding/OnboardingModal";
 import {
   LayoutDashboard,
   TrendingUp,
@@ -175,6 +177,38 @@ function Sidebar({ className }: { className?: string }) {
   );
 }
 
+function OnboardingGate({ children }: { children: React.ReactNode }) {
+  const { user, isLoaded } = useUser();
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
+  useEffect(() => {
+    if (!isLoaded) return;
+    fetch("/api/settings")
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data?.data?.onboarding_completed) {
+          setShowOnboarding(true);
+        }
+      })
+      .catch(() => {
+        // If fetch fails, show onboarding to be safe
+        setShowOnboarding(true);
+      });
+  }, [isLoaded]);
+
+  return (
+    <>
+      {showOnboarding && (
+        <OnboardingModal
+          firstName={user?.firstName ?? undefined}
+          onComplete={() => setShowOnboarding(false)}
+        />
+      )}
+      {children}
+    </>
+  );
+}
+
 export default function DashboardLayout({
   children,
 }: {
@@ -212,7 +246,9 @@ export default function DashboardLayout({
         </header>
 
         {/* Main Content */}
-        <main className="flex-1 p-3 sm:p-4 overflow-auto min-w-0">{children}</main>
+        <main className="flex-1 p-3 sm:p-4 overflow-auto min-w-0">
+          <OnboardingGate>{children}</OnboardingGate>
+        </main>
       </div>
 
       {/* Feedback Widget - Floating */}

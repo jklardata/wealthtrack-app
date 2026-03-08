@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({
-      message: 'Successfully subscribed! Check your inbox for confirmation.',
+      message: "You're subscribed! We'll send occasional tips on tax and retirement planning.",
     });
   } catch (error) {
     console.error('Newsletter subscription error:', error);

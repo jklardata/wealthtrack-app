@@ -725,7 +725,7 @@ export default function QuarterlyEstimatedTaxesPage() {
 
         {/* Safe Harbor Calculation Card */}
         <div className="flex-1">
-        {isPro ? (
+        {true ? (
         <Card className="bg-white border border-slate-200 shadow-sm h-full">
           <CardHeader className="pb-3">
             <CardTitle className="text-base font-semibold text-slate-900 flex items-center gap-2">
@@ -856,7 +856,7 @@ export default function QuarterlyEstimatedTaxesPage() {
         </div>{/* end Safe Harbor + Stats row */}
 
         {/* Payment Tracking Card */}
-        {isPro ? (
+        {true ? (
         <Card className="bg-white border border-slate-200 shadow-sm">
           <CardHeader className="pb-3">
             <CardTitle className="text-base font-semibold text-slate-900">Payment Tracking</CardTitle>
@@ -991,7 +991,7 @@ export default function QuarterlyEstimatedTaxesPage() {
         )}
 
         {/* Quarterly Timeline Visualization */}
-        {isPro ? (
+        {true ? (
         <Card className="bg-white border border-slate-200 shadow-sm">
           <CardHeader className="pb-3">
             <CardTitle className="text-base font-semibold text-slate-900 flex items-center gap-2">
