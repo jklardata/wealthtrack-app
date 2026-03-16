@@ -24,7 +24,7 @@ export default function Landing21() {
           <span className="text-emerald-600">Solo</span>fi
         </span>
         <div className="flex items-center gap-2 sm:gap-4">
-          <Link href="/blog" className="hidden sm:block text-slate-600 hover:text-slate-900 text-sm">
+          <Link href="https://solofi.io/blog" className="hidden sm:block text-slate-600 hover:text-slate-900 text-sm">
             Resources
           </Link>
           <Link href="/pricing" className="text-slate-600 hover:text-slate-900 text-xs sm:text-sm">
@@ -534,7 +534,7 @@ export default function Landing21() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-slate-500">
             <span>© 2026 Solofi</span>
             <div className="flex gap-8">
-              <Link href="/blog" className="hover:text-slate-700">Resources</Link>
+              <Link href="https://solofi.io/blog" className="hover:text-slate-700">Resources</Link>
               <Link href="/privacy" className="hover:text-slate-700">Privacy</Link>
               <Link href="/terms" className="hover:text-slate-700">Terms</Link>
             </div>

@@ -34,6 +34,7 @@ import {
   Percent,
   Heart,
   ClipboardList,
+  Building2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -67,15 +68,14 @@ const navGroups: NavGroup[] = [
     items: [
       { href: "/profile", label: "Profile", icon: User },
       { href: "/net-worth", label: "Net Worth", icon: TrendingUp },
-      { href: "/freelance-checklist", label: "Self Employed Checklist", icon: ClipboardList },
-      { href: "/freelance-rate", label: "Freelance Rate", icon: DollarSign },
-      { href: "/feie-eligibility", label: "FEIE Eligibility", icon: Globe },
-      { href: "/credit-cards", label: "Credit Cards", icon: CreditCard, disabled: true },
+      { href: "/freelance-rate", label: "Rate & Revenue Planner", icon: DollarSign },
+      { href: "/feie-eligibility", label: "Foreign Income Exclusion", icon: Globe },
     ],
   },
   {
     label: "Analysis",
     items: [
+      { href: "/portfolio-optimizer", label: "Portfolio Optimizer", icon: PieChart },
       { href: "/lifetime-income", label: "Trajectory", icon: LineChart },
       { href: "/retirement", label: "Retirement Calculator", icon: Calculator },
       { href: "/early-retirement", label: "Early Retirement", icon: Sunrise },
@@ -87,13 +87,13 @@ const navGroups: NavGroup[] = [
   {
     label: "Tax Optimization",
     items: [
-      { href: "/portfolio-optimizer", label: "Portfolio Optimizer", icon: PieChart },
       { href: "/tax-calculator", label: "Tax Calculator", icon: Receipt },
+      { href: "/scorp-salary", label: "S-Corp Salary Optimizer", icon: Building2 },
       { href: "/tax-optimization", label: "Tax Optimization", icon: Lightbulb },
       { href: "/quarterly-estimated-taxes", label: "Quarterly Est. Taxes", icon: Calendar },
-      { href: "/tax-bracket-filling", label: "Tax Bracket Filling", icon: Target },
+      { href: "/tax-bracket-filling", label: "Fill Your Tax Brackets", icon: Target },
       { href: "/lifetime-tax-map", label: "Lifetime Tax Map", icon: Map },
-      { href: "/qbi-deduction", label: "QBI Deduction", icon: Percent },
+      { href: "/qbi-deduction", label: "20% Business Deduction", icon: Percent },
       { href: "/hsa-calculator", label: "HSA Calculator", icon: Heart },
     ],
   },
@@ -143,7 +143,7 @@ function Sidebar({ className }: { className?: string }) {
                     key={item.href}
                     href={item.disabled ? "#" : item.href}
                     className={cn(
-                      "flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm transition-all duration-150",
+                      "flex items-start gap-2.5 px-2.5 py-2 rounded-lg text-sm transition-all duration-150",
                       isActive
                         ? "bg-white text-emerald-700 font-medium shadow-sm"
                         : "text-slate-600 hover:bg-slate-200 hover:text-slate-900",
@@ -151,8 +151,8 @@ function Sidebar({ className }: { className?: string }) {
                     )}
                     onClick={(e) => item.disabled && e.preventDefault()}
                   >
-                    <Icon className="h-4 w-4 flex-shrink-0" />
-                    <span className="truncate">{item.label}</span>
+                    <Icon className="h-4 w-4 flex-shrink-0 mt-0.5" />
+                    <span className="leading-snug">{item.label}</span>
                     {item.disabled && (
                       <span className="ml-auto text-[10px] bg-slate-200 text-slate-500 px-1.5 py-0.5 rounded font-medium">
                         Soon

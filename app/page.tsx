@@ -274,17 +274,17 @@ export default function Landing21() {
       {/* Hero */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 pb-8 sm:pb-12">
         <div className="text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-slate-900 mb-3 sm:mb-4 leading-tight">
-            <span className="block">Build wealth.</span>
-            <span className="block">Reduce taxes.</span>
-            <span className="block">Retire on your terms.</span>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-slate-900 mb-6 sm:mb-8 leading-tight">
+            Stop optimizing blind.
           </h1>
-          <p className="text-base sm:text-lg text-slate-600 mb-3 sm:mb-4 max-w-2xl mx-auto leading-relaxed">
-            Model tax strategies, retirement outcomes, and portfolio decisions.
-          </p>
-          <p className="text-sm sm:text-base text-slate-500 mb-6 sm:mb-8 max-w-xl mx-auto">
-            No asset transfers. No account linking required. Just clarity.
-          </p>
+          <div className="mb-8 sm:mb-10 max-w-xl mx-auto space-y-3 text-left sm:text-center">
+            <p className="text-base sm:text-lg text-slate-400">
+              Your CPA files the return. Your portfolio tracker shows the balance.
+            </p>
+            <p className="text-base sm:text-lg text-slate-700 font-medium leading-relaxed">
+              Nobody&apos;s connecting the dots between your structure, your taxes, and your retirement timeline.
+            </p>
+          </div>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <TrackedLink
               href="/sign-up"
@@ -293,7 +293,7 @@ export default function Landing21() {
               trackingVariant={VARIANT}
               buttonProps={{ size: "lg", className: "bg-emerald-600 hover:bg-emerald-700 text-white px-10 py-6 text-base sm:text-lg" }}
             >
-              Start Modeling for Free
+              Start for Free
               <ArrowRight className="ml-2 h-5 w-5" />
             </TrackedLink>
 
@@ -341,6 +341,18 @@ export default function Landing21() {
         </div>
       </section>
 
+      {/* Who it's for strip */}
+      <section className="bg-slate-900 text-white py-10 sm:py-12">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+          <p className="text-base sm:text-lg text-slate-300 leading-relaxed mb-6 max-w-2xl mx-auto">
+            Your W-2 colleagues have a payroll department, a 401k match, and an HR team handling this. You&apos;re earning more than most of them but navigating it entirely alone. SoloFI becomes your self-employment companion.
+          </p>
+          <p className="text-base sm:text-lg text-slate-300 max-w-xl mx-auto">
+            The average SoloFI user finds $18,000 in tax they didn&apos;t have to pay. Takes about 10 minutes to model. Free to start. No credit card required.
+          </p>
+        </div>
+      </section>
+
       {/* Quarterly Tax Calculator CTA Section */}
       <section className="py-10 sm:py-14 bg-white border-y border-slate-200">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
@@ -382,16 +394,16 @@ export default function Landing21() {
       {/* Core Value Pillars */}
       <section className="py-12 sm:py-16">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <h2 className="text-xl sm:text-2xl font-medium text-slate-900 text-center mb-3 sm:mb-4">What SoloFI does</h2>
+          <h2 className="text-xl sm:text-2xl font-medium text-slate-900 text-center mb-3 sm:mb-4">The decisions SoloFI helps you make</h2>
           <p className="text-sm sm:text-base text-slate-600 text-center mb-10 sm:mb-12 max-w-2xl mx-auto">
-            A <span className="font-semibold">decision engine</span>, not a brokerage. Understand the implications of financial choices before you make them.
+            Not a brokerage. Not a tracker. A modeling tool built specifically for the financial decisions self-employed people face and get wrong most often.
           </p>
 
           <div className="grid md:grid-cols-2 gap-8">
             <div className="bg-white border border-slate-200 rounded-xl p-8 border-t-2 border-t-emerald-500">
-              <h3 className="text-lg font-medium text-slate-900 mb-3">Decision Modeling</h3>
+              <h3 className="text-lg font-medium text-slate-900 mb-3">Should I stay self-employed or take the W-2 offer?</h3>
               <p className="text-slate-600 mb-4">
-                Compare Self Employment vs W-2. Roth conversion now vs later. Retire at 40 vs 55.
+                Model the full tax picture of self-employment vs. W-2, including retirement contributions, benefits, and your effective take-home at different income levels.
               </p>
               <ul className="space-y-2">
                 <li className="flex items-center gap-2 text-sm text-slate-600">
@@ -410,9 +422,9 @@ export default function Landing21() {
             </div>
 
             <div className="bg-white border border-slate-200 rounded-xl p-8 border-t-2 border-t-emerald-500">
-              <h3 className="text-lg font-medium text-slate-900 mb-3">Tax Optimization</h3>
+              <h3 className="text-lg font-medium text-slate-900 mb-3">What should my S-Corp salary actually be?</h3>
               <p className="text-slate-600 mb-4">
-                Understand your effective tax rate across federal, state, and self-employment taxes. Model the impact of contributions, deductions, and business decisions.
+                Most S-Corp owners set their salary once and never revisit it. SoloFI models the exact salary that minimizes your SE tax without triggering IRS scrutiny at your specific income level.
               </p>
               <ul className="space-y-2">
                 <li className="flex items-center gap-2 text-sm text-slate-600">
@@ -431,14 +443,14 @@ export default function Landing21() {
             </div>
 
             <div className="bg-white border border-slate-200 rounded-xl p-8 border-t-2 border-t-emerald-500">
-              <h3 className="text-lg font-medium text-slate-900 mb-3">Unified Financial View</h3>
+              <h3 className="text-lg font-medium text-slate-900 mb-3">Where do I actually stand financially?</h3>
               <p className="text-slate-600 mb-4">
-                Track net worth across all accounts without linking them. Manual entry keeps you in control while giving you a complete picture of where you stand.
+                Track net worth across all accounts without linking them. Enter your numbers, see your complete picture and watch how each decision you model changes your trajectory.
               </p>
               <ul className="space-y-2">
                 <li className="flex items-center gap-2 text-sm text-slate-600">
                   <Check className="h-4 w-4 text-emerald-500" />
-                  No account needed—data stays on your device
+                  No bank linking required—enter your numbers, your way
                 </li>
                 <li className="flex items-center gap-2 text-sm text-slate-600">
                   <Check className="h-4 w-4 text-emerald-500" />
@@ -456,22 +468,22 @@ export default function Landing21() {
             </div>
 
             <div className="bg-white border border-slate-200 rounded-xl p-8 border-t-2 border-t-emerald-500">
-              <h3 className="text-lg font-medium text-slate-900 mb-3">Retirement Planning</h3>
+              <h3 className="text-lg font-medium text-slate-900 mb-3">Can I actually retire at 55?</h3>
               <p className="text-slate-600 mb-4">
-                Run Monte Carlo simulations on your retirement plan. See probability of success across different withdrawal rates, market conditions, and timelines.
+                Run scenarios across different retirement ages, spending levels, and locations. See your probability of success before committing and not after it&apos;s too late to adjust.
               </p>
               <ul className="space-y-2">
                 <li className="flex items-center gap-2 text-sm text-slate-600">
                   <Check className="h-4 w-4 text-emerald-500" />
-                  FIRE number calculations
+                  Know exactly what number you need to retire
                 </li>
                 <li className="flex items-center gap-2 text-sm text-slate-600">
                   <Check className="h-4 w-4 text-emerald-500" />
-                  Geographic arbitrage modeling
+                  See how moving changes your timeline
                 </li>
                 <li className="flex items-center gap-2 text-sm text-slate-600">
                   <Check className="h-4 w-4 text-emerald-500" />
-                  Safe withdrawal rate analysis
+                  Stress-test your plan before you commit
                 </li>
               </ul>
             </div>
@@ -482,38 +494,44 @@ export default function Landing21() {
       {/* Who SoloFI is for */}
       <section className="bg-white border-y border-slate-200 py-12 sm:py-16">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <h2 className="text-xl sm:text-2xl font-medium text-slate-900 text-center mb-3 sm:mb-4">Built for complex financial lives</h2>
+          <h2 className="text-xl sm:text-2xl font-medium text-slate-900 text-center mb-3 sm:mb-4">Built for established self-employed professionals earning $150k+</h2>
           <p className="text-sm sm:text-base text-slate-600 text-center mb-8 sm:mb-10 max-w-2xl mx-auto">
-            Built for people with multiple income streams, complicated taxes, and long term planning.
+            You&apos;re doing the right things. The problem isn&apos;t effort. It&apos;s visibility.
           </p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-            <div className="text-center">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-50 rounded-lg flex items-center justify-center mx-auto mb-2 sm:mb-3">
-                <Building2 className="h-5 w-5 sm:h-6 sm:w-6 text-emerald-600" />
+          <div className="max-w-3xl mx-auto">
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-8">
+              <p className="text-base sm:text-lg text-slate-700 leading-relaxed mb-6">
+                Your CPA optimizes the return. Your brokerage shows the balance. But nobody is modeling how your business structure, tax decisions, and savings rate compound into your actual retirement timeline. The cost isn&apos;t the subscription. It&apos;s what you don&apos;t know.
+              </p>
+              <div className="grid sm:grid-cols-3 gap-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Building2 className="h-4 w-4 text-emerald-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-slate-900">S-Corp or LLC?</p>
+                    <p className="text-xs text-slate-500">Model the breakeven at your exact income</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <TrendingUp className="h-4 w-4 text-emerald-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-slate-900">Retire at 55?</p>
+                    <p className="text-xs text-slate-500">See your real number and timeline</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Calculator className="h-4 w-4 text-emerald-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-slate-900">Roth conversion?</p>
+                    <p className="text-xs text-slate-500">Find the optimal amount this year</p>
+                  </div>
+                </div>
               </div>
-              <h3 className="font-medium text-slate-900 mb-1 sm:mb-2 text-sm sm:text-base">Independent Consultants</h3>
-              <p className="text-xs sm:text-sm text-slate-500">Managing variable income, quarterly taxes, and business structure decisions</p>
-            </div>
-            <div className="text-center">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-50 rounded-lg flex items-center justify-center mx-auto mb-2 sm:mb-3">
-                <Calculator className="h-5 w-5 sm:h-6 sm:w-6 text-emerald-600" />
-              </div>
-              <h3 className="font-medium text-slate-900 mb-1 sm:mb-2 text-sm sm:text-base">Self-Employed Professionals</h3>
-              <p className="text-xs sm:text-sm text-slate-500">Navigating Solo 401k, SEP IRA, and S-Corp election timing</p>
-            </div>
-            <div className="text-center">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-50 rounded-lg flex items-center justify-center mx-auto mb-2 sm:mb-3">
-                <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 text-emerald-600" />
-              </div>
-              <h3 className="font-medium text-slate-900 mb-1 sm:mb-2 text-sm sm:text-base">Business Owners</h3>
-              <p className="text-xs sm:text-sm text-slate-500">Coordinating personal and business finances with exit planning</p>
-            </div>
-            <div className="text-center">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-50 rounded-lg flex items-center justify-center mx-auto mb-2 sm:mb-3">
-                <PieChart className="h-5 w-5 sm:h-6 sm:w-6 text-emerald-600" />
-              </div>
-              <h3 className="font-medium text-slate-900 mb-1 sm:mb-2 text-sm sm:text-base">High Earners</h3>
-              <p className="text-xs sm:text-sm text-slate-500">Optimizing across tax brackets, investment accounts, and retirement vehicles</p>
             </div>
           </div>
         </div>
@@ -590,7 +608,7 @@ export default function Landing21() {
               Variable income. Complex taxes.<br className="hidden sm:block" /> Big financial decisions.
             </h2>
             <p className="text-slate-300 text-sm sm:text-base max-w-md">
-              SoloFI models the tradeoffs so you understand exactly what each decision costs—before you commit.
+              SoloFI models the tradeoffs so you understand exactly what each decision costs before you commit.
             </p>
           </div>
         </div>
@@ -603,7 +621,7 @@ export default function Landing21() {
             <div>
               <h2 className="text-2xl font-medium text-slate-900 mb-4">Tax optimization that understands self-employment</h2>
               <p className="text-slate-600 mb-6">
-                Self-employment taxes add 15.3% before you even get to income tax. The right structure and timing decisions can save tens of thousands per year—but only if you can model the tradeoffs accurately.
+                Self-employment taxes add 15.3% before you even get to income tax. The right structure and timing decisions can save tens of thousands per year, but only if you can model the tradeoffs accurately.
               </p>
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
@@ -816,9 +834,9 @@ export default function Landing21() {
       {/* Final CTA */}
       <section className="py-16">
         <div className="max-w-3xl mx-auto px-6 text-center">
-          <h2 className="text-2xl font-medium text-slate-900 mb-4">Start modeling your financial decisions</h2>
+          <h2 className="text-2xl font-medium text-slate-900 mb-4">See what you&apos;re leaving on the table.</h2>
           <p className="text-slate-600 mb-6 max-w-xl mx-auto">
-            Free to start. No credit card required. See what clarity looks like before your next big financial decision.
+            The average SoloFI user finds $18,000 in tax they didn&apos;t have to pay. Takes about 10 minutes to model. Free to start — no credit card required.
           </p>
           <TrackedLink
             href="/sign-up"
@@ -844,7 +862,7 @@ export default function Landing21() {
               <Link href="/learn" className="hover:text-slate-700">Documentation</Link>
               <Link href="/faq" className="hover:text-slate-700">FAQ</Link>
               <Link href="/tools" className="hover:text-slate-700">Resources</Link>
-              <Link href="/blog" className="hover:text-slate-700">Learn</Link>
+              <Link href="https://solofi.io/blog" className="hover:text-slate-700">Learn</Link>
               <Link href="/pricing" className="hover:text-slate-700">Pricing</Link>
               <Link href="/privacy" className="hover:text-slate-700">Privacy</Link>
               <Link href="/terms" className="hover:text-slate-700">Terms</Link>

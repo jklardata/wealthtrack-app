@@ -903,7 +903,7 @@ export default function LifetimeTaxMapPage() {
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-200 mb-3">
                 <Lock className="h-5 w-5 text-slate-400" />
               </div>
-              <h3 className="text-sm font-semibold text-slate-700 mb-1.5">Unlock Strategic Insights</h3>
+              <h3 className="text-sm font-semibold text-slate-700 mb-1.5">See your full tax picture</h3>
               <p className="text-xs text-slate-500 mb-4 max-w-md mx-auto">
                 Get lifetime tax burden projections, low-tax opportunity windows, gap year conversion insights, high-risk year analysis, and strategy impact assessments.
               </p>
@@ -1037,7 +1037,7 @@ export default function LifetimeTaxMapPage() {
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-200 mb-3">
                 <Lock className="h-5 w-5 text-slate-400" />
               </div>
-              <h3 className="text-sm font-semibold text-slate-700 mb-1.5">Unlock Detailed Projections</h3>
+              <h3 className="text-sm font-semibold text-slate-700 mb-1.5">See your full tax picture</h3>
               <p className="text-xs text-slate-500 mb-4 max-w-md mx-auto">
                 Get complete year-by-year projections with income sources, conversions, gains, taxes, cumulative lifetime taxes, and account balances.
               </p>

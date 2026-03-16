@@ -256,7 +256,7 @@ export default function RothConversionLeadMagnet() {
           SoloFI
         </Link>
         <div className="flex items-center gap-6">
-          <Link href="/blog" className="text-sm text-white/60 hover:text-white hidden md:block">
+          <Link href="https://solofi.io/blog" className="text-sm text-white/60 hover:text-white hidden md:block">
             Blog
           </Link>
           <Link href="/sign-up">
@@ -809,7 +809,7 @@ export default function RothConversionLeadMagnet() {
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-white/40">
           <span>© 2026 SoloFI</span>
           <div className="flex gap-6">
-            <Link href="/blog" className="hover:text-white">Blog</Link>
+            <Link href="https://solofi.io/blog" className="hover:text-white">Blog</Link>
             <Link href="/tools/tax-savings" className="hover:text-white">Tax Calculator</Link>
             <Link href="/tools/fi-calculator" className="hover:text-white">FI Calculator</Link>
           </div>

@@ -10,7 +10,6 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   DollarSign,
-  Briefcase,
   TrendingUp,
   ArrowRight,
   Info,
@@ -20,21 +19,23 @@ import {
   Calendar,
   Users,
   CheckCircle,
+  ClipboardList,
+  Shield,
 } from "lucide-react";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 const SE_TAX_RATE = 0.153;
-const SE_DEDUCTION_RATE = 0.0765; // half of SE tax is deductible from income
+const SE_DEDUCTION_RATE = 0.0765;
 
 const FEDERAL_BRACKETS = [
-  { label: "22% bracket (income ~$47k–$103k single)", value: 0.22 },
-  { label: "24% bracket (income ~$103k–$197k single)", value: 0.24 },
-  { label: "32% bracket (income ~$197k–$250k single)", value: 0.32 },
-  { label: "35% bracket (income ~$250k–$626k single)", value: 0.35 },
-  { label: "37% bracket (income $626k+ single)", value: 0.37 },
+  { label: "22% (taxable income ~$47k–$103k, single)", value: 0.22 },
+  { label: "24% (taxable income ~$103k–$197k, single)", value: 0.24 },
+  { label: "32% (taxable income ~$197k–$250k, single)", value: 0.32 },
+  { label: "35% (taxable income ~$250k–$626k, single)", value: 0.35 },
+  { label: "37% (taxable income $626k+, single)", value: 0.37 },
 ];
 
-const SCORP_ACCOUNTING_COST = 2500; // estimated annual extra accounting cost
+const SCORP_ACCOUNTING_COST = 2500;
 
 const formatCurrency = (v: number) =>
   new Intl.NumberFormat("en-US", {
@@ -48,6 +49,7 @@ const formatCurrency = (v: number) =>
 interface RateResult {
   grossIncomeNeeded: number;
   annualBillableHours: number;
+  billableHoursPerWeek: number;
   hourlyRate: number;
   dayRate: number;
   weeklyRate: number;
@@ -59,8 +61,12 @@ interface RateResult {
   totalTax: number;
   effectiveRate: number;
   w2Equivalent: number;
+  freelancePremium: number;
   scorp: { salary: number; distributions: number; seTaxSavings: number; netSavings: number } | null;
   quarterlySetAside: number;
+  rateIncreaseImpact: number;
+  bufferRate: number;
+  vacationRateImpact: number;
 }
 
 // ─── Core Calculation ─────────────────────────────────────────────────────────
@@ -79,16 +85,6 @@ function analyzeRate(
   const billableHoursPerWeek = hoursPerWeek * (billablePercent / 100);
   const annualBillableHours = Math.round(billableHoursPerWeek * workingWeeks);
 
-  // Solve for gross revenue needed:
-  //   gross - SE_tax - federal_tax - state_tax - health - retirement - expenses = take_home
-  //   SE_tax = gross × 15.3%
-  //   SE_deduction = gross × 7.65%  (half of SE tax reduces taxable income)
-  //   taxable = gross - SE_deduction - expenses - health - retirement
-  //   federal_tax = taxable × federalRate
-  //   state_tax = taxable × stateRate
-  //
-  //   → gross × (1 - 0.153 - 0.9235×(fed+state)) = takeHome + fixedCosts×(1 - fed - state)
-
   const totalRate = federalRate + stateRate;
   const fixedCosts = annualExpenses + healthInsurance + retirementContrib;
   const grossMultiplier = 1 - SE_TAX_RATE - (1 - SE_DEDUCTION_RATE) * totalRate;
@@ -97,7 +93,6 @@ function analyzeRate(
     Math.ceil((targetTakeHome + fixedCosts * (1 - totalRate)) / grossMultiplier)
   );
 
-  // Tax breakdown
   const seDeduction = grossIncomeNeeded * SE_DEDUCTION_RATE;
   const taxableIncome = Math.max(0, grossIncomeNeeded - seDeduction - fixedCosts);
   const seTax = Math.round(grossIncomeNeeded * SE_TAX_RATE);
@@ -106,7 +101,6 @@ function analyzeRate(
   const totalTax = seTax + federalTax + stateTax;
   const effectiveRate = grossIncomeNeeded > 0 ? totalTax / grossIncomeNeeded : 0;
 
-  // Rates
   const hourlyRate = annualBillableHours > 0 ? Math.ceil(grossIncomeNeeded / annualBillableHours) : 0;
   const dayRate = Math.ceil(hourlyRate * 8);
   const weeklyRate = Math.ceil(hourlyRate * billableHoursPerWeek);
@@ -122,20 +116,30 @@ function analyzeRate(
   else if (billablePercent >= 85) utilizationNote = "High utilization — leave buffer for business development.";
   else utilizationNote = "Healthy utilization for a sustainable freelance practice.";
 
-  // W2 equivalent: what salary would net the same take-home?
-  // Employee pays 7.65% FICA (employer covers the other half), federal, and state taxes.
-  // Self-employed person can deduct health + retirement; W2 employee typically gets health through employer.
-  // We compare apples-to-apples: just the take-home cash.
   const w2TaxRate = 0.0765 + federalRate + stateRate;
   const w2Equivalent = w2TaxRate < 1 ? Math.ceil(targetTakeHome / (1 - w2TaxRate)) : 0;
+  const freelancePremium = Math.max(0, grossIncomeNeeded - w2Equivalent);
 
-  // S-Corp savings (worthwhile when gross > ~$80k and savings exceed accounting overhead)
+  // $10/hr rate increase → additional take-home after taxes
+  const rateIncreaseImpact = Math.round(10 * annualBillableHours * (1 - effectiveRate));
+
+  // Buffer rate: cover 1 slow month (4 weeks with 0 billing)
+  const slowMonthHoursLost = billableHoursPerWeek * 4;
+  const bufferRate = annualBillableHours > slowMonthHoursLost
+    ? Math.ceil(grossIncomeNeeded / (annualBillableHours - slowMonthHoursLost))
+    : 0;
+
+  // Rate impact of 1 extra vacation week
+  const annualHoursWithExtraWeek = Math.round(billableHoursPerWeek * (workingWeeks - 1));
+  const rateWithExtraWeek = annualHoursWithExtraWeek > 0
+    ? Math.ceil(grossIncomeNeeded / annualHoursWithExtraWeek)
+    : 0;
+  const vacationRateImpact = rateWithExtraWeek - hourlyRate;
+
   let scorp: RateResult["scorp"] = null;
   if (grossIncomeNeeded > 80000) {
-    // Reasonable salary = ~55% of net profit (IRS guideline: roughly what you'd pay an employee for the same work)
     const reasonableSalary = Math.round(grossIncomeNeeded * 0.55);
     const distributions = grossIncomeNeeded - reasonableSalary;
-    // SE tax is only owed on salary, not distributions
     const seTaxSavings = Math.round(distributions * SE_TAX_RATE);
     const netSavings = seTaxSavings - SCORP_ACCOUNTING_COST;
     if (netSavings > 1000) {
@@ -148,6 +152,7 @@ function analyzeRate(
   return {
     grossIncomeNeeded,
     annualBillableHours,
+    billableHoursPerWeek,
     hourlyRate,
     dayRate,
     weeklyRate,
@@ -159,31 +164,78 @@ function analyzeRate(
     totalTax,
     effectiveRate,
     w2Equivalent,
+    freelancePremium,
     scorp,
     quarterlySetAside,
+    rateIncreaseImpact,
+    bufferRate,
+    vacationRateImpact,
   };
+}
+
+// ─── Revenue Bar Segment ──────────────────────────────────────────────────────
+function RevenueBar({ gross, seTax, federalTax, stateTax, health, retirement, expenses, takeHome }: {
+  gross: number; seTax: number; federalTax: number; stateTax: number;
+  health: number; retirement: number; expenses: number; takeHome: number;
+}) {
+  if (gross === 0) return null;
+  const pct = (v: number) => ((v / gross) * 100).toFixed(1);
+  const segments = [
+    { label: "SE Tax", value: seTax, color: "bg-red-500", textColor: "text-red-700", bg: "bg-red-50" },
+    { label: "Federal Tax", value: federalTax, color: "bg-orange-400", textColor: "text-orange-700", bg: "bg-orange-50" },
+    ...(stateTax > 0 ? [{ label: "State Tax", value: stateTax, color: "bg-amber-400", textColor: "text-amber-700", bg: "bg-amber-50" }] : []),
+    { label: "Health", value: health, color: "bg-rose-300", textColor: "text-rose-700", bg: "bg-rose-50" },
+    { label: "Retirement", value: retirement, color: "bg-blue-400", textColor: "text-blue-700", bg: "bg-blue-50" },
+    { label: "Expenses", value: expenses, color: "bg-slate-300", textColor: "text-slate-600", bg: "bg-slate-50" },
+    { label: "Take-Home", value: takeHome, color: "bg-emerald-500", textColor: "text-emerald-700", bg: "bg-emerald-50" },
+  ];
+
+  return (
+    <div className="space-y-3">
+      {/* Stacked bar */}
+      <div className="flex h-8 rounded-lg overflow-hidden w-full">
+        {segments.map((s) => (
+          <div
+            key={s.label}
+            className={`${s.color} transition-all`}
+            style={{ width: `${pct(s.value)}%` }}
+            title={`${s.label}: ${formatCurrency(s.value)} (${pct(s.value)}%)`}
+          />
+        ))}
+      </div>
+      {/* Legend */}
+      <div className="grid grid-cols-2 gap-x-4 gap-y-1.5">
+        {segments.map((s) => (
+          <div key={s.label} className="flex items-center justify-between text-xs">
+            <div className="flex items-center gap-1.5">
+              <span className={`w-2.5 h-2.5 rounded-sm ${s.color} flex-shrink-0`} />
+              <span className="text-slate-500">{s.label}</span>
+            </div>
+            <div className="text-right">
+              <span className={`font-semibold ${s.textColor}`}>{formatCurrency(s.value)}</span>
+              <span className="text-slate-400 ml-1">({pct(s.value)}%)</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
 export default function FreelanceRatePage() {
   const { isPro } = useSubscription();
 
-  // Goals
   const [targetTakeHome, setTargetTakeHome] = useState(80000);
   const [healthInsurance, setHealthInsurance] = useState(12000);
   const [retirementContrib, setRetirementContrib] = useState(20000);
   const [annualExpenses, setAnnualExpenses] = useState(12000);
-
-  // Schedule
   const [hoursPerWeek, setHoursPerWeek] = useState(40);
   const [billablePercent, setBillablePercent] = useState(70);
   const [vacationWeeks, setVacationWeeks] = useState(4);
-
-  // Tax settings
   const [federalRate, setFederalRate] = useState(0.22);
   const [stateRate, setStateRate] = useState(5);
 
-  // Load saved calculator preferences
   useEffect(() => {
     try {
       const saved = localStorage.getItem("solofi_freelance_rate");
@@ -212,41 +264,22 @@ export default function FreelanceRatePage() {
   }, [targetTakeHome, healthInsurance, retirementContrib, annualExpenses, hoursPerWeek, billablePercent, vacationWeeks, federalRate, stateRate]);
 
   const result = useMemo(
-    () =>
-      analyzeRate(
-        targetTakeHome,
-        annualExpenses,
-        healthInsurance,
-        retirementContrib,
-        hoursPerWeek,
-        billablePercent,
-        vacationWeeks,
-        federalRate,
-        stateRate / 100
-      ),
-    [
-      targetTakeHome,
-      annualExpenses,
-      healthInsurance,
-      retirementContrib,
-      hoursPerWeek,
-      billablePercent,
-      vacationWeeks,
-      federalRate,
-      stateRate,
-    ]
+    () => analyzeRate(
+      targetTakeHome, annualExpenses, healthInsurance, retirementContrib,
+      hoursPerWeek, billablePercent, vacationWeeks, federalRate, stateRate / 100
+    ),
+    [targetTakeHome, annualExpenses, healthInsurance, retirementContrib, hoursPerWeek, billablePercent, vacationWeeks, federalRate, stateRate]
   );
 
   return (
     <div className="max-w-5xl mx-auto space-y-5 py-4">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
-          <Briefcase className="h-5 w-5 text-emerald-600" />
-          Freelance Rate Calculator
+        <h1 className="text-2xl font-bold text-slate-900">
+          What should you actually charge?
         </h1>
         <p className="text-sm text-slate-500 mt-1">
-          Built for self-employed professionals. Factors in SE tax, health insurance, retirement, and your actual tax bracket.
+          See the minimum rate you need to hit your take-home—accounting for SE tax, benefits, and time off. Then decide if your current rate is enough.
         </p>
       </div>
 
@@ -319,7 +352,12 @@ export default function FreelanceRatePage() {
                     className="pl-8 text-sm"
                   />
                 </div>
-                <p className="text-xs text-slate-400 mt-0.5">Software, equipment, coworking, etc.</p>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  Software, equipment, coworking, etc.{" "}
+                  <Link href="/freelance-checklist" className="text-emerald-600 hover:text-emerald-700 underline-offset-2 hover:underline">
+                    See deduction checklist →
+                  </Link>
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -345,7 +383,12 @@ export default function FreelanceRatePage() {
               <div>
                 <div className="flex items-center justify-between mb-1">
                   <Label className="text-xs font-medium text-slate-600">Billable Utilization</Label>
-                  <span className="text-xs font-bold text-emerald-600">{billablePercent}%</span>
+                  <div className="text-right">
+                    <span className="text-xs font-bold text-emerald-600">{billablePercent}%</span>
+                    <span className="text-xs text-slate-400 ml-1.5">
+                      = {Math.round(hoursPerWeek * (billablePercent / 100))} client hrs/wk · {result.annualBillableHours.toLocaleString()} hrs/yr
+                    </span>
+                  </div>
                 </div>
                 <input
                   type="range"
@@ -367,7 +410,14 @@ export default function FreelanceRatePage() {
               </div>
 
               <div>
-                <Label className="text-xs font-medium text-slate-600">Vacation Weeks / Year</Label>
+                <div className="flex items-center justify-between mb-1">
+                  <Label className="text-xs font-medium text-slate-600">Vacation Weeks / Year</Label>
+                  {result.vacationRateImpact > 0 && (
+                    <span className="text-xs text-slate-400">
+                      +1 week = +${result.vacationRateImpact}/hr
+                    </span>
+                  )}
+                </div>
                 <Input
                   type="number"
                   min={0}
@@ -376,6 +426,9 @@ export default function FreelanceRatePage() {
                   onChange={(e) => setVacationWeeks(Number(e.target.value))}
                   className="mt-1 text-sm"
                 />
+                <p className="text-xs text-slate-400 mt-0.5">
+                  Each week off requires a higher rate to hit the same gross.
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -400,7 +453,7 @@ export default function FreelanceRatePage() {
                     ))}
                   </SelectContent>
                 </Select>
-                <p className="text-xs text-slate-400 mt-0.5">Your marginal (top) federal rate</p>
+                <p className="text-xs text-slate-400 mt-0.5">Your marginal rate on taxable income after deductions</p>
               </div>
 
               <div>
@@ -426,87 +479,90 @@ export default function FreelanceRatePage() {
         {/* ── Results ── */}
         <div className="lg:col-span-3 space-y-4">
 
-          {/* Primary rate cards */}
-          <div className="grid grid-cols-3 gap-3">
-            <Card className="bg-emerald-600 border-none shadow-sm">
-              <CardContent className="pt-4 pb-4 text-center">
-                <p className="text-xs text-emerald-100 mb-1">Hourly Rate</p>
-                <p className="text-3xl font-bold text-white">${result.hourlyRate}</p>
-                <p className="text-xs text-emerald-200 mt-0.5">/ hour</p>
-              </CardContent>
-            </Card>
-            <Card className="bg-white border border-slate-200 shadow-sm">
-              <CardContent className="pt-4 pb-4 text-center">
-                <p className="text-xs text-slate-500 mb-1">Day Rate</p>
-                <p className="text-2xl font-bold text-slate-900">{formatCurrency(result.dayRate)}</p>
-                <p className="text-xs text-slate-400 mt-0.5">8 hours</p>
-              </CardContent>
-            </Card>
-            <Card className="bg-white border border-slate-200 shadow-sm">
-              <CardContent className="pt-4 pb-4 text-center">
-                <p className="text-xs text-slate-500 mb-1">Weekly Rate</p>
-                <p className="text-2xl font-bold text-slate-900">{formatCurrency(result.weeklyRate)}</p>
-                <p className="text-xs text-slate-400 mt-0.5">
-                  {Math.round(hoursPerWeek * (billablePercent / 100))} billable hrs
+          {/* Hero Rate Card */}
+          <Card className="bg-slate-900 border-none shadow-md overflow-hidden">
+            <CardContent className="pt-5 pb-5">
+              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Your minimum viable rate</p>
+              <div className="flex items-end gap-4 mb-4">
+                <div>
+                  <span className="text-6xl font-bold text-white">${result.hourlyRate}</span>
+                  <span className="text-slate-400 text-lg ml-2">/ hour</span>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-white/10 rounded-lg p-3">
+                  <p className="text-xs text-slate-400 mb-0.5">Day Rate (8 hrs)</p>
+                  <p className="text-xl font-bold text-white">{formatCurrency(result.dayRate)}</p>
+                </div>
+                <div className="bg-white/10 rounded-lg p-3">
+                  <p className="text-xs text-slate-400 mb-0.5">Weekly ({Math.round(result.billableHoursPerWeek)} billable hrs)</p>
+                  <p className="text-xl font-bold text-white">{formatCurrency(result.weeklyRate)}</p>
+                </div>
+              </div>
+              {result.rateIncreaseImpact > 0 && (
+                <p className="text-sm text-emerald-400 mt-3 border-t border-white/10 pt-3">
+                  A $10/hr rate increase adds <span className="font-bold text-emerald-300">{formatCurrency(result.rateIncreaseImpact)}</span> to your annual take-home at your current utilization.
                 </p>
-              </CardContent>
-            </Card>
-          </div>
+              )}
+            </CardContent>
+          </Card>
 
-          {/* Income breakdown */}
+          {/* Revenue Breakdown — visual bar */}
           <Card className="bg-white border border-slate-200 shadow-sm">
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-semibold text-slate-900">Where Your Revenue Goes</CardTitle>
+              <CardTitle className="text-base font-semibold text-slate-900">Revenue Breakdown</CardTitle>
+              <p className="text-sm text-slate-500 mt-0.5">
+                You need to bill <span className="font-semibold text-slate-700">{formatCurrency(result.grossIncomeNeeded)}</span> gross to hit your take-home—here's where it goes.
+              </p>
             </CardHeader>
-            <CardContent className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="text-slate-500">Gross Revenue Needed</span>
-                <span className="font-semibold text-slate-900">{formatCurrency(result.grossIncomeNeeded)}</span>
+            <CardContent>
+              <RevenueBar
+                gross={result.grossIncomeNeeded}
+                seTax={result.seTax}
+                federalTax={result.federalTax}
+                stateTax={result.stateTax}
+                health={healthInsurance}
+                retirement={retirementContrib}
+                expenses={annualExpenses}
+                takeHome={targetTakeHome}
+              />
+              <div className="mt-3 pt-3 border-t border-slate-100 flex justify-between text-xs text-slate-400">
+                <span>Effective total tax rate: <span className="font-semibold text-slate-600">{(result.effectiveRate * 100).toFixed(1)}%</span></span>
+                <span>Billable hrs/yr: <span className="font-semibold text-slate-600">{result.annualBillableHours.toLocaleString()}</span></span>
               </div>
-              <div className="border-t border-slate-100 pt-2 space-y-1.5">
-                <div className="flex justify-between text-sm">
-                  <span className="text-slate-500">Self-Employment Tax (15.3%)</span>
-                  <span className="font-medium text-red-500">− {formatCurrency(result.seTax)}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-slate-500">Federal Income Tax ({(federalRate * 100).toFixed(0)}%)</span>
-                  <span className="font-medium text-red-500">− {formatCurrency(result.federalTax)}</span>
-                </div>
-                {result.stateTax > 0 && (
-                  <div className="flex justify-between text-sm">
-                    <span className="text-slate-500">State Income Tax ({stateRate}%)</span>
-                    <span className="font-medium text-red-500">− {formatCurrency(result.stateTax)}</span>
+            </CardContent>
+          </Card>
+
+          {/* Market Context */}
+          <Card className="bg-slate-50 border border-slate-200 shadow-sm">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-semibold text-slate-900 flex items-center gap-2">
+                <TrendingUp className="h-4 w-4 text-slate-500" />
+                Market Rate Context
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-xs text-slate-500 mb-3">Typical ranges for experienced independent professionals (US market, 2026):</p>
+              <div className="space-y-2">
+                {[
+                  { role: "Software Engineering / Architecture", range: "$150 – $300/hr" },
+                  { role: "Product Management / Strategy", range: "$125 – $250/hr" },
+                  { role: "Financial Advisory / CFO", range: "$150 – $350/hr" },
+                  { role: "Marketing Strategy / Brand", range: "$75 – $175/hr" },
+                  { role: "Legal / Compliance", range: "$200 – $500/hr" },
+                  { role: "Operations / Project Management", range: "$75 – $150/hr" },
+                ].map(({ role, range }) => (
+                  <div key={role} className="flex items-center justify-between text-xs">
+                    <span className="text-slate-600">{role}</span>
+                    <span className="font-semibold text-slate-800 flex-shrink-0 ml-4">{range}</span>
                   </div>
-                )}
-                <div className="flex justify-between text-sm">
-                  <span className="text-slate-500 flex items-center gap-1">
-                    <Heart className="h-3 w-3 text-rose-400" /> Health Insurance
-                  </span>
-                  <span className="font-medium text-slate-600">− {formatCurrency(healthInsurance)}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-slate-500 flex items-center gap-1">
-                    <PiggyBank className="h-3 w-3 text-emerald-500" /> Retirement
-                  </span>
-                  <span className="font-medium text-slate-600">− {formatCurrency(retirementContrib)}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-slate-500">Business Expenses</span>
-                  <span className="font-medium text-slate-600">− {formatCurrency(annualExpenses)}</span>
-                </div>
+                ))}
               </div>
-              <div className="border-t border-slate-200 pt-2 flex justify-between">
-                <span className="text-sm font-semibold text-slate-900">Take-Home Cash</span>
-                <span className="text-sm font-bold text-emerald-600">{formatCurrency(targetTakeHome)}</span>
-              </div>
-              <div className="flex justify-between text-xs text-slate-400 pt-1 border-t border-slate-100">
-                <span>Effective total tax rate</span>
-                <span>{(result.effectiveRate * 100).toFixed(1)}%</span>
-              </div>
-              <div className="flex justify-between text-xs text-slate-400">
-                <span>Billable hours / year</span>
-                <span>{result.annualBillableHours.toLocaleString()} hrs</span>
-              </div>
+              {result.hourlyRate > 0 && (
+                <p className="text-xs text-emerald-700 bg-emerald-50 border border-emerald-100 rounded-lg px-2.5 py-2 mt-3">
+                  Your minimum viable rate is <span className="font-bold">${result.hourlyRate}/hr</span>. If market rates in your field are higher, that difference is pure upside to your take-home.
+                </p>
+              )}
             </CardContent>
           </Card>
 
@@ -516,29 +572,33 @@ export default function FreelanceRatePage() {
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-semibold text-slate-900 flex items-center gap-2">
                   <Users className="h-4 w-4 text-blue-500" />
-                  W2 Equivalent Salary
+                  Your Freelance Premium
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="flex items-center justify-between mb-3">
-                  <div>
-                    <p className="text-2xl font-bold text-slate-900">{formatCurrency(result.w2Equivalent)}</p>
-                    <p className="text-xs text-slate-400 mt-0.5">to net the same take-home as an employee</p>
+                <div className="grid grid-cols-2 gap-3 mb-3">
+                  <div className="bg-slate-50 rounded-lg p-3">
+                    <p className="text-xs text-slate-500 mb-1">W2 Equivalent Salary</p>
+                    <p className="text-xl font-bold text-slate-900">{formatCurrency(result.w2Equivalent)}</p>
+                    <p className="text-xs text-slate-400 mt-0.5">to net the same take-home as employee</p>
                   </div>
-                  <div className="text-right">
-                    <p className="text-xs text-slate-500">Your freelance gross</p>
-                    <p className="text-sm font-semibold text-slate-700">{formatCurrency(result.grossIncomeNeeded)}</p>
+                  <div className="bg-amber-50 rounded-lg p-3 border border-amber-100">
+                    <p className="text-xs text-slate-500 mb-1">Freelance Premium</p>
+                    <p className="text-xl font-bold text-amber-700">+{formatCurrency(result.freelancePremium)}</p>
+                    <p className="text-xs text-slate-400 mt-0.5">more gross just to break even</p>
                   </div>
                 </div>
+                <p className="text-xs text-slate-600 mb-2">
+                  You need to earn <span className="font-semibold">{formatCurrency(result.freelancePremium)} more</span> than a W2 employee before capturing any freelance upside. That premium covers:
+                </p>
                 <div className="bg-slate-50 rounded-lg p-3 space-y-1.5 text-xs text-slate-600">
-                  <p className="font-medium text-slate-700 mb-1">Why freelancers earn more gross:</p>
                   <div className="flex items-start gap-1.5">
                     <CheckCircle className="h-3 w-3 text-emerald-500 mt-0.5 flex-shrink-0" />
-                    <span>Pay both sides of FICA (employee + employer = 15.3% vs 7.65%)</span>
+                    <span>Both sides of FICA (15.3% vs employee's 7.65%)</span>
                   </div>
                   <div className="flex items-start gap-1.5">
                     <CheckCircle className="h-3 w-3 text-emerald-500 mt-0.5 flex-shrink-0" />
-                    <span>Self-fund health insurance ({formatCurrency(healthInsurance)}/yr)</span>
+                    <span>Self-funded health insurance ({formatCurrency(healthInsurance)}/yr)</span>
                   </div>
                   <div className="flex items-start gap-1.5">
                     <CheckCircle className="h-3 w-3 text-emerald-500 mt-0.5 flex-shrink-0" />
@@ -546,17 +606,17 @@ export default function FreelanceRatePage() {
                   </div>
                   <div className="flex items-start gap-1.5">
                     <CheckCircle className="h-3 w-3 text-emerald-500 mt-0.5 flex-shrink-0" />
-                    <span>Cover business costs from revenue</span>
+                    <span>Business costs paid from revenue ({formatCurrency(annualExpenses)}/yr)</span>
                   </div>
                 </div>
               </CardContent>
             </Card>
           ) : (
             <LockedModule
-              title="W2 Equivalent Salary"
-              description="See what salary a W2 employee would need to match your take-home"
+              title="Your Freelance Premium"
+              description="See exactly how much more you need to earn vs. a W2 employee just to break even"
               icon={<Users className="h-5 w-5 text-blue-500" />}
-              benefits={["W2 vs freelance gross comparison", "True cost breakdown of self-employment", "FICA, health, and benefits breakdown"]}
+              benefits={["W2 vs freelance gross comparison", "True freelance premium calculation", "FICA, health, and benefits breakdown"]}
             />
           )}
 
@@ -584,12 +644,12 @@ export default function FreelanceRatePage() {
                       <p className="text-sm font-bold text-slate-900">{formatCurrency(result.scorp.distributions)}</p>
                     </div>
                     <div className="bg-white rounded-lg p-2 border border-blue-100">
-                      <p className="text-xs text-slate-500">Estimated Net Savings</p>
+                      <p className="text-xs text-slate-500">Est. Net Savings</p>
                       <p className="text-sm font-bold text-emerald-600">{formatCurrency(result.scorp.netSavings)}/yr</p>
                     </div>
                   </div>
                   <p className="text-xs text-blue-700">
-                    SE tax saved: {formatCurrency(result.scorp.seTaxSavings)} minus ~{formatCurrency(SCORP_ACCOUNTING_COST)} extra accounting costs. Consult a CPA to evaluate for your situation.
+                    SE tax saved: {formatCurrency(result.scorp.seTaxSavings)} minus ~{formatCurrency(SCORP_ACCOUNTING_COST)} extra accounting. Consult a CPA to evaluate for your situation.
                   </p>
                 </CardContent>
               </Card>
@@ -608,35 +668,20 @@ export default function FreelanceRatePage() {
             <Card className="bg-white border border-slate-200 shadow-sm">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-semibold text-slate-900 flex items-center gap-2">
-                  <TrendingUp className="h-4 w-4 text-emerald-600" />
+                  <ClipboardList className="h-4 w-4 text-emerald-600" />
                   Project Price Ranges
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
                 {[
-                  {
-                    label: "Small (4–16 hrs)",
-                    range: result.projectRanges.small,
-                    desc: "Quick audits, short consulting calls, small deliverables",
-                  },
-                  {
-                    label: "Medium (20–60 hrs)",
-                    range: result.projectRanges.medium,
-                    desc: "Strategy sprints, detailed assessments, short engagements",
-                  },
-                  {
-                    label: "Large (80–200 hrs)",
-                    range: result.projectRanges.large,
-                    desc: "Full engagements, ongoing retainers, complex builds",
-                  },
+                  { label: "Small (4–16 hrs)", range: result.projectRanges.small, desc: "Quick audits, short consulting calls, small deliverables" },
+                  { label: "Medium (20–60 hrs)", range: result.projectRanges.medium, desc: "Strategy sprints, detailed assessments, short engagements" },
+                  { label: "Large (80–200 hrs)", range: result.projectRanges.large, desc: "Full engagements, ongoing retainers, complex builds" },
                 ].map(({ label, range, desc }) => (
-                  <div
-                    key={label}
-                    className="flex items-start justify-between gap-4 py-2 border-b border-slate-100 last:border-0"
-                  >
+                  <div key={label} className="flex items-start justify-between gap-4 py-2 border-b border-slate-100 last:border-0">
                     <div className="min-w-0">
                       <p className="text-sm font-medium text-slate-900">{label}</p>
-                      <p className="text-xs text-slate-400 truncate">{desc}</p>
+                      <p className="text-sm text-slate-500">{desc}</p>
                     </div>
                     <p className="text-sm font-semibold text-slate-700 flex-shrink-0">
                       {formatCurrency(range[0])} – {formatCurrency(range[1])}
@@ -649,7 +694,7 @@ export default function FreelanceRatePage() {
             <LockedModule
               title="Project Price Ranges"
               description="Translate your hourly rate into fixed-price project quotes"
-              icon={<TrendingUp className="h-5 w-5 text-emerald-600" />}
+              icon={<ClipboardList className="h-5 w-5 text-emerald-600" />}
               benefits={["Small, medium, and large project ranges", "Based on your actual billable rate", "Anchor pricing for client proposals"]}
             />
           )}
@@ -657,14 +702,19 @@ export default function FreelanceRatePage() {
           {/* Bottom callouts — Pro only */}
           {isPro ? (
             <>
-              {/* Quarterly estimated tax */}
+              {/* Quarterly tax + buffer rate */}
               <div className="flex items-start gap-3 bg-amber-50 border border-amber-100 rounded-xl p-4">
                 <Calendar className="h-4 w-4 text-amber-600 flex-shrink-0 mt-0.5" />
                 <div className="flex-1">
                   <p className="text-xs font-semibold text-amber-900">Quarterly Estimated Tax</p>
                   <p className="text-xs text-amber-800 mt-0.5">
-                    Set aside <span className="font-bold">{formatCurrency(result.quarterlySetAside)}</span> every quarter (Apr 15, Jun 15, Sep 15, Jan 15) to avoid underpayment penalties. That&apos;s your total tax burden of {formatCurrency(result.totalTax)} split into 4 payments.
+                    Set aside <span className="font-bold">{formatCurrency(result.quarterlySetAside)}</span> every quarter (Apr 15, Jun 15, Sep 15, Jan 15) to avoid underpayment penalties.
                   </p>
+                  {result.bufferRate > 0 && (
+                    <p className="text-xs text-amber-800 mt-1.5 border-t border-amber-200 pt-1.5">
+                      <span className="font-semibold">Slow month buffer:</span> To cover 1 month with no clients, charge <span className="font-bold">${result.bufferRate}/hr</span> the other 11 months. That's ${result.bufferRate - result.hourlyRate}/hr above your minimum.
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -699,10 +749,10 @@ export default function FreelanceRatePage() {
             </>
           ) : (
             <LockedModule
-              title="Quarterly Tax Set-Aside & Insights"
-              description="Calculated quarterly payment schedule and tax planning insights"
-              icon={<Calendar className="h-5 w-5 text-amber-600" />}
-              benefits={["Exact quarterly set-aside amount", "Payment due dates (Apr, Jun, Sep, Jan)", "Links to precise tax calculator and planner"]}
+              title="Quarterly Tax Set-Aside & Slow Month Buffer"
+              description="Know exactly what to pay quarterly and how to rate-protect against dry spells"
+              icon={<Shield className="h-5 w-5 text-amber-600" />}
+              benefits={["Exact quarterly set-aside amount", "Slow month buffer rate calculation", "Links to tax calculator and quarterly planner"]}
             />
           )}
         </div>

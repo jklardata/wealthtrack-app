@@ -62,6 +62,9 @@ import {
   Sparkles,
   ArrowUpRight,
   User,
+  Pencil,
+  Check,
+  X,
 } from "lucide-react";
 import {
   ComposedChart,
@@ -137,6 +140,17 @@ function CashFlowCard({
     : savingsRate >= 20
     ? "bg-blue-100 text-blue-700"
     : "bg-amber-100 text-amber-700";
+
+  // Rough quarterly SE + federal tax estimate (no state)
+  const annualNet = Math.max(0, income - expenses) * 12;
+  const seTax = annualNet * 0.9235 * 0.153;
+  const seDeduction = seTax * 0.5;
+  const taxable = Math.max(0, annualNet - seDeduction - 14600);
+  let federalEst = 0;
+  const brackets: [number, number][] = [[11600, 0.10], [47150, 0.12], [100525, 0.22], [191950, 0.24], [243725, 0.32], [609350, 0.35], [Infinity, 0.37]];
+  let rem = taxable, prev = 0;
+  for (const [cap, rate] of brackets) { const inB = Math.min(rem, cap - prev); federalEst += inB * rate; rem -= inB; if (rem <= 0) break; prev = cap; }
+  const estQuarterlyTax = (seTax + federalEst) / 4;
 
   const CustomTooltipCF = ({ active, payload, label }: any) => {
     if (!active || !payload?.length) return null;
@@ -215,6 +229,16 @@ function CashFlowCard({
             </span>
           </div>
         </div>
+
+        {/* Quarterly tax estimate */}
+        {annualNet > 0 && (
+          <div className="flex items-center justify-between px-3 py-2 rounded-lg bg-amber-50 border border-amber-100 mb-4 text-sm">
+            <span className="text-amber-800 font-medium">Est. quarterly tax due: <span className="font-bold">{formatCurrencyLocal(estQuarterlyTax)}</span></span>
+            <Link href="/quarterly-estimated-taxes" className="text-amber-700 hover:text-amber-900 font-medium flex items-center gap-1 text-xs">
+              Full breakdown <ArrowRight className="h-3 w-3" />
+            </Link>
+          </div>
+        )}
 
         {/* Multi-month grouped bar chart */}
         <ResponsiveContainer width="100%" height={220}>
@@ -409,6 +433,9 @@ export default function DashboardPage() {
   const [editingEntry, setEditingEntry] = useState<NetWorthEntry | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [editingExpenses, setEditingExpenses] = useState(false);
+  const [expensesInput, setExpensesInput] = useState("");
+  const [savingExpenses, setSavingExpenses] = useState(false);
 
   const fetchEntries = useCallback(async () => {
     try {
@@ -682,6 +709,39 @@ export default function DashboardPage() {
     });
   }, [chartData]);
 
+  const saveExpenses = async () => {
+    if (!latestEntry) return;
+    const val = parseFloat(expensesInput.replace(/,/g, ""));
+    if (isNaN(val) || val < 0) return;
+    setSavingExpenses(true);
+    try {
+      const res = await fetch(`/api/net-worth/${latestEntry.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          date: latestEntry.date,
+          stocks: latestEntry.stocks,
+          bonds: latestEntry.bonds,
+          cash: latestEntry.cash,
+          real_estate: latestEntry.real_estate,
+          points_value: latestEntry.points_value,
+          commodities: latestEntry.commodities,
+          other_assets: latestEntry.other_assets,
+          total_debts: latestEntry.total_debts,
+          pre_tax_income: latestEntry.pre_tax_income,
+          monthly_expenses: val,
+          notes: latestEntry.notes,
+        }),
+      });
+      if (res.ok) {
+        await fetchEntries();
+        setEditingExpenses(false);
+      }
+    } finally {
+      setSavingExpenses(false);
+    }
+  };
+
   // New dashboard calculations
   const momentumMetrics = useMemo(() => calculateMomentum(entries), [entries]);
   const fiMetrics = useMemo(() => calculateFIProgress(entries), [entries]);
@@ -765,21 +825,21 @@ export default function DashboardPage() {
                     <div className="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center mb-3 mx-auto">
                       <TrendingUpIcon className="h-5 w-5 text-emerald-600" />
                     </div>
-                    <h3 className="font-medium text-slate-900 text-sm mb-1">Track Growth</h3>
+                    <h3 className="font-medium text-slate-900 text-sm mb-1">See your trajectory</h3>
                     <p className="text-xs text-slate-500">See your wealth momentum and monthly changes</p>
                   </div>
                   <div className="p-4 rounded-lg bg-slate-50 border border-slate-200">
                     <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mb-3 mx-auto">
                       <Target className="h-5 w-5 text-blue-600" />
                     </div>
-                    <h3 className="font-medium text-slate-900 text-sm mb-1">Set Goals</h3>
+                    <h3 className="font-medium text-slate-900 text-sm mb-1">Model a decision</h3>
                     <p className="text-xs text-slate-500">Plan for financial independence and retirement</p>
                   </div>
                   <div className="p-4 rounded-lg bg-slate-50 border border-slate-200">
                     <div className="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center mb-3 mx-auto">
                       <Sparkles className="h-5 w-5 text-amber-600" />
                     </div>
-                    <h3 className="font-medium text-slate-900 text-sm mb-1">Get Insights</h3>
+                    <h3 className="font-medium text-slate-900 text-sm mb-1">Find what you're leaving on the table</h3>
                     <p className="text-xs text-slate-500">Optimize taxes, portfolio, and spending</p>
                   </div>
                 </div>
@@ -866,7 +926,7 @@ export default function DashboardPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-slate-600 mb-4">Financial guides for self-employed professionals</p>
-                <Link href="/blog">
+                <Link href="https://solofi.io/blog">
                   <Button variant="outline" size="sm" className="w-full border-blue-200 text-blue-700 hover:bg-blue-50">
                     <ArrowRight className="h-3 w-3 mr-1" />
                     Read Articles
@@ -1040,26 +1100,186 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        {/* Avg Monthly $ */}
+        {/* Projected Year-End */}
         <Card className="bg-white border border-slate-200 shadow-sm">
           <CardHeader className="p-3 pb-1 text-center">
             <CardTitle className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
-              Avg Monthly
+              Year-End Projection
             </CardTitle>
           </CardHeader>
           <CardContent className="p-3 pt-0 text-center">
-            <div className={`text-xl sm:text-2xl font-bold font-mono break-words ${
-              growthMetrics.avgMonthlyGrowth >= 0 ? "text-blue-600" : "text-red-500"
-            }`}>
-              {growthMetrics.avgMonthlyGrowth >= 0 ? "+" : ""}
-              {formatCurrency(growthMetrics.avgMonthlyGrowth)}
+            <div className="text-xl sm:text-2xl font-bold font-mono break-words text-blue-600">
+              {formatCurrency(growthMetrics.projectedYear)}
             </div>
-            <p className="text-xs text-slate-500 mt-0.5">Avg monthly growth</p>
+            <p className="text-xs text-slate-500 mt-0.5">at current growth rate</p>
           </CardContent>
         </Card>
       </div>
 
 
+
+      {/* FI Progress + Savings Rate */}
+      {(fiMetrics || (latestEntry && latestEntry.pre_tax_income > 0 && latestEntry.monthly_expenses > 0)) && (
+        <div className="grid gap-3 grid-cols-1 md:grid-cols-2">
+          {/* FI Progress Bar */}
+          {fiMetrics && (
+            <Card className="bg-white border border-slate-200 shadow-sm">
+              <CardHeader className="pb-2">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-base font-semibold text-slate-900 flex items-center gap-2">
+                    <Target className="h-4 w-4 text-emerald-600" />
+                    FI Progress
+                  </CardTitle>
+                  <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                    fiMetrics.fiScore === 'achieved' ? 'bg-emerald-100 text-emerald-700' :
+                    fiMetrics.fiScore === 'approaching' ? 'bg-blue-100 text-blue-700' :
+                    fiMetrics.fiScore === 'progressing' ? 'bg-amber-100 text-amber-700' :
+                    'bg-slate-100 text-slate-600'
+                  }`}>
+                    {getFIScoreLabel(fiMetrics.fiScore)}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <p className="text-xs text-slate-500">FI number: {formatCurrency(fiMetrics.fiNumber)} · 4% rule on your expenses</p>
+                  {!editingExpenses ? (
+                    <button
+                      onClick={() => { setExpensesInput(String(latestEntry?.monthly_expenses ?? "")); setEditingExpenses(true); }}
+                      className="flex items-center gap-1 text-xs text-slate-400 hover:text-emerald-600 transition-colors"
+                    >
+                      <Pencil className="h-3 w-3" />
+                      {formatCurrency(latestEntry?.monthly_expenses ?? 0)}/mo
+                    </button>
+                  ) : (
+                    <div className="flex items-center gap-1">
+                      <span className="text-xs text-slate-400">$</span>
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        value={expensesInput}
+                        onChange={(e) => setExpensesInput(e.target.value)}
+                        className="w-24 text-xs border border-slate-300 rounded px-1.5 py-0.5 focus:outline-none focus:border-emerald-500"
+                        autoFocus
+                        onKeyDown={(e) => { if (e.key === "Enter") saveExpenses(); if (e.key === "Escape") setEditingExpenses(false); }}
+                      />
+                      <span className="text-xs text-slate-400">/mo</span>
+                      <button onClick={saveExpenses} disabled={savingExpenses} className="text-emerald-600 hover:text-emerald-700 disabled:opacity-50">
+                        <Check className="h-3.5 w-3.5" />
+                      </button>
+                      <button onClick={() => setEditingExpenses(false)} className="text-slate-400 hover:text-slate-600">
+                        <X className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div className="flex items-end gap-2">
+                    <span className="text-3xl font-black text-slate-900">{fiMetrics.currentProgress.toFixed(1)}%</span>
+                    <span className="text-sm text-slate-500 mb-1">of the way there</span>
+                  </div>
+                  <div className="relative h-3 bg-slate-100 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full rounded-full transition-all duration-500 ${
+                        fiMetrics.fiScore === 'achieved' ? 'bg-emerald-500' :
+                        fiMetrics.fiScore === 'approaching' ? 'bg-blue-500' :
+                        fiMetrics.fiScore === 'progressing' ? 'bg-amber-500' :
+                        'bg-slate-400'
+                      }`}
+                      style={{ width: `${Math.min(100, fiMetrics.currentProgress)}%` }}
+                    />
+                  </div>
+                  <div className="flex justify-between text-xs text-slate-400">
+                    <span>$0</span>
+                    <span className={fiMetrics.currentProgress >= 25 ? "text-emerald-600 font-medium" : ""}>25%</span>
+                    <span className={fiMetrics.currentProgress >= 50 ? "text-emerald-600 font-medium" : ""}>50%</span>
+                    <span className={fiMetrics.currentProgress >= 75 ? "text-emerald-600 font-medium" : ""}>75%</span>
+                    <span className={fiMetrics.currentProgress >= 100 ? "text-emerald-600 font-medium" : ""}>{formatCurrency(fiMetrics.fiNumber)}</span>
+                  </div>
+                  {fiMetrics.yearsRemaining !== null && fiMetrics.yearsRemaining > 0 && (
+                    <div className="pt-2 border-t border-slate-100">
+                      <p className="text-sm text-slate-600">
+                        <span className="font-semibold text-slate-900">{Math.ceil(fiMetrics.yearsRemaining)} years</span> to FI at current savings pace
+                      </p>
+                    </div>
+                  )}
+                  {fiMetrics.fiScore === 'achieved' && (
+                    <div className="pt-2 border-t border-slate-100">
+                      <p className="text-sm font-semibold text-emerald-700">You've reached financial independence!</p>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Savings Rate */}
+          {latestEntry && latestEntry.pre_tax_income > 0 && latestEntry.monthly_expenses > 0 && (
+            <Card className="bg-white border border-slate-200 shadow-sm">
+              <CardHeader className="pb-2">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-base font-semibold text-slate-900 flex items-center gap-2">
+                    <PiggyBank className="h-4 w-4 text-emerald-600" />
+                    Savings Rate
+                  </CardTitle>
+                  <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                    Math.round(((latestEntry.pre_tax_income - latestEntry.monthly_expenses) / latestEntry.pre_tax_income) * 100) >= 30 ? 'bg-emerald-100 text-emerald-700' :
+                    Math.round(((latestEntry.pre_tax_income - latestEntry.monthly_expenses) / latestEntry.pre_tax_income) * 100) >= 20 ? 'bg-blue-100 text-blue-700' :
+                    Math.round(((latestEntry.pre_tax_income - latestEntry.monthly_expenses) / latestEntry.pre_tax_income) * 100) >= 10 ? 'bg-amber-100 text-amber-700' :
+                    'bg-red-100 text-red-600'
+                  }`}>
+                    {Math.round(((latestEntry.pre_tax_income - latestEntry.monthly_expenses) / latestEntry.pre_tax_income) * 100) >= 30 ? 'Excellent' :
+                     Math.round(((latestEntry.pre_tax_income - latestEntry.monthly_expenses) / latestEntry.pre_tax_income) * 100) >= 20 ? 'Good' :
+                     Math.round(((latestEntry.pre_tax_income - latestEntry.monthly_expenses) / latestEntry.pre_tax_income) * 100) >= 10 ? 'Fair' : 'Below target'}
+                  </span>
+                </div>
+                <p className="text-xs text-slate-500">Based on income vs. expenses this month</p>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div className="flex items-end gap-2">
+                    <span className={`text-3xl font-black ${
+                      Math.round(((latestEntry.pre_tax_income - latestEntry.monthly_expenses) / latestEntry.pre_tax_income) * 100) >= 20 ? 'text-emerald-600' :
+                      Math.round(((latestEntry.pre_tax_income - latestEntry.monthly_expenses) / latestEntry.pre_tax_income) * 100) >= 10 ? 'text-amber-600' :
+                      'text-red-500'
+                    }`}>
+                      {Math.round(((latestEntry.pre_tax_income - latestEntry.monthly_expenses) / latestEntry.pre_tax_income) * 100)}%
+                    </span>
+                    <span className="text-sm text-slate-500 mb-1">saved this month</span>
+                  </div>
+                  <div className="relative h-3 bg-slate-100 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full rounded-full transition-all duration-500 ${
+                        Math.round(((latestEntry.pre_tax_income - latestEntry.monthly_expenses) / latestEntry.pre_tax_income) * 100) >= 30 ? 'bg-emerald-500' :
+                        Math.round(((latestEntry.pre_tax_income - latestEntry.monthly_expenses) / latestEntry.pre_tax_income) * 100) >= 20 ? 'bg-blue-500' :
+                        Math.round(((latestEntry.pre_tax_income - latestEntry.monthly_expenses) / latestEntry.pre_tax_income) * 100) >= 10 ? 'bg-amber-500' :
+                        'bg-red-400'
+                      }`}
+                      style={{ width: `${Math.max(0, Math.min(100, Math.round(((latestEntry.pre_tax_income - latestEntry.monthly_expenses) / latestEntry.pre_tax_income) * 100)))}%` }}
+                    />
+                  </div>
+                  <div className="space-y-1.5 pt-1">
+                    <div className="flex justify-between text-xs">
+                      <span className="text-slate-500">Income</span>
+                      <span className="font-semibold text-slate-900">{formatCurrency(latestEntry.pre_tax_income)}/mo</span>
+                    </div>
+                    <div className="flex justify-between text-xs">
+                      <span className="text-slate-500">Expenses</span>
+                      <span className="font-semibold text-red-500">-{formatCurrency(latestEntry.monthly_expenses)}/mo</span>
+                    </div>
+                    <div className="flex justify-between text-xs border-t border-slate-100 pt-1.5">
+                      <span className="text-slate-500">Saved</span>
+                      <span className={`font-bold ${latestEntry.pre_tax_income - latestEntry.monthly_expenses >= 0 ? 'text-emerald-600' : 'text-red-500'}`}>
+                        {formatCurrency(latestEntry.pre_tax_income - latestEntry.monthly_expenses)}/mo
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+      )}
 
       {/* Net Worth Chart + Side Panel */}
       <div className="grid gap-4 lg:grid-cols-[1fr_380px] items-stretch">
@@ -1255,7 +1475,7 @@ export default function DashboardPage() {
           <Card className="bg-white border border-slate-200 shadow-sm">
             <CardHeader className="pb-2">
               <CardTitle className="text-base font-semibold text-slate-900">Asset Allocation</CardTitle>
-              <p className="text-xs text-slate-500">Current portfolio breakdown</p>
+              <p className="text-xs text-slate-500">Current breakdown · Target: 80% stocks / 20% bonds</p>
             </CardHeader>
             <CardContent>
               {allocationData.length > 0 ? (
@@ -1364,7 +1584,7 @@ export default function DashboardPage() {
                     <PopoverTrigger asChild>
                       <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 cursor-pointer hover:bg-emerald-50 hover:border-emerald-200 transition-all text-center">
                         <p className="text-xs font-medium text-slate-500 mb-1 flex items-center justify-center gap-2">
-                          Monthly Velocity
+                          Monthly Growth Rate
                           <span className="text-slate-400">(click for trend)</span>
                         </p>
                         <p className="text-xl font-bold text-emerald-600">
@@ -1470,7 +1690,7 @@ export default function DashboardPage() {
                     <PopoverTrigger asChild>
                       <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 cursor-pointer hover:bg-emerald-50 hover:border-emerald-200 transition-all text-center">
                         <p className="text-xs font-medium text-slate-500 mb-1 flex items-center justify-center gap-2">
-                          Net Contributions
+                          New Money Saved
                           <span className="text-slate-400">(click for breakdown)</span>
                         </p>
                         <p className="text-xl font-bold text-emerald-600">
@@ -1530,15 +1750,6 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Cash Flow - Multi-month history */}
-      {latestEntry && latestEntry.pre_tax_income > 0 && latestEntry.monthly_expenses > 0 && (
-        <CashFlowCard
-          latestEntry={latestEntry}
-          chartData={chartData}
-          entries={entries}
-        />
-      )}
-
       {/* Next Best Actions */}
       <div className="grid lg:grid-cols-2 gap-4">
         {nextActions.length > 0 && (
@@ -1591,6 +1802,15 @@ export default function DashboardPage() {
         )}
       </div>
 
+      {/* Cash Flow - Multi-month history */}
+      {latestEntry && latestEntry.pre_tax_income > 0 && latestEntry.monthly_expenses > 0 && (
+        <CashFlowCard
+          latestEntry={latestEntry}
+          chartData={chartData}
+          entries={entries}
+        />
+      )}
+
       {/* Upgrade CTA & Next Steps - For users with some data */}
       {entries.length >= 2 && (
         <div className={`grid gap-4 ${!isPro ? 'md:grid-cols-2' : 'md:grid-cols-1'}`}>
@@ -1623,7 +1843,7 @@ export default function DashboardPage() {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-slate-900">Portfolio Optimizer</p>
-                    <p className="text-xs text-slate-500">Modern Portfolio Theory analysis & rebalancing</p>
+                    <p className="text-xs text-slate-500">Is your portfolio actually optimized for your tax situation?</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-2">
@@ -1721,7 +1941,7 @@ export default function DashboardPage() {
                   </div>
                 </div>
               </Link>
-              <Link href="/blog" className="block">
+              <Link href="https://solofi.io/blog" className="block">
                 <div className="p-3 rounded-lg bg-white border border-slate-200 hover:border-emerald-300 hover:shadow-md transition-all group">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -1741,48 +1961,21 @@ export default function DashboardPage() {
           </Card>
 
           {/* Projected Net Worth Card */}
-          {isPro ? (
-            <Link href="/lifetime-income">
-              <Card className="bg-gradient-to-br from-blue-50 to-purple-50 border-blue-200 hover:shadow-lg transition-shadow cursor-pointer">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <TrendingUpIcon className="h-5 w-5 text-blue-600" />
-                    Projected Net Worth
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-slate-600">
-                    Model your lifetime income from all sources and project your net worth trajectory
-                  </p>
-                </CardContent>
-              </Card>
-            </Link>
-          ) : (
-            <Card className="relative bg-slate-50 border-slate-200">
-              <div className="absolute top-2 right-2">
-                <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full font-medium">
-                  Pro
-                </span>
-              </div>
+          <Link href="/lifetime-income">
+            <Card className="bg-gradient-to-br from-blue-50 to-purple-50 border-blue-200 hover:shadow-lg transition-shadow cursor-pointer">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-slate-400">
-                  <TrendingUpIcon className="h-5 w-5" />
+                <CardTitle className="flex items-center gap-2">
+                  <TrendingUpIcon className="h-5 w-5 text-blue-600" />
                   Projected Net Worth
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-slate-500 mb-3">
-                  Model lifetime income and net worth trajectory
+                <p className="text-sm text-slate-600">
+                  Model your lifetime income from all sources and project your net worth trajectory
                 </p>
-                <Link href="/pricing">
-                  <Button variant="outline" className="w-full border-purple-200 text-purple-700 hover:bg-purple-50">
-                    <Sparkles className="h-3 w-3 mr-1" />
-                    Upgrade to Unlock
-                  </Button>
-                </Link>
               </CardContent>
             </Card>
-          )}
+          </Link>
         </div>
       )}
 

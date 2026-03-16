@@ -15,17 +15,6 @@ export async function POST(request: NextRequest) {
 
     const supabase = createServerSupabaseClient();
 
-    // Check Pro status
-    const { data: subscription } = await supabase
-      .from('subscriptions')
-      .select('entitlement_tier')
-      .eq('user_id', userId)
-      .single();
-
-    if (subscription?.entitlement_tier === 'free') {
-      return NextResponse.json({ error: 'Pro feature required' }, { status: 403 });
-    }
-
     // Parse request body
     const body = await request.json();
     const {

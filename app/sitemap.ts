@@ -16,6 +16,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { slug: "working-remotely-from-another-country", lastModified: new Date("2025-10-10") },
     { slug: "overlooked-tax-deductions-consultants", lastModified: new Date("2025-09-15") },
     { slug: "sole-proprietor-vs-llc", lastModified: new Date("2025-09-01") },
+    { slug: "budgeting-irregular-income-freelancers", lastModified: new Date("2025-08-15") },
+    { slug: "health-insurance-for-freelancers-2026", lastModified: new Date("2025-08-01") },
+    { slug: "how-to-calculate-freelance-day-rate", lastModified: new Date("2025-07-15") },
+    { slug: "hsa-strategy-freelancers-2026", lastModified: new Date("2025-07-01") },
+    { slug: "quarterly-estimated-taxes-freelancers-2026", lastModified: new Date("2025-06-15") },
+    { slug: "self-employed-health-insurance-deduction", lastModified: new Date("2025-06-01") },
+    { slug: "solo-401k-vs-sep-ira-freelancers", lastModified: new Date("2025-05-15") },
+    { slug: "tax-brackets-2026", lastModified: new Date("2025-05-01") },
+    { slug: "taxes-biggest-expense-self-employed", lastModified: new Date("2025-04-15") },
   ];
 
   const tools = [

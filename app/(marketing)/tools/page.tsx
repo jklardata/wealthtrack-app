@@ -133,7 +133,7 @@ export default function ToolsPage() {
             <span className="text-emerald-600">Solo</span>FI
           </Link>
           <div className="flex items-center gap-6">
-            <Link href="/blog" className="text-sm text-slate-600 hover:text-slate-900 hidden md:block">
+            <Link href="https://solofi.io/blog" className="text-sm text-slate-600 hover:text-slate-900 hidden md:block">
               Learn
             </Link>
             <Link href="/sign-up">
@@ -288,7 +288,7 @@ export default function ToolsPage() {
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
-            <Link href="/blog">
+            <Link href="https://solofi.io/blog">
               <Button size="lg" variant="outline" className="border-slate-300 text-slate-700 hover:bg-slate-100">
                 Learn
               </Button>
@@ -302,7 +302,7 @@ export default function ToolsPage() {
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-slate-400">
           <span>© 2026 SoloFI</span>
           <div className="flex gap-6">
-            <Link href="/blog" className="hover:text-white transition-colors">Learn</Link>
+            <Link href="https://solofi.io/blog" className="hover:text-white transition-colors">Learn</Link>
             <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
             <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
           </div>

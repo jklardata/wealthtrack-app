@@ -89,7 +89,7 @@ export default function TaxBrackets2026Article() {
       />
       {/* Back Button */}
       <div className="mb-6">
-        <Link href="/blog">
+        <Link href="https://solofi.io/blog">
           <Button variant="ghost" size="sm" className="gap-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100">
             <ArrowLeft className="h-4 w-4" />
             Back to Blog
@@ -97,20 +97,20 @@ export default function TaxBrackets2026Article() {
         </Link>
       </div>
 
-      {/* Hero Image */}
-      <div className="relative h-64 md:h-80 rounded-2xl overflow-hidden mb-8">
+      {/* Hero — full-width banner */}
+      <div className="relative h-56 md:h-72 -mx-6 overflow-hidden mb-10">
         <img
-          src="https://images.pexels.com/photos/7068839/pexels-photo-7068839.jpeg?auto=compress&cs=tinysrgb&w=1200&h=600&fit=crop"
+          src="https://images.pexels.com/photos/7068839/pexels-photo-7068839.jpeg?auto=compress&cs=tinysrgb&w=1400&h=500&fit=crop"
           alt="Tax documents and financial planning for 2026"
           className="w-full h-full object-cover object-top"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-        <div className="absolute bottom-6 left-6 right-6">
-          <span className="text-sm font-medium text-white bg-purple-500 px-3 py-1 rounded-full">Taxes</span>
-          <h1 className="text-3xl md:text-4xl font-medium text-white mt-3">
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/92 via-slate-900/65 to-slate-900/10" />
+        <div className="absolute inset-0 flex flex-col justify-center px-8 md:px-12">
+          <span className="text-xs font-semibold text-white bg-purple-500 px-3 py-1 rounded-full w-fit mb-4">Taxes</span>
+          <h1 className="text-2xl md:text-4xl font-bold text-white max-w-2xl leading-tight">
             2026 Federal Tax Brackets: What's Changed and What It Means for the Self-Employed
           </h1>
-          <div className="flex items-center gap-4 mt-3 text-white/70 text-sm">
+          <div className="flex items-center gap-4 mt-4 text-white/60 text-sm">
             <span>March 1, 2026</span>
             <span>·</span>
             <span>12 min read</span>
@@ -123,14 +123,6 @@ export default function TaxBrackets2026Article() {
         <p className="text-xl text-slate-600 leading-relaxed">
           The IRS adjusts federal tax brackets each year for inflation under a process called indexing. For 2026, brackets shifted upward by approximately 2.8%—meaning you keep slightly more of the same income compared to 2025. Here's everything self-employed professionals need to know.
         </p>
-
-        <div className="rounded-xl border border-slate-200 bg-yellow-500/10 p-4 flex gap-3">
-          <AlertTriangle className="h-5 w-5 text-yellow-500 flex-shrink-0 mt-0.5" />
-          <div>
-            <h4 className="font-semibold text-slate-800">Disclaimer</h4>
-            <p className="text-sm text-slate-500">This article is for educational purposes only and reflects projected 2026 figures. Always verify with the IRS or a qualified tax professional before filing.</p>
-          </div>
-        </div>
 
         {/* Key numbers */}
         <div className="grid sm:grid-cols-3 gap-4">
@@ -174,7 +166,7 @@ export default function TaxBrackets2026Article() {
                       <span className={`px-2 py-1 rounded-full text-xs font-bold ${rateColors[row.rate]}`}>{row.rate}</span>
                     </td>
                     <td className="p-4 text-slate-700">{row.from} – {row.to}</td>
-                    <td className="p-4 text-slate-500 text-xs hidden md:table-cell">{row.tax}</td>
+                    <td className="p-4 text-slate-600 text-sm hidden md:table-cell">{row.tax}</td>
                   </tr>
                 ))}
               </tbody>
@@ -205,7 +197,7 @@ export default function TaxBrackets2026Article() {
                       <span className={`px-2 py-1 rounded-full text-xs font-bold ${rateColors[row.rate]}`}>{row.rate}</span>
                     </td>
                     <td className="p-4 text-slate-700">{row.from} – {row.to}</td>
-                    <td className="p-4 text-slate-500 text-xs hidden md:table-cell">{row.tax}</td>
+                    <td className="p-4 text-slate-600 text-sm hidden md:table-cell">{row.tax}</td>
                   </tr>
                 ))}
               </tbody>
@@ -234,30 +226,31 @@ export default function TaxBrackets2026Article() {
               <Calculator className="h-5 w-5" />
               How Your Taxable Income Is Calculated
             </h4>
+            <p className="text-xs text-slate-500 mb-3 italic">Example: self-employed consultant earning $200K gross</p>
             <div className="space-y-2 text-sm font-mono">
               <div className="flex justify-between border-b border-emerald-100 pb-2">
                 <span className="text-slate-600">Gross business revenue</span>
-                <span className="text-slate-900">$XXX,XXX</span>
+                <span className="text-slate-900">$200,000</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-600">− Business expenses</span>
-                <span className="text-emerald-700">−$XX,XXX</span>
+                <span className="text-emerald-700">−$30,000</span>
               </div>
               <div className="flex justify-between border-b border-emerald-100 pb-2">
                 <span className="font-semibold text-slate-700">= Net profit (Schedule C)</span>
-                <span className="font-semibold text-slate-900">$XXX,XXX</span>
+                <span className="font-semibold text-slate-900">$170,000</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-600">− ½ of SE tax deduction</span>
-                <span className="text-emerald-700">−$X,XXX</span>
+                <span className="text-emerald-700">−$12,017</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-600">− Solo 401(k) / SEP IRA contributions</span>
-                <span className="text-emerald-700">−$XX,XXX</span>
+                <span className="text-emerald-700">−$23,500</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-600">− Health insurance premiums deduction</span>
-                <span className="text-emerald-700">−$X,XXX</span>
+                <span className="text-emerald-700">−$7,200</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-600">− Standard deduction ($15,000 single)</span>
@@ -265,7 +258,7 @@ export default function TaxBrackets2026Article() {
               </div>
               <div className="flex justify-between pt-2 border-t border-emerald-200">
                 <span className="font-semibold text-slate-900">= Taxable income (apply brackets above)</span>
-                <span className="font-bold text-slate-900">$XX,XXX</span>
+                <span className="font-bold text-slate-900">$112,283</span>
               </div>
             </div>
           </div>
@@ -389,8 +382,8 @@ export default function TaxBrackets2026Article() {
             ].map((item, i) => (
               <div key={i} className="p-4 rounded-xl border border-slate-200 bg-slate-50">
                 <p className="text-xs text-slate-500 mb-1">{item.label}</p>
-                <p className="text-lg font-bold text-slate-900">{item.value}</p>
-                <p className="text-xs text-emerald-600 mt-0.5">{item.note}</p>
+                <p className="text-xl font-bold text-slate-900">{item.value}</p>
+                <p className="text-sm text-emerald-600 mt-1">{item.note}</p>
               </div>
             ))}
           </div>
@@ -407,6 +400,15 @@ export default function TaxBrackets2026Article() {
               Run your tax projection — free
             </Button>
           </Link>
+        </div>
+
+        {/* Disclaimer */}
+        <div className="rounded-xl border border-slate-200 bg-yellow-500/10 p-4 flex gap-3">
+          <AlertTriangle className="h-5 w-5 text-yellow-500 flex-shrink-0 mt-0.5" />
+          <div>
+            <h4 className="font-semibold text-slate-800">Disclaimer</h4>
+            <p className="text-sm text-slate-500">This article is for educational purposes only and reflects projected 2026 figures. Always verify with the IRS or a qualified tax professional before filing.</p>
+          </div>
         </div>
       </div>
     </article>

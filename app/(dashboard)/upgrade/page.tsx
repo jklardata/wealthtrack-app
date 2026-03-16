@@ -112,7 +112,7 @@ function PricingContent() {
       <div className="text-center space-y-4">
         <h1 className="text-3xl font-bold tracking-tight">Choose Your Plan</h1>
         <p className="text-muted-foreground max-w-2xl mx-auto">
-          Unlock powerful tools to track your wealth, optimize your portfolio, and plan for financial independence.
+          The decisions that cost self-employed people $15K–$40K a year in overpaid taxes—modeled for your specific situation.
         </p>
 
         {canceled && (

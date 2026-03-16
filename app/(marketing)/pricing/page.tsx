@@ -88,7 +88,7 @@ export default function PricingPage() {
           </span>
         </Link>
         <div className="flex items-center gap-4">
-          <Link href="/blog" className="text-slate-600 hover:text-slate-900 text-sm">
+          <Link href="https://solofi.io/blog" className="text-slate-600 hover:text-slate-900 text-sm">
             Resources
           </Link>
           <Link href="/sign-in">
@@ -651,7 +651,7 @@ export default function PricingPage() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-slate-500">
             <span>© 2026 Solofi</span>
             <div className="flex gap-8">
-              <Link href="/blog" className="hover:text-slate-700">Resources</Link>
+              <Link href="https://solofi.io/blog" className="hover:text-slate-700">Resources</Link>
               <Link href="/privacy" className="hover:text-slate-700">Privacy</Link>
               <Link href="/terms" className="hover:text-slate-700">Terms</Link>
             </div>

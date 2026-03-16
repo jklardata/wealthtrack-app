@@ -188,7 +188,7 @@ export default function GlossaryPage() {
             <div className="flex gap-6">
               <Link href="/about" className="hover:text-slate-700">About</Link>
               <Link href="/contact" className="hover:text-slate-700">Contact</Link>
-              <Link href="/blog" className="hover:text-slate-700">Resources</Link>
+              <Link href="https://solofi.io/blog" className="hover:text-slate-700">Resources</Link>
               <Link href="/privacy" className="hover:text-slate-700">Privacy</Link>
               <Link href="/terms" className="hover:text-slate-700">Terms</Link>
             </div>

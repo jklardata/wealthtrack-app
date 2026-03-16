@@ -15,7 +15,7 @@ export default function HandbooksLayout({
           SoloFI
         </Link>
         <div className="flex items-center gap-6">
-          <Link href="/blog" className="text-sm text-slate-600 hover:text-slate-900 hidden md:block">
+          <Link href="https://solofi.io/blog" className="text-sm text-slate-600 hover:text-slate-900 hidden md:block">
             Learn
           </Link>
           <Link href="/tools" className="text-sm text-slate-600 hover:text-slate-900 hidden md:block">
@@ -47,7 +47,7 @@ export default function HandbooksLayout({
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-slate-500">
           <span>© 2026 SoloFI</span>
           <div className="flex gap-6">
-            <Link href="/blog" className="hover:text-slate-900">Learn</Link>
+            <Link href="https://solofi.io/blog" className="hover:text-slate-900">Learn</Link>
             <Link href="/tools" className="hover:text-slate-900">Resources</Link>
             <Link href="/privacy" className="hover:text-slate-900">Privacy</Link>
             <Link href="/terms" className="hover:text-slate-900">Terms</Link>

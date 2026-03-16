@@ -528,7 +528,7 @@ export default function BlogPage() {
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-slate-400">
           <span>© 2026 SoloFI</span>
           <div className="flex gap-6">
-            <Link href="/blog" className="hover:text-white transition-colors">Learn</Link>
+            <Link href="https://solofi.io/blog" className="hover:text-white transition-colors">Learn</Link>
             <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
             <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
           </div>

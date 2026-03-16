@@ -24,7 +24,7 @@ export default function SelfEmployedTaxHandbook() {
     <article>
       {/* Back Button + Download */}
       <div className="mb-6 flex items-center justify-between print:hidden">
-        <Link href="/blog">
+        <Link href="https://solofi.io/blog">
           <Button variant="ghost" size="sm" className="gap-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100">
             <ArrowLeft className="h-4 w-4" />
             Back to Learn

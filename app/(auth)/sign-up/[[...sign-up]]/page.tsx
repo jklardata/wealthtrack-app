@@ -23,10 +23,10 @@ export default function SignUpPage() {
           {/* Welcome Text */}
           <div className="text-center mb-8">
             <h1 className="text-4xl sm:text-5xl font-medium tracking-tight text-[#10182C] mb-4">
-              Start your journey
+              Make your first move.
             </h1>
             <p className="text-lg text-slate-600">
-              Model your data and improve your future
+              See where you stand. Model what's next.
             </p>
           </div>
 

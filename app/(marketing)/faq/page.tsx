@@ -185,7 +185,7 @@ export default function FAQPage() {
           <div className="flex flex-wrap justify-center gap-6 text-xs text-slate-400">
             <Link href="/learn" className="hover:text-slate-600">Documentation</Link>
             <Link href="/pricing" className="hover:text-slate-600">Pricing</Link>
-            <Link href="/blog" className="hover:text-slate-600">Resources</Link>
+            <Link href="https://solofi.io/blog" className="hover:text-slate-600">Resources</Link>
             <Link href="/privacy" className="hover:text-slate-600">Privacy</Link>
             <Link href="/terms" className="hover:text-slate-600">Terms</Link>
           </div>
