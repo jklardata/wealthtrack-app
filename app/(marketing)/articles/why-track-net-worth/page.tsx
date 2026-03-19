@@ -115,7 +115,7 @@ export default function WhyTrackNetWorthArticle() {
         <div className="relative h-48 rounded-xl overflow-hidden">
           <img
             src="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?w=1000&h=400&fit=crop"
-            alt="Financial charts and growth"
+            alt="Net worth charts showing financial growth and trajectory over time"
             className="w-full h-full object-cover"
           />
         </div>

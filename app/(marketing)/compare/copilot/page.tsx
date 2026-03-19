@@ -2,9 +2,26 @@ import ComparisonPage from "../ComparisonPage";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "SoloFI vs Copilot Money | Finance App Comparison 2025",
+  title: "SoloFI vs Copilot Money | Finance App Comparison 2026",
   description: "Compare SoloFI and Copilot Money for tracking finances. See which app is better for freelancers and self-employed professionals.",
   keywords: ["copilot money alternative", "copilot app review", "best finance app freelancers", "copilot vs"],
+  openGraph: {
+    title: "SoloFI vs Copilot Money — Best Finance App for Freelancers?",
+    description: "Copilot tracks your spending beautifully. SoloFI goes further with SE tax, S-Corp analysis, and FI planning tools built for self-employed income.",
+    url: "https://solofi.io/compare/copilot",
+    siteName: "SoloFI",
+    images: [{ url: "https://solofi.io/api/og?title=SoloFI+vs+Copilot+Money&category=Compare", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SoloFI vs Copilot Money | Finance App Comparison 2026",
+    description: "Copilot tracks your spending beautifully. SoloFI goes further with SE tax, S-Corp analysis, and FI planning tools built for self-employed income.",
+    images: ["https://solofi.io/api/og?title=SoloFI+vs+Copilot+Money&category=Compare"],
+  },
+  alternates: {
+    canonical: "https://solofi.io/compare/copilot",
+  },
 };
 
 export default function CopilotComparison() {

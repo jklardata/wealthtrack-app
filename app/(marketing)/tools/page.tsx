@@ -3,8 +3,25 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Calculator, TrendingUp, Repeat, CheckSquare, FileText, Sparkles, Globe, DollarSign, Landmark } from "lucide-react";
 
 export const metadata = {
-  title: "Resources | SoloFI",
-  description: "Free financial calculators and tools for self-employed professionals, consultants, and freelancers.",
+  title: "Free Financial Calculators & Tools for Freelancers | SoloFI",
+  description: "Free financial calculators and planning tools built for self-employed professionals. Quarterly tax estimator, S-Corp calculator, FI calculator, freelance rate calculator, and more.",
+  openGraph: {
+    title: "Free Financial Tools for Freelancers & Self-Employed | SoloFI",
+    description: "Free calculators built for self-employed professionals. Estimate quarterly taxes, analyze S-Corp savings, calculate your freelance rate, and plan for FI.",
+    url: "https://solofi.io/tools",
+    siteName: "SoloFI",
+    images: [{ url: "https://solofi.io/api/og?title=Free+Financial+Tools+for+Freelancers&category=Tools", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Free Financial Tools for Freelancers & Self-Employed | SoloFI",
+    description: "Free calculators built for self-employed professionals. Estimate quarterly taxes, analyze S-Corp savings, calculate your freelance rate, and plan for FI.",
+    images: ["https://solofi.io/api/og?title=Free+Financial+Tools+for+Freelancers&category=Tools"],
+  },
+  alternates: {
+    canonical: "https://solofi.io/tools",
+  },
 };
 
 interface Tool {

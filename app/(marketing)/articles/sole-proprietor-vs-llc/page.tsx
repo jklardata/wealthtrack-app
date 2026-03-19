@@ -263,7 +263,7 @@ export default function SoleProprietorVsLLCArticle() {
         <div className="relative h-48 rounded-xl overflow-hidden">
           <img
             src="https://images.unsplash.com/photo-1554224311-beee2091c527?w=1000&h=400&fit=crop"
-            alt="Business decisions"
+            alt="Sole proprietor vs LLC business structure decision for freelancers"
             className="w-full h-full object-cover"
           />
         </div>

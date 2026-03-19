@@ -2,9 +2,26 @@ import ComparisonPage from "../ComparisonPage";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "SoloFI vs Bench Accounting | Bookkeeping Comparison 2025",
+  title: "SoloFI vs Bench Accounting | Bookkeeping Comparison 2026",
   description: "Compare SoloFI and Bench for freelancer bookkeeping. See if done-for-you bookkeeping is worth the cost for solopreneurs.",
   keywords: ["bench bookkeeping alternative", "bench accounting review", "bookkeeping for freelancers", "bench pricing"],
+  openGraph: {
+    title: "SoloFI vs Bench Accounting — Worth It for Freelancers?",
+    description: "Is Bench's done-for-you bookkeeping worth the cost? Compare with SoloFI's free financial planning tools for self-employed professionals.",
+    url: "https://solofi.io/compare/bench",
+    siteName: "SoloFI",
+    images: [{ url: "https://solofi.io/api/og?title=SoloFI+vs+Bench&category=Compare", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SoloFI vs Bench Accounting | Bookkeeping Comparison 2026",
+    description: "Is Bench's done-for-you bookkeeping worth the cost? Compare with SoloFI's free financial planning tools for self-employed professionals.",
+    images: ["https://solofi.io/api/og?title=SoloFI+vs+Bench&category=Compare"],
+  },
+  alternates: {
+    canonical: "https://solofi.io/compare/bench",
+  },
 };
 
 export default function BenchComparison() {

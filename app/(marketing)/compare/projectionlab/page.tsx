@@ -2,9 +2,26 @@ import ComparisonPage from "../ComparisonPage";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "SoloFI vs ProjectionLab | FIRE Planning Comparison 2025",
+  title: "SoloFI vs ProjectionLab | FIRE Planning Comparison 2026",
   description: "Compare SoloFI and ProjectionLab for freelancers. See which FIRE planning tool is best for self-employed professionals pursuing financial independence.",
   keywords: ["projectionlab alternative", "projectionlab review", "fire planning tool self-employed", "projectionlab vs", "financial independence freelancers"],
+  openGraph: {
+    title: "SoloFI vs ProjectionLab — Best FIRE Tool for Freelancers?",
+    description: "ProjectionLab models your future. SoloFI optimizes your present. Compare SE tax, S-Corp, Solo 401k, and FI tools for self-employed professionals.",
+    url: "https://solofi.io/compare/projectionlab",
+    siteName: "SoloFI",
+    images: [{ url: "https://solofi.io/api/og?title=SoloFI+vs+ProjectionLab&category=Compare", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SoloFI vs ProjectionLab | FIRE Planning Comparison 2026",
+    description: "ProjectionLab models your future. SoloFI optimizes your present. Compare SE tax, S-Corp, Solo 401k, and FI tools for self-employed professionals.",
+    images: ["https://solofi.io/api/og?title=SoloFI+vs+ProjectionLab&category=Compare"],
+  },
+  alternates: {
+    canonical: "https://solofi.io/compare/projectionlab",
+  },
 };
 
 export default function ProjectionLabComparison() {

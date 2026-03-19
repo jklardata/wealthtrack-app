@@ -2,9 +2,26 @@ import ComparisonPage from "../ComparisonPage";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "SoloFI vs Collective | S-Corp Services Comparison 2025",
+  title: "SoloFI vs Collective | S-Corp Services Comparison 2026",
   description: "Compare SoloFI and Collective for S-Corp formation and freelancer taxes. See if done-for-you S-Corp services are worth $299/month.",
   keywords: ["collective s-corp review", "collective alternative", "s-corp for freelancers", "collective pricing"],
+  openGraph: {
+    title: "SoloFI vs Collective — Is $299/mo S-Corp Worth It for Freelancers?",
+    description: "Collective does your S-Corp taxes for you. SoloFI helps you decide if S-Corp is right and optimize your finances for free. Compare features and costs.",
+    url: "https://solofi.io/compare/collective",
+    siteName: "SoloFI",
+    images: [{ url: "https://solofi.io/api/og?title=SoloFI+vs+Collective&category=Compare", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SoloFI vs Collective | S-Corp Services Comparison 2026",
+    description: "Collective does your S-Corp taxes for you. SoloFI helps you decide if S-Corp is right and optimize your finances for free. Compare features and costs.",
+    images: ["https://solofi.io/api/og?title=SoloFI+vs+Collective&category=Compare"],
+  },
+  alternates: {
+    canonical: "https://solofi.io/compare/collective",
+  },
 };
 
 export default function CollectiveComparison() {

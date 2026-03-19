@@ -222,7 +222,7 @@ export default function ThirtyPercentRuleArticle() {
         <div className="relative h-48 rounded-xl overflow-hidden">
           <img
             src="https://images.unsplash.com/photo-1554224154-22dec7ec8818?w=1000&h=400&fit=crop"
-            alt="Financial planning"
+            alt="Self-employed professional planning quarterly estimated tax savings"
             className="w-full h-full object-cover"
           />
         </div>

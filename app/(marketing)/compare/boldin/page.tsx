@@ -2,9 +2,26 @@ import ComparisonPage from "../ComparisonPage";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "SoloFI vs Boldin | Retirement Planning Comparison 2025",
+  title: "SoloFI vs Boldin | Retirement Planning Comparison 2026",
   description: "Compare SoloFI and Boldin (formerly NewRetirement) for freelancers. See which retirement planning tool is best for self-employed professionals.",
   keywords: ["boldin alternative", "boldin review", "newretirement alternative", "retirement planning self-employed", "boldin vs"],
+  openGraph: {
+    title: "SoloFI vs Boldin — Which Retirement Tool Wins for Freelancers?",
+    description: "Boldin is built for pre-retirees. SoloFI is built for self-employed professionals who need SE tax, S-Corp analysis, and FI planning.",
+    url: "https://solofi.io/compare/boldin",
+    siteName: "SoloFI",
+    images: [{ url: "https://solofi.io/api/og?title=SoloFI+vs+Boldin&category=Compare", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SoloFI vs Boldin | Retirement Planning Comparison 2026",
+    description: "Boldin is built for pre-retirees. SoloFI is built for self-employed professionals who need SE tax, S-Corp analysis, and FI planning.",
+    images: ["https://solofi.io/api/og?title=SoloFI+vs+Boldin&category=Compare"],
+  },
+  alternates: {
+    canonical: "https://solofi.io/compare/boldin",
+  },
 };
 
 export default function BoldinComparison() {

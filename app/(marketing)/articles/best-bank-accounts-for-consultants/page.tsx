@@ -71,7 +71,7 @@ export default function BankAccountsArticle() {
       <div className="relative h-64 md:h-80 rounded-2xl overflow-hidden mb-8">
         <img
           src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=1200&h=600&fit=crop"
-          alt="Banking and finance"
+          alt="Best bank accounts and banking tools for independent consultants and freelancers"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />

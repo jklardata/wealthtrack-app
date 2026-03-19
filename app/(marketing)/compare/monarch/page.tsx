@@ -2,9 +2,26 @@ import ComparisonPage from "../ComparisonPage";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "SoloFI vs Monarch Money | Finance Tracker Comparison 2025",
+  title: "SoloFI vs Monarch Money | Finance Tracker Comparison 2026",
   description: "Compare SoloFI and Monarch Money for freelancers. See which financial tracking app is best for self-employed professionals.",
   keywords: ["monarch money alternative", "monarch money review", "mint alternative freelancers", "monarch vs"],
+  openGraph: {
+    title: "SoloFI vs Monarch Money — Which Is Better for Freelancers?",
+    description: "Monarch Money tracks spending. SoloFI optimizes taxes, S-Corp, and FI planning. Compare financial tools for self-employed professionals.",
+    url: "https://solofi.io/compare/monarch",
+    siteName: "SoloFI",
+    images: [{ url: "https://solofi.io/api/og?title=SoloFI+vs+Monarch+Money&category=Compare", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SoloFI vs Monarch Money | Finance Tracker Comparison 2026",
+    description: "Monarch Money tracks spending. SoloFI optimizes taxes, S-Corp, and FI planning. Compare financial tools for self-employed professionals.",
+    images: ["https://solofi.io/api/og?title=SoloFI+vs+Monarch+Money&category=Compare"],
+  },
+  alternates: {
+    canonical: "https://solofi.io/compare/monarch",
+  },
 };
 
 export default function MonarchComparison() {

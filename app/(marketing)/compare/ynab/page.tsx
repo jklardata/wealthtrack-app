@@ -2,9 +2,26 @@ import ComparisonPage from "../ComparisonPage";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "SoloFI vs YNAB | Budgeting App Comparison 2025",
+  title: "SoloFI vs YNAB | Budgeting App Comparison 2026",
   description: "Compare SoloFI and YNAB for freelancers. See why self-employed professionals need more than zero-based budgeting to build real wealth.",
   keywords: ["ynab alternative", "ynab review", "you need a budget freelancers", "ynab vs mint", "budgeting app self-employed"],
+  openGraph: {
+    title: "SoloFI vs YNAB — Which Is Better for Freelancers?",
+    description: "YNAB controls spending. SoloFI builds wealth. Compare budgeting, tax optimization, S-Corp analysis, and FI planning tools for self-employed professionals.",
+    url: "https://solofi.io/compare/ynab",
+    siteName: "SoloFI",
+    images: [{ url: "https://solofi.io/api/og?title=SoloFI+vs+YNAB&category=Compare", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SoloFI vs YNAB | Budgeting App Comparison 2026",
+    description: "YNAB controls spending. SoloFI builds wealth. Compare budgeting, tax optimization, S-Corp analysis, and FI planning tools for self-employed professionals.",
+    images: ["https://solofi.io/api/og?title=SoloFI+vs+YNAB&category=Compare"],
+  },
+  alternates: {
+    canonical: "https://solofi.io/compare/ynab",
+  },
 };
 
 export default function YNABComparison() {

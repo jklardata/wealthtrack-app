@@ -2,9 +2,26 @@ import ComparisonPage from "../ComparisonPage";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "SoloFI vs QuickBooks Self-Employed | 2025 Comparison",
+  title: "SoloFI vs QuickBooks Self-Employed | 2026 Comparison",
   description: "Compare SoloFI and QuickBooks Self-Employed for freelancer finances. See features, pricing, and which is best for your self-employed business.",
   keywords: ["quickbooks self-employed alternative", "quickbooks self-employed vs", "freelancer tax software", "self-employed accounting"],
+  openGraph: {
+    title: "SoloFI vs QuickBooks Self-Employed — 2026 Comparison",
+    description: "QuickBooks tracks mileage and invoices. SoloFI adds S-Corp analysis, quarterly tax estimates, retirement optimization, and FI planning. Free vs $15/mo.",
+    url: "https://solofi.io/compare/quickbooks-self-employed",
+    siteName: "SoloFI",
+    images: [{ url: "https://solofi.io/api/og?title=SoloFI+vs+QuickBooks&category=Compare", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SoloFI vs QuickBooks Self-Employed | 2026 Comparison",
+    description: "QuickBooks tracks mileage and invoices. SoloFI adds S-Corp analysis, quarterly tax estimates, retirement optimization, and FI planning. Free vs $15/mo.",
+    images: ["https://solofi.io/api/og?title=SoloFI+vs+QuickBooks&category=Compare"],
+  },
+  alternates: {
+    canonical: "https://solofi.io/compare/quickbooks-self-employed",
+  },
 };
 
 export default function QuickBooksComparison() {

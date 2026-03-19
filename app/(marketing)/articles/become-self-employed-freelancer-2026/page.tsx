@@ -71,7 +71,7 @@ export default function BecomeFreelancerArticle() {
       <div className="relative h-64 md:h-80 rounded-2xl overflow-hidden mb-8">
         <img
           src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=600&fit=crop"
-          alt="Freelancer working"
+          alt="Freelancer working independently on a laptop from home"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
@@ -152,7 +152,7 @@ export default function BecomeFreelancerArticle() {
         <div className="relative h-48 rounded-xl overflow-hidden">
           <img
             src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1000&h=400&fit=crop"
-            alt="Business planning"
+            alt="Self-employed professional planning business setup and finances"
             className="w-full h-full object-cover"
           />
         </div>

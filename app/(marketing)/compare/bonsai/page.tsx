@@ -2,9 +2,26 @@ import ComparisonPage from "../ComparisonPage";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "SoloFI vs Bonsai | Freelance Software Comparison 2025",
+  title: "SoloFI vs Bonsai | Freelance Software Comparison 2026",
   description: "Compare SoloFI and Bonsai for freelancers. See which platform is better for contracts, invoicing, and financial management.",
   keywords: ["bonsai freelance alternative", "bonsai review", "freelance invoicing software", "bonsai vs honeybook"],
+  openGraph: {
+    title: "SoloFI vs Bonsai — Which Freelance Platform Wins?",
+    description: "Bonsai handles contracts and invoicing. SoloFI handles the financial planning side — taxes, S-Corp, retirement, and FI. Compare both for freelancers.",
+    url: "https://solofi.io/compare/bonsai",
+    siteName: "SoloFI",
+    images: [{ url: "https://solofi.io/api/og?title=SoloFI+vs+Bonsai&category=Compare", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SoloFI vs Bonsai | Freelance Software Comparison 2026",
+    description: "Bonsai handles contracts and invoicing. SoloFI handles the financial planning side — taxes, S-Corp, retirement, and FI. Compare both for freelancers.",
+    images: ["https://solofi.io/api/og?title=SoloFI+vs+Bonsai&category=Compare"],
+  },
+  alternates: {
+    canonical: "https://solofi.io/compare/bonsai",
+  },
 };
 
 export default function BonsaiComparison() {
