@@ -35,15 +35,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "quarterly-tax",
     "scorp-calculator",
     "freelance-checklist",
+    "banking-setup",
+    "feie-checker",
+    "rate-calculator",
   ];
 
   const competitors = [
     "bench",
+    "boldin",
     "bonsai",
     "collective",
     "copilot",
     "monarch",
+    "projectionlab",
     "quickbooks-self-employed",
+    "ynab",
   ];
 
   return [
@@ -53,6 +59,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/blog`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE_URL}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     { url: `${BASE_URL}/tools`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/faq`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
+    { url: `${BASE_URL}/glossary`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
+    { url: `${BASE_URL}/learn`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+
+    // Handbooks
+    { url: `${BASE_URL}/handbooks`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${BASE_URL}/handbooks/early-retirement-handbook`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${BASE_URL}/handbooks/freelancer-financial-setup-guide`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${BASE_URL}/handbooks/self-employed-tax-handbook`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
 
     // Free calculators
     { url: `${BASE_URL}/fire-calculator`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },

@@ -392,8 +392,9 @@ export default function FEIEArticle() {
             <div>
               <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Free tools</p>
               <ul className="space-y-2 text-sm">
-              <li key="fi-calculator"><Link href="https://solofi.io/tools" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">FI Calculator</Link></li>
-              <li key="quarterly-tax"><Link href="https://solofi.io/tools" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Quarterly Tax Estimator</Link></li>
+              <li key="feie-checker"><Link href="https://solofi.io/tools/feie-checker" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">FEIE Eligibility Checker</Link></li>
+              <li key="fi-calculator"><Link href="https://solofi.io/tools/fi-calculator" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">FI Calculator</Link></li>
+              <li key="quarterly-tax"><Link href="https://solofi.io/tools/quarterly-tax" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">Quarterly Tax Estimator</Link></li>
               </ul>
             </div>
           </div>

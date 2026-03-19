@@ -4,6 +4,20 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Financial Glossary | SoloFI",
   description: "A plain-English glossary of financial terms for self-employed professionals, consultants, and independent contractors.",
+  openGraph: {
+    title: "Financial Glossary | SoloFI",
+    description: "Plain-English definitions of financial terms for freelancers and self-employed professionals.",
+    url: "https://solofi.io/glossary",
+    siteName: "SoloFI",
+    images: [{ url: "https://solofi.io/api/og?title=Financial+Glossary&category=Reference", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Financial Glossary | SoloFI",
+    description: "Plain-English definitions of financial terms for freelancers and self-employed professionals.",
+    images: ["https://solofi.io/api/og?title=Financial+Glossary&category=Reference"],
+  },
 };
 
 const glossaryTerms = [
