@@ -275,7 +275,7 @@ export default function Landing21() {
       <section className="max-w-4xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 pb-8 sm:pb-12">
         <div className="text-center">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-slate-900 mb-6 sm:mb-8 leading-tight">
-            Stop optimizing blind.
+            Stop optimizing blind
           </h1>
           <div className="mb-8 sm:mb-10 max-w-xl mx-auto space-y-3 text-left sm:text-center">
             <p className="text-base sm:text-lg text-slate-400">
